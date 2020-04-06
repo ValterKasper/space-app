@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">@color/cyan_500</color>
+
+    <color name="iconLetterBackground">@color/alto</color>
+
+    <color name="tagBackground">@color/alto</color>
+    <color name="tagStroke">@color/alto</color>
+
+    <color name="iconLetter">@color/warm_grey</color>
+
+    <color name="systemUiOverlayColor">#517E7E7E</color>
+
+    <color name="navigationBarColor">@color/systemUiOverlayColor</color>
+
+</resources>

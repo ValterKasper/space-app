@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="timelineViewModel"
+            type="sk.kasper.space.timeline.TimelineViewModel"/>
+
+        <variable
+            name="filterViewModel"
+            type="sk.kasper.space.timeline.filter.TimelineFilterViewModel"/>
+
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".mainactivity.MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <sk.kasper.space.view.TopToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                paddingTopSystemWindowInsets="@{ true }"
+                paddingLeftSystemWindowInsets="@{ true }"
+                paddingRightSystemWindowInsets="@{ true }"
+                app:naviIcon="none"
+                app:title="@string/app_name"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Launches -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- activated filter bar -->
+                    <LinearLayout
+                        android:id="@+id/filters_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?actionBarSize"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:visibility="@{filterViewModel.clearButtonVisibility}"
+                        android:onClick="@{() -> timelineViewModel.onFilterBarClick()}"
+                        app:elevationWithOverlay="@{2}"
+                        app:paddingRightSystemWindowInsets="@{ true }"
+                        app:paddingLeftSystemWindowInsets="@{ true }"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:maxLines="2"
+                            android:minLines="1"
+                            android:paddingEnd="@dimen/padding_normal"
+                            android:textAppearance="?attr/textAppearanceSubtitle1"
+                            android:fontFamily="@font/source_sans_pro"
+                            android:paddingStart="@dimen/padding_normal"
+                            android:text="@string/filtering_is_on"
+                            tools:text="Filtering is on" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:padding="@dimen/padding_normal"
+                            android:scaleType="center"
+                            android:contentDescription="@string/filter"
+                            android:onClick="@{() -> filterViewModel.onClearAllClick()}"
+                            app:srcCompat="@drawable/ic_clear_all" />
+
+                    </LinearLayout>
+
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                        android:id="@+id/swipeRefresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/launchesRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:paddingTop="@dimen/padding_normal"
+                            android:paddingBottom="@dimen/padding_normal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:paddingBottomSystemWindowInsets="@{ true }"
+                            app:paddingLeftSystemWindowInsets="@{ true }"
+                            tools:listitem="@layout/fragment_timeline_launch_list_item" />
+
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                </LinearLayout>
+
+                <!-- Filter empty state -->
+                <LinearLayout
+                    android:id="@+id/emptyStateLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:visible="@{timelineViewModel.showNoMatchingLaunches}"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/ic_action_filter"
+                        app:tint="?android:textColorSecondary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="@string/no_matching_launches"
+                        android:textColor="?android:textColorSecondary"
+                        android:textAppearance="?attr/textAppearanceHeadline6"/>
+
+                </LinearLayout>
+
+                <!-- No launches empty state -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:visible="@{timelineViewModel.showRetryToLoadLaunches}"
+                    tools:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="@string/your_connections_is_off"
+                        android:textAlignment="center"
+                        android:textAppearance="?textAppearanceHeadline6"
+                        android:textSize="22sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pull_to_refresh_to_try_again"
+                        android:textAlignment="center"
+                        android:textAppearance="?attr/textAppearanceBody1"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <!-- Filter drawer -->
+        <LinearLayout
+            android:layout_width="@dimen/filter_nav_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="vertical"
+            app:paddingTopSystemWindowInsets="@{ true }"
+            android:background="?attr/colorSurface">
+
+            <LinearLayout
+                android:id="@+id/filters_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:gravity="center_vertical"
+                android:minHeight="?actionBarSize"
+                android:orientation="horizontal"
+                android:paddingEnd="8dp"
+                android:paddingStart="@dimen/padding_normal"
+                android:stateListAnimator="@animator/active_raise"
+                app:paddingRightSystemWindowInsets="@{ true }"
+                app:elevationWithOverlay="@{2}">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/timeline_filter_title"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clear_filters"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:textColor="?colorSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:drawablePadding="8dp"
+                    android:text="@string/clear_all"
+                    android:visibility="@{filterViewModel.clearButtonVisibility}"
+                    android:onClick="@{() -> filterViewModel.onClearAllClick()}"
+                    android:drawableEnd="@drawable/ic_clear_all"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/filterRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/padding_normal"
+                android:paddingBottom="@dimen/padding_normal"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:paddingRightSystemWindowInsets="@{ true }"
+                app:paddingBottomSystemWindowInsets="@{ true }"
+                tools:listitem="@layout/filter_header_list_item"/>
+
+        </LinearLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>
+

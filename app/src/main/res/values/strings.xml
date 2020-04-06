@@ -1,0 +1,116 @@
+<resources>
+
+    <string name="app_name">Rocktly</string>
+    <string name="title_launches">Timeline</string>
+    <string name="title_rockets">Rockets</string>
+    <string name="title_tags">Tags</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="menu_refresh">refresh</string>
+    <string name="settings">Settings</string>
+    <string name="libraries">Libraries</string>
+
+    <string name="rocket_name">Rocket</string>
+    <string name="rocket_configuration">configuration</string>
+    <string name="launch_start">launch start</string>
+    <string name="launch_name">mission</string>
+    <string name="mannedMission">manned</string>
+
+    <string name="today">today</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="this_week">this week</string>
+    <string name="later">later</string>
+    <string name="date_not_confirmed">Date not confirmed</string>
+
+    <string name="tag_iss">ISS</string>
+    <string name="tag_test_flight">test flight</string>
+    <string name="tag_manned">manned</string>
+    <string name="tag_satellite">satellite</string>
+    <string name="tag_cube_sat">cubeSat</string>
+    <string name="tag_secret">secret</string>
+    <string name="tag_mars">mars</string>
+    <string name="tag_probe">probe</string>
+    <string name="tag_rover">rover</string>
+    <string name="tag_foo">foo</string>
+
+    <string name="rocket_falcon_9">Falcon 9</string>
+    <string name="rocket_soyuz">Soyuz</string>
+    <string name="rocket_ariane_5">Ariane 5</string>
+    <string name="rocket_atlas_V">Atlas V</string>
+    <string name="rocket_delta_VI_heavy">Delta IV Heavy</string>
+    <string name="rocket_falcon_heavy">Falcon Heavy</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_launches">Upcoming launches</string>
+    <string name="launch_x">Launch of %s</string>
+    <string name="mission_x_at_x">Mission %1$s at %2$s</string>
+    <string name="video_stream">watch</string>
+
+    <!-- Timeline -->
+    <string name="timeline_title">@string/app_name</string>
+    <string name="timeline_filter_title">@string/filter</string>
+    <string name="clear_all">clear all</string>
+    <string name="filter">Filter</string>
+    <string name="tags">Tags</string>
+    <string name="filtering_is_on">Filtering is on</string>
+
+    <!-- Launch detail -->
+    <string name="section_rocket">Rocket info</string>
+    <string name="section_launch_site">Launch site</string>
+    <string name="section_orbit">Target orbit</string>
+    <string name="mission">Mission</string>
+    <string name="gallery">Gallery</string>
+    <string name="show_more">Show more</string>
+    <string name="rocket_photo">Rocket photo</string>
+    <string name="height">Height</string>
+    <string name="diameter">Diameter</string>
+    <string name="mass">Mass</string>
+    <string name="payload_leo">LEO payload</string>
+    <string name="payload_gto">GTO payload</string>
+    <string name="thrust">Thrust</string>
+    <string name="stages">Stages</string>
+    <string name="no_matching_launches">No matching launches</string>
+    <string name="your_connections_is_off">Your connection seems off…</string>
+    <string name="pull_to_refresh_to_try_again">Please check your internet connection and\npull to refresh to try again</string>
+    <string name="watch_launch_live">watch live</string>
+    <string name="landing_type_ocean">Ocean</string>
+    <string name="landing_type_autonomous_spaceport_drone_ship">Autonomous Spaceport Drone Ship</string>
+    <string name="landing_type_return_to_launch_site">Return To Launch Site</string>
+    <string name="ASDS_of_course_i_still_love_you" translatable="false">Of Course I Still Love You</string>
+    <string name="ASDS_just_read_the_instructions" translatable="false">Just Read the Instructions</string>
+    <string name="landing_zone_LZ1" translatable="false">LZ-1</string>
+    <string name="landing_zone_LZ2" translatable="false">LZ-2</string>
+    <string name="block_x">Block %s</string>
+    <string name="new_block">New</string>
+    <string name="x_flight">%s flight</string>
+    <string name="block_version">Version</string>
+    <string name="block_status">Status</string>
+    <string name="landing_type">Landing type</string>
+    <string name="landing_ship">Landing ship</string>
+    <string name="landing_zone">Landing zone</string>
+    <string name="geostationary_transfer_orbit">Geostationary transfer orbit</string>
+    <string name="geostationary_orbit">Geostationary orbit</string>
+    <string name="low_earth_orbit">Low Earth orbit</string>
+
+    <!-- Settings -->
+    <string name="notifications">Notifications</string>
+    <string name="timeline">Timeline</string>
+    <string name="others">Others</string>
+    <string name="show_launch_notifications">Launch</string>
+    <string name="show_launch_notifications_summary">Notify about upcoming launches</string>
+    <string name="show_launch_notifications_before">Show before</string>
+    <string name="show_unconfirmed_launches">Unconfirmed launches</string>
+    <string name="show_unconfirmed_launches_summary">Show launches without specified date</string>
+    <string name="half_hour">30 minutes</string>
+    <string name="one_hour">1 hour</string>
+    <string name="two_hours">2 hours</string>
+    <string name="app_is_built_with_these_libraries">Rocktly is built with help of these libraries</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="follow_system">Follow system</string>
+    <string name="choose_theme">Choose theme</string>
+
+    <string name="image_description">Image</string>
+    <string name="falcon_9_first_stage">Falcon 9 first stage</string>
+    <string name="debug">Debugging options</string>
+
+</resources>

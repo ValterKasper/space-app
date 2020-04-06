@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="iconLetterBackground">#202020</color>
+    <color name="tagBackground">#202020</color>
+    <color name="tagStroke">#202020</color>
+
+    <color name="navigationBarColor">@android:color/transparent</color>
+
+</resources>

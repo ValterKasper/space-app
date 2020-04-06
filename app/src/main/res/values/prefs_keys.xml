@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pref_show_launch_notifications">pref_show_launch_notifications</string>
+    <string name="pref_show_unconfirmed_launches">pref_show_unconfirmed_launches</string>
+    <string name="pref_duration_before_notification_is_shown">pref_duration_before_notification_is_shown</string>
+    <string name="pref_night_mode">pref_night_mode</string>
+    <string name="pref_night_pre_q_mode">pref_night_pre_q_mode</string>
+
+    <!-- Debug options -->
+    <string name="pref_debug_category">pref_debug_category</string>
+    <string name="pref_api_endpoint">pref_api_endpoint</string>
+    <string name="pref_debug_show_demo_notification">pref_debug_show_demo_notification</string>
+
+</resources>

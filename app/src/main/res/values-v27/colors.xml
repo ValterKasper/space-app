@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- because nav buttons change color dynamically based on background -->
+    <color name="navigationBarColor">@android:color/transparent</color>
+</resources>

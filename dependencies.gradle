@@ -1,0 +1,7 @@
+ext {
+    daggerVersion = '2.19'
+    mockitoKotlinVersion = '2.1.0'
+    junitVersion = '4.12'
+    threetenabp = '1.1.1'
+    coroutines = '1.1.1'
+}

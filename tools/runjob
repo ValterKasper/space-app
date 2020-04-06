@@ -1,0 +1,5 @@
+#!/bin/bash
+
+JOB_ID=$1
+
+adb shell cmd jobscheduler run -f sk.kasper.space $JOB_ID

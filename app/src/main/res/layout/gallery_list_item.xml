@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:clickable="true"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:focusable="true"
+    android:foreground="?android:selectableItemBackground">
+
+  <ImageView
+      android:id="@+id/galleryImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/launch_gallery_item_height"
+      android:adjustViewBounds="true"
+      android:contentDescription="@string/image_description"
+      android:scaleType="fitCenter"
+      tools:src="@tools:sample/backgrounds/scenic"/>
+
+</FrameLayout>

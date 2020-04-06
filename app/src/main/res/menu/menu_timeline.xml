@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/menu_filter"
+        android:icon="@drawable/ic_action_filter"
+        android:title="@string/filter"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_playground"
+        android:icon="@drawable/ic_pool"
+        android:title="Playground"
+        app:showAsAction="ifRoom"
+        tools:ignore="HardcodedText"/>
+
+    <item
+        android:id="@+id/menu_settings"
+        android:title="@string/settings"
+        app:showAsAction="never"/>
+
+</menu>

@@ -1,0 +1,42 @@
+<resources>
+
+    <dimen name="timeline_list_item_start_padding_text">80dp</dimen>
+    <dimen name="timeline_list_item_min_height">60dp</dimen>
+    <dimen name="timeline_list_item_padding_start_end">16dp</dimen>
+
+    <dimen name="launch_tag_item_bg_corners_radius">16dp</dimen>
+    <dimen name="launch_tag_item_bg_padding_horizontal">0dp</dimen>
+    <dimen name="launch_tag_item_bg_padding_vertical">4dp</dimen>
+    <dimen name="launch_tag_circle_size">10dp</dimen>
+    <dimen name="launch_tag_horizontal_space">8dp</dimen>
+
+    <dimen name="padding_normal">16dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="min_touch_target_dimen">48dp</dimen>
+
+    <dimen name="filter_nav_drawer_width">256dp</dimen>
+    <dimen name="label_min_height">48dp</dimen>
+
+    <dimen name="rounded_corners_radius">6dp</dimen>
+    <dimen name="rocket_icon_size">56dp</dimen>
+    <dimen name="rocket_icon_text_size">32sp</dimen>
+    <dimen name="label_value_view_vertical_padding">2dp</dimen>
+
+    <dimen name="divider_height">1dp</dimen>
+
+    <!-- Orbit view -->
+    <dimen name="geo_radius">88dp</dimen>
+    <dimen name="leo_radius">56dp</dimen>
+    <dimen name="earth_radius">32dp</dimen>
+    <dimen name="satellite_radius">4dp</dimen>
+    <dimen name="orbit_stroke_width">2dp</dimen>
+    <dimen name="launch_gallery_item_height">144dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="extra_small_text_size">14sp</dimen>
+    <dimen name="small_text_size">16sp</dimen>
+    <dimen name="medium_text_size">18sp</dimen>
+    <dimen name="large_text_size">22sp</dimen>
+
+</resources>

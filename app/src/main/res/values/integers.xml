@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="enterLeftScreeAnimTime">@android:integer/config_shortAnimTime</integer>
+    <integer name="exitLeftScreeAnimTime">@android:integer/config_shortAnimTime</integer>
+    <integer name="enterRightScreeAnimTime">300</integer>
+    <integer name="exitRightScreeAnimTime">300</integer>
+</resources>

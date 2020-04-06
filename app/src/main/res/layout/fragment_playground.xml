@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".playground.PlaygroundFragment">
+
+        <sk.kasper.space.view.TopToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:paddingLeftSystemWindowInsets="@{ true }"
+            app:paddingTopSystemWindowInsets="@{ true }"
+            app:paddingRightSystemWindowInsets="@{ true }"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:naviIcon="back"
+            app:title="Playground"/>
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="184dp"
+            app:liteMode="true"
+            app:mapType="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_marginTop="@dimen/padding_normal"
+            android:layout_marginBottom="@dimen/padding_normal"/>
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/tagBackground"
+            android:orientation="horizontal"
+            android:padding="24dp"
+            app:paddingBottomSystemWindowInsets="@{ true }"
+            app:paddingLeftSystemWindowInsets="@{ true }"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
