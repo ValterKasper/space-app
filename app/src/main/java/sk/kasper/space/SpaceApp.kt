@@ -27,9 +27,6 @@ import sk.kasper.space.sync.SyncJobService
 import timber.log.Timber
 import javax.inject.Inject
 
-// todo pouzi https://rtyley.github.io/bfg-repo-cleaner/
-// todo daj na github
-// todo sprav fake server
 // todo precisti kod
 // todo rozchod CI na githube
 open class SpaceApp: Application(), HasActivityInjector, HasServiceInjector {
