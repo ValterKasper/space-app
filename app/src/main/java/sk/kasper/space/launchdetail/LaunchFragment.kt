@@ -207,7 +207,7 @@ class LaunchFragment : BaseFragment() {
     }
 
     private fun setupLaunchSiteViewModel() {
-        val launchSiteViewModelFactory = provideViewModel { launchSiteViewModelFactory.create(
+        launchSiteViewModel = provideViewModel { launchSiteViewModelFactory.create(
                 launchId,
                 ConnectionResult.SUCCESS == GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context))
         }
@@ -229,7 +229,7 @@ class LaunchFragment : BaseFragment() {
             observeLaunchSiteViewModel(map, binding)
         }
 
-        binding.launchSiteViewModel = launchSiteViewModelFactory
+        binding.launchSiteViewModel = launchSiteViewModel
     }
 
     private fun observeLaunchSiteViewModel(map: GoogleMap, binding: FragmentLaunchBinding) {

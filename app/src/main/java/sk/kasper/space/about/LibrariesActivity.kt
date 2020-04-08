@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_libraries.*
 import sk.kasper.space.R
+import sk.kasper.space.view.TopToolbar
 
 
 class LibrariesActivity : AppCompatActivity() {
@@ -15,7 +15,7 @@ class LibrariesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_libraries)
 
-        toolbar.setNavigationOnClickListener {
+        findViewById<TopToolbar>(R.id.toolbar).setNavigationOnClickListener {
             finish()
         }
 

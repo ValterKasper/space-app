@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import kotlinx.android.synthetic.main.activity_settings.*
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Rocket
 import sk.kasper.space.BuildConfig
@@ -18,6 +17,7 @@ import sk.kasper.space.about.LibrariesActivity
 import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.notification.LaunchNotificationInfo
 import sk.kasper.space.notification.NotificationsHelper
+import sk.kasper.space.view.TopToolbar
 
 
 // todo netreba aby boli v aktivite
@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        with(toolbar) {
+        with(findViewById<TopToolbar>(R.id.toolbar)) {
             inflateMenu(R.menu.menu_settings)
             setOnMenuItemClickListener(::onMenuItemClicked)
             setNavigationOnClickListener {

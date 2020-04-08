@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.fragment_playground.*
 import sk.kasper.space.BaseFragment
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentPlaygroundBinding
 import sk.kasper.space.settings.SettingsManager
+import sk.kasper.space.view.TopToolbar
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,7 +34,7 @@ class PlaygroundFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(toolbar) {
+        with(view.findViewById<TopToolbar>(R.id.toolbar)) {
             inflateMenu(R.menu.menu_playground)
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -49,6 +50,7 @@ class PlaygroundFragment : BaseFragment() {
             }
         }
 
+        val mapView = view.findViewById<MapView>(R.id.mapView)
         mapView.onCreate(null)
         mapView.getMapAsync { map ->
             MapsInitializer.initialize(context)
