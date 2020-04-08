@@ -3,7 +3,6 @@ package sk.kasper.space.utils.backpress
 import javax.inject.Inject
 import javax.inject.Singleton
 
-// todo mozno pouzi jetpack
 @Singleton
 class BackPressManager @Inject constructor() {
 

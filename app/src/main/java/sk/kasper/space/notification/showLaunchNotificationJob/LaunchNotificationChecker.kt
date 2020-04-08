@@ -1,6 +1,7 @@
 package sk.kasper.space.notification.showLaunchNotificationJob
 
-import android.annotation.SuppressLint
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.threeten.bp.Duration
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 open class LaunchNotificationChecker @Inject constructor(
         private val repository: LaunchRepository,
         private val syncLaunches: SyncLaunches,
-        private val showLaunchNotificationJobScheduler: ShowLaunchNotificationJobScheduler) {
+        private val showLaunchNotificationJobScheduler: ShowLaunchNotificationJobScheduler): DefaultLifecycleObserver, SyncLaunches.SyncListener {
 
     companion object {
         private val MIN_DURATION_AFTER_NOW_FOR_SCHEDULING: Duration = Duration.ofHours(4)
@@ -26,6 +27,20 @@ open class LaunchNotificationChecker @Inject constructor(
 
         private val MIN_DURATION_BEFORE_LAUNCH_TO_SHOW_NOTIFICATION: Duration = Duration.ofMinutes(60)
         private val MAX_DURATION_BEFORE_LAUNCH_TO_SHOW_NOTIFICATION: Duration = Duration.ofMinutes(3)
+    }
+
+    override fun onSync() {
+        GlobalScope.launch {
+            checkLaunches(repository.getLaunches())
+        }
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        syncLaunches.addSyncListener(this)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        syncLaunches.removeSyncListener(this)
     }
 
     private fun checkLaunches(launches: List<Launch>) {
@@ -43,17 +58,6 @@ open class LaunchNotificationChecker @Inject constructor(
 
     open fun getCurrentDateTime(): LocalDateTime {
         return LocalDateTime.now()
-    }
-
-    @SuppressLint("CheckResult")
-    fun registerForLaunchChanges() {
-        syncLaunches.addSyncListener(object: SyncLaunches.SyncListener {
-            override fun onSync() {
-                GlobalScope.launch {
-                    checkLaunches(repository.getLaunches())
-                }
-            }
-        })
     }
 
 }

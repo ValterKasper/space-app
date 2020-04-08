@@ -5,6 +5,7 @@ import android.app.Application
 import android.app.Service
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -80,8 +81,7 @@ open class SpaceApp: Application(), HasActivityInjector, HasServiceInjector {
 
         createAppComponent().inject(this)
 
-        // todo cez app lifecycle
-        checker.registerForLaunchChanges()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(checker)
 
         SyncJobService.startPeriodicLaunchesSyncJob(this)
 
@@ -92,8 +92,6 @@ open class SpaceApp: Application(), HasActivityInjector, HasServiceInjector {
                 AppCompatDelegate.setDefaultNightMode(settingsManager.nightMode)
             }
         }
-
-        Timber.d("api key " + BuildConfig.API_KEY)
     }
 }
 

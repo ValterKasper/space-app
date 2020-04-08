@@ -112,7 +112,7 @@ class LaunchNotificationCheckerTest {
 
     private fun createViewModel() {
         checkerUnderTest = LaunchNotificationCheckerUnderTest()
-        checkerUnderTest.registerForLaunchChanges()
+        checkerUnderTest.onStart(mock())
     }
 
     private fun callOnSync() {
