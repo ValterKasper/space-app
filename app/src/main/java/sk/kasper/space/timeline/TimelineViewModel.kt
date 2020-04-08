@@ -8,8 +8,10 @@ import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
+import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.domain.model.Launch
+import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.space.BR
@@ -113,10 +115,9 @@ open class TimelineViewModel @AssistedInject constructor(
     fun onRefresh() {
         viewModelScope.launch {
             runLongOp {
-                if (refreshTimelineItems.refresh()) {
-                    loadTimeline(timelineFilterSpecModel.value)
-                } else {
-                    connectionErrorEvent.call()
+                when (refreshTimelineItems.refresh()) {
+                    is SuccessResponse -> loadTimeline(timelineFilterSpecModel.value)
+                    is ErrorResponse -> connectionErrorEvent.call()
                 }
             }
         }

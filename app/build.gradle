@@ -36,7 +36,7 @@ android {
         buildConfigField 'long', 'SYNC_INTERVAL_HOURS', '4'
         buildConfigField 'long', 'TOO_OLD_LAUNCH_TO_BE_SHOWN_HOURS', '24'
         buildConfigField 'String', 'API_KEY', "\"$api_key\""
-        buildConfigField 'boolean', 'USE_FAKE_API_DATA', "$use_fake_api_data"
+        buildConfigField 'boolean', 'USE_FAKE_RESPONSE_API', "$use_fake_fake_reponse_api"
     }
     buildTypes {
         release {

@@ -47,6 +47,7 @@
 
     <style name="MyToolbarStyle" parent="@style/BaseToolbarStyle">
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="naviIcon">none</item>
     </style>
 
     <style name="MyListItemTextAppearance" parent="@style/TextAppearance.MaterialComponents.Body1">

@@ -40,7 +40,7 @@ class RemoteApiModule {
     @Singleton
     @Provides
     fun providesRemoteApi(settingsManager: SettingsManager, fakeRemoteApi: Lazy<FakeRemoteApi>): RemoteApi {
-        if (BuildConfig.USE_FAKE_API_DATA) {
+        if (BuildConfig.USE_FAKE_RESPONSE_API) {
             return fakeRemoteApi.get()
         }
 

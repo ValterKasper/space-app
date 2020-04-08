@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.FalconCore
-import sk.kasper.domain.model.LoadingResponse
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.launchdetail.GetFalconCore
 import sk.kasper.space.R
@@ -119,9 +118,6 @@ class FalconInfoViewModel @Inject constructor(
                                 }
                             }
                         }
-                    }
-                    is LoadingResponse -> {
-                        // should not take too long
                     }
                     is ErrorResponse -> {
                         // todo model better - it is not error
