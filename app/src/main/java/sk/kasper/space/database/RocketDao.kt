@@ -24,27 +24,27 @@ interface RocketDao {
     @Query("SELECT * FROM rocket")
     fun loadRocketsSync(): List<RocketEntity>
 
-    // todo to raw string
-    @Query("" +
-            "SELECT " +
-            "   rocket.id, " +
-            "   rocket.rocketName, " +
-            "   rocket.height, " +
-            "   rocket.diameter, " +
-            "   rocket.mass, " +
-            "   rocket.payloadLeo, " +
-            "   rocket.payloadGto, " +
-            "   rocket.thrust, " +
-            "   rocket.stages, " +
-            "   rocket.manufacturerId " +
-            "FROM " +
-            "   launch " +
-            "LEFT JOIN " +
-            "   rocket " +
-            "ON " +
-            "   launch.rocketId = rocket.id " +
-            "WHERE " +
-            "   launch.id = :launchId")
+    @Query("""
+        SELECT    
+            rocket.id,    
+            rocket.rocketName,    
+            rocket.height,    
+            rocket.diameter,    
+            rocket.mass,    
+            rocket.payloadLeo,    
+            rocket.payloadGto,    
+            rocket.thrust,    
+            rocket.stages,    
+            rocket.manufacturerId 
+        FROM    
+            launch 
+        LEFT JOIN    
+            rocket 
+        ON    
+            launch.rocketId = rocket.id 
+        WHERE    
+            launch.id = :launchId
+        """)
     suspend fun loadRocketByLaunchId(launchId: Long): RocketEntity
 
 }

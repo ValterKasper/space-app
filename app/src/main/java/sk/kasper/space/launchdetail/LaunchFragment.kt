@@ -47,6 +47,18 @@ class LaunchFragment : BaseFragment() {
     @Inject
     lateinit var launchViewModelFactory: LaunchViewModel.Factory
 
+    @Inject
+    lateinit var falconInfoViewModelFactory: FalconInfoViewModel.Factory
+
+    @Inject
+    lateinit var galleryViewModelFactory: GalleryViewModel.Factory
+
+    @Inject
+    lateinit var rocketSectionViewModelFactory: RocketSectionViewModel.Factory
+
+    @Inject
+    lateinit var launchSiteViewModelFactory: LaunchSiteViewModel.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -156,8 +168,7 @@ class LaunchFragment : BaseFragment() {
         binding.galleryRecyclerView.adapter = galleryAdapter
         binding.galleryRecyclerView.isNestedScrollingEnabled = false // enables toolbar collapsing when sliding vertically on this view
 
-        val viewModel: GalleryViewModel = provideViewModel(viewModelFactory)
-        viewModel.launchId = launchId
+        val viewModel: GalleryViewModel = provideViewModel { galleryViewModelFactory.create(launchId) }
         viewModel.galleryItems.observe(this, Observer {
             galleryAdapter.setItems(it)
         })
@@ -183,11 +194,9 @@ class LaunchFragment : BaseFragment() {
 
     private fun setupRocketSection() {
         AsyncLayoutInflater(requireContext()).inflate(R.layout.fragment_launch_rocket_section, binding.sectionsLinearLayout) { view, _, parent ->
-            val rocketSectionViewModel: RocketSectionViewModel = provideViewModel(viewModelFactory)
-            rocketSectionViewModel.launchId = launchId
+            val rocketSectionViewModel: RocketSectionViewModel = provideViewModel { rocketSectionViewModelFactory.create(launchId) }
 
-            val falconInfoViewModel: FalconInfoViewModel = provideViewModel(viewModelFactory)
-            falconInfoViewModel.launchId = launchId
+            val falconInfoViewModel: FalconInfoViewModel = provideViewModel { falconInfoViewModelFactory.create(launchId) }
 
             val fragmentLaunchRocketInfoBinding = FragmentLaunchRocketSectionBinding.bind(view)
             fragmentLaunchRocketInfoBinding.rocketSectionViewModel = rocketSectionViewModel
@@ -198,9 +207,10 @@ class LaunchFragment : BaseFragment() {
     }
 
     private fun setupLaunchSiteViewModel() {
-        launchSiteViewModel = provideViewModel(viewModelFactory)
-        launchSiteViewModel.launchId = launchId
-        launchSiteViewModel.googleApiAvailable = ConnectionResult.SUCCESS == GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context)
+        val launchSiteViewModelFactory = provideViewModel { launchSiteViewModelFactory.create(
+                launchId,
+                ConnectionResult.SUCCESS == GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context))
+        }
 
         binding.mapView.onCreate(null)
         binding.mapView.getMapAsync { map ->
@@ -219,7 +229,7 @@ class LaunchFragment : BaseFragment() {
             observeLaunchSiteViewModel(map, binding)
         }
 
-        binding.launchSiteViewModel = launchSiteViewModel
+        binding.launchSiteViewModel = launchSiteViewModelFactory
     }
 
     private fun observeLaunchSiteViewModel(map: GoogleMap, binding: FragmentLaunchBinding) {

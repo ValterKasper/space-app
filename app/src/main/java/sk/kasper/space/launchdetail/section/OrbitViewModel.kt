@@ -20,10 +20,6 @@ class OrbitViewModel @AssistedInject constructor(
     @Bindable
     var visible = false
 
-    init {
-        loadOrbit()
-    }
-
     @Bindable
     var orbit = OrbitToDraw.LEO
 
@@ -31,7 +27,7 @@ class OrbitViewModel @AssistedInject constructor(
     @StringRes
     var orbitName = R.string.geostationary_orbit
 
-    private fun loadOrbit() {
+    init {
         viewModelScope.launch {
             try {
                 when (getOrbit.getOrbit(launchId)) {

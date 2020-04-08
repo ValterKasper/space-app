@@ -1,14 +1,12 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
-
-//println "from local properties $some_key"
 
 android {
     signingConfigs {
         config {
-            println "android -> singning -> config"
             def keystorePropertiesFilePath = "${keystore_properties_path}"
             def keystorePropertiesFile = rootProject.file(keystorePropertiesFilePath)
             def keystoreProperties = new Properties()
@@ -102,7 +100,7 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     implementation "com.google.android.gms:play-services-maps:16.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0-alpha01'

@@ -3,6 +3,8 @@ package sk.kasper.space.launchdetail.section
 import androidx.annotation.StringRes
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.FalconCore
@@ -11,9 +13,9 @@ import sk.kasper.domain.usecase.launchdetail.GetFalconCore
 import sk.kasper.space.R
 import sk.kasper.space.utils.FormattedString
 import sk.kasper.space.utils.ObservableViewModel
-import javax.inject.Inject
 
-class FalconInfoViewModel @Inject constructor(
+class FalconInfoViewModel @AssistedInject constructor(
+        @Assisted launchId: Long,
         private val getFalconCore: GetFalconCore): ObservableViewModel() {
 
     @Bindable
@@ -52,16 +54,7 @@ class FalconInfoViewModel @Inject constructor(
     @Bindable
     var blockStatus: FormattedString = FormattedString.empty()
 
-    // todo cez assited inject
-    var launchId: Long = 0L
-        set(value) {
-            if (field == 0L) {
-                field = value
-                loadFalconCoreInfo()
-            }
-        }
-
-    private fun loadFalconCoreInfo() {
+    init {
         viewModelScope.launch {
             getFalconCore.getFalconCore(launchId).also { response ->
                 when (response) {
@@ -127,6 +120,11 @@ class FalconInfoViewModel @Inject constructor(
 
             }
         }
+    }
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(launchId: Long): FalconInfoViewModel
     }
 
 }
