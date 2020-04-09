@@ -5,7 +5,7 @@
 
 
 
-| ![](./screenshots/Timeline.jpg) | ![](./screenshots/Launch_detail 3.jpg) | ![](./screenshots/Launch_detail 2.jpg) |
+| ![](./screenshots/Timeline.jpg) | ![](./screenshots/Launch_detail_3.jpg) | ![](./screenshots/Launch_detail_2.jpg) |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| ![](./screenshots/Dark_theme 2.jpg) | ![](./screenshots/Dark_theme 1.jpg) | ![](./screenshots/Screenshot_1559492559.jpg) |
+| ![](./screenshots/Dark_theme_2.jpg) | ![](./screenshots/Dark_theme_1.jpg) | ![](./screenshots/Screenshot_1559492559.jpg) |
 
