@@ -32,8 +32,7 @@ class FalconInfoViewModelTest {
     var coroutinesMainDispatcherRule = CoroutinesMainDispatcherRule()
 
     private fun createViewModel() {
-        viewModel = FalconInfoViewModel(getFalconCore)
-        viewModel.launchId = 0
+        viewModel = FalconInfoViewModel(0, getFalconCore)
     }
 
     @Test

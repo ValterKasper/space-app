@@ -6,7 +6,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,19 +24,12 @@ class GalleryViewModelTest {
     @Mock
     private lateinit var getPhotos: GetPhotos
 
-    private lateinit var galleryViewModel: GalleryViewModel
-
     @get:Rule
     @ExperimentalCoroutinesApi
     var coroutinesMainDispatcherRule = CoroutinesMainDispatcherRule()
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @Before
-    fun setUp() {
-        galleryViewModel = GalleryViewModel(getPhotos)
-    }
 
     @Test
     fun setLaunchId_loadGalleryItems_success_showItems() = runBlocking {
@@ -67,7 +59,7 @@ class GalleryViewModelTest {
     private suspend fun verifySetLaunchId(response: Response<List<Photo>>, expectedVisibility: Boolean, testObserverBlock: (List<Photo>?) -> Unit) {
         whenever(getPhotos.getPhotos(42L)).thenReturn(response)
 
-        galleryViewModel.launchId = 42L
+        val galleryViewModel = GalleryViewModel(42, getPhotos)
 
         assertThat(galleryViewModel.visible, `is`(expectedVisibility))
         testObserverBlock(galleryViewModel.galleryItems.value)
