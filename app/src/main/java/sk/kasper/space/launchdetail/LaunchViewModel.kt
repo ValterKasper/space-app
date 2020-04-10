@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Tag
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
-import sk.kasper.space.BR
 import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.utils.FormattedTimeType
 import sk.kasper.space.utils.ObservableViewModel
@@ -44,12 +43,6 @@ class LaunchViewModel @AssistedInject constructor(
     var formattedTimeVisible:  Boolean = true
 
     @get:Bindable
-    var showMoreButtonVisible: Boolean = true
-
-    @get:Bindable
-    var descriptionMaxLines: Int = 6
-
-    @get:Bindable
     var tags: MutableList<Tag> = mutableListOf()
 
     @get:Bindable
@@ -72,24 +65,10 @@ class LaunchViewModel @AssistedInject constructor(
         loadLaunchDetail()
     }
 
-    fun onShowMoreClick() {
-        showMoreButtonVisible = false
-        descriptionMaxLines = 99
-        notifyPropertyChanged(BR.showMoreButtonVisible)
-        notifyPropertyChanged(BR.descriptionMaxLines)
-    }
-
     fun onVideoUrlClick() {
         videoUrl?.let {
             Analytics.log(Analytics.Event.WATCH_LIVE, mapOf(Analytics.Param.ITEM_ID to launchId.toString()))
             showVideoUrl.value = it
-        }
-    }
-
-    fun onDescriptionLinesCountChanged(count: Int) {
-        if (count < 6) {
-            showMoreButtonVisible = false
-            notifyPropertyChanged(BR.showMoreButtonVisible)
         }
     }
 

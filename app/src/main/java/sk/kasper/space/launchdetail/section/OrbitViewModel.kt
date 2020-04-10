@@ -43,6 +43,7 @@ class OrbitViewModel @AssistedInject constructor(
                     }
                     else -> visible = false
                 }
+                notifyChange()
             } catch (e: Exception) {
                 Timber.e(e, "Unexpected GetOrbit.getOrbit error response.")
             }

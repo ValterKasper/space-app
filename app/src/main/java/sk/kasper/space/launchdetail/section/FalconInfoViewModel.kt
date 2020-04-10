@@ -113,7 +113,6 @@ class FalconInfoViewModel @AssistedInject constructor(
                         }
                     }
                     is ErrorResponse -> {
-                        // todo model better - it is not error
                         // does not have core
                     }
                 }

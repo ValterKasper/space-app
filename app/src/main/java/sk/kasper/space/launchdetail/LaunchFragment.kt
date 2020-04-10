@@ -89,12 +89,6 @@ class LaunchFragment : BaseFragment() {
             fragmentManager?.popBackStack()
         }
 
-        // todo asi zmaz
-        // chcem oznamit VM kolko riadkov je v popise, ale az po layoute a odpovedi z repa
-        binding.description.postDelayed({
-            binding.viewModel?.onDescriptionLinesCountChanged(binding.description.lineCount)
-        }, 100)
-
         return binding.root
     }
 
