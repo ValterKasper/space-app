@@ -89,7 +89,7 @@ open class SettingsManager @Inject constructor(private val context: Context) : S
     }
 
     private fun getIntFromString(key: SettingKey, defaultValue: Int): Int {
-        return sharedPreferences.getString(getSharedPreferenceKeyFromSettingKey(key), defaultValue.toString()).toInt()
+        return sharedPreferences.getString(getSharedPreferenceKeyFromSettingKey(key), defaultValue.toString())!!.toInt()
     }
 
     private fun setIntToString(key: SettingKey, value: Int) {

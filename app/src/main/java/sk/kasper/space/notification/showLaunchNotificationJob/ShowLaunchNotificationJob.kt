@@ -31,7 +31,7 @@ class ShowLaunchNotificationJob : ScopedJobService() {
     companion object {
         const val EXTRA_LAUNCH_ID = "extra-launch-id"
 
-        fun createJobInfo(context: Context, launchId: Long, dateTimeNotification: LocalDateTime, dateTimeNotificationDeadline: LocalDateTime): JobInfo? {
+        fun createJobInfo(context: Context, launchId: Long, dateTimeNotification: LocalDateTime, dateTimeNotificationDeadline: LocalDateTime): JobInfo {
             Timber.d("scheduleLaunchNotification $launchId at $dateTimeNotification")
 
             val bundle = PersistableBundle()

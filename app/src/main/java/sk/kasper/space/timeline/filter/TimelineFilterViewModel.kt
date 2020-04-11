@@ -9,7 +9,7 @@ import com.squareup.inject.assisted.AssistedInject
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.space.R
 
-class TimelineFilterViewModel @AssistedInject constructor(@Assisted private val timelineFilterSpecModel: TimelineFilterSpecModel)
+class TimelineFilterViewModel(private val timelineFilterSpecModel: TimelineFilterSpecModel)
     : ViewModel(), FilterSelectionListener {
 
     val filterItems: MutableLiveData<List<FilterItem>> = MutableLiveData()
@@ -83,11 +83,6 @@ class TimelineFilterViewModel @AssistedInject constructor(@Assisted private val 
                 .plus(createUnselectedFilterTagItems())
                 .plus(FilterItem.HeaderFilterItem(R.string.title_rockets))
                 .plus(createUnselectedFilterRocketItems())
-    }
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(timelineFilterSpecModel: TimelineFilterSpecModel): TimelineFilterViewModel
     }
 
 }

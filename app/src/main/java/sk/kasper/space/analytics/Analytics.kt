@@ -25,7 +25,7 @@ class Analytics {
     class Event {
 
         companion object {
-            const val SELECT_CONTENT = FirebaseAnalytics.Event.SELECT_CONTENT
+            const val SELECT_CONTENT = "select_content"
             const val LAUNCH_NOTIF_TAP = "launch_notification_tap"
             const val SETTING_SHOW_BEFORE = "setting_show_before"
             const val WATCH_LIVE = "watch_live_tap"

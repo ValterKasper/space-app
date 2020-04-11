@@ -1,6 +1,5 @@
 package sk.kasper.space.api.di
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
@@ -66,7 +65,6 @@ class RemoteApiModule {
                     SettingsManager.ApiEndpoint.RASPBERRY -> "http://10.0.0.2:8080/"
                 })
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()
 
         return retrofit.create(RemoteApi::class.java)

@@ -20,12 +20,12 @@ android {
             }
         }
     }
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "sk.kasper.space"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 18
         versionName "1.2.5"
         testInstrumentationRunner "sk.kasper.space.MockAndroidJUnitRunner"
@@ -54,8 +54,8 @@ android {
             ]
         }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
     dexOptions {
         javaMaxHeapSize "4g"
@@ -84,11 +84,11 @@ android {
     }
 }
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
+//buildscript {
+//    repositories {
+//        mavenCentral()
+//    }
+//}
 
 androidExtensions {
     features = ["parcelize"]

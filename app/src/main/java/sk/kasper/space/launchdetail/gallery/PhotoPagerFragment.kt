@@ -31,7 +31,7 @@ class PhotoPagerFragment : Fragment() {
             fragmentManager?.popBackStack()
         }
 
-        val photoItems = arguments!!.getParcelableArrayList<PhotoItem>(KEY_PHOTO_ITEMS)
+        val photoItems = arguments!!.getParcelableArrayList<PhotoItem>(KEY_PHOTO_ITEMS)!!
         viewPager = binding.viewPager
         viewPager.adapter = PhotoPagerAdapter(this, photoItems)
             // Set the current position and add a listener that will update the selection coordinator when
