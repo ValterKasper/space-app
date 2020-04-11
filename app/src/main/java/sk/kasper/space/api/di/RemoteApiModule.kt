@@ -20,7 +20,7 @@ import javax.inject.Singleton
 class RemoteApiModule {
 
     private val authInterceptor = Interceptor { chain->
-        val newUrl = chain.request().url()
+        val newUrl = chain.request().url
                 .newBuilder()
                 .addQueryParameter("apiKey", BuildConfig.API_KEY)
                 .build()
@@ -33,7 +33,11 @@ class RemoteApiModule {
         chain.proceed(newRequest)
     }
 
-    private val loggingInterceptor = HttpLoggingInterceptor { Timber.tag("OkHttp").d(it) }.apply {
+    private val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+        override fun log(message: String) {
+            Timber.tag("OkHttp").d(message)
+        }
+    }).apply {
         level = HttpLoggingInterceptor.Level.BASIC
     }
 
