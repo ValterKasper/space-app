@@ -1,7 +1,7 @@
 # Rocktly: Rocket launches schedule
 
-• Android app that shows timeline of upcoming rocket launches
-• Modular approach and clean architecture with focus on testability with UI and unit tests
+- Android app that shows timeline of upcoming rocket launches
+- Modular approach and clean architecture with focus on testability with UI and unit tests
 
 
 

@@ -1,18 +1,13 @@
 package sk.kasper.space
 
-import android.app.Activity
 import android.app.Application
-import android.app.Service
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.threetenabp.AndroidThreeTen
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.HasServiceInjector
+import dagger.android.*
 import io.fabric.sdk.android.Fabric
 import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.analytics.FirebaseAnalyticsLogger
@@ -30,16 +25,13 @@ import javax.inject.Inject
 
 // todo precisti kod
 // todo rozchod CI na githube
-open class SpaceApp: Application(), HasActivityInjector, HasServiceInjector {
+open class SpaceApp: Application(), HasAndroidInjector {
 
     @Inject
     lateinit var checker: LaunchNotificationChecker
 
     @Inject
-    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
-
-    @Inject
-    lateinit var dispatchingServiceInjector: DispatchingAndroidInjector<Service>
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     @Inject
     lateinit var remoteApi: RemoteApi
@@ -50,13 +42,7 @@ open class SpaceApp: Application(), HasActivityInjector, HasServiceInjector {
     @Inject
     lateinit var settingsManager: SettingsManager
 
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return dispatchingActivityInjector
-    }
-
-    override fun serviceInjector(): AndroidInjector<Service> {
-        return dispatchingServiceInjector
-    }
+    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
     protected open fun createAppComponent(): AppComponent {
         return DaggerAppComponent.builder()

@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import sk.kasper.space.FragmentTags
 import sk.kasper.space.R
 import sk.kasper.space.analytics.Analytics
@@ -22,13 +22,13 @@ import javax.inject.Inject
 const val EXTRA_LAUNCH_ID = "extra-launch-id"
 const val EXTRA_LAUNCH_ID_NOT_SELECTED = -1L
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     @Inject
     lateinit var backPressManager: BackPressManager
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     @VisibleForTesting
     var isIdleListener: IdleListener? = null
@@ -66,9 +66,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
-    }
+    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
     fun setIdle(idle: Boolean) {
         isIdleListener?.onIdleStatusChanged(idle)

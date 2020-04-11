@@ -7,9 +7,9 @@ apply plugin: 'kotlin-kapt'
 android {
     signingConfigs {
         config {
-            def keystorePropertiesFilePath = "${keystore_properties_path}"
-            def keystorePropertiesFile = rootProject.file(keystorePropertiesFilePath)
-            def keystoreProperties = new Properties()
+            final def keystorePropertiesFilePath = "${keystore_properties_path}"
+            final def keystorePropertiesFile = rootProject.file(keystorePropertiesFilePath)
+            final def keystoreProperties = new Properties()
             if (keystorePropertiesFile.exists()) {
                 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
@@ -122,8 +122,8 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
     kaptAndroidTest "com.google.dagger:dagger-android-processor:$daggerVersion"
-    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.4.0'
-    kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.4.0'
+    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2'
+    kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.5.2'
 
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
