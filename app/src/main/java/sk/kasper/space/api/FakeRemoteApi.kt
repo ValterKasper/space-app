@@ -2,8 +2,6 @@ package sk.kasper.space.api
 
 import android.content.Context
 import com.google.gson.Gson
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.ChronoUnit
@@ -22,7 +20,7 @@ class FakeRemoteApi @Inject constructor(private val context: Context) : RemoteAp
 
     private val now = LocalDateTime.now()
 
-    override fun timelineAsync(): Deferred<RemoteLaunchesResponse> {
+    override suspend fun timeline(): RemoteLaunchesResponse {
         val originalResponse = Gson().fromJson(
                 context.readFileFromAssets(RESPONSE_FILE_NAME),
                 RemoteLaunchesResponse::class.java)
@@ -31,10 +29,9 @@ class FakeRemoteApi @Inject constructor(private val context: Context) : RemoteAp
         val firstLaunchDateTime = originalResponse.launches!!.first().launchTs.toLocalDateTime()
         val firstLaunchDurationOffset = Duration.between(firstLaunchDateTime, now)
         val launchDurationOffset = firstLaunchDurationOffset.plus(BACK_TO_THE_FUTURE_OFFSET)
-        val newResponse = originalResponse
-                .copy(launches = originalResponse.launches.map { it.copy(launchTs = it.launchTs.toLocalDateTime().plus(launchDurationOffset).toTimeStamp()) })
 
-        return  CompletableDeferred(newResponse)
+        return originalResponse
+                .copy(launches = originalResponse.launches.map { it.copy(launchTs = it.launchTs.toLocalDateTime().plus(launchDurationOffset).toTimeStamp()) })
     }
 
 }

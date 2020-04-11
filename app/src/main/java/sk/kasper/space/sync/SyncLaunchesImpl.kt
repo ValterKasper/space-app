@@ -35,7 +35,7 @@ class SyncLaunchesImpl @Inject constructor(
             }
 
             try {
-                val response = service.timelineAsync().await()
+                val response = service.timeline()
                 if (response.responseCode == RESPONSE_CODE_BAD_API_KEY) {
                     val errorMessage = "bad api key response"
                     Timber.e(errorMessage)

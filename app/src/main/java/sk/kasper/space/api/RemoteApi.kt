@@ -8,7 +8,7 @@ import sk.kasper.space.api.entity.RemoteLaunchesResponse
 interface RemoteApi {
 
     @GET("timeline")
-    fun timelineAsync(): Deferred<RemoteLaunchesResponse>
+    suspend fun timeline(): RemoteLaunchesResponse
 
 }
 

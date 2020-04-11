@@ -15,8 +15,8 @@ class MockRemoteApi @Inject constructor(): RemoteApi {
 
     private var completableDeferred = CompletableDeferred<RemoteLaunchesResponse>()
 
-    override fun timelineAsync(): Deferred<RemoteLaunchesResponse> {
-        return completableDeferred
+    override suspend fun timeline(): RemoteLaunchesResponse {
+        return completableDeferred.await()
     }
 
     fun listLaunchesReturn(list: List<RemoteLaunch>) {
