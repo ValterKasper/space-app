@@ -3,5 +3,5 @@ ext {
     mockitoKotlinVersion = '2.2.0'
     junitVersion = '4.12'
     threetenabp = '1.2.3'
-    coroutines = '1.1.1'
+    coroutines = '1.3.1'
 }
