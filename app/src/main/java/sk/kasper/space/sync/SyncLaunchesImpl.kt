@@ -60,18 +60,15 @@ class SyncLaunchesImpl @Inject constructor(
                         remoteLaunch.photos.orEmpty().map { photoId -> PhotoLaunchEntity(photoId, remoteLaunch.id) }
                     }.flatten()
 
-                    database.beginTransaction()
-
-                    database.launchDao().clear()
-                    database.launchSiteDao().insertAll(*launchSites.toTypedArray())
-                    database.rocketDao().insertAll(*rockets.toTypedArray())
-                    database.launchDao().insertAll(*launchAndTagEntities.map { it.launch }.toTypedArray())
-                    database.tagDao().insertAll(*tagEntities.toTypedArray())
-                    database.photoDao().insertAll(*photoEntities.toTypedArray())
-                    database.photoDao().insertAll(*photoLaunchEntities.toTypedArray())
-
-                    database.setTransactionSuccessful()
-                    database.endTransaction()
+                    database.runInTransaction {
+                        database.launchDao().clear()
+                        database.launchSiteDao().insertAll(*launchSites.toTypedArray())
+                        database.rocketDao().insertAll(*rockets.toTypedArray())
+                        database.launchDao().insertAll(*launchAndTagEntities.map { it.launch }.toTypedArray())
+                        database.tagDao().insertAll(*tagEntities.toTypedArray())
+                        database.photoDao().insertAll(*photoEntities.toTypedArray())
+                        database.photoDao().insertAll(*photoLaunchEntities.toTypedArray())
+                    }
 
                     syncListeners.forEach {
                         it.onSync()

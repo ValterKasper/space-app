@@ -86,7 +86,7 @@ class LaunchFragment : BaseFragment() {
         setupOrbit()
 
         binding.toolbar.setNavigationOnClickListener {
-            fragmentManager?.popBackStack()
+            parentFragmentManager.popBackStack()
         }
 
         return binding.root

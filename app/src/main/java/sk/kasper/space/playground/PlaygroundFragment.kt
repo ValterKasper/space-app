@@ -46,7 +46,7 @@ class PlaygroundFragment : BaseFragment() {
                 }
             }
             setNavigationOnClickListener {
-                fragmentManager?.popBackStack()
+                parentFragmentManager.popBackStack()
             }
         }
 

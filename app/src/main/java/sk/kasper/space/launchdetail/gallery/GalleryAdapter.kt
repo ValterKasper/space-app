@@ -96,7 +96,7 @@ class GalleryAdapter(fragment: Fragment, val galleryPositionModel: GalleryPositi
 
             val transitioningView = view.findViewById<ImageView>(R.id.galleryImageView)
             val photoItems = items.map { PhotoItem(it.fullSizeUrl, it.sourceName, it.description) }
-            fragment.fragmentManager!!
+            fragment.parentFragmentManager
                     .beginTransaction()
                     .setReorderingAllowed(true) // Optimize for shared element transition
                     .addSharedElement(transitioningView, transitioningView.transitionName)

@@ -2,7 +2,7 @@ package sk.kasper.space.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher

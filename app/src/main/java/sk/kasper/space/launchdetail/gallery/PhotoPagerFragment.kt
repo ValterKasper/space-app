@@ -28,7 +28,7 @@ class PhotoPagerFragment : Fragment() {
 
         binding = FragmentPhotoPagerBinding.inflate(inflater, container, false)
         binding.toolbar.setNavigationOnClickListener {
-            fragmentManager?.popBackStack()
+            parentFragmentManager.popBackStack()
         }
 
         val photoItems = arguments!!.getParcelableArrayList<PhotoItem>(KEY_PHOTO_ITEMS)!!

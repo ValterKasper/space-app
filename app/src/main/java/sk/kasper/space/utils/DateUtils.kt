@@ -10,8 +10,8 @@ import java.util.*
 
 fun String.toTimeStamp(): Long = try {
     // e.g June 4, 2010 18:45:00 UTC
-    val parser = SimpleDateFormat("MMM dd, yyyy HH:mm:ss z", Locale.US)
-    parser.parse(this).time
+    val format = SimpleDateFormat("MMM dd, yyyy HH:mm:ss z", Locale.US)
+    format.parse(this)!!.time
 } catch (e: ParseException) {
     Timber.e(e, "String.toTimeStamp")
     0
