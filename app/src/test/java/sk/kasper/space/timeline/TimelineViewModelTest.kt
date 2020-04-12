@@ -2,11 +2,11 @@ package sk.kasper.space.timeline
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.whenever
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
@@ -207,14 +207,14 @@ class TimelineViewModelTest {
                         Assert.assertTrue(actualListItem is LaunchListItem)
                         if (actualListItem is LaunchListItem) {
                             val message = "of launch at position $index is expected to be accurate=${expectedListItem.accurate}"
-                            Assert.assertEquals("date $message", expectedListItem.accurate, actualListItem.accurateDate)
-                            Assert.assertEquals("time $message", expectedListItem.accurate, actualListItem.accurateTime)
+                            assertEquals("date $message", expectedListItem.accurate, actualListItem.accurateDate)
+                            assertEquals("time $message", expectedListItem.accurate, actualListItem.accurateTime)
                         }
                     }
                     is ExpectedListItem.Label -> {
                         Assert.assertTrue(actualListItem is LabelListItem)
                         if (actualListItem is LabelListItem) {
-                            Assert.assertEquals(
+                            assertEquals(
                                     "expected label ${expectedListItem.labelListItem.javaClass.simpleName} at position $index but was ${actualListItem.javaClass.simpleName}",
                                     expectedListItem.labelListItem,
                                     actualListItem)

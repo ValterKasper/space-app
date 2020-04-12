@@ -2,12 +2,12 @@ package sk.kasper.space.sync
 
 import android.content.SharedPreferences
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -101,17 +101,18 @@ class SyncLaunchesImplTest {
 
         assertTrue(syncLaunches.doSync(true))
 
+        argumentCaptor<Runnable>().apply {
+            verify(database).runInTransaction(capture())
+            firstValue.run()
+        }
+
         verify(editor).putBoolean(KEY_LAUNCHES_FETCHED_ALREADY, true)
-        verify(database).beginTransaction()
-        verify(launchDao).clear()
         verify(launchSiteDao).insertAll(any())
         verify(rocketDao).insertAll(any())
         verify(launchDao).insertAll(any())
         verify(tagDao).insertAll(TagEntity(null, launchId, Tag.ISS))
         verify(photoDao).insertAll(PhotoEntity(photoId, "ThumbnailSizeUrl", "FullSizeUrl", null, null))
         verify(photoDao).insertAll(PhotoLaunchEntity(photoId, launchId))
-        verify(database).setTransactionSuccessful()
-        verify(database).endTransaction()
     }
 
     @Test

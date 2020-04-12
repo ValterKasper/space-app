@@ -1,7 +1,7 @@
 package sk.kasper.space.repository
 
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

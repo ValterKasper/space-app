@@ -6,7 +6,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,11 +34,6 @@ open class LaunchSiteViewModelTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @Before
-    fun setUp() {
-        val viewModel = LaunchSiteViewModel(LAUNCH_ID, false, getLaunchSite)
-    }
 
     @Test
     fun setLaunchId_loadLaunchSite_success() = runBlocking {
