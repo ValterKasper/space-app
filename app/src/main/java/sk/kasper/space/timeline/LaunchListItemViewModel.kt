@@ -20,7 +20,7 @@ open class LaunchListItemViewModel(val listener: OnListInteractionListener)
     }
 
     @get:Bindable
-    val tags: ObservableList<Tag> = ObservableArrayList<Tag>()
+    val tags: ObservableList<Tag> = ObservableArrayList()
 
     @get:Bindable
     var tagsVisible: Boolean = true

@@ -1,7 +1,6 @@
 package sk.kasper.space.di
 
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.api.entity.RemoteLaunch
 import sk.kasper.space.api.entity.RemoteLaunchesResponse

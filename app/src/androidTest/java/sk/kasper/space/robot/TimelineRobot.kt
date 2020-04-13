@@ -1,10 +1,8 @@
 package sk.kasper.space.robot
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -20,7 +18,7 @@ fun timeline(func: TimelineRobot.() -> Unit) = TimelineRobot().apply { func() }
 class TimelineRobot {
 
     fun openFilter() {
-        onView(allOf<View>(withId(R.id.menu_filter), withContentDescription("Filter")))
+        onView(allOf(withId(R.id.menu_filter), withContentDescription("Filter")))
                 .perform(click())
     }
 
@@ -49,7 +47,7 @@ class TimelineRobot {
 
     infix fun openFirstLaunch(func: LaunchDetailRobot.() -> Unit): LaunchDetailRobot {
         onView(withId(R.id.launchesRecyclerView))
-                                .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(1, ViewActions.click()))
+                                .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
 
         return LaunchDetailRobot().apply { func() }
     }

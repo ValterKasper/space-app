@@ -4,8 +4,6 @@ import android.view.View
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.space.R
 

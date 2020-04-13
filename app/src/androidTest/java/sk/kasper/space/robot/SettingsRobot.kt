@@ -1,6 +1,5 @@
 package sk.kasper.space.robot
 
-import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
@@ -24,7 +23,7 @@ class SettingsRobot {
     }
 
     init {
-        onView(Matchers.allOf<View>(withText(R.string.settings)))
+        onView(Matchers.allOf(withText(R.string.settings)))
                         .check(ViewAssertions.matches(isDisplayed()))
     }
 

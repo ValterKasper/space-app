@@ -42,7 +42,6 @@ class Analytics {
             const val ITEM_NAME = FirebaseAnalytics.Param.ITEM_NAME
             const val VALUE = FirebaseAnalytics.Param.VALUE
             const val ROCKET_ID = "rocket_id"
-            const val LAUNCH_ID = "launch_id"
         }
 
     }

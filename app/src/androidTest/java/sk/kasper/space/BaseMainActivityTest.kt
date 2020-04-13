@@ -24,7 +24,7 @@ open class BaseMainActivityTest {
     private lateinit var mainActivityIdlingResource: MainActivityIdlingResource
 
     @Rule @JvmField
-    var activityScenario: ActivityScenarioRule<MainActivity> = ActivityScenarioRule<MainActivity>(MainActivity::class.java)
+    var activityScenario: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setUp() {

@@ -58,7 +58,7 @@ class JavaTimeTest {
 
     @Test
     fun zonedDateTime_fromLA_toTokyo() {
-        val departureDateTime = LocalDateTime.of(2017, Month.NOVEMBER, 16, 20, 0);
+        val departureDateTime = LocalDateTime.of(2017, Month.NOVEMBER, 16, 20, 0)
         val departureZoneId = ZoneId.of("America/Los_Angeles")
         val departureInLaZone = ZonedDateTime.of(departureDateTime, departureZoneId)
 

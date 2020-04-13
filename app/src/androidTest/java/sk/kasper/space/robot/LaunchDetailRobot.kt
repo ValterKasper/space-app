@@ -1,6 +1,5 @@
 package sk.kasper.space.robot
 
-import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -14,7 +13,7 @@ class LaunchDetailRobot {
 
     fun assertLaunchName(name: String) {
         val textView = onView(
-                allOf<View>(
+                allOf(
                         withText(containsString(name)),
                         isDisplayed()))
         textView.check(matches(withText(containsString(name))))
