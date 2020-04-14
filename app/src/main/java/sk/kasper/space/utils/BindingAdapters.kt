@@ -81,10 +81,11 @@ fun setTint(imageView: ImageView, @ColorRes tintColor: Int) {
     }
 }
 
-@BindingAdapter(value = ["srcAsync"])
-fun setImageAsync(imageView: ImageView, uri: String?) {
+@BindingAdapter(value = ["srcAsync", "fallbackDrawable"])
+fun setImageAsync(imageView: ImageView, uri: String?, @DrawableRes fallbackDrawable: Int) {
     Picasso.with(imageView.context)
             .load(uri)
+            .error(fallbackDrawable)
             .into(imageView)
 }
 

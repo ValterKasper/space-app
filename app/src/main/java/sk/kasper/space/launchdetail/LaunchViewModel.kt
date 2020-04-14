@@ -1,5 +1,6 @@
 package sk.kasper.space.launchdetail
 
+import androidx.annotation.DrawableRes
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
@@ -8,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Tag
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
+import sk.kasper.space.R
 import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.utils.FormattedTimeType
 import sk.kasper.space.utils.ObservableViewModel
@@ -47,6 +49,10 @@ class LaunchViewModel @AssistedInject constructor(
 
     @get:Bindable
     var mainPhoto: String? = null
+
+    @get:Bindable
+    @DrawableRes
+    var mainPhotoFallback: Int = R.drawable.ic_launch_fallback_main_photo
 
     @get:Bindable
     var tagsVisible: Boolean = true

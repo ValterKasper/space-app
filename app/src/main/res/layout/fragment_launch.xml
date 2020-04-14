@@ -49,6 +49,7 @@
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
                     app:srcAsync="@{viewModel.mainPhoto}"
+                    app:fallbackDrawable="@{viewModel.mainPhotoFallback}"
                     tools:src="@tools:sample/backgrounds/scenic"/>
 
                 <LinearLayout

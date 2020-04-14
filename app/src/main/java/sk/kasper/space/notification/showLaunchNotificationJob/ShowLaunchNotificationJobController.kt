@@ -8,7 +8,6 @@ import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.space.settings.SettingsManager
 import timber.log.Timber
 
-// todo assited inject
 class ShowLaunchNotificationJobController(private val getLaunch: GetLaunch,
                                           private val notificationsHelper: NotificationsHelper,
                                           private val currentDateTime: LocalDateTime,
