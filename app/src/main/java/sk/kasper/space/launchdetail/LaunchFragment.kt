@@ -4,12 +4,10 @@ package sk.kasper.space.launchdetail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
-import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.gms.common.ConnectionResult
@@ -22,10 +20,13 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import sk.kasper.domain.model.LaunchSite
 import sk.kasper.space.BaseFragment
+import sk.kasper.space.FragmentTags
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentLaunchBinding
 import sk.kasper.space.databinding.FragmentLaunchRocketSectionBinding
 import sk.kasper.space.launchdetail.gallery.GalleryAdapter
+import sk.kasper.space.launchdetail.gallery.PhotoPagerData
+import sk.kasper.space.launchdetail.gallery.PhotoPagerFragment
 import sk.kasper.space.launchdetail.section.*
 import sk.kasper.space.timeline.TagAdapter
 import sk.kasper.space.utils.*
@@ -38,7 +39,7 @@ class LaunchFragment : BaseFragment() {
     private var launchId: Long = INVALID_LAUNCH_ID
 
     private lateinit var launchSiteViewModel: LaunchSiteViewModel
-    private lateinit var galleryPositionModel: GalleryPositionModel
+    private lateinit var launchViewModel: LaunchViewModel
     private lateinit var binding: FragmentLaunchBinding
 
     @Inject
@@ -92,84 +93,40 @@ class LaunchFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        scrollToPosition()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
 
         requireActivity().window.statusBarColor = android.R.attr.statusBarColor.getThemeColor(requireContext())
     }
 
-    private fun scrollToPosition() {
-        binding.galleryRecyclerView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-            override fun onLayoutChange(v: View,
-                                        left: Int,
-                                        top: Int,
-                                        right: Int,
-                                        bottom: Int,
-                                        oldLeft: Int,
-                                        oldTop: Int,
-                                        oldRight: Int,
-                                        oldBottom: Int) {
-                binding.galleryRecyclerView.removeOnLayoutChangeListener(this)
-                binding.galleryRecyclerView.layoutManager?.let { layoutManager ->
-                    val viewAtPosition = layoutManager.findViewByPosition(galleryPositionModel.position)
-                    // Scroll to position if the view for the current position is null (not currently part of
-                    // layout manager children), or it's not completely visible.
-                    if (viewAtPosition == null || layoutManager
-                                    .isViewPartiallyVisible(viewAtPosition, false, true)) {
-                        binding.galleryRecyclerView.post { layoutManager.scrollToPosition(galleryPositionModel.position) }
-                    }
-                }
-            }
-        })
-    }
-
-    private fun prepareTransitions() {
-        exitTransition = TransitionInflater.from(context)
-                .inflateTransition(R.transition.grid_exit_transition)
-
-        // A similar mapping is set at the PhotoPagerFragment with a setEnterSharedElementCallback.
-        setExitSharedElementCallback(
-                object : SharedElementCallback() {
-                    override fun onMapSharedElements(names: List<String>?, sharedElements: MutableMap<String, View>?) {
-                        // Locate the ViewHolder for the clicked position.
-                        val selectedViewHolder = binding.galleryRecyclerView
-                                .findViewHolderForAdapterPosition(galleryPositionModel.position)
-                        if (selectedViewHolder?.itemView == null) {
-                            return
-                        }
-
-                        // Map the first shared element name to the child ImageView.
-                        sharedElements!![names!![0]] = selectedViewHolder.itemView.findViewById(R.id.galleryImageView)
-                    }
-                })
+    private fun openPhotoPager(photoPagerData: PhotoPagerData) {
+        parentFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, PhotoPagerFragment.newInstance(photoPagerData), PhotoPagerFragment::class.java.simpleName)
+                .addToBackStack(FragmentTags.GALLERY)
+                .commit()
     }
 
     private fun setupGallery() {
-        galleryPositionModel = provideViewModelActivityScoped()
-        val galleryAdapter = GalleryAdapter(this, galleryPositionModel)
-        binding.galleryRecyclerView.adapter = galleryAdapter
-        binding.galleryRecyclerView.isNestedScrollingEnabled = false // enables toolbar collapsing when sliding vertically on this view
-
         val viewModel: GalleryViewModel = provideViewModel { galleryViewModelFactory.create(launchId) }
+        val galleryAdapter = GalleryAdapter(requireContext(), viewModel)
+        binding.galleryRecyclerView.adapter = galleryAdapter
+
         viewModel.galleryItems.observe(viewLifecycleOwner, Observer {
             galleryAdapter.setItems(it)
         })
 
-        binding.galleryViewModel = viewModel
+        viewModel.showPhotoPagerEvent.observe(viewLifecycleOwner, Observer {
+            openPhotoPager(it)
+        })
 
-        prepareTransitions()
-        postponeEnterTransition()
+        binding.galleryViewModel = viewModel
     }
 
     private fun setupLaunchViewModel() {
-        val viewModel: LaunchViewModel = provideViewModel { launchViewModelFactory.create(launchId) }
-        binding.viewModel = viewModel
-        viewModel.showVideoUrl.observe(viewLifecycleOwner, Observer {
+        launchViewModel = provideViewModel { launchViewModelFactory.create(launchId) }
+        binding.viewModel = launchViewModel
+        launchViewModel.showVideoUrl.observe(viewLifecycleOwner, Observer {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
             startActivity(intent)
         })

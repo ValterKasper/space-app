@@ -6,4 +6,5 @@ object FragmentTags {
     const val SETTINGS = "Settings"
     const val LIBRARIES = "Settings"
     const val PLAYGROUND = "Playground"
+    const val GALLERY = "Gallery"
 }
