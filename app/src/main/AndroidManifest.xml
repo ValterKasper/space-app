@@ -33,11 +33,6 @@
 
         </activity>
 
-        <activity
-            android:name=".settings.SettingsActivity"
-            android:parentActivityName=".mainactivity.MainActivity" />
-
-
         <activity android:name=".about.LibrariesActivity" />
 
         <service

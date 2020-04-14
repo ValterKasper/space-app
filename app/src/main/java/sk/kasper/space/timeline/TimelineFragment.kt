@@ -1,6 +1,5 @@
 package sk.kasper.space.timeline
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -15,7 +14,6 @@ import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentTimelineBinding
 import sk.kasper.space.mainactivity.MainActivity
 import sk.kasper.space.notification.NotificationsHelper
-import sk.kasper.space.settings.SettingsActivity
 import sk.kasper.space.timeline.filter.TimelineFilterItemsAdapter
 import sk.kasper.space.timeline.filter.TimelineFilterSpecModel
 import sk.kasper.space.timeline.filter.TimelineFilterViewModel
@@ -42,7 +40,6 @@ class TimelineFragment : BaseFragment() {
                               savedInstanceState: Bundle?): View? {
         binding = FragmentTimelineBinding.inflate(inflater, container, false)
 
-        // todo sprav mozno cez bindovanie
         val timelineFilterSpecModel: TimelineFilterSpecModel = provideViewModel()
 
         timelineViewModel = provideViewModel {
@@ -92,8 +89,7 @@ class TimelineFragment : BaseFragment() {
             true
         }
         R.id.menu_settings -> {
-            startActivity(Intent(context, SettingsActivity::class.java))
-            requireActivity().overridePendingTransition(R.anim.enter_left, R.anim.exit_left)
+            (activity as MainActivity).showSettings()
             true
         }
         R.id.menu_playground -> {
@@ -104,28 +100,28 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun observeViewModels() {
-        timelineViewModel.timelineItems.observe(this, Observer {
+        timelineViewModel.timelineItems.observe(viewLifecycleOwner, Observer {
             timelineItemsAdapter.setTimelineItems(it)
         })
 
-        timelineViewModel.connectionErrorEvent.observe(this, Observer {
+        timelineViewModel.connectionErrorEvent.observe(viewLifecycleOwner, Observer {
             Snackbar.make(binding.root, "Connection error occurred", Snackbar.LENGTH_SHORT).show()
         })
 
-        timelineViewModel.showFilterEvent.observe(this, Observer {
+        timelineViewModel.showFilterEvent.observe(viewLifecycleOwner, Observer {
             binding.drawerLayout.openDrawer(GravityCompat.END)
         })
 
-        timelineViewModel.showLaunchDetailEvent.observe(this, Observer {
+        timelineViewModel.showLaunchDetailEvent.observe(viewLifecycleOwner, Observer {
             (activity as MainActivity).showLaunch(it)
         })
 
-        timelineViewModel.progressVisible.observe(this, Observer {
+        timelineViewModel.progressVisible.observe(viewLifecycleOwner, Observer {
             binding.swipeRefresh.isRefreshing = it
             (activity as MainActivity).setIdle(!it)
         })
 
-        filterViewModel.filterItems.observe(this, Observer {
+        filterViewModel.filterItems.observe(viewLifecycleOwner, Observer {
             timelineFilterItemsAdapter.setFilterItems(it)
         })
     }

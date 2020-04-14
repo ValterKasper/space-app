@@ -163,7 +163,7 @@ class LaunchFragment : BaseFragment() {
         binding.galleryRecyclerView.isNestedScrollingEnabled = false // enables toolbar collapsing when sliding vertically on this view
 
         val viewModel: GalleryViewModel = provideViewModel { galleryViewModelFactory.create(launchId) }
-        viewModel.galleryItems.observe(this, Observer {
+        viewModel.galleryItems.observe(viewLifecycleOwner, Observer {
             galleryAdapter.setItems(it)
         })
 
@@ -176,7 +176,7 @@ class LaunchFragment : BaseFragment() {
     private fun setupLaunchViewModel() {
         val viewModel: LaunchViewModel = provideViewModel { launchViewModelFactory.create(launchId) }
         binding.viewModel = viewModel
-        viewModel.showVideoUrl.observe(this, Observer {
+        viewModel.showVideoUrl.observe(viewLifecycleOwner, Observer {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
             startActivity(intent)
         })
@@ -227,7 +227,7 @@ class LaunchFragment : BaseFragment() {
     }
 
     private fun observeLaunchSiteViewModel(map: GoogleMap, binding: FragmentLaunchBinding) {
-        launchSiteViewModel.launchSite.observe(this, Observer { launchSite: LaunchSite ->
+        launchSiteViewModel.launchSite.observe(viewLifecycleOwner, Observer { launchSite: LaunchSite ->
             val position = launchSite.position
             val latLng = LatLng(position.latitude, position.longitude)
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 4f)

@@ -33,6 +33,7 @@
 
     <style name="PreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="preferenceCategoryStyle">@style/PreferenceCategoryStyle</item>
+        <item name="android:layout">@layout/fragment_settings</item>
     </style>
 
     <style name="PreferenceCategoryStyle" parent="@style/Preference.Category.Material">

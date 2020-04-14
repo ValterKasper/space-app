@@ -15,7 +15,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
+// todo prepis s androidx.work
 class SyncJobService : ScopedJobService()  {
 
     companion object {
@@ -34,26 +34,12 @@ class SyncJobService : ScopedJobService()  {
                 return
             }
 
-            val builder = JobInfo.Builder(LAUNCHES_SYNC_JOB_ID, ComponentName(context, SyncJobService::class.java))
+            val jobInfo = JobInfo.Builder(LAUNCHES_SYNC_JOB_ID, ComponentName(context, SyncJobService::class.java))
                     .setRequiresDeviceIdle(false)
                     .setRequiresCharging(false)
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-
-            // todo odstran
-            val periodicMode = true
-            if (periodicMode) {
-                builder.setPeriodic(TimeUnit.HOURS.toMillis(BuildConfig.SYNC_INTERVAL_HOURS))
-            } else {
-                /**
-                 * Just for testing.
-                 * Periodic jobs have minimal interval 15min
-                 */
-                Timber.w("Periodic mode is turned off")
-                builder.setMinimumLatency(5000)
-                builder.setOverrideDeadline(10000)
-            }
-
-            val jobInfo = builder.build()
+                    .setPeriodic(TimeUnit.HOURS.toMillis(BuildConfig.SYNC_INTERVAL_HOURS))
+                    .build()
 
             jobScheduler.schedule(jobInfo)
             Timber.d("periodic launches sync job started")

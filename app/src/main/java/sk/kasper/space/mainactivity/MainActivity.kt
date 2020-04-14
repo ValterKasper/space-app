@@ -14,6 +14,7 @@ import sk.kasper.space.R
 import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.launchdetail.LaunchFragment
 import sk.kasper.space.playground.PlaygroundFragment
+import sk.kasper.space.settings.SettingsFragment
 import sk.kasper.space.timeline.TimelineFragment
 import sk.kasper.space.utils.backpress.BackPressManager
 import javax.inject.Inject
@@ -77,6 +78,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         replaceFragment(LaunchFragment.newInstance(id), FragmentTags.LAUNCH, false, true,
                 R.anim.enter_left, R.anim.exit_left,  R.anim.enter_right, R.anim.exit_right)
     }
+
+    fun showSettings() {
+        replaceFragment(SettingsFragment(), FragmentTags.SETTINGS, false, true,
+                R.anim.enter_left, R.anim.exit_left,  R.anim.enter_right, R.anim.exit_right)
+    }
+
     fun showPlayground() {
         replaceFragment(PlaygroundFragment(), FragmentTags.PLAYGROUND, false, true,
                 R.anim.enter_left, R.anim.exit_left,  R.anim.enter_right, R.anim.exit_right)

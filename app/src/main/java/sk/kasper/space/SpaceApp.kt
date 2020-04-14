@@ -7,7 +7,9 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.threetenabp.AndroidThreeTen
-import dagger.android.*
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import io.fabric.sdk.android.Fabric
 import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.analytics.FirebaseAnalyticsLogger
@@ -23,7 +25,6 @@ import sk.kasper.space.sync.SyncJobService
 import timber.log.Timber
 import javax.inject.Inject
 
-// todo precisti kod
 // todo rozchod CI na githube
 open class SpaceApp: Application(), HasAndroidInjector {
 

@@ -9,6 +9,7 @@ import sk.kasper.space.R
 import sk.kasper.space.view.TopToolbar
 
 
+// todo tiez ako fragment
 class LibrariesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
