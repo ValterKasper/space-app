@@ -70,13 +70,6 @@ class PlaygroundFragment : BaseFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        view?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-    }
-
     private fun toggleTheme() {
         settingsManager.nightMode = if (settingsManager.nightMode == AppCompatDelegate.MODE_NIGHT_NO) {
             AppCompatDelegate.MODE_NIGHT_YES

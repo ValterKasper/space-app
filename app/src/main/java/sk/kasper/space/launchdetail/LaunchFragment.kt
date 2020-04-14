@@ -103,13 +103,6 @@ class LaunchFragment : BaseFragment() {
         requireActivity().window.statusBarColor = android.R.attr.statusBarColor.getThemeColor(requireContext())
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        view?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-    }
-
     private fun scrollToPosition() {
         binding.galleryRecyclerView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
             override fun onLayoutChange(v: View,

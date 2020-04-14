@@ -1,6 +1,5 @@
 package sk.kasper.space.settings
 
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
@@ -13,8 +12,8 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Rocket
 import sk.kasper.space.BuildConfig
 import sk.kasper.space.R
-import sk.kasper.space.about.LibrariesActivity
 import sk.kasper.space.analytics.Analytics
+import sk.kasper.space.mainactivity.MainActivity
 import sk.kasper.space.notification.LaunchNotificationInfo
 import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.space.utils.applySystemWindows
@@ -109,8 +108,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     private fun onMenuItemClicked(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_libraries -> {
-            startActivity(Intent(requireContext(), LibrariesActivity::class.java))
-            requireActivity().overridePendingTransition(R.anim.enter_left, R.anim.exit_left)
+            (activity as MainActivity).showLibraries()
             true
         }
         else -> false

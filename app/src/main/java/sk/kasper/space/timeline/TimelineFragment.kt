@@ -75,14 +75,6 @@ class TimelineFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        view?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-    }
-
     private fun onMenuItemClicked(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_filter -> {
             binding.drawerLayout.openDrawer(GravityCompat.END)

@@ -2,6 +2,7 @@ package sk.kasper.space.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import sk.kasper.space.about.LibrariesFragment
 import sk.kasper.space.launchdetail.LaunchFragment
 import sk.kasper.space.playground.PlaygroundFragment
 import sk.kasper.space.timeline.TimelineFragment
@@ -17,6 +18,10 @@ abstract class FragmentBuilder {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun bindLaunchFragment(): LaunchFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun bindLibrariesFragment(): LibrariesFragment
 
     @FragmentScope
     @ContributesAndroidInjector

@@ -34,6 +34,9 @@ open class BaseFragment : Fragment(), OnBackPressListener {
         // track current fragment as shown screen. It works until there is at most one visible fragment a time.
         // otherwise implementation should be changed
         FirebaseAnalytics.getInstance(requireContext()).setCurrentScreen(requireActivity(), javaClass.simpleName, javaClass.simpleName)
+
+        view?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     }
 
     override fun onDestroyView() {

@@ -11,6 +11,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import sk.kasper.space.FragmentTags
 import sk.kasper.space.R
+import sk.kasper.space.about.LibrariesFragment
 import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.launchdetail.LaunchFragment
 import sk.kasper.space.playground.PlaygroundFragment
@@ -81,6 +82,11 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     fun showSettings() {
         replaceFragment(SettingsFragment(), FragmentTags.SETTINGS, false, true,
+                R.anim.enter_left, R.anim.exit_left,  R.anim.enter_right, R.anim.exit_right)
+    }
+
+    fun showLibraries() {
+        replaceFragment(LibrariesFragment(), FragmentTags.LIBRARIES, false, true,
                 R.anim.enter_left, R.anim.exit_left,  R.anim.enter_right, R.anim.exit_right)
     }
 
