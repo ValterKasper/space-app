@@ -7,7 +7,6 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -61,13 +60,6 @@ open class SpaceApp: Application(), HasAndroidInjector {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
             FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(false)
-
-            Picasso.setSingletonInstance(Picasso.Builder(this)
-                    .listener { picasso, uri, exception ->
-                        Timber.e(exception, "uri: $uri")
-                    }
-                    .indicatorsEnabled(true)
-                    .build())
         } else {
             Fabric.with(this, Crashlytics())
             Timber.plant(CrashReportingTree())
