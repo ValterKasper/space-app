@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         tools:context="sk.kasper.space.mainactivity.MainActivity">
 
-        <sk.kasper.space.view.TopToolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,11 +20,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:naviIcon="back"
             app:paddingLeftSystemWindowInsets="@{ true }"
             app:paddingRightSystemWindowInsets="@{ true }"
-            app:paddingTopSystemWindowInsets="@{ true }"
-            app:title="@string/libraries" />
+            app:paddingTopSystemWindowInsets="@{ true }" />
 
         <TextView
             android:id="@+id/textView5"

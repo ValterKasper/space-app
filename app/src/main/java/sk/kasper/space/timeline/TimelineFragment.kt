@@ -7,13 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import sk.kasper.space.BaseFragment
 import sk.kasper.space.BuildConfig
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentTimelineBinding
 import sk.kasper.space.mainactivity.MainActivity
-import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.space.timeline.filter.TimelineFilterItemsAdapter
 import sk.kasper.space.timeline.filter.TimelineFilterSpecModel
 import sk.kasper.space.timeline.filter.TimelineFilterViewModel
@@ -31,31 +33,36 @@ class TimelineFragment : BaseFragment() {
     private lateinit var timelineFilterItemsAdapter: TimelineFilterItemsAdapter
     private lateinit var timelineItemsAdapter: TimelineItemsAdapter
 
-    private lateinit var notificationsHelper: NotificationsHelper
-
     @Inject
     lateinit var timelineViewModelFactory: TimelineViewModel.Factory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = FragmentTimelineBinding.inflate(inflater, container, false)
-
         val timelineFilterSpecModel: TimelineFilterSpecModel = provideViewModel()
 
         timelineViewModel = provideViewModel {
             timelineViewModelFactory.create(timelineFilterSpecModel)
         }
-        binding.timelineViewModel = timelineViewModel
 
         filterViewModel = provideViewModel {
             TimelineFilterViewModel(timelineFilterSpecModel)
         }
+
+        binding = FragmentTimelineBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.timelineViewModel = timelineViewModel
         binding.filterViewModel = filterViewModel
 
         with(binding.toolbar) {
             inflateMenu(R.menu.menu_timeline)
             menu.findItem(R.id.menu_playground).isVisible = BuildConfig.DEBUG
             setOnMenuItemClickListener(::onMenuItemClicked)
+            NavigationUI.setupWithNavController(this, findNavController())
         }
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -69,10 +76,6 @@ class TimelineFragment : BaseFragment() {
         binding.filterRecycleView.adapter = timelineFilterItemsAdapter
 
         observeViewModels()
-
-        notificationsHelper = NotificationsHelper(requireContext())
-
-        return binding.root
     }
 
     private fun onMenuItemClicked(item: MenuItem): Boolean = when (item.itemId) {
@@ -81,11 +84,11 @@ class TimelineFragment : BaseFragment() {
             true
         }
         R.id.menu_settings -> {
-            (activity as MainActivity).showSettings()
+            findNavController().navigate(R.id.action_timelineFragment_to_settingsFragment)
             true
         }
         R.id.menu_playground -> {
-            (activity as MainActivity).showPlayground()
+            findNavController().navigate(R.id.action_timelineFragment_to_playgroundFragment)
             true
         }
         else -> false
@@ -105,7 +108,7 @@ class TimelineFragment : BaseFragment() {
         })
 
         timelineViewModel.showLaunchDetailEvent.observe(viewLifecycleOwner, Observer {
-            (activity as MainActivity).showLaunch(it)
+            findNavController().navigate(TimelineFragmentDirections.actionTimelineFragmentToLaunchFragment(it))
         })
 
         timelineViewModel.progressVisible.observe(viewLifecycleOwner, Observer {
@@ -116,12 +119,6 @@ class TimelineFragment : BaseFragment() {
         filterViewModel.filterItems.observe(viewLifecycleOwner, Observer {
             timelineFilterItemsAdapter.setFilterItems(it)
         })
-    }
-
-    companion object {
-        fun newInstance(): TimelineFragment {
-            return TimelineFragment()
-        }
     }
 
     override fun onBackPress(): Boolean =

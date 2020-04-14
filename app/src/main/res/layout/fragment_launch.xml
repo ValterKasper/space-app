@@ -103,7 +103,7 @@
 
                 </LinearLayout>
 
-                <sk.kasper.space.view.TopToolbar
+                <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,9 +111,7 @@
                     android:background="@android:color/transparent"
                     android:elevation="0dp"
                     app:paddingLeftSystemWindowInsets="@{ true }"
-                    app:paddingTopSystemWindowInsets="@{ true }"
-                    app:title=" "
-                    app:naviIcon="back"/>
+                    app:paddingTopSystemWindowInsets="@{ true }"/>
 
             </FrameLayout>
 

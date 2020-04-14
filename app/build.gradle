@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
 
@@ -84,12 +85,6 @@ android {
     }
 }
 
-//buildscript {
-//    repositories {
-//        mavenCentral()
-//    }
-//}
-
 androidExtensions {
     features = ["parcelize"]
 }
@@ -119,6 +114,9 @@ dependencies {
     implementation "androidx.room:room-ktx:2.2.5"
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navVersion"
 
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"

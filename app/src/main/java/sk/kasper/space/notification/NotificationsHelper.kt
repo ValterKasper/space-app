@@ -14,11 +14,10 @@ import android.os.Build
 import android.text.format.DateUtils
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.app.TaskStackBuilder
+import androidx.navigation.NavDeepLinkBuilder
 import org.threeten.bp.Duration
 import sk.kasper.space.R
-import sk.kasper.space.mainactivity.EXTRA_LAUNCH_ID
-import sk.kasper.space.mainactivity.MainActivity
+import sk.kasper.space.launchdetail.LaunchFragmentArgs
 import sk.kasper.space.utils.*
 import javax.inject.Inject
 
@@ -110,14 +109,12 @@ class NotificationsHelper @Inject constructor(context: Context) : ContextWrapper
         }
     }
 
-    private fun createPendingIntentForMainScreen(launchId: Long): PendingIntent? {
-        val mainScreenIntent = Intent(this, MainActivity::class.java)
-        mainScreenIntent.putExtra(EXTRA_LAUNCH_ID, launchId)
-        mainScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
-        return TaskStackBuilder.create(this)
-                .addNextIntentWithParentStack(mainScreenIntent)
-                .getPendingIntent(900, PendingIntent.FLAG_UPDATE_CURRENT)
+    private fun createPendingIntentForMainScreen(launchId: Long): PendingIntent {
+        return NavDeepLinkBuilder(this)
+                .setArguments(LaunchFragmentArgs(launchId).toBundle())
+                .setDestination(R.id.launchFragment)
+                .setGraph(R.navigation.nav_graph)
+                .createPendingIntent()
     }
 
     private fun createPendingIntentForWebcast(url: String): PendingIntent {

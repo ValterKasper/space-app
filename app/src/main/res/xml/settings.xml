@@ -52,11 +52,6 @@
         android:key="@string/pref_debug_category"
         android:title="@string/debug">
 
-        <Preference
-            android:key="@string/pref_debug_show_demo_notification"
-            android:title="Show demo notification"
-            app:iconSpaceReserved="false" />
-
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/api_endpoint_entities"

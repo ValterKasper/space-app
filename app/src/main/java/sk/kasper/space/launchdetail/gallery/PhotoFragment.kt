@@ -5,14 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import sk.kasper.space.databinding.FragmentPhotoBinding
 import sk.kasper.space.utils.provideViewModel
 
-/**
- * A fragment for displaying a photo.
- */
 class PhotoFragment : Fragment() {
 
     private lateinit var viewModel: PhotoFragmentViewModel
@@ -29,31 +25,11 @@ class PhotoFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = FragmentPhotoBinding.inflate(inflater, container, false)
-
-        // Just like we do when binding views at the gallery, we set the transition name to be the string
-        // value of the image res.
         binding.viewModel = viewModel
-        binding.image.transitionName = viewModel.url
 
         Picasso.with(context)
                 .load(viewModel.url)
-                .into(binding.image, object : Callback {
-
-                    override fun onSuccess() {
-                        // The postponeEnterTransition is called on the parent PhotoPagerFragment, so the
-                        // startPostponedEnterTransition() should also be called on it to get the transition
-                        // going in case of a failure.
-                        parentFragment!!.startPostponedEnterTransition()
-                    }
-
-                    override fun onError() {
-                        // The postponeEnterTransition is called on the parent PhotoPagerFragment, so the
-                        // startPostponedEnterTransition() should also be called on it to get the transition
-                        // going when the image is ready.
-                        parentFragment!!.startPostponedEnterTransition()
-                    }
-
-                })
+                .into(binding.image)
 
         return binding.root
     }

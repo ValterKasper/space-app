@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <sk.kasper.space.view.TopToolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,8 +20,7 @@
             app:paddingTopSystemWindowInsets="@{ true }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:naviIcon="back"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"

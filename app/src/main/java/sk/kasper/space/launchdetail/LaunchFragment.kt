@@ -10,6 +10,9 @@ import android.view.ViewGroup
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,13 +23,11 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import sk.kasper.domain.model.LaunchSite
 import sk.kasper.space.BaseFragment
-import sk.kasper.space.FragmentTags
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentLaunchBinding
 import sk.kasper.space.databinding.FragmentLaunchRocketSectionBinding
 import sk.kasper.space.launchdetail.gallery.GalleryAdapter
 import sk.kasper.space.launchdetail.gallery.PhotoPagerData
-import sk.kasper.space.launchdetail.gallery.PhotoPagerFragment
 import sk.kasper.space.launchdetail.section.*
 import sk.kasper.space.timeline.TagAdapter
 import sk.kasper.space.utils.*
@@ -36,11 +37,11 @@ import javax.inject.Inject
 
 class LaunchFragment : BaseFragment() {
 
-    private var launchId: Long = INVALID_LAUNCH_ID
-
     private lateinit var launchSiteViewModel: LaunchSiteViewModel
     private lateinit var launchViewModel: LaunchViewModel
     private lateinit var binding: FragmentLaunchBinding
+
+    private val args: LaunchFragmentArgs by navArgs()
 
     @Inject
     lateinit var orbitViewModelFactory: OrbitViewModel.Factory
@@ -60,17 +61,6 @@ class LaunchFragment : BaseFragment() {
     @Inject
     lateinit var launchSiteViewModelFactory: LaunchSiteViewModel.Factory
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            launchId = it.getLong(ARG_LAUNCH_ID, INVALID_LAUNCH_ID)
-        }
-
-        if (launchId == INVALID_LAUNCH_ID) {
-            throw IllegalArgumentException("$ARG_LAUNCH_ID has to be provided")
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -86,9 +76,7 @@ class LaunchFragment : BaseFragment() {
         setupGallery()
         setupOrbit()
 
-        binding.toolbar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
+        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
 
         return binding.root
     }
@@ -100,15 +88,11 @@ class LaunchFragment : BaseFragment() {
     }
 
     private fun openPhotoPager(photoPagerData: PhotoPagerData) {
-        parentFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, PhotoPagerFragment.newInstance(photoPagerData), PhotoPagerFragment::class.java.simpleName)
-                .addToBackStack(FragmentTags.GALLERY)
-                .commit()
+        findNavController().navigate(LaunchFragmentDirections.actionLaunchFragmentToPhotoPagerFragment(photoPagerData))
     }
 
     private fun setupGallery() {
-        val viewModel: GalleryViewModel = provideViewModel { galleryViewModelFactory.create(launchId) }
+        val viewModel: GalleryViewModel = provideViewModel { galleryViewModelFactory.create(args.launchId) }
         val galleryAdapter = GalleryAdapter(requireContext(), viewModel)
         binding.galleryRecyclerView.adapter = galleryAdapter
 
@@ -124,7 +108,7 @@ class LaunchFragment : BaseFragment() {
     }
 
     private fun setupLaunchViewModel() {
-        launchViewModel = provideViewModel { launchViewModelFactory.create(launchId) }
+        launchViewModel = provideViewModel { launchViewModelFactory.create(args.launchId) }
         binding.viewModel = launchViewModel
         launchViewModel.showVideoUrl.observe(viewLifecycleOwner, Observer {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
@@ -133,14 +117,14 @@ class LaunchFragment : BaseFragment() {
     }
 
     private fun setupOrbit() {
-        binding.orbitViewModel = provideViewModel { orbitViewModelFactory.create(launchId) }
+        binding.orbitViewModel = provideViewModel { orbitViewModelFactory.create(args.launchId) }
     }
 
     private fun setupRocketSection() {
         AsyncLayoutInflater(requireContext()).inflate(R.layout.fragment_launch_rocket_section, binding.sectionsLinearLayout) { view, _, parent ->
-            val rocketSectionViewModel: RocketSectionViewModel = provideViewModel { rocketSectionViewModelFactory.create(launchId) }
+            val rocketSectionViewModel: RocketSectionViewModel = provideViewModel { rocketSectionViewModelFactory.create(args.launchId) }
 
-            val falconInfoViewModel: FalconInfoViewModel = provideViewModel { falconInfoViewModelFactory.create(launchId) }
+            val falconInfoViewModel: FalconInfoViewModel = provideViewModel { falconInfoViewModelFactory.create(args.launchId) }
 
             val fragmentLaunchRocketInfoBinding = FragmentLaunchRocketSectionBinding.bind(view)
             fragmentLaunchRocketInfoBinding.rocketSectionViewModel = rocketSectionViewModel
@@ -152,7 +136,7 @@ class LaunchFragment : BaseFragment() {
 
     private fun setupLaunchSiteViewModel() {
         launchSiteViewModel = provideViewModel { launchSiteViewModelFactory.create(
-                launchId,
+                args.launchId,
                 ConnectionResult.SUCCESS == GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context))
         }
 
@@ -189,18 +173,4 @@ class LaunchFragment : BaseFragment() {
             binding.launchSiteInfo.text = launchSite.name
         })
     }
-
-    companion object {
-        private const val ARG_LAUNCH_ID = "arg-launch-id"
-        private const val INVALID_LAUNCH_ID = -1L
-
-        fun newInstance(launchId: Long): LaunchFragment {
-            val fragment = LaunchFragment()
-            val args = Bundle()
-            args.putLong(ARG_LAUNCH_ID, launchId)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
 }

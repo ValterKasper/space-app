@@ -28,16 +28,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <sk.kasper.space.view.TopToolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                 paddingTopSystemWindowInsets="@{ true }"
                 paddingLeftSystemWindowInsets="@{ true }"
-                paddingRightSystemWindowInsets="@{ true }"
-                app:naviIcon="none"
-                app:title="@string/app_name"/>
+                paddingRightSystemWindowInsets="@{ true }"/>
 
             <FrameLayout
                 android:layout_width="match_parent"

@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".playground.PlaygroundFragment">
 
-        <sk.kasper.space.view.TopToolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,9 +18,7 @@
             app:paddingRightSystemWindowInsets="@{ true }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:naviIcon="back"
-            app:title="Playground"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
@@ -41,17 +39,18 @@
             android:background="@color/tagBackground"
             android:orientation="horizontal"
             android:padding="24dp"
+            android:gravity="center"
             app:paddingBottomSystemWindowInsets="@{ true }"
             app:paddingLeftSystemWindowInsets="@{ true }"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
-                android:id="@+id/button1"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/showDemoNotificationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"/>
+                android:text="Show demo notification"/>
 
         </LinearLayout>
 

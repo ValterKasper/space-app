@@ -5,19 +5,17 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.model.Rocket
+import com.google.android.material.appbar.MaterialToolbar
 import sk.kasper.space.BuildConfig
 import sk.kasper.space.R
 import sk.kasper.space.analytics.Analytics
-import sk.kasper.space.mainactivity.MainActivity
-import sk.kasper.space.notification.LaunchNotificationInfo
-import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.space.utils.applySystemWindows
-import sk.kasper.space.view.TopToolbar
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -26,23 +24,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (BuildConfig.DEBUG) {
-
-            // todo move to playground
-            preferenceManager.findPreference<Preference>(getString(R.string.pref_debug_show_demo_notification))?.setOnPreferenceClickListener {
-                NotificationsHelper(requireContext()).showLaunchNotification(LaunchNotificationInfo(
-                        99L,
-                        Rocket.FALCON_HEAVY,
-                        "Falcon Heavy",
-                        "Some video url",
-                        "Arabsat-6A",
-                        LocalDateTime.now().plusMinutes(30)
-                ))
-                true
-            }
-        } else {
+        if (!BuildConfig.DEBUG) {
             preferenceManager.findPreference<Preference>(getString(R.string.pref_debug_category))?.isVisible = false
-            preferenceManager.findPreference<Preference>(getString(R.string.pref_debug_show_demo_notification))?.isVisible = false
             preferenceManager.findPreference<Preference>(getString(R.string.pref_api_endpoint))?.isVisible = false
         }
 
@@ -86,12 +69,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(view.findViewById<TopToolbar>(R.id.toolbar)) {
+        with(view.findViewById<MaterialToolbar>(R.id.toolbar)) {
             inflateMenu(R.menu.menu_settings)
             setOnMenuItemClickListener(::onMenuItemClicked)
-            setNavigationOnClickListener {
-                parentFragmentManager.popBackStack()
-            }
+            NavigationUI.setupWithNavController(this, findNavController())
             applySystemWindows(this, applyLeft = true, applyTop = true, applyBottom = false, applyRight = true)
         }
         with(view.findViewById<View>(android.R.id.list_container)) {
@@ -108,7 +89,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     private fun onMenuItemClicked(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_libraries -> {
-            (activity as MainActivity).showLibraries()
+            findNavController().navigate(R.id.action_settingsFragment_to_librariesFragment)
             true
         }
         else -> false

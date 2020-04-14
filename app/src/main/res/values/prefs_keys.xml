@@ -10,6 +10,5 @@
     <!-- Debug options -->
     <string name="pref_debug_category">pref_debug_category</string>
     <string name="pref_api_endpoint">pref_api_endpoint</string>
-    <string name="pref_debug_show_demo_notification">pref_debug_show_demo_notification</string>
 
 </resources>

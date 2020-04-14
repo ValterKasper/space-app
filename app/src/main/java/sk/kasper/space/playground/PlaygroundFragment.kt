@@ -5,17 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.launch
+import sk.kasper.domain.model.FilterSpec
+import sk.kasper.domain.model.Rocket
+import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.space.BaseFragment
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentPlaygroundBinding
+import sk.kasper.space.notification.LaunchNotificationInfo
+import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.space.settings.SettingsManager
-import sk.kasper.space.view.TopToolbar
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,15 +33,21 @@ class PlaygroundFragment : BaseFragment() {
     @Inject
     lateinit var settingsManager: SettingsManager
 
+    @Inject
+    lateinit var getTimelineItems: GetTimelineItems
+
+    private lateinit var binding: FragmentPlaygroundBinding
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return FragmentPlaygroundBinding.inflate(inflater, container, false).root
+        binding = FragmentPlaygroundBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(view.findViewById<TopToolbar>(R.id.toolbar)) {
+        with(binding.toolbar) {
             inflateMenu(R.menu.menu_playground)
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -45,14 +58,27 @@ class PlaygroundFragment : BaseFragment() {
                     else -> false
                 }
             }
-            setNavigationOnClickListener {
-                parentFragmentManager.popBackStack()
+            NavigationUI.setupWithNavController(this, findNavController())
+        }
+
+        binding.showDemoNotificationButton.setOnClickListener {
+            lifecycleScope.launch {
+                val timelineItems = getTimelineItems.getTimelineItems(FilterSpec(rockets = setOf(Rocket.FALCON_9)))
+                timelineItems.firstOrNull()?.let { rocketLaunch ->
+                    NotificationsHelper(requireContext()).showLaunchNotification(LaunchNotificationInfo(
+                            rocketLaunch.id,
+                            rocketLaunch.rocketId,
+                            rocketLaunch.rocketName,
+                            rocketLaunch.videoUrl,
+                            rocketLaunch.launchName,
+                            rocketLaunch.launchDateTime
+                    ))
+                }
             }
         }
 
-        val mapView = view.findViewById<MapView>(R.id.mapView)
-        mapView.onCreate(null)
-        mapView.getMapAsync { map ->
+        binding.mapView.onCreate(null)
+        binding.mapView.getMapAsync { map ->
             MapsInitializer.initialize(context)
             map.uiSettings.isMapToolbarEnabled = false
 
