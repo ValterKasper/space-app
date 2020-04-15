@@ -36,6 +36,11 @@ android {
         buildConfigField 'long', 'TOO_OLD_LAUNCH_TO_BE_SHOWN_HOURS', '24'
         buildConfigField 'String', 'API_KEY', "\"$api_key\""
         buildConfigField 'boolean', 'USE_FAKE_RESPONSE_API', "$use_fake_reponse_api"
+
+        manifestPlaceholders += [
+                fabric_key     : "$fabric_key",
+                google_maps_key: "$google_maps_key",
+        ]
     }
     buildTypes {
         release {
@@ -43,16 +48,6 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-            manifestPlaceholders += [
-                    fabric_key     : "$fabric_key",
-                    google_maps_key: "$google_maps_key_release",
-            ]
-        }
-        debug {
-            manifestPlaceholders += [
-                    fabric_key     : "$fabric_key",
-                    google_maps_key: "$google_maps_key_debug",
-            ]
         }
     }
     buildFeatures {
