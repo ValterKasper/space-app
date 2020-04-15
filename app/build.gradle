@@ -8,16 +8,14 @@ apply plugin: 'kotlin-kapt'
 android {
     signingConfigs {
         config {
-            final def keystorePropertiesFilePath = "${keystore_properties_path}"
-            final def keystorePropertiesFile = rootProject.file(keystorePropertiesFilePath)
-            final def keystoreProperties = new Properties()
-            if (keystorePropertiesFile.exists()) {
-                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storeFile file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
+            final def keystoreFile = file(System.getenv("SPACE_APP_KEYSTORE_PATH"))
+            if (keystoreFile.exists()) {
+                storeFile keystoreFile
+                storePassword System.getenv("SPACE_APP_KEYSTORE_PASSWORD")
+                keyAlias "StarlinerKey"
+                keyPassword System.getenv("SPACE_APP_KEY_PASSWORD")
+            } else {
+                println "couldn't find keystore file: " + keystoreFile.path
             }
         }
     }
@@ -34,12 +32,12 @@ android {
 
         buildConfigField 'long', 'SYNC_INTERVAL_HOURS', '4'
         buildConfigField 'long', 'TOO_OLD_LAUNCH_TO_BE_SHOWN_HOURS', '24'
-        buildConfigField 'String', 'API_KEY', "\"$api_key\""
+        buildConfigField 'String', 'API_KEY', "\"${System.getenv("SPACE_APP_API_KEY")}\""
         buildConfigField 'boolean', 'USE_FAKE_RESPONSE_API', "$use_fake_reponse_api"
 
         manifestPlaceholders += [
-                fabric_key     : "$fabric_key",
-                google_maps_key: "$google_maps_key",
+                fabric_key     : "${System.getenv("SPACE_APP_FABRIC_KEY")}",
+                google_maps_key: "${System.getenv("SPACE_APP_GOOGLE_MAPS_KEY")}",
         ]
     }
     buildTypes {
