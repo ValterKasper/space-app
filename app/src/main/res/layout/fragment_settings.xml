@@ -15,7 +15,8 @@
     <FrameLayout
         android:id="@android:id/list_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="NewApi">
 
     </FrameLayout>
 
