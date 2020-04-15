@@ -19,8 +19,10 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       run: ./gradlew buildDebug
+    - name: Assemble apk with Gradle
+      run: ./gradlew assembleDebug
     - name: Publish artefact
       uses: actions/upload-artifact@v1
       with:
         name: app-debug
-        path: app/build/outputs
+        path: app/build/outputs/apk
