@@ -1,5 +1,6 @@
 package sk.kasper.space.timeline
 
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
@@ -28,11 +29,11 @@ class TimelineFilterSpecModelTest {
     }
 
     @Test
-    fun getChannel() = runBlocking {
+    fun getFlow() = runBlocking {
         val filter = FilterSpec(setOf(10), emptySet())
 
         launch {
-            val receivedFilter = model.channel.receive()
+            val receivedFilter = model.flow.first()
             assertEquals(filter, receivedFilter)
         }
 

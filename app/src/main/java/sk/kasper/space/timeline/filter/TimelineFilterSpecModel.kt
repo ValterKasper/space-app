@@ -1,25 +1,20 @@
 package sk.kasper.space.timeline.filter
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.flow.Flow
 import sk.kasper.domain.model.FilterSpec
+import sk.kasper.space.utils.StateFlow
 
-open class TimelineFilterSpecModel: ViewModel() {
+class TimelineFilterSpecModel: ViewModel() {
 
-    // todo sprav cez flow
-    @ExperimentalCoroutinesApi
-    private val conflatedBroadcastChannel: ConflatedBroadcastChannel<FilterSpec> = ConflatedBroadcastChannel(FilterSpec.EMPTY_FILTER)
+    private val stateFlow = StateFlow(FilterSpec.EMPTY_FILTER)
 
-    @ExperimentalCoroutinesApi
-    open var value = FilterSpec.EMPTY_FILTER
+    var value: FilterSpec
+        get() = stateFlow.value
         set(value) {
-            field = value
-            conflatedBroadcastChannel.offer(value)
+            stateFlow.value = value
         }
 
-    @ExperimentalCoroutinesApi
-    val channel: ReceiveChannel<FilterSpec> = conflatedBroadcastChannel.openSubscription()
+    val flow: Flow<FilterSpec> = stateFlow.flow
 
 }

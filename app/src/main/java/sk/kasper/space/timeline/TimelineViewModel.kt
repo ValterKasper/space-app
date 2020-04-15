@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
@@ -42,9 +43,9 @@ open class TimelineViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            for (filterSpec in timelineFilterSpecModel.channel) {
+            timelineFilterSpecModel.flow.collect {
                 runLongOp {
-                    loadTimeline(filterSpec)
+                    loadTimeline(it)
                 }
             }
         }
