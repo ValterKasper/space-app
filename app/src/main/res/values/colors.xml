@@ -4,8 +4,8 @@
 
     <color name="iconLetterBackground">@color/alto</color>
 
-    <color name="tagBackground">@color/alto</color>
-    <color name="tagStroke">@color/alto</color>
+    <color name="tagBackground">@color/lightGrey</color>
+    <color name="tagStroke">@color/lightGrey</color>
 
     <color name="iconLetter">@color/warm_grey</color>
 

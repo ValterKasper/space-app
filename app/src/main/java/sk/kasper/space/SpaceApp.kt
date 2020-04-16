@@ -25,7 +25,6 @@ import sk.kasper.space.sync.SyncJobService
 import timber.log.Timber
 import javax.inject.Inject
 
-// todo rozchod CI na githube
 open class SpaceApp: Application(), HasAndroidInjector {
 
     @Inject

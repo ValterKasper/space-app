@@ -20,6 +20,8 @@
         <item name="colorPrimary">@color/cyan_500</item>
         <item name="colorPrimaryDark">@color/cyan_500</item>
         <item name="colorSecondary">@color/blue_500</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorSurface">@color/white</item>
     </style>
 
     <style name="Base.AppTheme.DayNight.Immersive" parent="AppTheme.DayNight">
@@ -42,7 +44,7 @@
 
     <style name="BaseToolbarStyle" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.DayNight.ActionBar</item>
-        <item name="android:elevation">4dp</item>
+        <item name="android:elevation">8dp</item>
         <item name="titleTextAppearance">?attr/textAppearanceHeadline6</item>
     </style>
 
@@ -54,7 +56,10 @@
         <item name="android:textSize">@dimen/medium_text_size</item>
     </style>
 
-    <style name="MyListItemSecondaryTextAppearance" parent="@style/TextAppearance.MaterialComponents.Body1"/>
+    <style name="MyListItemSecondaryTextAppearance" parent="@style/TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
 
     <style name="MyTextAppearanceBody2" parent="@style/TextAppearance.MaterialComponents.Body2"/>
 

@@ -26,8 +26,6 @@ import sk.kasper.space.settings.SettingsManager
 import timber.log.Timber
 import javax.inject.Inject
 
-// todo mozno pridaj zmenu temy (shapeapperance, farba)
-// todo UI prvky
 class PlaygroundFragment : BaseFragment() {
 
     @Inject
@@ -38,8 +36,7 @@ class PlaygroundFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPlaygroundBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPlaygroundBinding.inflate(inflater, container, false)
         return binding.root
     }

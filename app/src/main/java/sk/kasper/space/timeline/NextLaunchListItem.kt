@@ -4,7 +4,6 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Launch
 import sk.kasper.domain.model.Tag
 
-// todo dorob
 class NextLaunchListItem(
         val id: Long,
         val launchName: String,
