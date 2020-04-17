@@ -4,6 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -21,7 +23,7 @@ import sk.kasper.space.di.DaggerAppComponent
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.settings.SettingKey
 import sk.kasper.space.settings.SettingsManager
-import sk.kasper.space.sync.SyncJobService
+import sk.kasper.space.sync.SyncWorker
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -41,6 +43,9 @@ open class SpaceApp: Application(), HasAndroidInjector {
 
     @Inject
     lateinit var settingsManager: SettingsManager
+
+    @Inject
+    lateinit var workManagerConfiguration: Configuration
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
@@ -69,7 +74,9 @@ open class SpaceApp: Application(), HasAndroidInjector {
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(checker)
 
-        SyncJobService.startPeriodicLaunchesSyncJob(this)
+        WorkManager.initialize(this, workManagerConfiguration)
+
+        SyncWorker.startPeriodicWork(this)
 
         AppCompatDelegate.setDefaultNightMode(settingsManager.nightMode)
 

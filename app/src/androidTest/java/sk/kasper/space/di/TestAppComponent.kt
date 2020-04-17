@@ -5,12 +5,13 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(
+@Component(modules = [
         AndroidSupportInjectionModule::class,
         MockMainActivityModule::class,
         ServiceBuilder::class,
+        AssistedInjectModule::class,
         AppModule::class,
         MockDatabaseModule::class,
         MockRemoteApiModule::class
-))
+])
 interface TestAppComponent: AppComponent

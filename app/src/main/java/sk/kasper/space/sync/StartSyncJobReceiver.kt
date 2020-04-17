@@ -11,7 +11,7 @@ class StartSyncJobReceiver : BroadcastReceiver() {
         Timber.d("onReceive: intent = $intent")
 
         if (intent != null && intent.action == "android.intent.action.BOOT_COMPLETED") {
-            SyncJobService.startPeriodicLaunchesSyncJob(context)
+            SyncWorker.startPeriodicWork(context)
         }
     }
 

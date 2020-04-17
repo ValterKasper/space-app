@@ -9,6 +9,7 @@ import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.api.di.RemoteApiModule
 import sk.kasper.space.database.di.DatabaseModule
 import sk.kasper.space.mainactivity.di.MainActivityModule
+import sk.kasper.space.work.WorkerBindingModule
 import javax.inject.Singleton
 
 
@@ -18,6 +19,8 @@ import javax.inject.Singleton
         MainActivityModule::class,
         ServiceBuilder::class,
         AppModule::class,
+        AssistedInjectModule::class,
+        WorkerBindingModule::class,
         RemoteApiModule::class,
         DatabaseModule::class))
 interface AppComponent {

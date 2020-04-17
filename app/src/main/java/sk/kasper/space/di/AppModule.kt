@@ -3,6 +3,7 @@ package sk.kasper.space.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import androidx.work.Configuration
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -12,6 +13,7 @@ import sk.kasper.domain.repository.*
 import sk.kasper.space.database.*
 import sk.kasper.space.repository.*
 import sk.kasper.space.sync.SyncLaunchesImpl
+import sk.kasper.space.work.SampleWorkerFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -74,6 +76,13 @@ class AppModule(val context: Context) {
     @Named("Main")
     fun providesMainCoroutineDispatcher(): CoroutineDispatcher {
         return Dispatchers.Main
+    }
+
+    @Provides
+    fun providesWorkManagerConfiguration(sampleWorkerFactory: SampleWorkerFactory): Configuration {
+        return Configuration.Builder()
+                .setWorkerFactory(sampleWorkerFactory)
+                .build()
     }
 
 }
