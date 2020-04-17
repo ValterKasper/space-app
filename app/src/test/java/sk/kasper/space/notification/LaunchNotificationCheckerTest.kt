@@ -27,7 +27,7 @@ class LaunchNotificationCheckerTest {
     private lateinit var checkerUnderTest: LaunchNotificationCheckerUnderTest
 
     @Mock
-    private lateinit var jobScheduler: ShowLaunchNotificationWorkerScheduler
+    private lateinit var workScheduler: ShowLaunchNotificationWorkerScheduler
 
     @Mock
     private lateinit var repository: LaunchRepository
@@ -40,10 +40,10 @@ class LaunchNotificationCheckerTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusHours(22))
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
-        createViewModel()
+        createChecker()
         callOnSync()
 
-        verify(jobScheduler).scheduleLaunchNotification(
+        verify(workScheduler).scheduleLaunchNotification(
                 eq(LAUNCH_ID),
                 argThat {
                     isAfter(CURRENT_DATE_TIME) && isBefore(launch.launchDateTime)
@@ -55,10 +55,10 @@ class LaunchNotificationCheckerTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusHours(22), accurateDate = false)
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
-        createViewModel()
+        createChecker()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     @Test
@@ -66,10 +66,10 @@ class LaunchNotificationCheckerTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusHours(22), accurateTime = false)
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
-        createViewModel()
+        createChecker()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     @Test
@@ -77,10 +77,10 @@ class LaunchNotificationCheckerTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusHours(1))
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
-        createViewModel()
+        createChecker()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     @Test
@@ -88,10 +88,10 @@ class LaunchNotificationCheckerTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusDays(30))
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
-        createViewModel()
+        createChecker()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     @Test
@@ -99,15 +99,15 @@ class LaunchNotificationCheckerTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.minusMinutes(20))
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
-        createViewModel()
+        createChecker()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     private fun createLaunchAtTime(launchDateTime: LocalDateTime, accurateDate: Boolean = true, accurateTime: Boolean = true) = createLaunch(id = LAUNCH_ID, launchDateTime = launchDateTime, accurateDate = accurateDate, accurateTime = accurateTime)
 
-    private fun createViewModel() {
+    private fun createChecker() {
         checkerUnderTest = LaunchNotificationCheckerUnderTest()
         checkerUnderTest.onStart(mock())
     }
@@ -118,7 +118,7 @@ class LaunchNotificationCheckerTest {
         argumentCaptor.firstValue.onSync()
     }
 
-    inner class LaunchNotificationCheckerUnderTest : LaunchNotificationChecker(repository, syncLaunches, jobScheduler) {
+    inner class LaunchNotificationCheckerUnderTest : LaunchNotificationChecker(repository, syncLaunches, workScheduler) {
 
         override fun getCurrentDateTime(): LocalDateTime {
             return CURRENT_DATE_TIME
