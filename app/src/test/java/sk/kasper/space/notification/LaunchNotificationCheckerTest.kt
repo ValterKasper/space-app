@@ -14,7 +14,7 @@ import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.repository.LaunchRepository
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
-import sk.kasper.space.notification.showLaunchNotificationJob.ShowLaunchNotificationJobScheduler
+import sk.kasper.space.notification.showLaunchNotificationJob.ShowLaunchNotificationWorkerScheduler
 
 @RunWith(MockitoJUnitRunner::class)
 class LaunchNotificationCheckerTest {
@@ -27,7 +27,7 @@ class LaunchNotificationCheckerTest {
     private lateinit var checkerUnderTest: LaunchNotificationCheckerUnderTest
 
     @Mock
-    private lateinit var jobScheduler: ShowLaunchNotificationJobScheduler
+    private lateinit var jobScheduler: ShowLaunchNotificationWorkerScheduler
 
     @Mock
     private lateinit var repository: LaunchRepository
@@ -47,9 +47,6 @@ class LaunchNotificationCheckerTest {
                 eq(LAUNCH_ID),
                 argThat {
                     isAfter(CURRENT_DATE_TIME) && isBefore(launch.launchDateTime)
-                },
-                argThat {
-                    isAfter(CURRENT_DATE_TIME) && isBefore(launch.launchDateTime)
                 })
     }
 
@@ -61,7 +58,7 @@ class LaunchNotificationCheckerTest {
         createViewModel()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any(), any())
+        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     @Test
@@ -72,7 +69,7 @@ class LaunchNotificationCheckerTest {
         createViewModel()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any(), any())
+        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     @Test
@@ -83,7 +80,7 @@ class LaunchNotificationCheckerTest {
         createViewModel()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any(), any())
+        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     @Test
@@ -94,7 +91,7 @@ class LaunchNotificationCheckerTest {
         createViewModel()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any(), any())
+        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     @Test
@@ -105,7 +102,7 @@ class LaunchNotificationCheckerTest {
         createViewModel()
         callOnSync()
 
-        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any(), any())
+        verify(jobScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
     }
 
     private fun createLaunchAtTime(launchDateTime: LocalDateTime, accurateDate: Boolean = true, accurateTime: Boolean = true) = createLaunch(id = LAUNCH_ID, launchDateTime = launchDateTime, accurateDate = accurateDate, accurateTime = accurateTime)

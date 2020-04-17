@@ -8,12 +8,12 @@ import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.space.settings.SettingsManager
 import timber.log.Timber
 
-class ShowLaunchNotificationJobController(private val getLaunch: GetLaunch,
-                                          private val notificationsHelper: NotificationsHelper,
-                                          private val currentDateTime: LocalDateTime,
-                                          private val settingsManager: SettingsManager) {
+class ShowLaunchNotificationWorkController(private val getLaunch: GetLaunch,
+                                           private val notificationsHelper: NotificationsHelper,
+                                           private val currentDateTime: LocalDateTime,
+                                           private val settingsManager: SettingsManager) {
 
-    suspend fun onStartJob(launchId: Long) {
+    suspend fun doWork(launchId: Long) {
         if (!settingsManager.showLaunchNotifications) {
             Timber.d("onStartJob - success - notifications turned off in settings")
             return

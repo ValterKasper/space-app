@@ -8,7 +8,6 @@ import javax.inject.Singleton
 @Component(modules = [
         AndroidSupportInjectionModule::class,
         MockMainActivityModule::class,
-        ServiceBuilder::class,
         AssistedInjectModule::class,
         AppModule::class,
         MockDatabaseModule::class,

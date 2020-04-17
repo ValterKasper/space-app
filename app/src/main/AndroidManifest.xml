@@ -33,11 +33,6 @@
 
         </activity>
 
-        <service
-            android:name=".notification.showLaunchNotificationJob.ShowLaunchNotificationJob"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <receiver
             android:name=".sync.StartSyncJobReceiver"
             android:exported="true">

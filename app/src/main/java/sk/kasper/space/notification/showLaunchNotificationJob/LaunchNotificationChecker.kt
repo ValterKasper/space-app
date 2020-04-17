@@ -19,14 +19,13 @@ import javax.inject.Singleton
 open class LaunchNotificationChecker @Inject constructor(
         private val repository: LaunchRepository,
         private val syncLaunches: SyncLaunches,
-        private val showLaunchNotificationJobScheduler: ShowLaunchNotificationJobScheduler): DefaultLifecycleObserver, SyncLaunches.SyncListener {
+        private val showLaunchNotificationWorkerScheduler: ShowLaunchNotificationWorkerScheduler): DefaultLifecycleObserver, SyncLaunches.SyncListener {
 
     companion object {
-        private val MIN_DURATION_AFTER_NOW_FOR_SCHEDULING: Duration = Duration.ofHours(4)
+        private val MIN_DURATION_AFTER_NOW_FOR_SCHEDULING: Duration = Duration.ofHours(2)
         private val MAX_DURATION_AFTER_NOW_FOR_SCHEDULING: Duration = Duration.ofDays(7)
 
         private val MIN_DURATION_BEFORE_LAUNCH_TO_SHOW_NOTIFICATION: Duration = Duration.ofMinutes(60)
-        private val MAX_DURATION_BEFORE_LAUNCH_TO_SHOW_NOTIFICATION: Duration = Duration.ofMinutes(3)
     }
 
     override fun onSync() {
@@ -49,10 +48,9 @@ open class LaunchNotificationChecker @Inject constructor(
                 .filter { getCurrentDateTime().plus(MIN_DURATION_AFTER_NOW_FOR_SCHEDULING).isBefore(it.launchDateTime) }
                 .filter { getCurrentDateTime().plus(MAX_DURATION_AFTER_NOW_FOR_SCHEDULING).isAfter(it.launchDateTime) }
                 .forEach {
-                    showLaunchNotificationJobScheduler.scheduleLaunchNotification(
+                    showLaunchNotificationWorkerScheduler.scheduleLaunchNotification(
                             it.id,
-                            it.launchDateTime.minus(MIN_DURATION_BEFORE_LAUNCH_TO_SHOW_NOTIFICATION),
-                            it.launchDateTime.minus(MAX_DURATION_BEFORE_LAUNCH_TO_SHOW_NOTIFICATION))
+                            it.launchDateTime.minus(MIN_DURATION_BEFORE_LAUNCH_TO_SHOW_NOTIFICATION))
                 }
     }
 

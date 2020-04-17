@@ -13,7 +13,7 @@ import sk.kasper.domain.repository.*
 import sk.kasper.space.database.*
 import sk.kasper.space.repository.*
 import sk.kasper.space.sync.SyncLaunchesImpl
-import sk.kasper.space.work.SampleWorkerFactory
+import sk.kasper.space.work.AppWorkerFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -79,9 +79,9 @@ class AppModule(val context: Context) {
     }
 
     @Provides
-    fun providesWorkManagerConfiguration(sampleWorkerFactory: SampleWorkerFactory): Configuration {
+    fun providesWorkManagerConfiguration(appWorkerFactory: AppWorkerFactory): Configuration {
         return Configuration.Builder()
-                .setWorkerFactory(sampleWorkerFactory)
+                .setWorkerFactory(appWorkerFactory)
                 .build()
     }
 

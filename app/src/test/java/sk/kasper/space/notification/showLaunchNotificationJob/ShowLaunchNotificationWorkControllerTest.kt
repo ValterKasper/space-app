@@ -22,7 +22,7 @@ import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.space.settings.SettingsManager
 
 @RunWith(MockitoJUnitRunner::class)
-class ShowLaunchNotificationJobControllerTest {
+class ShowLaunchNotificationWorkControllerTest {
 
     companion object {
         val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
@@ -38,7 +38,7 @@ class ShowLaunchNotificationJobControllerTest {
     @Mock
     private lateinit var getLaunch: GetLaunch
 
-    private lateinit var controller: ShowLaunchNotificationJobController
+    private lateinit var controller: ShowLaunchNotificationWorkController
 
     @Before
     fun setUp() {
@@ -88,7 +88,7 @@ class ShowLaunchNotificationJobControllerTest {
     }
 
     private suspend fun onStartJob() {
-        controller.onStartJob(10L)
+        controller.doWork(10L)
     }
 
     private fun verifyShowNotification(launchDateTime: LocalDateTime) {
@@ -111,7 +111,7 @@ class ShowLaunchNotificationJobControllerTest {
     }
 
     private fun prepareController() {
-        controller = ShowLaunchNotificationJobController(getLaunch, notificationsHelper, LOCAL_DATE_TIME_NOW, settingsManager)
+        controller = ShowLaunchNotificationWorkController(getLaunch, notificationsHelper, LOCAL_DATE_TIME_NOW, settingsManager)
     }
 
 }
