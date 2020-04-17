@@ -13,7 +13,7 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(value = PlaygroundViewModel::class)
+    @ViewModelKey(PlaygroundViewModel::class)
     abstract fun bindPlaygroundViewModel(viewModel: PlaygroundViewModel): ViewModel
 
     @Binds
