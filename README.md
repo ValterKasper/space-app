@@ -6,7 +6,7 @@ An android app that shows time-line of upcoming rocket launches. Showcases archi
 
 | ![Timeline](./screenshots/timeline_light.png) | ![Filter](./screenshots/filter_light.png) | ![Launch detail](./screenshots/detail_light_a.png) |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| ![Timeline](./screenshots/timeline_dark.png) | ![Launch detail](./screenshots/detail_dark_a.png) | ![Launch detail](./screenshots/detail_dark_b.png) |
+| ![Timeline](./screenshots/timeline_dark.png) | ![Launch detail](./screenshots/detail_dark_a.png) | ![Launch detail](./screenshots/detail_dark_c.png) |
 
 ### Goals
 
