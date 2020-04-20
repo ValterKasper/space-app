@@ -1,9 +1,9 @@
 package sk.kasper.space
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import androidx.test.espresso.Espresso
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import org.junit.After
@@ -29,18 +29,18 @@ open class BaseMainActivityTest {
     @Before
     fun setUp() {
         val spaceApp = getApplicationContext<SpaceApp>()
-        clearSharedPrefs(spaceApp)
         mockRemoteApi = spaceApp.remoteApi as MockRemoteApi
 
         activityScenario.scenario.onActivity { activity ->
             mainActivityIdlingResource = MainActivityIdlingResource(activity)
-            Espresso.registerIdlingResources(mainActivityIdlingResource)
+            IdlingRegistry.getInstance().register(mainActivityIdlingResource)
         }
     }
 
     @After
     fun tearDown() {
-        Espresso.unregisterIdlingResources(mainActivityIdlingResource)
+        IdlingRegistry.getInstance().unregister(mainActivityIdlingResource)
+        clearSharedPrefs(getApplicationContext<SpaceApp>())
     }
 
     fun fromServerReturnLaunches(droidLaunches: List<LaunchDroid>) {
