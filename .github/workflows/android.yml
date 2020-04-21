@@ -44,3 +44,4 @@ jobs:
       with:
         name: test-results-debug
         path: app/build/reports/tests/test
+        if: failure()
