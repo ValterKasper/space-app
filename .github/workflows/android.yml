@@ -34,8 +34,13 @@ jobs:
       env:
         SPACE_APP_KEYSTORE_PATH: ${{ steps.release_cert.outputs.filePath }}
       run: ./gradlew testDebugUnitTest assembleDebug
-    - name: Publish artefact
+    - name: Publish apk artefact
       uses: actions/upload-artifact@v1
       with:
         name: app-debug
         path: app/build/outputs/apk
+    - name: Publish test results artefact
+      uses: actions/upload-artifact@v1
+      with:
+        name: test-results-debug
+        path: app/build/reports/tests/test
