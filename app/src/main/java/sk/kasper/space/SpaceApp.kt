@@ -6,13 +6,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import com.crashlytics.android.Crashlytics
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import io.fabric.sdk.android.Fabric
 import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.analytics.FirebaseAnalyticsLogger
 import sk.kasper.space.api.RemoteApi
@@ -63,9 +61,8 @@ open class SpaceApp: Application(), HasAndroidInjector {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(false)
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
         } else {
-            Fabric.with(this, Crashlytics())
             Timber.plant(CrashReportingTree())
             Analytics.plant(FirebaseAnalyticsLogger(this))
         }
@@ -95,14 +92,18 @@ class CrashReportingTree : Timber.Tree() {
             return
         }
 
-        Crashlytics.setInt("priority", priority)
-        Crashlytics.setString("tag", tag)
-        Crashlytics.setString("message", message)
+        val crashlytics = FirebaseCrashlytics.getInstance()
+
+        crashlytics.setCustomKey("priority", priority)
+        tag?.let{
+            crashlytics.setCustomKey("tag", tag)
+        }
+        crashlytics.setCustomKey("message", message)
 
         if (t == null) {
-            Crashlytics.logException(Exception(message))
+            crashlytics.recordException(Exception(message))
         } else {
-            Crashlytics.logException(t)
+            crashlytics.recordException(t)
         }
     }
 
