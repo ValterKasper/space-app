@@ -1,6 +1,6 @@
 # Rocktly: Rocket launches schedule
 
-An android app that shows time-line of upcoming rocket launches. Showcases architecture of a real android application and usage of some libraries. Application loads data about rocket launches from the server and stores them to the database for off-line usage. 
+An android app that shows timeline of upcoming rocket launches. Showcases architecture of a real android application and usage of some libraries. Application loads data about rocket launches from the server and stores them to the database for off-line usage.
 
 ### Screenshots
 
@@ -31,7 +31,7 @@ An android app that shows time-line of upcoming rocket launches. Showcases archi
 
 ### Getting started
 
-- Server for app isn't currently running publicly. App should works even without server, when is build with parameter `use_fake_reponse_api=true` in the `gradle.properiets`. In this case the response is generated from static JSON from the assets.
+- Server for app isn't currently running publicly. App should work even without server, when is build with parameter `use_fake_reponse_api=true` in the `gradle.properiets`. In this case the response is generated from static JSON from the assets.
 
 #### Gradle tasks
 
@@ -56,7 +56,7 @@ An android app that shows time-line of upcoming rocket launches. Showcases archi
 
 - `SPACE_APP_FABRIC_KEY`
 
-- `SPACE_APP_GOOGLE_MAPS_KEY` - use a google maps api key and replace google-services.json file if you want to show the map in the Launch detail.
+- `SPACE_APP_GOOGLE_MAPS_KEY` - use a google maps api key and replace google-services.json file, if you want to show the map in the Launch detail.
 
 
 ### License
