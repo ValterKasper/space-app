@@ -149,35 +149,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/collapsingToolbarLayout">
 
-                <!-- MISSION -->
-                <TextView
-                    style="@style/SectionTitleStyle.LaunchDetail.First"
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/missionSectionComposeView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_normal"
                     android:layout_marginEnd="@dimen/padding_normal"
-                    android:text="@string/mission"
                     app:paddingLeftSystemWindowInsets="@{ true }"
-                    app:visible="@{viewModel.descriptionVisible}"
-                    tools:text="@string/mission"/>
-
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/padding_normal"
-                    android:layout_marginEnd="@dimen/padding_normal"
-                    android:ellipsize="end"
-                    android:focusable="true"
-                    android:importantForAccessibility="yes"
-                    android:text="@{viewModel.description}"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    app:paddingLeftSystemWindowInsets="@{ true }"
-                    app:paddingRightSystemWindowInsets="@{ true }"
-                    app:visible="@{viewModel.descriptionVisible}"
-                    tools:text="@tools:sample/lorem/random"/>
-
+                    app:paddingRightSystemWindowInsets="@{ true }"/>
 
                 <!-- LAUNCH SITE -->
                 <TextView

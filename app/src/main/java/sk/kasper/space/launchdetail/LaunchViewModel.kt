@@ -2,6 +2,7 @@ package sk.kasper.space.launchdetail
 
 import androidx.annotation.DrawableRes
 import androidx.databinding.Bindable
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -29,11 +30,7 @@ class LaunchViewModel @AssistedInject constructor(
     @get:Bindable
     var rocketNameVisible: Boolean = true
 
-    @get:Bindable
-    var description: String? = null
-
-    @get:Bindable
-    var descriptionVisible:  Boolean = true
+    val description: MutableLiveData<String> = MutableLiveData("")
 
     @get:Bindable
     var launchDateTime: LocalDateTime = LocalDateTime.MIN
@@ -87,8 +84,7 @@ class LaunchViewModel @AssistedInject constructor(
                 rocketName = launch.rocketName ?: launchNameParts.rocketName
                 rocketNameVisible = rocketName.isNullOrBlank()
                 launchDateTime = launch.launchDateTime
-                description = launch.description
-                descriptionVisible = !launch.description.isNullOrBlank()
+                description.value = launch.description
                 mainPhoto = launch.mainPhotoUrl
                 tags.clear()
                 tags.addAll(launch.tags)
