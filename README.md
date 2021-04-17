@@ -54,8 +54,6 @@ An android app that shows timeline of upcoming rocket launches. Showcases archit
 
 - `SPACE_APP_API_KEY` - key will be used for communication with server, but is recommended for now to use `use_fake_reponse_api=true ` parameter in the `gradle.properiets`.
 
-- `SPACE_APP_FABRIC_KEY`
-
 - `SPACE_APP_GOOGLE_MAPS_KEY` - use a google maps api key and replace google-services.json file, if you want to show the map in the Launch detail.
 
 

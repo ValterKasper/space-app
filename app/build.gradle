@@ -37,7 +37,6 @@ android {
         buildConfigField 'boolean', 'USE_FAKE_RESPONSE_API', "$use_fake_reponse_api"
 
         manifestPlaceholders += [
-                fabric_key     : "${System.getenv("SPACE_APP_FABRIC_KEY")}",
                 google_maps_key: "${System.getenv("SPACE_APP_GOOGLE_MAPS_KEY")}",
         ]
     }
@@ -53,9 +52,6 @@ android {
         dataBinding = true
         compose true
     }
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -64,11 +60,7 @@ android {
         jvmTarget = "1.8"
         useIR = true
     }
-    dexOptions {
-        jumboMode = true
-    }
     composeOptions {
-        kotlinCompilerVersion '1.4.10'
         kotlinCompilerExtensionVersion '1.0.0-alpha06'
     }
     testOptions {
@@ -157,7 +149,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
 
-    implementation "com.google.firebase:firebase-core:18.0.0"
+    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"

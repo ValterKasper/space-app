@@ -15,7 +15,6 @@ jobs:
       SPACE_APP_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
       SPACE_APP_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
       SPACE_APP_API_KEY: ${{ secrets.API_KEY }}
-      SPACE_APP_FABRIC_KEY: ${{ secrets.FABRIC_KEY }}
       SPACE_APP_GOOGLE_MAPS_KEY: ${{ secrets.GOOGLE_MAPS_KEY }}
 
     steps:

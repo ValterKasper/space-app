@@ -45,11 +45,6 @@
 
         </receiver>
 
-<!--        TODO migrate-->
-<!--        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="${fabric_key}" />-->
-
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
