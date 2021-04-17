@@ -42,5 +42,5 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: test-results-debug
-        path: app/build/reports/tests/test
+        path: app/build/reports/tests
         if: failure()
