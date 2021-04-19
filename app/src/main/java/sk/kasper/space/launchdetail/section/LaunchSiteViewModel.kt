@@ -12,7 +12,7 @@ import sk.kasper.space.BR
 import sk.kasper.space.R
 
 class LaunchSiteViewModel @AssistedInject constructor(
-        @Assisted launchId: Long,
+        @Assisted launchId: String,
         @Assisted googleApiAvailable: Boolean,
         private val getLaunchSite: GetLaunchSite): SectionViewModel() {
 
@@ -39,7 +39,7 @@ class LaunchSiteViewModel @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-                launchId: Long,
+                launchId: String,
                 googleApiAvailable: Boolean): LaunchSiteViewModel
     }
 }

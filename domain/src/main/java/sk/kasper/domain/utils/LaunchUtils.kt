@@ -5,7 +5,7 @@ import sk.kasper.domain.model.Launch
 import sk.kasper.domain.model.Tag
 
 fun createLaunch(
-        id: Long = 0,
+        id: String = "",
         launchName: String = "",
         description: String? = null,
         launchDateTime: LocalDateTime = LocalDateTime.MIN,

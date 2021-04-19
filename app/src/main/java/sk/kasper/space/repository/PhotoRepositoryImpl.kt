@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class PhotoRepositoryImpl @Inject constructor(private val photoDao: PhotoDao): PhotoRepository {
 
-    override suspend fun getPhotosForLaunch(launchId: Long): List<Photo> {
+    override suspend fun getPhotosForLaunch(launchId: String): List<Photo> {
         return photoDao.loadLaunchPhotos(launchId).map { it.toPhoto() }
     }
 

@@ -26,5 +26,5 @@ import androidx.room.Index
         ])
 data class PhotoLaunchEntity(
         val photoId: Long,
-        val launchId: Long
+        val launchId: String
 )

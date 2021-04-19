@@ -17,7 +17,7 @@ import sk.kasper.domain.model.Tag
         tableName = "tag")
 data class TagEntity(
         @PrimaryKey(autoGenerate = true) val id: Long? = null,
-        val launchId: Long,
+        val launchId: String,
         val type: Long) {
     
     fun toTag(): Tag {

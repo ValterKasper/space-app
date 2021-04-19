@@ -16,7 +16,7 @@ import sk.kasper.space.launchdetail.gallery.PhotoPagerData
 import sk.kasper.space.utils.SingleLiveEvent
 
 class GalleryViewModel @AssistedInject constructor(
-        @Assisted launchId: Long,
+        @Assisted launchId: String,
         private val getPhotos: GetPhotos): SectionViewModel(), GalleryAdapter.PhotoClickListener {
 
     val galleryItems: MutableLiveData<List<Photo>> = MutableLiveData()
@@ -55,7 +55,7 @@ class GalleryViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(launchId: Long): GalleryViewModel
+        fun create(launchId: String): GalleryViewModel
     }
 
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetPhotos @Inject constructor(private val photoRepository: PhotoRepository) {
 
-    suspend fun getPhotos(launchId: Long): Response<List<Photo>> = withContext(Dispatchers.IO) {
+    suspend fun getPhotos(launchId: String): Response<List<Photo>> = withContext(Dispatchers.IO) {
         wrapToResponse { photoRepository.getPhotosForLaunch(launchId) }
     }
 

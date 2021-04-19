@@ -12,7 +12,7 @@ import sk.kasper.space.BR
 import sk.kasper.space.R
 
 class RocketSectionViewModel @AssistedInject constructor(
-        @Assisted launchId: Long,
+        @Assisted launchId: String,
         private val getRocketForLaunch: GetRocketForLaunch): SectionViewModel() {
 
     @get:Bindable
@@ -68,7 +68,7 @@ class RocketSectionViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(launchId: Long): RocketSectionViewModel
+        fun create(launchId: String): RocketSectionViewModel
     }
 
 }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class RocketRepositoryImpl @Inject constructor(private val rocketDao: RocketDao): RocketRepository {
 
-    override suspend fun getRocketForLaunch(launchId: Long): Rocket {
+    override suspend fun getRocketForLaunch(launchId: String): Rocket {
         return rocketDao.loadRocketByLaunchId(launchId).toRocket()
     }
 

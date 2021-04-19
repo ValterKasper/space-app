@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class FalconInfoRepositoryImpl @Inject constructor(private val launchDao: LaunchDao) : FalconInfoRepository {
 
-    override suspend fun getFalconCore(launchId: Long): FalconCore? {
+    override suspend fun getFalconCore(launchId: String): FalconCore? {
         return launchDao.getFalconCore(launchId).takeIf { it.isEmpty() }?.toFalconCore()
     }
 

@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetFalconCore @Inject constructor(private val falconInfoRepository: FalconInfoRepository) {
 
-    suspend fun getFalconCore(launchId: Long): Response<FalconCore> = withContext(Dispatchers.IO) {
+    suspend fun getFalconCore(launchId: String): Response<FalconCore> = withContext(Dispatchers.IO) {
         wrapNullableToResponse { falconInfoRepository.getFalconCore(launchId) }
     }
 

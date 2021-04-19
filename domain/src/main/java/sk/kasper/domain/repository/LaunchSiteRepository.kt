@@ -4,6 +4,6 @@ import sk.kasper.domain.model.LaunchSite
 
 interface LaunchSiteRepository {
 
-    suspend fun getLaunchSite(launchId: Long): LaunchSite
+    suspend fun getLaunchSite(launchId: String): LaunchSite
 
 }

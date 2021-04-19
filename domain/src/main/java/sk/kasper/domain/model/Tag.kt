@@ -1,7 +1,7 @@
 package sk.kasper.domain.model
 
 data class Tag (
-        val launchId: Long,
+        val launchId: String,
         val type: Long) {
 
     companion object {

@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetRocketForLaunch @Inject constructor(private val repository: RocketRepository){
 
-    suspend fun getRocket(launchId: Long): Response<Rocket> = withContext(Dispatchers.IO) {
+    suspend fun getRocket(launchId: String): Response<Rocket> = withContext(Dispatchers.IO) {
         wrapToResponse { repository.getRocketForLaunch(launchId) }
     }
 

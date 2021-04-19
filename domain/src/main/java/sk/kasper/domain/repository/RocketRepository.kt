@@ -4,6 +4,6 @@ import sk.kasper.domain.model.Rocket
 
 interface RocketRepository {
 
-    suspend fun getRocketForLaunch(launchId: Long): Rocket
+    suspend fun getRocketForLaunch(launchId: String): Rocket
 
 }

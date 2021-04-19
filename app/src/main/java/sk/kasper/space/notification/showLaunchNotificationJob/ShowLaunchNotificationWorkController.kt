@@ -13,7 +13,7 @@ class ShowLaunchNotificationWorkController(private val getLaunch: GetLaunch,
                                            private val currentDateTime: LocalDateTime,
                                            private val settingsManager: SettingsManager) {
 
-    suspend fun doWork(launchId: Long) {
+    suspend fun doWork(launchId: String) {
         if (!settingsManager.showLaunchNotifications) {
             Timber.d("onStartJob - success - notifications turned off in settings")
             return

@@ -13,7 +13,7 @@ import sk.kasper.space.database.entity.*
             TagEntity::class,
             PhotoEntity::class,
             PhotoLaunchEntity::class],
-        version = 5,
+        version = 6,
         exportSchema = false)
 abstract class Database : RoomDatabase() {
     abstract fun launchDao(): LaunchDao

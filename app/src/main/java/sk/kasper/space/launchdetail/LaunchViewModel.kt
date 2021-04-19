@@ -19,7 +19,7 @@ import timber.log.Timber
 
 class LaunchViewModel @AssistedInject constructor(
         private val getLaunch: GetLaunch,
-        @Assisted private val launchId: Long): ObservableViewModel() {
+        @Assisted private val launchId: String): ObservableViewModel() {
 
     @get:Bindable
     var missionName: String? = null
@@ -116,7 +116,7 @@ class LaunchViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(launchId: Long): LaunchViewModel
+        fun create(launchId: String): LaunchViewModel
     }
 
 }

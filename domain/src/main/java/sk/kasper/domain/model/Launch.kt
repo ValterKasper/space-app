@@ -3,7 +3,7 @@ package sk.kasper.domain.model
 import org.threeten.bp.LocalDateTime
 
 data class Launch(
-        val id: Long,
+        val id: String,
         val launchName: String,
         val description: String?,
         val launchDateTime: LocalDateTime,

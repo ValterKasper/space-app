@@ -6,7 +6,7 @@ import sk.kasper.domain.model.Launch
 import sk.kasper.space.utils.toLocalDateTime
 
 data class LaunchDetailEntity(
-        var id: Long = 0,
+        var id: String = "",
         var launchTs: Long = 0,
         var launchName: String = "",
         var description: String? = null,

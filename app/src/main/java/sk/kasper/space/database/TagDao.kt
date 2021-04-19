@@ -13,7 +13,7 @@ interface TagDao {
     suspend fun getTags(): List<TagEntity>
 
     @Query("SELECT * FROM tag WHERE launchId = :launchId")
-    suspend fun getTagsByLaunch(launchId: Long): List<TagEntity>
+    suspend fun getTagsByLaunch(launchId: String): List<TagEntity>
 
     @Query("SELECT * FROM tag WHERE type = :type")
     suspend fun getTagsByType(type: Int): List<TagEntity>

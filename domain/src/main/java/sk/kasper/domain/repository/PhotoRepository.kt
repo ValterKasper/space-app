@@ -4,6 +4,6 @@ import sk.kasper.domain.model.Photo
 
 interface PhotoRepository {
 
-    suspend fun getPhotosForLaunch(launchId: Long): List<Photo>
+    suspend fun getPhotosForLaunch(launchId: String): List<Photo>
 
 }

@@ -60,7 +60,7 @@ abstract class LaunchDao {
         WHERE
             :launchId = launch.id
             """)
-    abstract fun getLaunch(launchId: Long): LaunchDetailEntity
+    abstract fun getLaunch(launchId: String): LaunchDetailEntity
 
     @Query(
        """
@@ -75,7 +75,7 @@ abstract class LaunchDao {
         WHERE
             :launchId = launch.id
         """)
-    abstract suspend fun getFalconCore(launchId: Long): FalconCoreEntity
+    abstract suspend fun getFalconCore(launchId: String): FalconCoreEntity
 
     @Query("""
         SELECT
@@ -85,7 +85,7 @@ abstract class LaunchDao {
         WHERE
             :launchId = launch.id
     """)
-    abstract fun getOrbit(launchId: Long): String?
+    abstract fun getOrbit(launchId: String): String?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertAll(vararg launches: LaunchEntity): List<Long>

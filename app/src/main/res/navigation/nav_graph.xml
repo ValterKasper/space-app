@@ -36,7 +36,7 @@
         android:label=" ">
         <argument
             android:name="launchId"
-            app:argType="long" />
+            app:argType="string" />
         <action
             android:id="@+id/action_launchFragment_to_photoPagerFragment"
             app:destination="@id/photoPagerFragment" />

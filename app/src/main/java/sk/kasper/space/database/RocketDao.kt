@@ -45,6 +45,6 @@ interface RocketDao {
         WHERE    
             launch.id = :launchId
         """)
-    suspend fun loadRocketByLaunchId(launchId: Long): RocketEntity
+    suspend fun loadRocketByLaunchId(launchId: String): RocketEntity
 
 }

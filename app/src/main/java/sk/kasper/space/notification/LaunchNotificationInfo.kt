@@ -4,7 +4,7 @@ import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 
 data class LaunchNotificationInfo(
-        val id: Long,
+        val id: String,
         val rocketId: Long?,
         val rocketName: String?,
         val videoUrl: String?,

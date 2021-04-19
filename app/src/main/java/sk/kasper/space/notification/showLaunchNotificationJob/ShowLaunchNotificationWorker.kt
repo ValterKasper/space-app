@@ -25,7 +25,7 @@ class ShowLaunchNotificationWorker @AssistedInject constructor(
     companion object {
         const val LAUNCH_ID_KEY = "extra-launch-key"
 
-        fun createWorkRequest(launchId: Long, dateTimeNotification: LocalDateTime): OneTimeWorkRequest {
+        fun createWorkRequest(launchId: String, dateTimeNotification: LocalDateTime): OneTimeWorkRequest {
             Timber.d("createWorkRequest $launchId at $dateTimeNotification")
 
             val constrains = Constraints.Builder()
@@ -42,7 +42,7 @@ class ShowLaunchNotificationWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result {
-        val launchId = inputData.getLong(LAUNCH_ID_KEY, 0)
+        val launchId = inputData.getString(LAUNCH_ID_KEY) ?: ""
         ShowLaunchNotificationWorkController(getLaunch, notificationsHelper, LocalDateTime.now(), settingsManager).doWork(launchId)
         return Result.success()
     }

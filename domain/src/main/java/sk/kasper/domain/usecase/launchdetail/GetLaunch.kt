@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 open class GetLaunch @Inject constructor(private val launchRepository: LaunchRepository){
 
-    open suspend fun getLaunch(launchId: Long): Launch {
+    open suspend fun getLaunch(launchId: String): Launch {
         return withContext(Dispatchers.IO) {
             launchRepository.getLaunch(launchId)
         }

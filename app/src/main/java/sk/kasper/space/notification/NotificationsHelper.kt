@@ -109,7 +109,7 @@ class NotificationsHelper @Inject constructor(context: Context) : ContextWrapper
         }
     }
 
-    private fun createPendingIntentForMainScreen(launchId: Long): PendingIntent {
+    private fun createPendingIntentForMainScreen(launchId: String): PendingIntent {
         return NavDeepLinkBuilder(this)
                 .setArguments(LaunchFragmentArgs(launchId).toBundle())
                 .setDestination(R.id.launchFragment)

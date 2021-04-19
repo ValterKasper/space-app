@@ -32,7 +32,7 @@ open class TimelineViewModel @AssistedInject constructor(
     val progressVisible: MutableLiveData<Boolean> = MutableLiveData()
 
     val connectionErrorEvent: SingleLiveEvent<Any> = SingleLiveEvent()
-    val showLaunchDetailEvent: SingleLiveEvent<Long> = SingleLiveEvent()
+    val showLaunchDetailEvent: SingleLiveEvent<String> = SingleLiveEvent()
     val showFilterEvent: SingleLiveEvent<Any> = SingleLiveEvent()
 
     @get:Bindable

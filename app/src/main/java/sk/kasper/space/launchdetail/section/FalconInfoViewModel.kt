@@ -15,7 +15,7 @@ import sk.kasper.space.utils.FormattedString
 import sk.kasper.space.utils.ObservableViewModel
 
 class FalconInfoViewModel @AssistedInject constructor(
-        @Assisted launchId: Long,
+        @Assisted launchId: String,
         private val getFalconCore: GetFalconCore): ObservableViewModel() {
 
     @Bindable
@@ -123,7 +123,7 @@ class FalconInfoViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(launchId: Long): FalconInfoViewModel
+        fun create(launchId: String): FalconInfoViewModel
     }
 
 }

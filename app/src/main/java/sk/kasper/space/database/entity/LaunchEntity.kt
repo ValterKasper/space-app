@@ -15,7 +15,7 @@ import androidx.room.*
                 Index("rocketId"),
                 Index("launchSiteId")),
         tableName = "launch")
-data class LaunchEntity(@PrimaryKey val id: Long,
+data class LaunchEntity(@PrimaryKey val id: String,
                         val launchTs: Long,
                         val launchName: String,
                         val description: String?,

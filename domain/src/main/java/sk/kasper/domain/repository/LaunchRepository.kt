@@ -5,6 +5,6 @@ import sk.kasper.domain.model.Orbit
 
 interface LaunchRepository {
     suspend fun getLaunches(): List<Launch>
-    fun getLaunch(id: Long): Launch
-    fun getOrbit(id: Long): Orbit
+    fun getLaunch(id: String): Launch
+    fun getOrbit(id: String): Orbit
 }

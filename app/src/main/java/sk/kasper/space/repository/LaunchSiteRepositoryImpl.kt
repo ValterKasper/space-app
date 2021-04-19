@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class LaunchSiteRepositoryImpl @Inject constructor(private val launchSiteDao: LaunchSiteDao) : LaunchSiteRepository {
 
-    override suspend fun getLaunchSite(launchId: Long): LaunchSite {
+    override suspend fun getLaunchSite(launchId: String): LaunchSite {
         return launchSiteDao.getLaunchSiteByLaunchId(launchId).toLaunchSite()
     }
 

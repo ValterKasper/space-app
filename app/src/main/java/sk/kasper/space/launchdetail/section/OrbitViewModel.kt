@@ -15,7 +15,7 @@ import timber.log.Timber
 
 class OrbitViewModel @AssistedInject constructor(
         private val getOrbit: GetOrbit,
-        @Assisted private val launchId: Long): ObservableViewModel() {
+        @Assisted private val launchId: String): ObservableViewModel() {
 
     @Bindable
     var visible = false
@@ -52,7 +52,7 @@ class OrbitViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(launchId: Long): OrbitViewModel
+        fun create(launchId: String): OrbitViewModel
     }
 
 }

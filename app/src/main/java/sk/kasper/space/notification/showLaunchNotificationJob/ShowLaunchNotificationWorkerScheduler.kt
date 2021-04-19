@@ -17,7 +17,7 @@ open class ShowLaunchNotificationWorkerScheduler @Inject constructor(private val
         private const val UNIQUE_WORK_NAME = "Show notification work"
     }
 
-    open fun scheduleLaunchNotification(launchId: Long, dateTimeNotification: LocalDateTime) {
+    open fun scheduleLaunchNotification(launchId: String, dateTimeNotification: LocalDateTime) {
         WorkManager
                 .getInstance(context)
                 .enqueueUniqueWork(

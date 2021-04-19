@@ -25,11 +25,11 @@ open class LaunchRepositoryImpl @Inject constructor(private val launchDao: Launc
                 .filter { it.launchDateTime.isAfter(getCurrentDateTime().minus(TOO_OLD_DURATION)) }
     }
 
-    override fun getLaunch(id: Long): Launch {
+    override fun getLaunch(id: String): Launch {
         return launchDao.getLaunch(id).toLaunch()
     }
 
-    override fun getOrbit(id: Long): Orbit {
+    override fun getOrbit(id: String): Orbit {
         return launchDao.getOrbit(id)?.let {
             safeEnumValueOf(it, Orbit.UNKNOWN)
         } ?: Orbit.UNKNOWN

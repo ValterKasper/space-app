@@ -5,7 +5,7 @@ import sk.kasper.domain.model.Launch
 import sk.kasper.domain.model.Tag
 
 class NextLaunchListItem(
-        val id: Long,
+        val id: String,
         val launchName: String,
         val launchDateTime: LocalDateTime,
         val rocketId: Long?,

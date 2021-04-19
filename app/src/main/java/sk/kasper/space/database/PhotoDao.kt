@@ -31,6 +31,6 @@ interface PhotoDao {
                 WHERE
                     photo_launch.launchId=:launchId
                     """)
-    suspend fun loadLaunchPhotos(launchId: Long): List<PhotoEntity>
+    suspend fun loadLaunchPhotos(launchId: String): List<PhotoEntity>
 
 }
