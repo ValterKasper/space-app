@@ -8,18 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -41,7 +29,6 @@ import sk.kasper.space.databinding.FragmentLaunchRocketSectionBinding
 import sk.kasper.space.launchdetail.gallery.GalleryAdapter
 import sk.kasper.space.launchdetail.gallery.PhotoPagerData
 import sk.kasper.space.launchdetail.section.*
-import sk.kasper.space.theme.SpaceTheme
 import sk.kasper.space.timeline.TagAdapter
 import sk.kasper.space.utils.*
 import timber.log.Timber
@@ -128,13 +115,13 @@ class LaunchFragment : BaseFragment() {
             startActivity(intent)
         })
         
-        binding.missionSectionComposeView.apply {
+        /*binding.missionSectionComposeView.apply {
             setContent {
                 SpaceTheme {
                     MissionSection(description = launchViewModel.description.observeAsState().value)
                 }
             }
-        }
+        }*/
     }
 
     private fun setupOrbit() {
@@ -195,7 +182,7 @@ class LaunchFragment : BaseFragment() {
         })
     }
 }
-
+/*
 @Composable
 fun MissionSection(description: String?) {
     if (!description.isNullOrBlank()) {
@@ -223,3 +210,4 @@ fun MissionSectionPreview() {
         MissionSection(description = "section text")
     }
 }
+ */
