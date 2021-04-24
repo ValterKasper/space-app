@@ -11,8 +11,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import sk.kasper.space.analytics.Analytics
-import sk.kasper.space.analytics.FirebaseAnalyticsLogger
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.database.Database
 import sk.kasper.space.di.AppComponent
@@ -22,6 +20,8 @@ import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotification
 import sk.kasper.space.settings.SettingKey
 import sk.kasper.space.settings.SettingsManager
 import sk.kasper.space.sync.SyncWorker
+import sk.kasper.ui_common.analytics.Analytics
+import sk.kasper.ui_common.analytics.FirebaseAnalyticsLogger
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package sk.kasper.space.settings
+package sk.kasper.ui_settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -6,16 +6,14 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.appbar.MaterialToolbar
-import sk.kasper.space.BuildConfig
-import sk.kasper.space.R
-import sk.kasper.space.analytics.Analytics
-import sk.kasper.space.utils.applySystemWindows
+import sk.kasper.ui_common.analytics.Analytics
+
+//import sk.kasper.space.utils.applySystemWindows
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -73,10 +71,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             inflateMenu(R.menu.menu_settings)
             setOnMenuItemClickListener(::onMenuItemClicked)
             NavigationUI.setupWithNavController(this, findNavController())
-            applySystemWindows(this, applyLeft = true, applyTop = true, applyBottom = false, applyRight = true)
+            //applySystemWindows(this, applyLeft = true, applyTop = true, applyBottom = false, applyRight = true)
         }
         with(view.findViewById<View>(android.R.id.list_container)) {
-            applySystemWindows(this, applyLeft = true, applyTop = false, applyBottom = true, applyRight = true)
+            //applySystemWindows(this, applyLeft = true, applyTop = false, applyBottom = true, applyRight = true)
         }
     }
 
@@ -89,7 +87,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     private fun onMenuItemClicked(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_libraries -> {
-            findNavController().navigate(R.id.action_settingsFragment_to_librariesFragment)
+           // findNavController().navigate(R.id.action_settingsFragment_to_librariesFragment)
             true
         }
         else -> false

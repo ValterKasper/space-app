@@ -1,4 +1,4 @@
-package sk.kasper.space.analytics
+package sk.kasper.ui_common.analytics
 
 import com.google.firebase.analytics.FirebaseAnalytics
 import timber.log.Timber

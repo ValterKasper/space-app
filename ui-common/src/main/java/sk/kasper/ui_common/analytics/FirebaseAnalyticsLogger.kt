@@ -1,4 +1,4 @@
-package sk.kasper.space.analytics
+package sk.kasper.ui_common.analytics
 
 import android.content.Context
 import android.os.Bundle

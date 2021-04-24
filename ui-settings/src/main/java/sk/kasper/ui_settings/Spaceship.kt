@@ -1,4 +1,4 @@
-package sk.kasper.ui_spaceship
+package sk.kasper.ui_settings
 
 import sk.kasper.ui_common.Common
 

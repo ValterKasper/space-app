@@ -11,10 +11,10 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Tag
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.space.R
-import sk.kasper.space.analytics.Analytics
 import sk.kasper.space.utils.FormattedTimeType
 import sk.kasper.space.utils.ObservableViewModel
 import sk.kasper.space.utils.SingleLiveEvent
+import sk.kasper.ui_common.analytics.Analytics
 import timber.log.Timber
 
 class LaunchViewModel @AssistedInject constructor(
@@ -102,7 +102,8 @@ class LaunchViewModel @AssistedInject constructor(
 
                 notifyChange()
 
-                Analytics.log(Analytics.Event.SELECT_CONTENT, hashMapOf(
+                Analytics.log(
+                    Analytics.Event.SELECT_CONTENT, hashMapOf(
                         Analytics.Param.ITEM_ID to launchId.toString(),
                         Analytics.Param.CONTENT_TYPE to (rocketName ?: ""),
                         Analytics.Param.ROCKET_ID to launch.rocketId.toString(),
