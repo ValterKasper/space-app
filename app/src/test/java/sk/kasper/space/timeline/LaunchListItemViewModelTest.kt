@@ -1,15 +1,11 @@
 package sk.kasper.space.timeline
 
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.Month
-import sk.kasper.space.utils.FormattedTimeType
+import sk.kasper.ui_common.utils.FormattedTimeType
 
 
 @RunWith(MockitoJUnitRunner::class)

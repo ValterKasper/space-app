@@ -1,10 +1,9 @@
-package sk.kasper.space.utils
+package sk.kasper.ui_common.utils
 
 import android.content.Context
 import android.graphics.*
 import androidx.core.content.ContextCompat
-import sk.kasper.space.R
-import sk.kasper.ui_common.utils.toPixels
+import sk.kasper.ui_common.R
 
 
 class RoundedSquareLetterProvider(context: Context) {

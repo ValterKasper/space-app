@@ -12,7 +12,7 @@ import sk.kasper.space.databinding.FragmentTimelineLaunchListItemBinding
 import sk.kasper.space.timeline.TimelineListItem.Companion.LABEL_TYPE
 import sk.kasper.space.timeline.TimelineListItem.Companion.LAUNCH_TYPE
 import sk.kasper.space.utils.HorizontalSpaceItemDecoration
-import sk.kasper.space.utils.RoundedSquareLetterProvider
+import sk.kasper.ui_common.utils.RoundedSquareLetterProvider
 import sk.kasper.ui_common.utils.toPixels
 
 

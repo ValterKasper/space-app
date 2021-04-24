@@ -18,8 +18,8 @@ import androidx.navigation.NavDeepLinkBuilder
 import org.threeten.bp.Duration
 import sk.kasper.space.R
 import sk.kasper.space.launchdetail.LaunchFragmentArgs
-import sk.kasper.space.utils.RoundedSquareLetterProvider
-import sk.kasper.space.utils.RoundedSquareTransformation
+import sk.kasper.ui_common.utils.RoundedSquareLetterProvider
+import sk.kasper.ui_common.utils.RoundedSquareTransformation
 import sk.kasper.space.utils.rocketIdToDrawableRes
 import sk.kasper.space.utils.toTimeStamp
 import sk.kasper.ui_common.utils.toPixels

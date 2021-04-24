@@ -11,7 +11,7 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Tag
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.space.R
-import sk.kasper.space.utils.FormattedTimeType
+import sk.kasper.ui_common.utils.FormattedTimeType
 import sk.kasper.space.utils.ObservableViewModel
 import sk.kasper.space.utils.SingleLiveEvent
 import sk.kasper.ui_common.analytics.Analytics

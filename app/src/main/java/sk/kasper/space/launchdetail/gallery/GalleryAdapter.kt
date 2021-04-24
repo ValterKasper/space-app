@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import sk.kasper.domain.model.Photo
 import sk.kasper.space.R
-import sk.kasper.space.utils.RoundedRectangleTransformation
+import sk.kasper.ui_common.utils.RoundedRectangleTransformation
 import sk.kasper.ui_common.utils.toPixels
 
 class GalleryAdapter(val context: Context, val clickListener: PhotoClickListener)

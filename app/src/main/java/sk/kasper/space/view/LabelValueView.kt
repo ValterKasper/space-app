@@ -9,7 +9,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import sk.kasper.space.R
-import sk.kasper.space.utils.FormattedString
+import sk.kasper.ui_common.utils.FormattedString
 import sk.kasper.ui_common.utils.dp
 import sk.kasper.ui_common.utils.toPixels
 import timber.log.Timber

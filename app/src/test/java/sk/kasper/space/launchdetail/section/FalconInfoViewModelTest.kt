@@ -1,23 +1,11 @@
 package sk.kasper.space.launchdetail.section
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
-import sk.kasper.domain.model.ErrorResponse
-import sk.kasper.domain.model.FalconCore
-import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.launchdetail.GetFalconCore
-import sk.kasper.space.R
-import sk.kasper.space.utils.CoroutinesMainDispatcherRule
-import sk.kasper.space.utils.FormattedString
 
 @RunWith(MockitoJUnitRunner::class)
 class FalconInfoViewModelTest {

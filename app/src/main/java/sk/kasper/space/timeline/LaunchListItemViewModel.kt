@@ -9,7 +9,7 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import sk.kasper.domain.model.Tag
 import sk.kasper.space.R
-import sk.kasper.space.utils.FormattedTimeType
+import sk.kasper.ui_common.utils.FormattedTimeType
 import sk.kasper.space.utils.rocketIdToDrawableRes
 
 open class LaunchListItemViewModel(val listener: OnListInteractionListener)

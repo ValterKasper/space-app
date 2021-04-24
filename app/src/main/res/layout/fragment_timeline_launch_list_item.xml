@@ -11,7 +11,7 @@
 
         <variable
             name="provider"
-            type="sk.kasper.space.utils.RoundedSquareLetterProvider"/>
+            type="sk.kasper.ui_common.utils.RoundedSquareLetterProvider" />
 
     </data>
 
