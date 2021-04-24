@@ -16,13 +16,6 @@
             app:popEnterAnim="@anim/enter_right"
             app:popExitAnim="@anim/exit_right"/>
         <action
-            android:id="@+id/action_timelineFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@anim/enter_left"
-            app:exitAnim="@anim/exit_left"
-            app:popEnterAnim="@anim/enter_right"
-            app:popExitAnim="@anim/exit_right"/>
-        <action
             android:id="@+id/action_timelineFragment_to_playgroundFragment"
             app:destination="@id/playgroundFragment"
             app:enterAnim="@anim/enter_left"
@@ -45,13 +38,8 @@
         android:id="@+id/settingsFragment"
         android:name="sk.kasper.ui_settings.SettingsFragment"
         android:label="@string/settings">
-        <action
-            android:id="@+id/action_settingsFragment_to_librariesFragment"
-            app:destination="@id/librariesFragment"
-            app:enterAnim="@anim/enter_left"
-            app:exitAnim="@anim/exit_left"
-            app:popEnterAnim="@anim/enter_right"
-            app:popExitAnim="@anim/exit_right"/>
+        <deepLink
+            app:uri="spaceapp://settings" />
     </fragment>
     <fragment
         android:id="@+id/photoPagerFragment"
@@ -64,7 +52,9 @@
     <fragment
         android:id="@+id/librariesFragment"
         android:name="sk.kasper.space.about.LibrariesFragment"
-        android:label="@string/libraries" />
+        android:label="@string/libraries">
+        <deepLink app:uri="spaceapp://libraries" />
+    </fragment>
     <fragment
         android:id="@+id/playgroundFragment"
         android:name="sk.kasper.space.playground.PlaygroundFragment"

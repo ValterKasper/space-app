@@ -30,7 +30,12 @@ import sk.kasper.space.launchdetail.gallery.GalleryAdapter
 import sk.kasper.space.launchdetail.gallery.PhotoPagerData
 import sk.kasper.space.launchdetail.section.*
 import sk.kasper.space.timeline.TagAdapter
-import sk.kasper.space.utils.*
+import sk.kasper.space.utils.HorizontalSpaceItemDecoration
+import sk.kasper.space.utils.provideViewModel
+import sk.kasper.ui_common.utils.doOnApplyWindowInsets
+import sk.kasper.ui_common.utils.dp
+import sk.kasper.ui_common.utils.getThemeColor
+import sk.kasper.ui_common.utils.toPixels
 import timber.log.Timber
 import javax.inject.Inject
 

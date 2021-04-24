@@ -1,4 +1,4 @@
-package sk.kasper.space.utils
+package sk.kasper.ui_common.utils
 
 import android.content.Context
 import android.content.res.Configuration
@@ -8,6 +8,8 @@ import android.util.TypedValue
 import android.view.View
 import android.view.WindowInsets
 import androidx.annotation.ColorInt
+import androidx.navigation.NavOptions
+import sk.kasper.ui_common.R
 
 
 fun Int.toPixels(context: Context): Int = context.resources.getDimensionPixelSize(this)
@@ -48,6 +50,15 @@ fun View.doOnApplyWindowInsets(f: View.(WindowInsets, InitialPadding) -> Unit) {
     }
     // request some insets
     requestApplyInsetsWhenAttached()
+}
+
+fun createSlideAnimNavOptions(): NavOptions {
+    return NavOptions.Builder()
+        .setEnterAnim(R.anim.enter_left)
+        .setExitAnim(R.anim.exit_left)
+        .setPopEnterAnim(R.anim.enter_right)
+        .setPopExitAnim(R.anim.exit_right)
+        .build()
 }
 
 data class InitialPadding(val left: Int, val top: Int,

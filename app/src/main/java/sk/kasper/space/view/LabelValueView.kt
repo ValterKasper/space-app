@@ -10,8 +10,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import sk.kasper.space.R
 import sk.kasper.space.utils.FormattedString
-import sk.kasper.space.utils.dp
-import sk.kasper.space.utils.toPixels
+import sk.kasper.ui_common.utils.dp
+import sk.kasper.ui_common.utils.toPixels
 import timber.log.Timber
 
 @BindingAdapter("label")

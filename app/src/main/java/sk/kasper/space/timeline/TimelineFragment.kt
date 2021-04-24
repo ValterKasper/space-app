@@ -1,5 +1,6 @@
 package sk.kasper.space.timeline
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -20,6 +21,7 @@ import sk.kasper.space.timeline.filter.TimelineFilterItemsAdapter
 import sk.kasper.space.timeline.filter.TimelineFilterSpecModel
 import sk.kasper.space.timeline.filter.TimelineFilterViewModel
 import sk.kasper.space.utils.provideViewModel
+import sk.kasper.ui_common.utils.createSlideAnimNavOptions
 import javax.inject.Inject
 
 
@@ -84,7 +86,7 @@ class TimelineFragment : BaseFragment() {
             true
         }
         R.id.menu_settings -> {
-            findNavController().navigate(R.id.action_timelineFragment_to_settingsFragment)
+            findNavController().navigate(Uri.parse("spaceapp://settings"), createSlideAnimNavOptions())
             true
         }
         R.id.menu_playground -> {

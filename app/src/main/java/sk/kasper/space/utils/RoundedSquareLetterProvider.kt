@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import androidx.core.content.ContextCompat
 import sk.kasper.space.R
+import sk.kasper.ui_common.utils.toPixels
 
 
 class RoundedSquareLetterProvider(context: Context) {

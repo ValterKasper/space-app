@@ -24,6 +24,8 @@ import org.threeten.bp.ZoneId
 import sk.kasper.domain.model.Tag
 import sk.kasper.space.R
 import sk.kasper.space.timeline.TagAdapter
+import sk.kasper.ui_common.utils.dp
+import sk.kasper.ui_common.utils.toPixels
 import java.util.*
 
 
@@ -171,33 +173,4 @@ fun setElevationWithOverlay(view: View, elevation: Float) {
     val px = elevation.dp(view.context)
     view.elevation = px
     view.background = MaterialShapeDrawable.createWithElevationOverlay(view.context, px)
-}
-
-@BindingAdapter(
-        "paddingLeftSystemWindowInsets",
-        "paddingTopSystemWindowInsets",
-        "paddingRightSystemWindowInsets",
-        "paddingBottomSystemWindowInsets",
-        requireAll = false
-)
-fun applySystemWindows(
-        view: View,
-        applyLeft: Boolean,
-        applyTop: Boolean,
-        applyRight: Boolean,
-        applyBottom: Boolean
-) {
-    view.doOnApplyWindowInsets { insets, padding ->
-        val left = if (applyLeft) insets.systemWindowInsetLeft else 0
-        val top = if (applyTop) insets.systemWindowInsetTop else 0
-        val right = if (applyRight) insets.systemWindowInsetRight else 0
-        val bottom = if (applyBottom) insets.systemWindowInsetBottom else 0
-
-        setPadding(
-                padding.left + left,
-                padding.top + top,
-                padding.right + right,
-                padding.bottom + bottom
-        )
-    }
 }
