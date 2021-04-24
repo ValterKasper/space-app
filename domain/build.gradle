@@ -4,15 +4,15 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp"
-    testImplementation "junit:junit:$junitVersion"
+    implementation libs.kotlin.stdlib.jdk7
+    testImplementation libs.mockito.kotlin
+    implementation libs.dagger.dagger
+    kapt libs.dagger.compiler
+    implementation libs.threetenabp.threetenabp
+    testImplementation libs.junit
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
+    implementation libs.kotlin.coroutines.core
+    implementation libs.kotlin.coroutines.android
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
