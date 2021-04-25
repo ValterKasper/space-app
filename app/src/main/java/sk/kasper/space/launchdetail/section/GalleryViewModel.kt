@@ -13,7 +13,7 @@ import sk.kasper.space.R
 import sk.kasper.space.launchdetail.gallery.GalleryAdapter
 import sk.kasper.space.launchdetail.gallery.PhotoItem
 import sk.kasper.space.launchdetail.gallery.PhotoPagerData
-import sk.kasper.space.utils.SingleLiveEvent
+import sk.kasper.ui_common.utils.SingleLiveEvent
 
 class GalleryViewModel @AssistedInject constructor(
         @Assisted launchId: String,

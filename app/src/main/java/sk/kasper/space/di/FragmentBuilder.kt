@@ -6,7 +6,7 @@ import sk.kasper.space.about.LibrariesFragment
 import sk.kasper.space.launchdetail.LaunchFragment
 import sk.kasper.space.launchdetail.gallery.PhotoPagerFragment
 import sk.kasper.space.playground.PlaygroundFragment
-import sk.kasper.space.timeline.TimelineFragment
+import sk.kasper.ui_timeline.TimelineFragment
 
 
 @Module

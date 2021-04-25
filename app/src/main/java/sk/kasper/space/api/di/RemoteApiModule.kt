@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import sk.kasper.space.BuildConfig
 import sk.kasper.space.api.FakeRemoteApi
 import sk.kasper.space.api.RemoteApi
-import sk.kasper.space.settings.SettingsManager
+import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber
 import javax.inject.Singleton
 

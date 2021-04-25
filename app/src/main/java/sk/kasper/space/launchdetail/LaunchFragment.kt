@@ -22,20 +22,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import sk.kasper.domain.model.LaunchSite
-import sk.kasper.space.BaseFragment
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentLaunchBinding
 import sk.kasper.space.databinding.FragmentLaunchRocketSectionBinding
 import sk.kasper.space.launchdetail.gallery.GalleryAdapter
 import sk.kasper.space.launchdetail.gallery.PhotoPagerData
 import sk.kasper.space.launchdetail.section.*
-import sk.kasper.space.timeline.TagAdapter
-import sk.kasper.space.utils.HorizontalSpaceItemDecoration
-import sk.kasper.space.utils.provideViewModel
-import sk.kasper.ui_common.utils.doOnApplyWindowInsets
-import sk.kasper.ui_common.utils.dp
-import sk.kasper.ui_common.utils.getThemeColor
-import sk.kasper.ui_common.utils.toPixels
+import sk.kasper.ui_common.BaseFragment
+import sk.kasper.ui_common.utils.*
+import sk.kasper.ui_timeline.TagAdapter
 import timber.log.Timber
 import javax.inject.Inject
 

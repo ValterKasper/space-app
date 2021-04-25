@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import sk.kasper.space.databinding.FragmentPhotoBinding
-import sk.kasper.space.utils.provideViewModel
+import sk.kasper.ui_common.utils.provideViewModel
 
 class PhotoFragment : Fragment() {
 

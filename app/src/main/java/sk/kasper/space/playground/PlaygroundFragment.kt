@@ -17,12 +17,12 @@ import kotlinx.coroutines.launch
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.domain.model.Rocket
 import sk.kasper.domain.usecase.timeline.GetTimelineItems
-import sk.kasper.space.BaseFragment
+import sk.kasper.ui_common.BaseFragment
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentPlaygroundBinding
 import sk.kasper.space.notification.LaunchNotificationInfo
 import sk.kasper.space.notification.NotificationsHelper
-import sk.kasper.space.settings.SettingsManager
+import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber
 import javax.inject.Inject
 

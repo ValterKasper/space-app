@@ -164,6 +164,7 @@ dependencies {
     implementation project(':domain')
     implementation project(':ui-common')
     implementation project(':ui-settings')
+    implementation project(':ui-timeline')
 }
 
 apply plugin: 'kotlin-android-extensions'

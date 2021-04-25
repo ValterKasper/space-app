@@ -1,7 +1,7 @@
 package sk.kasper.space.launchdetail.section
 
 import androidx.databinding.Bindable
-import sk.kasper.space.utils.ObservableViewModel
+import sk.kasper.ui_common.utils.ObservableViewModel
 
 abstract class SectionViewModel : ObservableViewModel() {
 

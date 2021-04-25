@@ -3,7 +3,7 @@ package sk.kasper.space.utils
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import sk.kasper.domain.model.Tag
-import sk.kasper.space.timeline.TagAdapter
+import sk.kasper.ui_timeline.TagAdapter
 
 
 @BindingAdapter("tags")

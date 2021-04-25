@@ -8,7 +8,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import sk.kasper.space.R
-import sk.kasper.space.utils.backpress.BackPressManager
+import sk.kasper.ui_common.utils.backpress.BackPressManager
 import javax.inject.Inject
 
 

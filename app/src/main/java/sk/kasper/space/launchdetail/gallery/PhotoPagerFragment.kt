@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
-import sk.kasper.space.BaseFragment
+import sk.kasper.ui_common.BaseFragment
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentPhotoPagerBinding
 

@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import sk.kasper.space.BaseFragment
+import sk.kasper.ui_common.BaseFragment
 import sk.kasper.space.databinding.FragmentLibrariesBinding
 
 class LibrariesFragment: BaseFragment() {

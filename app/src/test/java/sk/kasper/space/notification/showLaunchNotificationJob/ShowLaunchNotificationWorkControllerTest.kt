@@ -1,25 +1,13 @@
 package sk.kasper.space.notification.showLaunchNotificationJob
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.check
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.junit.MockitoJUnitRunner
-import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.Month
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
-import sk.kasper.domain.utils.createLaunch
 import sk.kasper.space.notification.NotificationsHelper
-import sk.kasper.space.settings.SettingsManager
+import sk.kasper.ui_common.settings.SettingsManager
 
 @RunWith(MockitoJUnitRunner::class)
 class ShowLaunchNotificationWorkControllerTest {

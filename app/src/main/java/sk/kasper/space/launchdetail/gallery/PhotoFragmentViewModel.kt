@@ -1,6 +1,6 @@
 package sk.kasper.space.launchdetail.gallery
 
-import sk.kasper.space.utils.ObservableViewModel
+import sk.kasper.ui_common.utils.ObservableViewModel
 
 class PhotoFragmentViewModel(photoItem: PhotoItem): ObservableViewModel() {
 

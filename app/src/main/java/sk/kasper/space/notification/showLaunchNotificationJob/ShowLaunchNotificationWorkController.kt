@@ -5,13 +5,15 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.space.notification.LaunchNotificationInfo
 import sk.kasper.space.notification.NotificationsHelper
-import sk.kasper.space.settings.SettingsManager
+import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber
 
-class ShowLaunchNotificationWorkController(private val getLaunch: GetLaunch,
-                                           private val notificationsHelper: NotificationsHelper,
-                                           private val currentDateTime: LocalDateTime,
-                                           private val settingsManager: SettingsManager) {
+class ShowLaunchNotificationWorkController(
+    private val getLaunch: GetLaunch,
+    private val notificationsHelper: NotificationsHelper,
+    private val currentDateTime: LocalDateTime,
+    private val settingsManager: SettingsManager
+) {
 
     suspend fun doWork(launchId: String) {
         if (!settingsManager.showLaunchNotifications) {

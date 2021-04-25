@@ -10,18 +10,23 @@ import sk.kasper.space.api.di.RemoteApiModule
 import sk.kasper.space.database.di.DatabaseModule
 import sk.kasper.space.mainactivity.di.MainActivityModule
 import sk.kasper.space.work.WorkerBindingModule
+import sk.kasper.ui_timeline.di.AssistedInjectTimelineModule
 import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = arrayOf(
+@Component(
+    modules = arrayOf(
         AndroidSupportInjectionModule::class,
         MainActivityModule::class,
         AppModule::class,
         AssistedInjectModule::class,
+        AssistedInjectTimelineModule::class,
         WorkerBindingModule::class,
         RemoteApiModule::class,
-        DatabaseModule::class))
+        DatabaseModule::class
+    )
+)
 interface AppComponent {
 
     @Component.Builder

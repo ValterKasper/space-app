@@ -17,8 +17,8 @@ import sk.kasper.space.di.AppComponent
 import sk.kasper.space.di.AppModule
 import sk.kasper.space.di.DaggerAppComponent
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
-import sk.kasper.space.settings.SettingKey
-import sk.kasper.space.settings.SettingsManager
+import sk.kasper.ui_common.settings.SettingKey
+import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.space.sync.SyncWorker
 import sk.kasper.ui_common.analytics.Analytics
 import sk.kasper.ui_common.analytics.FirebaseAnalyticsLogger

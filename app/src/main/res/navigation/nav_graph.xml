@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/timelineFragment"
-        android:name="sk.kasper.space.timeline.TimelineFragment"
+        android:name="sk.kasper.ui_timeline.TimelineFragment"
         android:label="@string/app_name">
         <action
             android:id="@+id/action_timelineFragment_to_launchFragment"
@@ -33,6 +33,7 @@
         <action
             android:id="@+id/action_launchFragment_to_photoPagerFragment"
             app:destination="@id/photoPagerFragment" />
+        <deepLink app:uri="spaceapp://launch/{launchId}" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -58,6 +59,8 @@
     <fragment
         android:id="@+id/playgroundFragment"
         android:name="sk.kasper.space.playground.PlaygroundFragment"
-        android:label="Playground" />
+        android:label="Playground">
+        <deepLink app:uri="spaceapp://playground" />
+    </fragment>
 
 </navigation>

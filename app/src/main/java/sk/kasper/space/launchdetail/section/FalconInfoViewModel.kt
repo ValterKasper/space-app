@@ -11,8 +11,8 @@ import sk.kasper.domain.model.FalconCore
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.launchdetail.GetFalconCore
 import sk.kasper.space.R
-import sk.kasper.space.utils.ObservableViewModel
 import sk.kasper.ui_common.utils.FormattedString
+import sk.kasper.ui_common.utils.ObservableViewModel
 
 class FalconInfoViewModel @AssistedInject constructor(
         @Assisted launchId: String,

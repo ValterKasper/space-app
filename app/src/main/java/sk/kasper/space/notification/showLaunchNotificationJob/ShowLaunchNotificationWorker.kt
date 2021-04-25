@@ -7,18 +7,18 @@ import com.squareup.inject.assisted.AssistedInject
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.space.notification.NotificationsHelper
-import sk.kasper.space.settings.SettingsManager
+import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.space.utils.toTimeStamp
 import sk.kasper.space.work.ChildWorkerFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ShowLaunchNotificationWorker @AssistedInject constructor(
-        @Assisted appContext: Context,
-        @Assisted workerParams: WorkerParameters,
-        private val notificationsHelper: NotificationsHelper,
-        private val settingsManager: SettingsManager,
-        private val getLaunch: GetLaunch
+    @Assisted appContext: Context,
+    @Assisted workerParams: WorkerParameters,
+    private val notificationsHelper: NotificationsHelper,
+    private val settingsManager: SettingsManager,
+    private val getLaunch: GetLaunch
 
 ) : CoroutineWorker(appContext, workerParams) {
 

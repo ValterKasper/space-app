@@ -1,0 +1,76 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk buildConfig.compileSdk
+
+    defaultConfig {
+        minSdk buildConfig.minSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding = true
+    }
+}
+
+dependencies {
+    implementation project(":ui-common")
+    implementation project(":domain")
+    implementation libs.androidx.core
+    implementation libs.androidx.appcompat
+    implementation libs.android.material
+    implementation libs.androidx.navigation.fragment
+    implementation libs.androidx.navigation.ui
+
+    implementation libs.androidx.vectordrawable
+    implementation libs.androidx.drawerlayout
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.swiperefreshlayout
+    implementation libs.androidx.legacy.support
+    implementation libs.kotlin.stdlib.jdk7
+
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.lifecycle.extensions
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.lifecycle.common.java8
+
+    implementation libs.dagger.support
+    kapt libs.dagger.compiler
+    compileOnly libs.dagger.assisted.inject.annotations
+    kapt libs.dagger.assisted.inject.processor
+
+    implementation libs.timber
+    implementation libs.threetenabp.threetenabp
+    testImplementation libs.threetenabp.test
+    implementation libs.picasso
+    implementation libs.androidx.recyclerview
+
+    implementation libs.kotlin.coroutines.core
+    implementation libs.kotlin.coroutines.android
+    implementation libs.kotlin.coroutines.test
+
+    testImplementation libs.junit
+    testImplementation libs.androidx.coretesting
+    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation libs.androidx.test.espresso.core
+    testImplementation libs.mockito.kotlin
+}
