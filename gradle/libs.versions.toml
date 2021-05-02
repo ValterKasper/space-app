@@ -41,9 +41,6 @@ androidx-compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "com
 androidx-coretesting = "androidx.arch.core:core-testing:2.1.0"
 
 androidx-lifecycle-common-java8 = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-androidx-lifecycle-extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-androidx-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
-androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
 androidx-navigation-args-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }

@@ -108,9 +108,6 @@ dependencies {
     implementation libs.androidx.vectordrawable
     implementation libs.androidx.recyclerview
 
-    implementation libs.androidx.lifecycle.runtime
-    implementation libs.androidx.lifecycle.extensions
-    implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.lifecycle.common.java8
 
     implementation libs.androidx.room.ktx

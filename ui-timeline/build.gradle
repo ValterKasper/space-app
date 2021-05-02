@@ -51,11 +51,6 @@ dependencies {
     implementation libs.androidx.swiperefreshlayout
     implementation libs.androidx.recyclerview
 
-    implementation libs.androidx.lifecycle.runtime
-    implementation libs.androidx.lifecycle.extensions
-    implementation libs.androidx.lifecycle.viewmodel
-    implementation libs.androidx.lifecycle.common.java8
-
     implementation libs.dagger.support
     kapt libs.dagger.compiler
     compileOnly libs.dagger.assisted.inject.annotations

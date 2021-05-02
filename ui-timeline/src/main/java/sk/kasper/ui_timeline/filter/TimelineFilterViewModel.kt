@@ -2,15 +2,15 @@ package sk.kasper.ui_timeline.filter
 
 import android.view.View
 import androidx.databinding.ObservableInt
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.ui_timeline.R
 
 class TimelineFilterViewModel(private val timelineFilterSpecModel: TimelineFilterSpecModel)
     : ViewModel(), FilterSelectionListener {
 
-    val filterItems: MutableLiveData<List<FilterItem>> = MutableLiveData()
+    val filterItems: MutableStateFlow<List<FilterItem>> = MutableStateFlow(emptyList())
 
     val clearButtonVisibility: ObservableInt = ObservableInt(View.GONE)
 

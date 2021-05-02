@@ -1,10 +1,11 @@
 package sk.kasper.ui_timeline
 
 import androidx.databinding.Bindable
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
@@ -17,7 +18,6 @@ import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.utils.ObservableViewModel
-import sk.kasper.ui_common.utils.SingleLiveEvent
 import sk.kasper.ui_timeline.filter.TimelineFilterSpecModel
 import timber.log.Timber
 
@@ -28,12 +28,13 @@ open class TimelineViewModel @AssistedInject constructor(
     @Assisted private val timelineFilterSpecModel: TimelineFilterSpecModel
 ) : ObservableViewModel(), LaunchListItemViewModel.OnListInteractionListener {
 
-    val timelineItems: MutableLiveData<List<TimelineListItem>> = MutableLiveData()
-    val progressVisible: MutableLiveData<Boolean> = MutableLiveData()
+    val timelineItems: MutableStateFlow<List<TimelineListItem>> = MutableStateFlow(emptyList())
+    val progressVisible: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    val connectionErrorEvent: SingleLiveEvent<Any> = SingleLiveEvent()
-    val showLaunchDetailEvent: SingleLiveEvent<String> = SingleLiveEvent()
-    val showFilterEvent: SingleLiveEvent<Any> = SingleLiveEvent()
+    val connectionErrorEvent: MutableSharedFlow<Unit> = MutableSharedFlow(extraBufferCapacity = 100)
+    val showLaunchDetailEvent: MutableSharedFlow<String> =
+        MutableSharedFlow(extraBufferCapacity = 100)
+    val showFilterEvent: MutableSharedFlow<Unit> = MutableSharedFlow(extraBufferCapacity = 100)
 
     @get:Bindable
     var showNoMatchingLaunches: Boolean = false
@@ -110,7 +111,9 @@ open class TimelineViewModel @AssistedInject constructor(
     }
 
     fun onFilterBarClick() {
-        showFilterEvent.call()
+        viewModelScope.launch {
+            showFilterEvent.emit(Unit)
+        }
     }
 
     fun onRefresh() {
@@ -118,7 +121,7 @@ open class TimelineViewModel @AssistedInject constructor(
             runLongOp {
                 when (refreshTimelineItems.refresh()) {
                     is SuccessResponse -> loadTimeline(timelineFilterSpecModel.value)
-                    is ErrorResponse -> connectionErrorEvent.call()
+                    is ErrorResponse -> connectionErrorEvent.emit(Unit)
                 }
             }
         }
@@ -131,7 +134,9 @@ open class TimelineViewModel @AssistedInject constructor(
     }
 
     override fun onItemClick(item: LaunchListItem) {
-        showLaunchDetailEvent.value = item.id
+        viewModelScope.launch {
+            showLaunchDetailEvent.emit(item.id)
+        }
     }
 
     open fun getCurrentDateTime(): LocalDateTime = LocalDateTime.now()
