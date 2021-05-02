@@ -1,9 +1,9 @@
 package sk.kasper.ui_timeline
 
+import android.view.View
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.viewModelScope
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -18,15 +18,19 @@ import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.utils.ObservableViewModel
+import sk.kasper.ui_timeline.filter.FilterItem
+import sk.kasper.ui_timeline.filter.FilterSelectionListener
 import sk.kasper.ui_timeline.filter.TimelineFilterSpecModel
 import timber.log.Timber
+import javax.inject.Inject
 
-open class TimelineViewModel @AssistedInject constructor(
+open class TimelineViewModel @Inject constructor(
     private val getTimelineItems: GetTimelineItems,
     private val refreshTimelineItems: RefreshTimelineItems,
-    private val settingsManager: SettingsManager,
-    @Assisted private val timelineFilterSpecModel: TimelineFilterSpecModel
-) : ObservableViewModel(), LaunchListItemViewModel.OnListInteractionListener {
+    private val settingsManager: SettingsManager
+) : ObservableViewModel(),
+    LaunchListItemViewModel.OnListInteractionListener,
+    FilterSelectionListener {
 
     val timelineItems: MutableStateFlow<List<TimelineListItem>> = MutableStateFlow(emptyList())
     val progressVisible: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -42,6 +46,12 @@ open class TimelineViewModel @AssistedInject constructor(
     @get:Bindable
     var showRetryToLoadLaunches: Boolean = false
 
+    val filterItems: MutableStateFlow<List<FilterItem>> = MutableStateFlow(emptyList())
+
+    val clearButtonVisibility: ObservableInt = ObservableInt(View.GONE)
+
+    private val timelineFilterSpecModel: TimelineFilterSpecModel = TimelineFilterSpecModel()
+
     init {
         viewModelScope.launch {
             timelineFilterSpecModel.flow.collect {
@@ -49,6 +59,29 @@ open class TimelineViewModel @AssistedInject constructor(
                     loadTimeline(it)
                 }
             }
+        }
+
+        val actualFilterSpec = timelineFilterSpecModel.value
+        filterItems.value = if (actualFilterSpec.filterNotEmpty()) {
+            clearButtonVisibility.set(View.VISIBLE)
+            emptyList<FilterItem>()
+                .plus(FilterItem.HeaderFilterItem(R.string.title_tags))
+                .plus(FilterSpec.ALL_TAGS.map {
+                    FilterItem.TagFilterItem(
+                        it,
+                        actualFilterSpec.tagTypes.contains(it)
+                    )
+                })
+                .plus(FilterItem.HeaderFilterItem(R.string.title_rockets))
+                .plus(FilterSpec.ALL_ROCKETS.map {
+                    FilterItem.RocketFilterItem(
+                        it,
+                        actualFilterSpec.rockets.contains(it)
+                    )
+                })
+        } else {
+            clearButtonVisibility.set(View.GONE)
+            createUnselectedFilterItems()
         }
     }
 
@@ -141,9 +174,60 @@ open class TimelineViewModel @AssistedInject constructor(
 
     open fun getCurrentDateTime(): LocalDateTime = LocalDateTime.now()
 
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(timelineFilterSpecModel: TimelineFilterSpecModel): TimelineViewModel
+    fun onClearAllClick() {
+        timelineFilterSpecModel.value = FilterSpec.EMPTY_FILTER
+        filterItems.value = createUnselectedFilterItems()
+        clearButtonVisibility.set(View.GONE)
+    }
+
+    override fun onTagFilterItemChanged(tagFilterItem: FilterItem.TagFilterItem) {
+        val tagTypes: Set<Long> = createNewTagTypes(tagFilterItem)
+        timelineFilterSpecModel.value = timelineFilterSpecModel.value.copy(tagTypes = tagTypes)
+        updateClearButtonVisibility()
+    }
+
+    override fun onRocketFilterItemChanged(rocketFilterItem: FilterItem.RocketFilterItem) {
+        val rockets: Set<Long> = createNewRockets(rocketFilterItem)
+        timelineFilterSpecModel.value = timelineFilterSpecModel.value.copy(rockets = rockets)
+        updateClearButtonVisibility()
+    }
+
+    private fun updateClearButtonVisibility() {
+        clearButtonVisibility.set(
+            if (timelineFilterSpecModel.value.filterNotEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        )
+    }
+
+    private fun createNewTagTypes(tagFilterItem: FilterItem.TagFilterItem): Set<Long> =
+        if (tagFilterItem.selected) {
+            timelineFilterSpecModel.value.tagTypes.plus(tagFilterItem.tagType)
+        } else {
+            timelineFilterSpecModel.value.tagTypes.minus(tagFilterItem.tagType)
+        }
+
+    private fun createNewRockets(rocketFilterItem: FilterItem.RocketFilterItem): Set<Long> =
+        if (rocketFilterItem.selected) {
+            timelineFilterSpecModel.value.rockets.plus(rocketFilterItem.rocketId)
+        } else {
+            timelineFilterSpecModel.value.rockets.minus(rocketFilterItem.rocketId)
+        }
+
+    private fun createUnselectedFilterTagItems() =
+        FilterSpec.ALL_TAGS.map { FilterItem.TagFilterItem(it, false) }
+
+    private fun createUnselectedFilterRocketItems() =
+        FilterSpec.ALL_ROCKETS.map { FilterItem.RocketFilterItem(it, false) }
+
+    private fun createUnselectedFilterItems(): List<FilterItem> {
+        return emptyList<FilterItem>()
+            .plus(FilterItem.HeaderFilterItem(R.string.title_tags))
+            .plus(createUnselectedFilterTagItems())
+            .plus(FilterItem.HeaderFilterItem(R.string.title_rockets))
+            .plus(createUnselectedFilterRocketItems())
     }
 
 }

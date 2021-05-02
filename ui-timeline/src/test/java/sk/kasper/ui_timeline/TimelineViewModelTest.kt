@@ -1,10 +1,12 @@
 package sk.kasper.ui_timeline
 
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert
 import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Ignore
@@ -15,10 +17,12 @@ import org.mockito.MockitoAnnotations
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
 import sk.kasper.domain.model.FilterSpec
+import sk.kasper.domain.model.Tag
 import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.ui_timeline.filter.FilterItem
 import sk.kasper.ui_timeline.filter.TimelineFilterSpecModel
 import sk.kasper.ui_timeline.utils.CoroutinesMainDispatcherRule
 
@@ -138,6 +142,72 @@ class TimelineViewModelTest {
     @Test
     @Ignore("add test for error")
     fun error_hideProgress() {
+    }
+
+    @Test
+    fun `should show unselected filter items when filter is empty`() {
+        onViewModel(initialModelFilterSpec = FilterSpec.EMPTY_FILTER) {
+            verifyActualFilterItems { values ->
+                Assert.assertTrue(values[0] is FilterItem.HeaderFilterItem)
+                Assert.assertTrue(values[1] is FilterItem.TagFilterItem)
+                Assert.assertFalse((values[1] as FilterItem.TagFilterItem).selected)
+                Assert.assertFalse((values[FilterSpec.ALL_TAGS.size + 2] as FilterItem.RocketFilterItem).selected)
+            }
+
+            MatcherAssert.assertThat(View.GONE, `is`(viewModel.clearButtonVisibility.get()))
+        }
+    }
+
+    @Test
+    fun `should show selected tag filter item when tag is in filter spec`() {
+        onViewModel(initialModelFilterSpec = FilterSpec(tagTypes = setOf(Tag.ISS))) {
+            verifyActualFilterItems { values ->
+                Assert.assertTrue((values[FilterSpec.ALL_TAGS.indexOf(Tag.ISS) + 1] as FilterItem.TagFilterItem).selected)
+            }
+
+            MatcherAssert.assertThat(View.VISIBLE, `is`(viewModel.clearButtonVisibility.get()))
+        }
+    }
+
+    private fun onViewModel(
+        initialModelFilterSpec: FilterSpec,
+        func: TimelineFilterViewModelRobot.() -> Unit
+    ) = TimelineFilterViewModelRobot(initialModelFilterSpec).apply {
+        func()
+    }
+
+    private class TimelineFilterViewModelRobot(initialModelValue: FilterSpec) {
+        // todo fix
+        lateinit var viewModel: TimelineViewModel
+
+        @Mock
+        private lateinit var timelineFilterSpecModel: TimelineFilterSpecModel
+
+        init {
+            MockitoAnnotations.initMocks(this)
+
+            whenever(timelineFilterSpecModel.value).thenReturn(initialModelValue)
+
+            // todo fix
+//            viewModel = TimelineViewModel(timelineFilterSpecModel)
+        }
+
+        fun verifyActualFilterItems(func: (List<FilterItem>) -> Unit) {
+            // todo fix
+            //val list = viewModel.filterItems.value
+            val list = emptyList<FilterItem>()
+
+            Assert.assertNotNull(list)
+
+            list?.let {
+                MatcherAssert.assertThat(filterItemsSize(), `is`(list.size))
+                Assert.assertTrue(list[FilterSpec.ALL_TAGS.size + 1] is FilterItem.HeaderFilterItem)
+                func(list)
+            }
+        }
+
+        fun filterItemsSize() = 1 + 1 + FilterSpec.ALL_ROCKETS.size + FilterSpec.ALL_TAGS.size
+
     }
 
     private infix fun LocalDateTime.plusHours(hours: Long): LocalDateTime {

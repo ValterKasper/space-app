@@ -53,8 +53,6 @@ dependencies {
 
     implementation libs.dagger.support
     kapt libs.dagger.compiler
-    compileOnly libs.dagger.assisted.inject.annotations
-    kapt libs.dagger.assisted.inject.processor
 
     implementation libs.picasso
 

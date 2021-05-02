@@ -2,22 +2,18 @@ package sk.kasper.space.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.lifecycle.ViewModel
 import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import dagger.Module
 import dagger.Provides
-import dagger.multibindings.IntoMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.repository.*
 import sk.kasper.space.database.*
-import sk.kasper.space.playground.PlaygroundViewModel
 import sk.kasper.space.repository.*
 import sk.kasper.space.sync.SyncLaunchesImpl
 import sk.kasper.space.work.AppWorkerFactory
-import sk.kasper.ui_common.viewmodel.di.ViewModelKey
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -88,11 +84,5 @@ class AppModule(val context: Context) {
             .setWorkerFactory(appWorkerFactory)
             .build()
     }
-
-    // todo should be elsewhere
-    @Provides
-    @IntoMap
-    @ViewModelKey(PlaygroundViewModel::class)
-    fun bindPlaygroundViewModel(viewModel: PlaygroundViewModel): ViewModel = viewModel
 
 }

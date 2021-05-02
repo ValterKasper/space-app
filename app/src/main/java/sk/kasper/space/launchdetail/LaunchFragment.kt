@@ -21,6 +21,7 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import provideViewModel
 import sk.kasper.domain.model.LaunchSite
 import sk.kasper.space.R
 import sk.kasper.space.databinding.FragmentLaunchBinding

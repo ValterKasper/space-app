@@ -14,41 +14,23 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
-import sk.kasper.ui_common.utils.provideViewModel
 import sk.kasper.ui_timeline.databinding.FragmentTimelineBinding
 import sk.kasper.ui_timeline.filter.TimelineFilterItemsAdapter
-import sk.kasper.ui_timeline.filter.TimelineFilterSpecModel
-import sk.kasper.ui_timeline.filter.TimelineFilterViewModel
-import javax.inject.Inject
 
 
 class TimelineFragment : BaseFragment() {
 
-    private lateinit var timelineViewModel: TimelineViewModel
-    private lateinit var filterViewModel: TimelineFilterViewModel
+    private val timelineViewModel: TimelineViewModel by viewModels()
 
     private lateinit var binding: FragmentTimelineBinding
 
     private lateinit var timelineFilterItemsAdapter: TimelineFilterItemsAdapter
     private lateinit var timelineItemsAdapter: TimelineItemsAdapter
 
-    @Inject
-    lateinit var timelineViewModelFactory: TimelineViewModel.Factory
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val timelineFilterSpecModel: TimelineFilterSpecModel = provideViewModel()
-
-        timelineViewModel = provideViewModel {
-            timelineViewModelFactory.create(timelineFilterSpecModel)
-        }
-
-        filterViewModel = provideViewModel {
-            TimelineFilterViewModel(timelineFilterSpecModel)
-        }
-
         binding = FragmentTimelineBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -57,7 +39,6 @@ class TimelineFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.timelineViewModel = timelineViewModel
-        binding.filterViewModel = filterViewModel
 
         with(binding.toolbar) {
             inflateMenu(R.menu.menu_timeline)
@@ -73,7 +54,7 @@ class TimelineFragment : BaseFragment() {
         timelineItemsAdapter = TimelineItemsAdapter(requireContext(), timelineViewModel)
         binding.launchesRecyclerView.adapter = timelineItemsAdapter
 
-        timelineFilterItemsAdapter = TimelineFilterItemsAdapter(requireContext(), filterViewModel)
+        timelineFilterItemsAdapter = TimelineFilterItemsAdapter(requireContext(), timelineViewModel)
         binding.filterRecycleView.adapter = timelineFilterItemsAdapter
 
         observeViewModels()
@@ -137,7 +118,7 @@ class TimelineFragment : BaseFragment() {
             }
         }
         lifecycleScope.launchWhenStarted {
-            filterViewModel.filterItems.collect {
+            timelineViewModel.filterItems.collect {
                 timelineFilterItemsAdapter.setFilterItems(it)
             }
         }

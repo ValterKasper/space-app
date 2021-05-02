@@ -3,7 +3,11 @@ package sk.kasper.ui_common
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.createViewModelLazy
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import dagger.android.support.AndroidSupportInjection
 import sk.kasper.ui_common.utils.backpress.BackPressManager
 import sk.kasper.ui_common.utils.backpress.OnBackPressListener
@@ -17,6 +21,11 @@ open class BaseFragment : Fragment(), OnBackPressListener {
 
     @Inject
     lateinit var backPressManager: BackPressManager
+
+    @MainThread
+    inline fun <reified VM : ViewModel> BaseFragment.viewModels(
+        noinline ownerProducer: () -> ViewModelStoreOwner = { this }
+    ) = createViewModelLazy(VM::class, { ownerProducer().viewModelStore }, { viewModelFactory })
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)

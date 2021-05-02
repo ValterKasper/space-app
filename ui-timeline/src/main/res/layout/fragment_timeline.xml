@@ -11,10 +11,6 @@
             name="timelineViewModel"
             type="sk.kasper.ui_timeline.TimelineViewModel" />
 
-        <variable
-            name="filterViewModel"
-            type="sk.kasper.ui_timeline.filter.TimelineFilterViewModel" />
-
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -54,7 +50,7 @@
                         android:layout_height="?actionBarSize"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
-                        android:visibility="@{filterViewModel.clearButtonVisibility}"
+                        android:visibility="@{timelineViewModel.clearButtonVisibility}"
                         android:onClick="@{() -> timelineViewModel.onFilterBarClick()}"
                         app:elevationWithOverlay="@{4}"
                         app:paddingRightSystemWindowInsets="@{ true }"
@@ -83,7 +79,7 @@
                             android:padding="@dimen/padding_normal"
                             android:scaleType="center"
                             android:contentDescription="@string/filter"
-                            android:onClick="@{() -> filterViewModel.onClearAllClick()}"
+                            android:onClick="@{() -> timelineViewModel.onClearAllClick()}"
                             app:srcCompat="@drawable/ic_clear_all" />
 
                     </LinearLayout>
@@ -210,8 +206,8 @@
                     android:layout_gravity="center_vertical|end"
                     android:drawablePadding="8dp"
                     android:text="@string/clear_all"
-                    android:visibility="@{filterViewModel.clearButtonVisibility}"
-                    android:onClick="@{() -> filterViewModel.onClearAllClick()}"
+                    android:visibility="@{timelineViewModel.clearButtonVisibility}"
+                    android:onClick="@{() -> timelineViewModel.onClearAllClick()}"
                     android:drawableEnd="@drawable/ic_clear_all"
                     tools:visibility="visible" />
 
