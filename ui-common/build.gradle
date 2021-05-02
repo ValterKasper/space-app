@@ -33,29 +33,33 @@ android {
 }
 
 dependencies {
-    implementation libs.androidx.core
-    implementation libs.androidx.appcompat
     implementation libs.android.material
+
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core
+
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
     implementation libs.androidx.preference
 
+    implementation platform(libs.google.firebase.bom)
+    implementation libs.google.firebase.analytics
+
+    compileOnly libs.dagger.assisted.inject.annotations
+    implementation libs.dagger.support
+    kapt libs.dagger.android.processor
+    kapt libs.dagger.assisted.inject.processor
+    kapt libs.dagger.compiler
+    kaptAndroidTest libs.dagger.android.processor
+    kaptAndroidTest libs.dagger.compiler
+
+    implementation libs.picasso
+
     implementation libs.prettytime
 
-    implementation platform(libs.firebase.bom)
-    implementation libs.firebase.analytics
-
-    implementation libs.dagger.support
-    kapt libs.dagger.compiler
-    kaptAndroidTest libs.dagger.compiler
-    kapt libs.dagger.android.processor
-    kaptAndroidTest libs.dagger.android.processor
-    compileOnly libs.dagger.assisted.inject.annotations
-    kapt libs.dagger.assisted.inject.processor
-
     implementation libs.timber
-    implementation libs.picasso
+
     implementation libs.threetenabp.threetenabp
 
     testImplementation libs.junit

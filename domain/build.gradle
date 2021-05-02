@@ -1,30 +1,19 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id 'kotlin-kapt'
+}
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation libs.kotlin.stdlib.jdk7
-    testImplementation libs.mockito.kotlin
     implementation libs.dagger.dagger
     kapt libs.dagger.compiler
-    implementation libs.threetenabp.threetenabp
-    testImplementation libs.junit
 
-    implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.coroutines.android
-}
+    implementation libs.kotlin.coroutines.core
+    implementation libs.kotlin.stdlib.jdk7
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+    implementation libs.threetenabp.threetenabp
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
+    testImplementation libs.junit
+    testImplementation libs.mockito.kotlin
 }

@@ -1,4 +1,5 @@
-include ':app', ':domain'
+include ':app'
+include ':domain'
 include ':ui-common'
 include ':ui-settings'
 include ':ui-timeline'

@@ -33,11 +33,15 @@ android {
 }
 
 dependencies {
-    implementation project(":ui-common")
     implementation project(":domain")
-    implementation libs.androidx.core
-    implementation libs.androidx.appcompat
+    implementation project(":ui-common")
+
     implementation libs.android.material
+
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core
+    implementation libs.androidx.legacy.support
+
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
@@ -45,8 +49,7 @@ dependencies {
     implementation libs.androidx.drawerlayout
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.swiperefreshlayout
-    implementation libs.androidx.legacy.support
-    implementation libs.kotlin.stdlib.jdk7
+    implementation libs.androidx.recyclerview
 
     implementation libs.androidx.lifecycle.runtime
     implementation libs.androidx.lifecycle.extensions
@@ -58,19 +61,21 @@ dependencies {
     compileOnly libs.dagger.assisted.inject.annotations
     kapt libs.dagger.assisted.inject.processor
 
+    implementation libs.picasso
+
     implementation libs.timber
+
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test
-    implementation libs.picasso
-    implementation libs.androidx.recyclerview
 
-    implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.coroutines.android
+    implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.coroutines.test
+    implementation libs.kotlin.stdlib.jdk7
 
-    testImplementation libs.junit
-    testImplementation libs.androidx.coretesting
-    androidTestImplementation libs.androidx.test.junit
     androidTestImplementation libs.androidx.test.espresso.core
+    androidTestImplementation libs.androidx.test.junit
+    testImplementation libs.androidx.coretesting
+    testImplementation libs.junit
     testImplementation libs.mockito.kotlin
 }

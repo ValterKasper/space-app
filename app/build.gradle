@@ -1,10 +1,12 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'androidx.navigation.safeargs.kotlin'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.gms.google-services'
+}
 
 android {
     signingConfigs {
@@ -64,7 +66,7 @@ android {
         useIR = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.0.0-beta01'
+        kotlinCompilerExtensionVersion libs.versions.compose.get()
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -89,41 +91,50 @@ androidExtensions {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation(libs.androidx.test.espresso.core)
-    implementation libs.androidx.legacy.support
-    implementation libs.androidx.appcompat
+    implementation project(':domain')
+    implementation project(':ui-common')
+    implementation project(':ui-settings')
+    implementation project(':ui-timeline')
+
+    implementation libs.android.flexbox
     implementation libs.android.material
-    implementation libs.androidx.preference
-    implementation libs.androidx.vectordrawable
+
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core
+
     implementation libs.androidx.cardview
-    implementation libs.androidx.drawerlayout
     implementation libs.androidx.constraintlayout
-    implementation libs.android.play.services.maps
-    implementation libs.kotlin.stdlib.jdk7
+    implementation libs.androidx.drawerlayout
+    implementation libs.androidx.vectordrawable
+    implementation libs.androidx.recyclerview
+
     implementation libs.androidx.lifecycle.runtime
     implementation libs.androidx.lifecycle.extensions
     implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.lifecycle.common.java8
+
+    implementation libs.androidx.room.ktx
     implementation libs.androidx.room.runtime
     kapt libs.androidx.room.compiler
-    implementation libs.androidx.room.ktx
-    implementation libs.androidx.core
 
-    implementation libs.androidx.compose.ui.ui
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
     implementation libs.androidx.compose.foundation
-    implementation libs.androidx.compose.ui.tooling
-    // Material Design
-    implementation libs.androidx.compose.material.material
-    // Material design icons
     implementation libs.androidx.compose.material.icons.core
     implementation libs.androidx.compose.material.icons.extended
+    implementation libs.androidx.compose.material.material
+    implementation libs.androidx.compose.ui.tooling
+    implementation libs.androidx.compose.ui.ui
 
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
-    implementation libs.android.flexbox
+
     implementation libs.androidx.work.runtime
+
+    implementation libs.androidx.legacy.support
+    implementation libs.androidx.preference
+
+    implementation libs.kotlin.stdlib.jdk7
+
+    implementation libs.google.android.play.services.maps
 
     implementation libs.dagger.support
     kapt libs.dagger.compiler
@@ -137,35 +148,31 @@ dependencies {
     implementation libs.retrofit.converter.gson
     implementation libs.okhttp.logging
     implementation libs.okhttp.okhttp
+
     implementation libs.timber
+
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test
-    implementation libs.picasso
-    implementation libs.androidx.recyclerview
-    implementation libs.photoview
-    implementation libs.firebase.crashlytics
 
-    implementation platform(libs.firebase.bom)
-    implementation libs.firebase.analytics
+    implementation libs.picasso
+
+    implementation libs.photoview
+
+    implementation libs.google.firebase.analytics
+    implementation libs.google.firebase.crashlytics
+    implementation platform(libs.google.firebase.bom)
 
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.coroutines.android
     implementation libs.kotlin.coroutines.test
 
-    testImplementation libs.androidx.coretesting
-    testImplementation libs.mockito.kotlin
-    testImplementation libs.junit
-    androidTestUtil libs.androidx.test.orchestrator
-    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.espresso.contrib
+    androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.junit
     androidTestImplementation libs.androidx.test.rules
-    androidTestImplementation libs.androidx.test.espresso.contrib
-
-    implementation project(':domain')
-    implementation project(':ui-common')
-    implementation project(':ui-settings')
-    implementation project(':ui-timeline')
+    androidTestImplementation libs.androidx.test.runner
+    androidTestUtil libs.androidx.test.orchestrator
+    testImplementation libs.androidx.coretesting
+    testImplementation libs.junit
+    testImplementation libs.mockito.kotlin
 }
-
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.google.gms.google-services'
