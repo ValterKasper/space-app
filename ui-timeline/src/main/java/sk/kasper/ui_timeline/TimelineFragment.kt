@@ -16,6 +16,7 @@ import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
 import sk.kasper.ui_timeline.databinding.FragmentTimelineBinding
 import sk.kasper.ui_timeline.filter.TimelineFilterItemsAdapter
+import timber.log.Timber
 
 
 class TimelineFragment : BaseFragment() {
@@ -84,46 +85,49 @@ class TimelineFragment : BaseFragment() {
 
     private fun observeViewModels() {
         lifecycleScope.launchWhenStarted {
-            timelineViewModel.timelineItems.collect {
-                timelineItemsAdapter.setTimelineItems(it)
+            timelineViewModel.state.collect {
+                Timber.d(it.toString())
+                binding.clearFilters.visibility = it.clearButtonVisibility
+                binding.filtersBar.visibility = it.clearButtonVisibility
+                binding.swipeRefresh.isRefreshing = it.progressVisible
+                binding.emptyStateLinearLayout.visibility =
+                    if (it.showNoMatchingLaunches) View.VISIBLE else View.GONE
+                binding.showRetryToLoadLaunches.visibility =
+                    if (it.showRetryToLoadLaunches) View.VISIBLE else View.GONE
+                timelineItemsAdapter.setTimelineItems(it.timelineItems)
+                timelineFilterItemsAdapter.setFilterItems(it.filterItems)
             }
         }
 
         lifecycleScope.launchWhenStarted {
-            timelineViewModel.progressVisible.collect {
-                binding.swipeRefresh.isRefreshing = it
-
-                // todo do something
-                // (activity as MainActivity).setIdle(!it)
+            timelineViewModel.sideEffects.collect {
+                when (it) {
+                    TimelineViewModel.SideEffect.ConnectionError -> {
+                        Snackbar.make(
+                            binding.root,
+                            "Connection error occurred",
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                    TimelineViewModel.SideEffect.ShowFilter -> {
+                        binding.drawerLayout.openDrawer(GravityCompat.END)
+                    }
+                    is TimelineViewModel.SideEffect.ShowLaunchDetail -> {
+                        findNavController().navigate(
+                            Uri.parse("spaceapp://launch/$it"),
+                            createSlideAnimNavOptions()
+                        )
+                    }
+                }
             }
         }
 
-        lifecycleScope.launchWhenStarted {
-            timelineViewModel.connectionErrorEvent.collect {
-                Snackbar.make(binding.root, "Connection error occurred", Snackbar.LENGTH_SHORT)
-                    .show()
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            timelineViewModel.showFilterEvent.collect {
-                binding.drawerLayout.openDrawer(GravityCompat.END)
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            timelineViewModel.showLaunchDetailEvent.collect {
-                findNavController().navigate(
-                    Uri.parse("spaceapp://launch/$it"),
-                    createSlideAnimNavOptions()
-                )
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            timelineViewModel.filterItems.collect {
-                timelineFilterItemsAdapter.setFilterItems(it)
-            }
-        }
+        // todo do something
+        // (activity as MainActivity).setIdle(!it)
     }
 
+    // todo move to state, when is used compose
     override fun onBackPress(): Boolean =
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
             binding.drawerLayout.closeDrawer(GravityCompat.END)

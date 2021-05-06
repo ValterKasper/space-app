@@ -17,7 +17,8 @@ class PhotoFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         viewModel = provideViewModel {
-            val imageRes = requireNotNull(arguments!!.getParcelable<PhotoItem>(KEY_PHOTO_ITEM))
+            val imageRes =
+                requireNotNull(requireArguments().getParcelable<PhotoItem>(KEY_PHOTO_ITEM))
             PhotoFragmentViewModel(imageRes)
         }
     }
