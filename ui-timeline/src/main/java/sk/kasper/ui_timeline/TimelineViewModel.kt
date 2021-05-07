@@ -14,6 +14,7 @@ import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.utils.ObservableViewModel
+import sk.kasper.ui_timeline.TimelineAction.*
 import sk.kasper.ui_timeline.filter.FilterItem
 import sk.kasper.ui_timeline.filter.FilterSelectionListener
 import timber.log.Timber
@@ -89,6 +90,41 @@ open class TimelineViewModel @Inject constructor(
         }
     }
 
+    /** API design testing zone */
+    fun updateState(block: TimelineState.() -> TimelineState) {}
+
+    fun emitSideEffect(sideEffect: SideEffect) {}
+
+    class onAction<A>(val processAction: suspend A.() -> Unit) {}
+
+    class onActionWithState<A>(val processAction: suspend A.(TimelineState) -> Unit) {}
+
+    // takto by mohol vyzerat cely viewModel
+    init {
+        onAction<LoadLaunches> {
+            val listItems = mapToTimeListItem(loadTimeline(filterSpec))
+
+            updateState {
+                copy(timelineItems = listItems)
+            }
+        }
+
+        onActionWithState<RefreshAction> { state ->
+            val listItems = mapToTimeListItem(loadTimeline(state.filterSpec))
+
+            updateState {
+                copy(timelineItems = listItems)
+            }
+        }
+
+        onAction<FilterBarClickAction> {
+            emitSideEffect(SideEffect.ShowFilter)
+        }
+    }
+
+    /** END of API design testing zone */
+
+
     init {
         viewModelScope.launch {
             val initial =
@@ -96,16 +132,16 @@ open class TimelineViewModel @Inject constructor(
             pendingActions
                 .onEach { Timber.d("$it") }
                 .flatMapMerge { action ->
-                    if (action is TimelineAction.LoadLaunches) {
+                    if (action is LoadLaunches) {
                         flow {
                             when (refreshTimelineItems.refresh()) {
                                 is SuccessResponse -> emit(
-                                    TimelineAction.LaunchesLoaded(
+                                    LaunchesLoaded(
                                         loadTimeline(action.filterSpec)
                                     )
                                 )
-                                is ErrorResponse -> TimelineAction.ErrorAction
-                                else -> TimelineAction.ErrorAction
+                                is ErrorResponse -> ErrorAction
+                                else -> ErrorAction
                             }
                         }
                     } else {
@@ -116,35 +152,35 @@ open class TimelineViewModel @Inject constructor(
                     var timelineAction: TimelineAction? = null
                     var sideEffect: SideEffect? = null
                     val state = when (action) {
-                        is TimelineAction.TagFilterItemChangedAction -> {
+                        is TagFilterItemChangedAction -> {
                             val newState = handleTagFilterItemChanged(action, transform.state)
                             timelineAction =
-                                TimelineAction.LoadLaunches(newState.filterSpec, force = false)
+                                LoadLaunches(newState.filterSpec, force = false)
                             newState
                         }
-                        is TimelineAction.RocketFilterItemChangedAction -> {
+                        is RocketFilterItemChangedAction -> {
                             val newState = handleRocketFilterItemChanged(action, transform.state)
                             timelineAction =
-                                TimelineAction.LoadLaunches(newState.filterSpec, force = false)
+                                LoadLaunches(newState.filterSpec, force = false)
                             newState
                         }
-                        is TimelineAction.ClearAllClickAction -> {
+                        is ClearAllClickAction -> {
                             timelineAction =
-                                TimelineAction.LoadLaunches(FilterSpec.EMPTY_FILTER, force = false)
+                                LoadLaunches(FilterSpec.EMPTY_FILTER, force = false)
                             transform.state.copy(
                                 filterSpec = FilterSpec.EMPTY_FILTER,
                                 clearButtonVisibility = View.GONE,
                                 filterItems = createFilterItemsFromFilterSpec(FilterSpec.EMPTY_FILTER)
                             )
                         }
-                        is TimelineAction.RefreshAction -> {
-                            timelineAction = TimelineAction.LoadLaunches(
+                        is RefreshAction -> {
+                            timelineAction = LoadLaunches(
                                 transform.state.filterSpec,
                                 force = action.force
                             )
                             transform.state.copy(progressVisible = action.force)
                         }
-                        is TimelineAction.LaunchesLoaded -> {
+                        is LaunchesLoaded -> {
                             val list = action.launches
                             val filterSpec = transform.state.filterSpec
                             transform.state.copy(
@@ -154,15 +190,15 @@ open class TimelineViewModel @Inject constructor(
                                 progressVisible = false
                             )
                         }
-                        is TimelineAction.FilterBarClickAction -> {
+                        is FilterBarClickAction -> {
                             sideEffect = SideEffect.ShowFilter
                             transform.state
                         }
-                        is TimelineAction.ItemClickedAction -> {
+                        is ItemClickedAction -> {
                             sideEffect = SideEffect.ShowLaunchDetail(action.item.id)
                             transform.state
                         }
-                        is TimelineAction.ErrorAction -> {
+                        is ErrorAction -> {
                             sideEffect = SideEffect.ConnectionError
                             transform.state
                         }
@@ -185,12 +221,12 @@ open class TimelineViewModel @Inject constructor(
 
         viewModelScope.launch {
             // initial action
-            submitAction(TimelineAction.RefreshAction(force = false))
+            submitAction(RefreshAction(force = false))
         }
     }
 
     private fun handleTagFilterItemChanged(
-        action: TimelineAction.TagFilterItemChangedAction,
+        action: TagFilterItemChangedAction,
         oldState: TimelineState
     ): TimelineState {
         val tagTypes = if (action.tagFilterItem.selected) {
@@ -211,7 +247,7 @@ open class TimelineViewModel @Inject constructor(
     }
 
     private fun handleRocketFilterItemChanged(
-        action: TimelineAction.RocketFilterItemChangedAction,
+        action: RocketFilterItemChangedAction,
         oldState: TimelineState
     ): TimelineState {
         val rocketTypes = if (action.rocketFilterItem.selected) {
@@ -303,27 +339,27 @@ open class TimelineViewModel @Inject constructor(
     open fun getCurrentDateTime(): LocalDateTime = LocalDateTime.now()
 
     fun onFilterBarClick() {
-        submitAction(TimelineAction.FilterBarClickAction)
+        submitAction(FilterBarClickAction)
     }
 
     fun onRefresh() {
-        submitAction(TimelineAction.RefreshAction(force = true))
+        submitAction(RefreshAction(force = true))
     }
 
     override fun onItemClick(item: LaunchListItem) {
-        submitAction(TimelineAction.ItemClickedAction(item))
+        submitAction(ItemClickedAction(item))
     }
 
     fun onClearAllClick() {
-        submitAction(TimelineAction.ClearAllClickAction)
+        submitAction(ClearAllClickAction)
     }
 
     override fun onTagFilterItemChanged(tagFilterItem: FilterItem.TagFilterItem) {
-        submitAction(TimelineAction.TagFilterItemChangedAction(tagFilterItem))
+        submitAction(TagFilterItemChangedAction(tagFilterItem))
     }
 
     override fun onRocketFilterItemChanged(rocketFilterItem: FilterItem.RocketFilterItem) {
-        submitAction(TimelineAction.RocketFilterItemChangedAction(rocketFilterItem))
+        submitAction(RocketFilterItemChangedAction(rocketFilterItem))
     }
 
     private fun createUnselectedFilterTagItems() =
