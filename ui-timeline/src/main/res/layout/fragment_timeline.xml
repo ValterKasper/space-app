@@ -156,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/pull_to_refresh_to_try_again"
                         android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceBody1"/>
+                        android:textAppearance="?attr/textAppearanceBody1" />
 
                 </LinearLayout>
 
@@ -164,7 +164,20 @@
 
         </LinearLayout>
 
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/composeView"
+            android:layout_width="@dimen/filter_nav_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="vertical"
+            app:paddingTopSystemWindowInsets="@{ true }"
+            android:background="?android:attr/colorBackground">
+
+
+        </androidx.compose.ui.platform.ComposeView>
+
         <!-- Filter drawer -->
+        <!--
         <LinearLayout
             android:layout_width="@dimen/filter_nav_drawer_width"
             android:layout_height="match_parent"
@@ -226,6 +239,7 @@
                 tools:listitem="@layout/filter_header_list_item"/>
 
         </LinearLayout>
+        -->
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

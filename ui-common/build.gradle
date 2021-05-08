@@ -27,8 +27,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.get()
+    }
     buildFeatures {
         dataBinding = true
+        compose true
     }
 }
 
@@ -37,6 +41,13 @@ dependencies {
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
+
+    implementation libs.androidx.compose.foundation
+    implementation libs.androidx.compose.material.icons.core
+    implementation libs.androidx.compose.material.icons.extended
+    implementation libs.androidx.compose.material.material
+    implementation libs.androidx.compose.ui.tooling
+    implementation libs.androidx.compose.ui.ui
 
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui

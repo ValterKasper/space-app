@@ -90,41 +90,6 @@ open class TimelineViewModel @Inject constructor(
         }
     }
 
-    /** API design testing zone */
-    fun updateState(block: TimelineState.() -> TimelineState) {}
-
-    fun emitSideEffect(sideEffect: SideEffect) {}
-
-    class onAction<A>(val processAction: suspend A.() -> Unit) {}
-
-    class onActionWithState<A>(val processAction: suspend A.(TimelineState) -> Unit) {}
-
-    // takto by mohol vyzerat cely viewModel
-    init {
-        onAction<LoadLaunches> {
-            val listItems = mapToTimeListItem(loadTimeline(filterSpec))
-
-            updateState {
-                copy(timelineItems = listItems)
-            }
-        }
-
-        onActionWithState<RefreshAction> { state ->
-            val listItems = mapToTimeListItem(loadTimeline(state.filterSpec))
-
-            updateState {
-                copy(timelineItems = listItems)
-            }
-        }
-
-        onAction<FilterBarClickAction> {
-            emitSideEffect(SideEffect.ShowFilter)
-        }
-    }
-
-    /** END of API design testing zone */
-
-
     init {
         viewModelScope.launch {
             val initial =
@@ -375,5 +340,39 @@ open class TimelineViewModel @Inject constructor(
             .plus(FilterItem.HeaderFilterItem(R.string.title_rockets))
             .plus(createUnselectedFilterRocketItems())
     }
+
+    /** API design testing zone */
+    fun updateState(block: TimelineState.() -> TimelineState) {}
+
+    fun emitSideEffect(sideEffect: SideEffect) {}
+
+    class onAction<A>(val processAction: suspend A.() -> Unit) {}
+
+    class onActionWithState<A>(val processAction: suspend A.(TimelineState) -> Unit) {}
+
+    // takto by mohol vyzerat cely viewModel
+    init {
+        onAction<LoadLaunches> {
+            val listItems = mapToTimeListItem(loadTimeline(filterSpec))
+
+            updateState {
+                copy(timelineItems = listItems)
+            }
+        }
+
+        onActionWithState<RefreshAction> { state ->
+            val listItems = mapToTimeListItem(loadTimeline(state.filterSpec))
+
+            updateState {
+                copy(timelineItems = listItems)
+            }
+        }
+
+        onAction<FilterBarClickAction> {
+            emitSideEffect(SideEffect.ShowFilter)
+        }
+    }
+
+    /** END of API design testing zone */
 
 }
