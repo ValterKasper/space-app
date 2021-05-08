@@ -45,6 +45,7 @@ open class BaseFragment : Fragment(), OnBackPressListener {
         // todo do without referencing firebase in ui-common
         //FirebaseAnalytics.getInstance(requireContext()).setCurrentScreen(requireActivity(), javaClass.simpleName, javaClass.simpleName)
 
+        // todo handle better and fix it
         view?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     }
