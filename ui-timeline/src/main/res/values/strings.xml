@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="compose_playground">Compose playground</string>
+    <string name="ui_toolkit_playground">UI toolkit playground</string>
+</resources>

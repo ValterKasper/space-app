@@ -91,6 +91,7 @@ dependencies {
     implementation project(':ui-common')
     implementation project(':ui-settings')
     implementation project(':ui-timeline')
+    implementation project(':ui-playground')
 
     implementation libs.android.flexbox
     implementation libs.android.material

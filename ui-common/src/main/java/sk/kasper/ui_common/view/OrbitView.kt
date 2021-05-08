@@ -1,13 +1,13 @@
-package sk.kasper.space.view
+package sk.kasper.ui_common.view
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
-import sk.kasper.space.R
-import sk.kasper.space.utils.CircleTransformation
-import sk.kasper.space.utils.transform
+import sk.kasper.ui_common.R
+import sk.kasper.ui_common.utils.CircleTransformation
+import sk.kasper.ui_common.utils.transform
 
 
 private const val EARTH_ROTATION_SPEED = 25

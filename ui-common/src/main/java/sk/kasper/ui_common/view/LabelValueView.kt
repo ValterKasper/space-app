@@ -1,4 +1,4 @@
-package sk.kasper.space.view
+package sk.kasper.ui_common.view
 
 import android.content.Context
 import android.content.res.Resources
@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
-import sk.kasper.space.R
+import sk.kasper.ui_common.R
 import sk.kasper.ui_common.utils.FormattedString
 import sk.kasper.ui_common.utils.dp
 import sk.kasper.ui_common.utils.toPixels

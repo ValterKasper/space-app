@@ -65,7 +65,8 @@ class TimelineFragment : BaseFragment() {
 
         with(binding.toolbar) {
             inflateMenu(R.menu.menu_timeline)
-            menu.findItem(R.id.menu_playground).isVisible = BuildConfig.DEBUG
+            menu.findItem(R.id.menu_compose_playground).isVisible = BuildConfig.DEBUG
+            menu.findItem(R.id.menu_ui_toolkit_playground).isVisible = BuildConfig.DEBUG
             setOnMenuItemClickListener(::onMenuItemClicked)
             NavigationUI.setupWithNavController(this, findNavController())
         }
@@ -95,9 +96,16 @@ class TimelineFragment : BaseFragment() {
             )
             true
         }
-        R.id.menu_playground -> {
+        R.id.menu_ui_toolkit_playground -> {
             findNavController().navigate(
-                Uri.parse("spaceapp://playground"),
+                Uri.parse("spaceapp://ui_toolkit_playground"),
+                createSlideAnimNavOptions()
+            )
+            true
+        }
+        R.id.menu_compose_playground -> {
+            findNavController().navigate(
+                Uri.parse("spaceapp://compose_playground"),
                 createSlideAnimNavOptions()
             )
             true

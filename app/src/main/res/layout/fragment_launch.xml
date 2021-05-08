@@ -203,11 +203,11 @@
                     android:text="@string/section_orbit"
                     app:visible="@{orbitViewModel.visible}"/>
 
-                <sk.kasper.space.view.OrbitView
+                <sk.kasper.ui_common.view.OrbitView
                     android:layout_width="match_parent"
                     android:layout_height="184dp"
                     app:orbit="@{orbitViewModel.orbit}"
-                    app:visible="@{orbitViewModel.visible}"/>
+                    app:visible="@{orbitViewModel.visible}" />
 
                 <TextView
                     android:layout_width="match_parent"

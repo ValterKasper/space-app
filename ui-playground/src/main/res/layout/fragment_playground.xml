@@ -28,7 +28,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".playground.PlaygroundFragment"
+                tools:context="sk.kasper.ui_playground.UiToolkitPlaygroundFragment"
                 app:paddingBottomSystemWindowInsets="@{ true }">
 
                 <TextView
@@ -90,7 +90,7 @@
                     app:layout_constraintStart_toEndOf="@+id/outlinedButton"
                     app:layout_constraintTop_toBottomOf="@id/mapView" />
 
-                <sk.kasper.space.view.OrbitView
+                <sk.kasper.ui_common.view.OrbitView
                     android:id="@+id/orbitView"
                     android:layout_width="match_parent"
                     android:layout_height="184dp"

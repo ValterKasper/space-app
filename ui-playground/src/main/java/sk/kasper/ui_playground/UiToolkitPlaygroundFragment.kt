@@ -1,4 +1,4 @@
-package sk.kasper.space.playground
+package sk.kasper.ui_playground
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapsInitializer
@@ -14,19 +14,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
-import sk.kasper.domain.model.FilterSpec
-import sk.kasper.domain.model.Rocket
 import sk.kasper.domain.usecase.timeline.GetTimelineItems
-import sk.kasper.space.R
-import sk.kasper.space.databinding.FragmentPlaygroundBinding
-import sk.kasper.space.notification.LaunchNotificationInfo
-import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.ui_playground.databinding.FragmentPlaygroundBinding
 import timber.log.Timber
 import javax.inject.Inject
 
-class PlaygroundFragment : BaseFragment() {
+class UiToolkitPlaygroundFragment : BaseFragment() {
 
     @Inject
     lateinit var settingsManager: SettingsManager
@@ -36,7 +31,11 @@ class PlaygroundFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPlaygroundBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentPlaygroundBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -60,6 +59,7 @@ class PlaygroundFragment : BaseFragment() {
 
         binding.showDemoNotificationButton.setOnClickListener {
             lifecycleScope.launch {
+/*
                 val timelineItems = getTimelineItems.getTimelineItems(FilterSpec(rockets = setOf(Rocket.FALCON_9)))
                 timelineItems.firstOrNull()?.let { rocketLaunch ->
                     NotificationsHelper(requireContext()).showLaunchNotification(LaunchNotificationInfo(
@@ -71,6 +71,7 @@ class PlaygroundFragment : BaseFragment() {
                             rocketLaunch.launchDateTime
                     ))
                 }
+*/
             }
         }
 

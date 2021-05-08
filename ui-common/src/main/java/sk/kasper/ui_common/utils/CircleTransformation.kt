@@ -1,4 +1,4 @@
-package sk.kasper.space.utils
+package sk.kasper.ui_common.utils
 
 import android.graphics.*
 

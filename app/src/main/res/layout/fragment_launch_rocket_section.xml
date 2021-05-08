@@ -33,7 +33,7 @@
             app:visible="@{rocketSectionViewModel.visible}"
             tools:text="@string/section_rocket" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/rocket_name}"
             value="@{rocketSectionViewModel.rocketName}"
             android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{rocketSectionViewModel.visible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/height}"
             value="@{rocketSectionViewModel.height}"
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{rocketSectionViewModel.visible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/diameter}"
             value="@{rocketSectionViewModel.diameter}"
             android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{rocketSectionViewModel.visible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/mass}"
             value="@{rocketSectionViewModel.mass}"
             android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{rocketSectionViewModel.visible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/payload_leo}"
             value="@{rocketSectionViewModel.payloadLeo}"
             android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{rocketSectionViewModel.visible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/payload_gto}"
             value="@{rocketSectionViewModel.payloadGto}"
             android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{rocketSectionViewModel.visible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/thrust}"
             value="@{rocketSectionViewModel.thrust}"
             android:layout_width="wrap_content"
@@ -96,7 +96,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{rocketSectionViewModel.visible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/stages}"
             value="@{rocketSectionViewModel.stages}"
             android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
             android:text="@string/falcon_9_first_stage"
             app:visible="@{falconInfoViewModel.visible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/block_version}"
             value="@{falconInfoViewModel.blockVersion}"
             android:layout_width="wrap_content"
@@ -124,7 +124,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{falconInfoViewModel.blockVersionVisible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/block_status}"
             value="@{falconInfoViewModel.blockStatus}"
             android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{falconInfoViewModel.blockStatusVisible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/landing_type}"
             value="@{falconInfoViewModel.landingType}"
             android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{falconInfoViewModel.landingTypeVisible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/landing_ship}"
             value="@{falconInfoViewModel.landingShip}"
             android:layout_width="wrap_content"
@@ -151,7 +151,7 @@
             android:layout_marginStart="@dimen/padding_normal"
             app:visible="@{falconInfoViewModel.landingShipVisible}" />
 
-        <sk.kasper.space.view.LabelValueView
+        <sk.kasper.ui_common.view.LabelValueView
             label="@{@string/landing_zone}"
             value="@{falconInfoViewModel.landingZone}"
             android:layout_width="wrap_content"

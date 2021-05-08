@@ -10,7 +10,7 @@ import sk.kasper.domain.model.Orbit
 import sk.kasper.domain.usecase.launchdetail.GetOrbit
 import sk.kasper.space.R
 import sk.kasper.ui_common.utils.ObservableViewModel
-import sk.kasper.space.view.OrbitToDraw
+import sk.kasper.ui_common.view.OrbitToDraw
 import timber.log.Timber
 
 class OrbitViewModel @AssistedInject constructor(
