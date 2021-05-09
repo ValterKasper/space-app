@@ -3,6 +3,7 @@ package sk.kasper.space.mainactivity
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // request to be laid out fullscreen
+        WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector

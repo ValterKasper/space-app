@@ -23,7 +23,6 @@ import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_timeline.filter.FilterItem
-import sk.kasper.ui_timeline.filter.TimelineFilterSpecModel
 import sk.kasper.ui_timeline.utils.CoroutinesMainDispatcherRule
 
 private val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)

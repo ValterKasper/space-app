@@ -1,6 +1,5 @@
 package sk.kasper.ui_timeline
 
-import android.view.View
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -24,7 +23,7 @@ import javax.inject.Inject
 data class TimelineState(
     val showNoMatchingLaunches: Boolean = false,
     val showRetryToLoadLaunches: Boolean = false,
-    val clearButtonVisibility: Int = View.GONE,
+    val clearButtonVisible: Boolean = false,
     val filterSpec: FilterSpec = FilterSpec.EMPTY_FILTER,
     val filterItems: List<FilterItem> = emptyList(),
     val timelineItems: List<TimelineListItem> = emptyList(),
@@ -34,7 +33,7 @@ data class TimelineState(
         val count = filterItems
             .filterIsInstance<FilterItem.TagFilterItem>()
             .count(FilterItem.TagFilterItem::selected)
-        return "TIs = ${timelineItems.size}, filterSpec = ${filterSpec}, clearButtonVisibility = ${clearButtonVisibility}, progress = ${progressVisible}, selected = $count"
+        return "TIs = ${timelineItems.size}, filterSpec = ${filterSpec}, clearButtonVisibility = ${clearButtonVisible}, progress = ${progressVisible}, selected = $count"
     }
 }
 
@@ -134,7 +133,7 @@ open class TimelineViewModel @Inject constructor(
                                 LoadLaunches(FilterSpec.EMPTY_FILTER, force = false)
                             transform.state.copy(
                                 filterSpec = FilterSpec.EMPTY_FILTER,
-                                clearButtonVisibility = View.GONE,
+                                clearButtonVisible = false,
                                 filterItems = createFilterItemsFromFilterSpec(FilterSpec.EMPTY_FILTER)
                             )
                         }
@@ -201,12 +200,11 @@ open class TimelineViewModel @Inject constructor(
         }
 
         val filterSpec = oldState.filterSpec.copy(tagTypes = tagTypes)
-        val clearButtonVisibility = if (filterSpec.filterNotEmpty()) View.VISIBLE else View.GONE
 
         return oldState.copy(
             filterSpec = filterSpec,
             progressVisible = true,
-            clearButtonVisibility = clearButtonVisibility,
+            clearButtonVisible = filterSpec.filterNotEmpty(),
             filterItems = createFilterItemsFromFilterSpec(filterSpec)
         )
     }
@@ -222,12 +220,11 @@ open class TimelineViewModel @Inject constructor(
         }
 
         val filterSpec = oldState.filterSpec.copy(rockets = rocketTypes)
-        val clearButtonVisibility = if (filterSpec.filterNotEmpty()) View.VISIBLE else View.GONE
 
         return oldState.copy(
             filterSpec = filterSpec,
             progressVisible = true,
-            clearButtonVisibility = clearButtonVisibility,
+            clearButtonVisible = filterSpec.filterNotEmpty(),
             filterItems = createFilterItemsFromFilterSpec(filterSpec)
         )
     }

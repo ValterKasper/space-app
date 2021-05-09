@@ -1,12 +1,13 @@
 package sk.kasper.ui_common.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Colors
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 private val Cyan500 = Color(0xFF00BCD4)
 private val Cyan700 = Color(0xFF0097A7)
@@ -27,17 +28,32 @@ private val SpaceDarkPalette = darkColors(
         surface = Color.Black,
 )
 
+private val Shapes = Shapes(
+        small = RoundedCornerShape(6.dp),
+        medium = RoundedCornerShape(24.dp),
+        large = CutCornerShape(
+                topStart = 16.dp,
+                topEnd = 16.dp,
+                bottomStart = 16.dp,
+                bottomEnd = 16.dp
+        )
+)
+
+val Shapes.tag: CornerBasedShape
+        get() = RoundedCornerShape(percent = 50)
+
 @Composable
 fun SpaceTheme(
         isDarkTheme: Boolean = isSystemInDarkTheme(),
         colors: Colors? = null,
         content: @Composable () -> Unit
 ) {
-    val myColors = colors ?: if (isDarkTheme) SpaceDarkPalette else SpaceLightPalette
+        val myColors = colors ?: if (isDarkTheme) SpaceDarkPalette else SpaceLightPalette
 
-    MaterialTheme(
-            colors = myColors,
-            content = content,
-            typography = SpaceTypography,
-    )
+        MaterialTheme(
+                content = content,
+                colors = myColors,
+                shapes = Shapes,
+                typography = SpaceTypography,
+        )
 }

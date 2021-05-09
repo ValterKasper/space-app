@@ -12,13 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.findNavController
 import sk.kasper.ui_common.BaseFragment
@@ -26,11 +30,15 @@ import sk.kasper.ui_common.theme.SpaceTheme
 import java.util.*
 
 class ComposePlaygroundFragment : BaseFragment() {
-    enum class Screen(val text: String) {
-        Type("type"),
-        Color("color"),
-        Components("components"),
+
+    enum class PlaygroundTab(val text: String) {
+        TYPE("type"),
+        COLOR("color"),
+        SHAPE("shape"),
+        COMPONENTS("components"),
     }
+
+    private val defaultTab = PlaygroundTab.SHAPE
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,63 +48,13 @@ class ComposePlaygroundFragment : BaseFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 SpaceTheme {
-                    Scaffold(topBar = {
-                        TopAppBar(
-                            elevation = 0.dp,
-                            title = {
-                                Text(
-                                    text = "Compose playground",
-                                    style = MaterialTheme.typography.h6
-                                )
-                            },
-                            navigationIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_arrow_back),
-                                    contentDescription = "back",
-                                    tint = MaterialTheme.colors.onPrimary, // todo try better
-                                    modifier = Modifier
-                                        .clickable(onClick = { findNavController().navigateUp() })
-                                        .padding(horizontal = 16.dp)
-                                )
-                            },
-                            actions = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_tonality),
-                                    contentDescription = "Toggle theme",
-                                    tint = MaterialTheme.colors.onPrimary,
-                                    modifier = Modifier
-                                        .clickable(onClick = { findNavController().navigateUp() })
-                                        .padding(horizontal = 16.dp)
-                                )
-                            }
-                        )
-                    }
-                    ) {
-                        Column {
-                            val selectedScreen: MutableState<Screen> =
-                                remember { mutableStateOf(Screen.Components) }
-                            TabRow(selectedTabIndex = selectedScreen.value.ordinal) {
-                                Screen.values().forEach { screen ->
-                                    Tab(
-                                        modifier = Modifier.height(56.dp),
-                                        selected = selectedScreen.value === screen,
-                                        onClick = { selectedScreen.value = screen },
-                                    ) {
-                                        Text(
-                                            style = MaterialTheme.typography.button,
-                                            text = screen.text.toUpperCase(Locale.getDefault())
-                                        )
-                                    }
-                                }
-                            }
-                            LazyColumn {
-                                item {
-                                    when (selectedScreen.value) {
-                                        Screen.Type -> TypeComposable()
-                                        Screen.Color -> ColorsComposable()
-                                        Screen.Components -> ComponentsComposable()
-                                    }
-                                }
+                    Scaffold(topBar = { PlaygroundTopAppBar() }) {
+                        PlaygroundTabs { screen ->
+                            when (screen) {
+                                PlaygroundTab.TYPE -> TypeScreen()
+                                PlaygroundTab.COLOR -> ColorsScreen()
+                                PlaygroundTab.COMPONENTS -> ComponentsScreen()
+                                PlaygroundTab.SHAPE -> ShapeScreen()
                             }
                         }
                     }
@@ -106,7 +64,69 @@ class ComposePlaygroundFragment : BaseFragment() {
     }
 
     @Composable
-    fun TypeComposable() {
+    private fun PlaygroundTabs(onTabSelected: @Composable (PlaygroundTab) -> Unit) {
+        Column {
+            val selectedPlaygroundTab: MutableState<PlaygroundTab> =
+                remember { mutableStateOf(defaultTab) }
+            TabRow(selectedTabIndex = selectedPlaygroundTab.value.ordinal) {
+                PlaygroundTab.values().forEach { screen ->
+                    Tab(
+                        modifier = Modifier.height(56.dp),
+                        selected = selectedPlaygroundTab.value === screen,
+                        onClick = { selectedPlaygroundTab.value = screen },
+                    ) {
+                        Text(
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.button,
+                            text = screen.text.toUpperCase(Locale.getDefault())
+                        )
+                    }
+                }
+            }
+            LazyColumn {
+                item {
+                    onTabSelected(selectedPlaygroundTab.value)
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun ComposeView.PlaygroundTopAppBar() {
+        TopAppBar(
+            elevation = 0.dp,
+            title = {
+                Text(
+                    text = "Compose playground",
+                    style = MaterialTheme.typography.h6
+                )
+            },
+            navigationIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_arrow_back),
+                    contentDescription = "back",
+                    tint = MaterialTheme.colors.onPrimary, // todo try better
+                    modifier = Modifier
+                        .clickable(onClick = { findNavController().navigateUp() })
+                        .padding(horizontal = 16.dp)
+                )
+            },
+            actions = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_tonality),
+                    contentDescription = "Toggle theme",
+                    tint = MaterialTheme.colors.onPrimary,
+                    modifier = Modifier
+                        .clickable(onClick = { findNavController().navigateUp() })
+                        .padding(horizontal = 16.dp)
+                )
+            }
+        )
+    }
+
+    @Composable
+    fun TypeScreen() {
         listOf(
             "headline1" to MaterialTheme.typography.h1,
             "headline2" to MaterialTheme.typography.h2,
@@ -132,7 +152,7 @@ class ComposePlaygroundFragment : BaseFragment() {
     }
 
     @Composable
-    fun ColorsComposable() {
+    fun ColorsScreen() {
         listOf(
             "primary" to MaterialTheme.colors.primary,
             "primaryVariant" to MaterialTheme.colors.primaryVariant,
@@ -184,7 +204,7 @@ class ComposePlaygroundFragment : BaseFragment() {
     }
 
     @Composable
-    fun ComponentsComposable() {
+    fun ComponentsScreen() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -222,6 +242,56 @@ class ComposePlaygroundFragment : BaseFragment() {
                 ) {
 
                 }
+            }
+        }
+    }
+
+    @Composable
+    fun ShapeScreen() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ShapeDemoSurface(MaterialTheme.shapes.small, "Shape small")
+
+            ShapeDemoSurface(
+                MaterialTheme.shapes.medium,
+                "Shape medium",
+                width = 200.dp,
+                height = 150.dp
+            )
+
+            ShapeDemoSurface(
+                MaterialTheme.shapes.large,
+                "Shape large",
+                width = 300.dp,
+                height = 200.dp
+            )
+        }
+    }
+
+    @Composable
+    private fun ShapeDemoSurface(
+        shape: Shape,
+        description: String,
+        width: Dp = 0.dp,
+        height: Dp = 0.dp
+    ) {
+        Surface(
+            shape = shape,
+            elevation = 8.dp,
+            modifier = Modifier.padding(16.dp),
+            color = MaterialTheme.colors.background
+        ) {
+            Box(
+                modifier = Modifier
+                    .requiredWidthIn(min = width)
+                    .requiredHeightIn(min = height)
+                    .padding(16.dp),
+                contentAlignment = Center
+            ) {
+                Text(text = description, style = MaterialTheme.typography.h5)
             }
         }
     }

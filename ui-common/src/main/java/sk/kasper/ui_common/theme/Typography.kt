@@ -86,3 +86,10 @@ val SpaceTypography = Typography(
         letterSpacing = 1.5.sp
     )
 )
+
+val Typography.section: TextStyle
+    get() = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontFamily = Montserrat,
+        fontSize = 22.sp
+    )

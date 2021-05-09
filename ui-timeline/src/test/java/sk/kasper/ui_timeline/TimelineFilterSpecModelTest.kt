@@ -1,6 +1,5 @@
 package sk.kasper.ui_timeline
 
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
@@ -11,7 +10,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import sk.kasper.domain.model.FilterSpec
-import sk.kasper.ui_timeline.filter.TimelineFilterSpecModel
 
 @RunWith(MockitoJUnitRunner::class)
 class TimelineFilterSpecModelTest {
