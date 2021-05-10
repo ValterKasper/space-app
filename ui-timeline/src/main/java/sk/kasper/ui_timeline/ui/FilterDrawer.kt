@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.*
 import sk.kasper.domain.model.Rocket
 import sk.kasper.domain.model.Tag
 import sk.kasper.ui_common.theme.SpaceTheme
@@ -29,14 +30,16 @@ import java.util.*
 fun FilterDrawer(viewModel: TimelineViewModel) {
     val state by viewModel.state.collectAsState()
     SpaceTheme {
-        Surface(color = MaterialTheme.colors.background) {
-            Column {
-                FilterHeader(state.clearButtonVisible, viewModel::onClearAllClick)
-                FilterContent(
-                    state.filterItems,
-                    viewModel::onTagFilterItemChanged,
-                    viewModel::onRocketFilterItemChanged
-                )
+        ProvideWindowInsets {
+            Surface(color = MaterialTheme.colors.background) {
+                Column {
+                    FilterHeader(state.clearButtonVisible, viewModel::onClearAllClick)
+                    FilterContent(
+                        state.filterItems,
+                        viewModel::onTagFilterItemChanged,
+                        viewModel::onRocketFilterItemChanged
+                    )
+                }
             }
         }
     }
@@ -45,42 +48,49 @@ fun FilterDrawer(viewModel: TimelineViewModel) {
 @Composable
 private fun FilterHeader(clearButtonVisible: Boolean, onClearAllClick: () -> Unit) {
     Surface(elevation = 4.dp) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Box(
             modifier = Modifier
-                .padding(
-                    start = dimensionResource(id = R.dimen.padding_normal),
-                    end = 8.dp,
-                    bottom = 16.dp,
-                )
-                .heightIn(min = 40.dp)
-                .fillMaxWidth()
+                .statusBarsPadding()
+                .navigationBarsPadding(bottom = false, left = false)
         ) {
-            Text(
-                text = stringResource(R.string.filter),
-                style = MaterialTheme.typography.h6,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .weight(1f)
-            )
-            if (clearButtonVisible) {
-                OutlinedButton(
-                    onClick = onClearAllClick,
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colors.secondary)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = stringResource(R.string.clear_all).toUpperCase(
-                                Locale.getDefault()
+                    .padding(
+                        start = dimensionResource(id = R.dimen.padding_normal),
+                        end = 8.dp,
+                        bottom = 8.dp,
+                    )
+                    .heightIn(min = 48.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(R.string.filter),
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier
+                        .weight(1f)
+                )
+                if (clearButtonVisible) {
+                    OutlinedButton(
+                        onClick = onClearAllClick,
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colors.secondary)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = stringResource(R.string.clear_all).toUpperCase(
+                                    Locale.getDefault()
+                                )
                             )
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_clear_all),
-                            contentDescription = null,
-                            modifier = Modifier.padding(start = 4.dp)
-                        )
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_clear_all),
+                                contentDescription = null,
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        }
                     }
                 }
             }
+
         }
     }
 }
@@ -91,7 +101,12 @@ private fun FilterContent(
     onTagCheckChange: (FilterItem.TagFilterItem) -> Unit = {},
     onRocketCheckChange: (FilterItem.RocketFilterItem) -> Unit = {}
 ) {
-    LazyColumn {
+    LazyColumn(
+        contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(
+            top = false,
+            start = false
+        )
+    ) {
         item { Spacer(modifier = Modifier.height(16.dp)) }
         items(filterItems) { filterItem ->
             when (filterItem) {

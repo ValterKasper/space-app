@@ -1,4 +1,5 @@
 [versions]
+accompanist = '0.9.1'
 agp = '7.0.0-alpha15'
 compose = '1.0.0-beta06'
 coroutines = '1.4.3'
@@ -12,7 +13,9 @@ room = '2.2.6'
 threetenabp = '1.2.3'
 
 [libraries]
-accompanist-swiperefresh = "com.google.accompanist:accompanist-swiperefresh:0.9.1"
+accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
+accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 android-flexbox = "com.google.android:flexbox:1.1.0"
 

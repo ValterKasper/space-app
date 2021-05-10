@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -37,9 +35,7 @@
             android:layout_width="@dimen/filter_nav_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:orientation="vertical"
-            app:paddingTopSystemWindowInsets="@{ true }"
-            android:background="?android:attr/colorBackground" />
+            android:orientation="vertical" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

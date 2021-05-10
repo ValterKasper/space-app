@@ -26,6 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.toPaddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.threeten.bp.LocalDateTime
@@ -44,53 +48,58 @@ fun Timeline(viewModel: TimelineViewModel) {
     val state by viewModel.state.collectAsState()
 
     SpaceTheme {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            if (state.clearButtonVisible) {
-                FilterBar(viewModel::onFilterBarClick, viewModel::onClearAllClick)
-            }
-
-            SwipeRefresh(
-                state = rememberSwipeRefreshState(state.progressVisible),
-                onRefresh = viewModel::onRefresh
+        ProvideWindowInsets {
+            Column(
+                modifier = Modifier.fillMaxSize()
             ) {
-                if (state.showNoMatchingLaunches) {
-                    Box(Modifier.fillMaxSize()) {
-                        Text(
-                            text = stringResource(id = R.string.no_matching_launches),
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier
-                                .alpha(0.62f)
-                                .align(Alignment.Center)
-                        )
-                    }
+                if (state.clearButtonVisible) {
+                    FilterBar(viewModel::onFilterBarClick, viewModel::onClearAllClick)
                 }
 
-                if (state.showRetryToLoadLaunches) {
-                    Box(Modifier.fillMaxSize()) {
-                        Column(modifier = Modifier.align(Alignment.Center)) {
+                SwipeRefresh(
+                    state = rememberSwipeRefreshState(state.progressVisible),
+                    onRefresh = viewModel::onRefresh
+                ) {
+                    if (state.showNoMatchingLaunches) {
+                        Box(Modifier.fillMaxSize()) {
                             Text(
-                                text = stringResource(id = R.string.your_connections_is_off),
+                                text = stringResource(id = R.string.no_matching_launches),
                                 style = MaterialTheme.typography.h6,
                                 modifier = Modifier
                                     .alpha(0.62f)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.pull_to_refresh_to_try_again),
-                                style = MaterialTheme.typography.body1,
-                                modifier = Modifier
-                                    .alpha(0.62f)
+                                    .align(Alignment.Center)
                             )
                         }
                     }
-                }
 
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(state.timelineItems) { item ->
-                        when (item) {
-                            is LaunchListItem -> LaunchListItem(item, viewModel::onItemClick)
-                            is LabelListItem -> LabelListItem(item)
+                    if (state.showRetryToLoadLaunches) {
+                        Box(Modifier.fillMaxSize()) {
+                            Column(modifier = Modifier.align(Alignment.Center)) {
+                                Text(
+                                    text = stringResource(id = R.string.your_connections_is_off),
+                                    style = MaterialTheme.typography.h6,
+                                    modifier = Modifier
+                                        .alpha(0.62f)
+                                )
+                                Text(
+                                    text = stringResource(id = R.string.pull_to_refresh_to_try_again),
+                                    style = MaterialTheme.typography.body1,
+                                    modifier = Modifier
+                                        .alpha(0.62f)
+                                )
+                            }
+                        }
+                    }
+
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(top = false)
+                    ) {
+                        items(state.timelineItems) { item ->
+                            when (item) {
+                                is LaunchListItem -> LaunchListItem(item, viewModel::onItemClick)
+                                is LabelListItem -> LabelListItem(item)
+                            }
                         }
                     }
                 }
@@ -108,7 +117,8 @@ private fun FilterBar(onFilterBarClick: () -> Unit = {}, onClearAllClick: () -> 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .requiredHeight(56.dp),
+                .requiredHeight(56.dp)
+                .navigationBarsPadding(bottom = false),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(

@@ -39,6 +39,9 @@ dependencies {
     implementation project(":domain")
     implementation project(":ui-common")
 
+    implementation libs.accompanist.insets
+    implementation libs.accompanist.systemuicontroller
+
     implementation libs.android.material
     implementation libs.android.flexbox
 

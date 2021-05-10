@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation libs.accompanist.insets
+
     implementation libs.android.material
 
     implementation libs.androidx.appcompat

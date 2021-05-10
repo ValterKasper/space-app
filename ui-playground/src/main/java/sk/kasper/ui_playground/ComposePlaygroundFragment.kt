@@ -4,19 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.ComposeView
@@ -25,8 +26,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.findNavController
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsHeight
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.theme.SpaceTheme
+import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import java.util.*
 
 class ComposePlaygroundFragment : BaseFragment() {
@@ -48,13 +55,28 @@ class ComposePlaygroundFragment : BaseFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 SpaceTheme {
-                    Scaffold(topBar = { PlaygroundTopAppBar() }) {
-                        PlaygroundTabs { screen ->
-                            when (screen) {
-                                PlaygroundTab.TYPE -> TypeScreen()
-                                PlaygroundTab.COLOR -> ColorsScreen()
-                                PlaygroundTab.COMPONENTS -> ComponentsScreen()
-                                PlaygroundTab.SHAPE -> ShapeScreen()
+                    ProvideWindowInsets {
+                        val systemUiController = rememberSystemUiController()
+                        SideEffect {
+                            systemUiController.setSystemBarsColor(
+                                color = Color.Transparent,
+                                darkIcons = false
+                            )
+                        }
+
+                        var showInset by remember { mutableStateOf(false) }
+                        if (showInset) {
+                            InsetsScreen { showInset = !showInset }
+                        } else {
+                            Scaffold(topBar = { PlaygroundTopAppBar { showInset = !showInset } }) {
+                                PlaygroundTabs { screen ->
+                                    when (screen) {
+                                        PlaygroundTab.TYPE -> TypeScreen()
+                                        PlaygroundTab.COLOR -> ColorsScreen()
+                                        PlaygroundTab.COMPONENTS -> ComponentsScreen()
+                                        PlaygroundTab.SHAPE -> ShapeScreen()
+                                    }
+                                }
                             }
                         }
                     }
@@ -68,19 +90,27 @@ class ComposePlaygroundFragment : BaseFragment() {
         Column {
             val selectedPlaygroundTab: MutableState<PlaygroundTab> =
                 remember { mutableStateOf(defaultTab) }
-            TabRow(selectedTabIndex = selectedPlaygroundTab.value.ordinal) {
-                PlaygroundTab.values().forEach { screen ->
-                    Tab(
-                        modifier = Modifier.height(56.dp),
-                        selected = selectedPlaygroundTab.value === screen,
-                        onClick = { selectedPlaygroundTab.value = screen },
-                    ) {
-                        Text(
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.button,
-                            text = screen.text.toUpperCase(Locale.getDefault())
-                        )
+            Surface(
+                color = MaterialTheme.colors.primarySurface
+            ) {
+                TabRow(
+                    backgroundColor = Color.Transparent,
+                    modifier = Modifier.navigationBarsPadding(bottom = false),
+                    selectedTabIndex = selectedPlaygroundTab.value.ordinal
+                ) {
+                    PlaygroundTab.values().forEach { screen ->
+                        Tab(
+                            modifier = Modifier.height(56.dp),
+                            selected = selectedPlaygroundTab.value === screen,
+                            onClick = { selectedPlaygroundTab.value = screen },
+                        ) {
+                            Text(
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                style = MaterialTheme.typography.button,
+                                text = screen.text.toUpperCase(Locale.getDefault())
+                            )
+                        }
                     }
                 }
             }
@@ -93,34 +123,39 @@ class ComposePlaygroundFragment : BaseFragment() {
     }
 
     @Composable
-    private fun ComposeView.PlaygroundTopAppBar() {
-        TopAppBar(
+    private fun ComposeView.PlaygroundTopAppBar(onShowInset: () -> Unit = {}) {
+        InsetAwareTopAppBar(
             elevation = 0.dp,
             title = {
                 Text(
                     text = "Compose playground",
-                    style = MaterialTheme.typography.h6
+                    maxLines = 1,
+                    style = MaterialTheme.typography.h6,
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             navigationIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_back),
-                    contentDescription = "back",
-                    tint = MaterialTheme.colors.onPrimary, // todo try better
-                    modifier = Modifier
-                        .clickable(onClick = { findNavController().navigateUp() })
-                        .padding(horizontal = 16.dp)
-                )
+                IconButton(onClick = { findNavController().popBackStack() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_arrow_back),
+                        contentDescription = "back",
+                    )
+                }
             },
             actions = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_tonality),
-                    contentDescription = "Toggle theme",
-                    tint = MaterialTheme.colors.onPrimary,
-                    modifier = Modifier
-                        .clickable(onClick = { findNavController().navigateUp() })
-                        .padding(horizontal = 16.dp)
-                )
+                IconButton(onClick = { findNavController().popBackStack() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_tonality),
+                        contentDescription = "Toggle theme",
+                    )
+                }
+
+                IconButton(onClick = { onShowInset() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_live_tv),
+                        contentDescription = "Insets",
+                    )
+                }
             }
         )
     }
@@ -183,7 +218,11 @@ class ComposePlaygroundFragment : BaseFragment() {
                 color = color,
                 contentColor = contentColor
             ) {
-                Row(modifier = Modifier.padding(8.dp)) {
+                Row(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .navigationBarsPadding(bottom = false)
+                ) {
                     Text(
                         modifier = Modifier
                             .weight(1f)
@@ -201,46 +240,50 @@ class ComposePlaygroundFragment : BaseFragment() {
                 }
             }
         }
+
+        Spacer(modifier = Modifier.navigationBarsHeight())
     }
 
     @Composable
     fun ComponentsScreen() {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            TextButton(onClick = { }) {
-                Text(text = "text".toUpperCase(Locale.getDefault()))
+        Column(Modifier.navigationBarsPadding()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TextButton(onClick = { }) {
+                    Text(text = "text".toUpperCase(Locale.getDefault()))
+                }
+                OutlinedButton(onClick = { }) {
+                    Text(text = "outlined".toUpperCase(Locale.getDefault()))
+                }
+                Button(onClick = { }) {
+                    Text(text = "button".toUpperCase(Locale.getDefault()))
+                }
             }
-            OutlinedButton(onClick = { }) {
-                Text(text = "outlined".toUpperCase(Locale.getDefault()))
-            }
-            Button(onClick = { }) {
-                Text(text = "button".toUpperCase(Locale.getDefault()))
-            }
-        }
 
-        Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-        Surface(
-            elevation = 4.dp, modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
             Surface(
-                elevation = 8.dp, modifier = Modifier
+                elevation = 4.dp, modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
                 Surface(
-                    elevation = 16.dp, modifier = Modifier
+                    elevation = 8.dp, modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                        .height(32.dp)
                 ) {
+                    Surface(
+                        elevation = 16.dp, modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .height(32.dp)
+                    ) {
 
+                    }
                 }
             }
         }
@@ -292,6 +335,50 @@ class ComposePlaygroundFragment : BaseFragment() {
                 contentAlignment = Center
             ) {
                 Text(text = description, style = MaterialTheme.typography.h5)
+            }
+        }
+    }
+
+    @Composable
+    private fun InsetsScreen(onClick: () -> Unit) {
+        Surface(modifier = Modifier
+            .fillMaxSize()
+            .clickable { onClick() }) {
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colors.surface)
+                        .border(4.dp, Color.Blue)
+                        .fillMaxWidth()
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .statusBarsPadding()
+                            .navigationBarsPadding(bottom = false)
+                            .fillMaxWidth()
+                            .requiredHeight(72.dp)
+                            .background(Color.Green)
+                    ) {
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colors.surface)
+                        .border(4.dp, Color.Blue)
+                        .fillMaxWidth()
+                        .align(BottomCenter)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .navigationBarsPadding()
+                            .fillMaxWidth()
+                            .requiredHeight(72.dp)
+                            .background(Color.Green)
+                    ) {
+                    }
+                }
             }
         }
     }
