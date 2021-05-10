@@ -37,10 +37,17 @@ data class TimelineState(
     }
 }
 
+enum class Destination {
+    UI_TOOLKIT_PLAYGROUND,
+    COMPOSE_PLAYGROUND,
+    SETTINGS
+}
+
 sealed class TimelineAction {
     object FilterBarClickAction : TimelineAction()
     object ErrorAction : TimelineAction()
     object ClearAllClickAction : TimelineAction()
+    data class NavigateClickAction(val destination: Destination) : TimelineAction()
     data class RefreshAction(val force: Boolean) : TimelineAction()
     data class LaunchesLoaded(val launches: List<Launch>) : TimelineAction()
     data class LoadLaunches(val filterSpec: FilterSpec, val force: Boolean) : TimelineAction()
@@ -53,7 +60,7 @@ sealed class TimelineAction {
 
 sealed class SideEffect {
     object ConnectionError : SideEffect()
-    data class ShowLaunchDetail(val id: String) : SideEffect()
+    data class NavigateTo(val uriString: String) : SideEffect()
     object ShowFilter : SideEffect()
 }
 
@@ -159,11 +166,21 @@ open class TimelineViewModel @Inject constructor(
                             transform.state
                         }
                         is ItemClickedAction -> {
-                            sideEffect = SideEffect.ShowLaunchDetail(action.item.id)
+                            sideEffect =
+                                SideEffect.NavigateTo("spaceapp://launch/${action.item.id}")
                             transform.state
                         }
                         is ErrorAction -> {
                             sideEffect = SideEffect.ConnectionError
+                            transform.state
+                        }
+                        is NavigateClickAction -> {
+                            val path = when (action.destination) {
+                                Destination.UI_TOOLKIT_PLAYGROUND -> "ui_toolkit_playground"
+                                Destination.COMPOSE_PLAYGROUND -> "compose_playground"
+                                Destination.SETTINGS -> "settings"
+                            }
+                            sideEffect = SideEffect.NavigateTo("spaceapp://$path")
                             transform.state
                         }
                         else -> {
@@ -315,6 +332,10 @@ open class TimelineViewModel @Inject constructor(
 
     fun onClearAllClick() {
         submitAction(ClearAllClickAction)
+    }
+
+    fun navigateClick(destination: Destination) {
+        submitAction(NavigateClickAction(destination))
     }
 
     override fun onTagFilterItemChanged(tagFilterItem: FilterItem.TagFilterItem) {

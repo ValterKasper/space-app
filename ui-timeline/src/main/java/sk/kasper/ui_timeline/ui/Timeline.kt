@@ -6,13 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -36,6 +31,7 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Rocket
 import sk.kasper.domain.model.Tag
 import sk.kasper.ui_common.theme.SpaceTheme
+import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.ui.LaunchDateTime
 import sk.kasper.ui_common.utils.RoundedSquareLetterProvider
 import sk.kasper.ui_timeline.*
@@ -52,6 +48,8 @@ fun Timeline(viewModel: TimelineViewModel) {
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
+                TimelineAppBar(viewModel)
+
                 if (state.clearButtonVisible) {
                     FilterBar(viewModel::onFilterBarClick, viewModel::onClearAllClick)
                 }
@@ -106,6 +104,46 @@ fun Timeline(viewModel: TimelineViewModel) {
             }
         }
     }
+}
+
+@Composable
+private fun TimelineAppBar(viewModel: TimelineViewModel) {
+    InsetAwareTopAppBar(
+        title = {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.h6,
+            )
+        },
+        actions = {
+            IconButton(onClick = { viewModel.onFilterBarClick() }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_action_filter),
+                    contentDescription = stringResource(id = R.string.filter),
+                )
+            }
+            var expanded by remember { mutableStateOf(false) }
+            IconButton(onClick = { expanded = true }) {
+                Icon(
+                    painterResource(id = R.drawable.ic_baseline_more_vert_24),
+                    contentDescription = null
+                )
+            }
+
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                if (BuildConfig.DEBUG) {
+                    DropdownMenuItem(onClick = { viewModel.navigateClick(Destination.UI_TOOLKIT_PLAYGROUND) }) {
+                        Text(stringResource(id = R.string.ui_toolkit_playground))
+                    }
+                    DropdownMenuItem(onClick = { viewModel.navigateClick(Destination.COMPOSE_PLAYGROUND) }) {
+                        Text(stringResource(id = R.string.compose_playground))
+                    }
+                }
+                DropdownMenuItem(onClick = { viewModel.navigateClick(Destination.SETTINGS) }) {
+                    Text(stringResource(id = R.string.settings))
+                }
+            }
+        })
 }
 
 @Composable

@@ -14,15 +14,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                paddingTopSystemWindowInsets="@{ true }"
-                paddingLeftSystemWindowInsets="@{ true }"
-                paddingRightSystemWindowInsets="@{ true }" />
-
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/timelineComposeView"
                 android:layout_width="match_parent"
