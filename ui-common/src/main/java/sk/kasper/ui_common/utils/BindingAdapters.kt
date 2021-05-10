@@ -25,9 +25,9 @@ import java.util.*
 
 
 // objects to avoid allocation
-val launchPrettyTime = PrettyTime()
-val launchFormatTimeParts = mutableListOf<String>()
-val launchDate = Date()
+private val launchPrettyTime = PrettyTime()
+private val launchFormatTimeParts = mutableListOf<String>()
+private val launchDate = Date()
 
 @BindingAdapter(
     value = ["launchDateTime", "prettyTimeVisible", "formattedTimeVisible", "formattedTimeType", "dateConfirmed"],

@@ -173,6 +173,7 @@ open class TimelineViewModel @Inject constructor(
 
                     Transform(state = state, action = timelineAction, sideEffect = sideEffect)
                 }.collect { transform ->
+                    Timber.d("${transform.state}")
                     state.value = transform.state
                     transform.action?.let { action ->
                         submitAction(action)

@@ -12,6 +12,8 @@ room = '2.2.6'
 threetenabp = '1.2.3'
 
 [libraries]
+accompanist-swiperefresh = "com.google.accompanist:accompanist-swiperefresh:0.9.1"
+
 android-flexbox = "com.google.android:flexbox:1.1.0"
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -27,7 +29,6 @@ androidx-legacy-preference = "androidx.legacy:legacy-preference-v14:1.0.0"
 androidx-legacy-support = "androidx.legacy:legacy-support-v4:1.0.0"
 androidx-preference = "androidx.preference:preference-ktx:1.1.1"
 androidx-recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
-androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 androidx-vectordrawable = "androidx.vectordrawable:vectordrawable:1.1.0"
 androidx-work-runtime = "androidx.work:work-runtime-ktx:2.4.0"
 

@@ -10,18 +10,15 @@ class RoundedSquareLetterProvider(context: Context) {
 
     private var size: Int = R.dimen.rocket_icon_size.toPixels(context)
     private var cornerRadius = R.dimen.rounded_corners_radius.toPixels(context).toFloat()
-    private var center: Float
-    private var bounds: Rect
-    private var iconLetterBackgroundPaint: Paint
+    private var center: Float = size.toFloat() / 2
+    private var bounds: Rect = Rect()
+    private var iconLetterBackgroundPaint: Paint = Paint()
     private var textPaint: Paint
 
     init {
-        center = size.toFloat() / 2
-        bounds = Rect()
-
-        iconLetterBackgroundPaint = Paint()
         iconLetterBackgroundPaint.isAntiAlias = true
-        iconLetterBackgroundPaint.color = ContextCompat.getColor(context, R.color.iconLetterBackground)
+        iconLetterBackgroundPaint.color =
+            ContextCompat.getColor(context, R.color.iconLetterBackground)
 
         textPaint = Paint()
         textPaint.color = ContextCompat.getColor(context, R.color.iconLetter)
@@ -36,14 +33,28 @@ class RoundedSquareLetterProvider(context: Context) {
 
         // square
         val canvas = Canvas(bmp)
-        canvas.drawRoundRect(.0f, .0f, size.toFloat(), size.toFloat(), cornerRadius, cornerRadius, iconLetterBackgroundPaint)
+        drawLetterOnCanvas(canvas, letter)
+
+        return bmp
+    }
+
+    fun drawLetterOnCanvas(canvas: Canvas, letter: Char) {
+        canvas.drawRoundRect(
+            .0f,
+            .0f,
+            size.toFloat(),
+            size.toFloat(),
+            cornerRadius,
+            cornerRadius,
+            iconLetterBackgroundPaint
+        )
 
         // letter
         textPaint.getTextBounds(letter.toString(), 0, 1, bounds)
-        canvas.drawText(letter.toUpperCase().toString(), 0, 1, 0 + center, 0 + center
-                + (bounds.bottom - bounds.top) / 2, textPaint)
-
-        return bmp
+        canvas.drawText(
+            letter.toUpperCase().toString(), 0, 1, 0 + center, 0 + center
+                    + (bounds.bottom - bounds.top) / 2, textPaint
+        )
     }
 
 }

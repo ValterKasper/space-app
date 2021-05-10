@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.collect
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
 import sk.kasper.ui_timeline.databinding.FragmentTimelineBinding
-import sk.kasper.ui_timeline.filter.FilterDrawer
-import timber.log.Timber
+import sk.kasper.ui_timeline.ui.FilterDrawer
+import sk.kasper.ui_timeline.ui.Timeline
 
 
 class TimelineFragment : BaseFragment() {
@@ -24,8 +24,6 @@ class TimelineFragment : BaseFragment() {
     private val timelineViewModel: TimelineViewModel by viewModels()
 
     private lateinit var binding: FragmentTimelineBinding
-
-    private lateinit var timelineItemsAdapter: TimelineItemsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +36,6 @@ class TimelineFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.timelineViewModel = timelineViewModel
-
         with(binding.toolbar) {
             inflateMenu(R.menu.menu_timeline)
             menu.findItem(R.id.menu_compose_playground).isVisible = BuildConfig.DEBUG
@@ -47,13 +43,6 @@ class TimelineFragment : BaseFragment() {
             setOnMenuItemClickListener(::onMenuItemClicked)
             NavigationUI.setupWithNavController(this, findNavController())
         }
-
-        binding.swipeRefresh.setOnRefreshListener {
-            timelineViewModel.onRefresh()
-        }
-
-        timelineItemsAdapter = TimelineItemsAdapter(requireContext(), timelineViewModel)
-        binding.launchesRecyclerView.adapter = timelineItemsAdapter
 
         observeViewModels()
     }
@@ -88,23 +77,13 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun observeViewModels() {
-        binding.composeView.setContent {
-            val viewModel: TimelineViewModel by viewModels()
+        val viewModel: TimelineViewModel by viewModels()
+        binding.filterComposeView.setContent {
             FilterDrawer(viewModel)
         }
 
-        lifecycleScope.launchWhenStarted {
-            timelineViewModel.state.collect {
-                Timber.d(it.toString())
-                binding.filtersBar.visibility =
-                    if (it.clearButtonVisible) View.VISIBLE else View.GONE
-                binding.swipeRefresh.isRefreshing = it.progressVisible
-                binding.emptyStateLinearLayout.visibility =
-                    if (it.showNoMatchingLaunches) View.VISIBLE else View.GONE
-                binding.showRetryToLoadLaunches.visibility =
-                    if (it.showRetryToLoadLaunches) View.VISIBLE else View.GONE
-                timelineItemsAdapter.setTimelineItems(it.timelineItems)
-            }
+        binding.timelineComposeView.setContent {
+            Timeline(viewModel)
         }
 
         lifecycleScope.launchWhenStarted {

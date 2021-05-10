@@ -1,4 +1,4 @@
-package sk.kasper.ui_timeline.filter
+package sk.kasper.ui_timeline.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import sk.kasper.domain.model.Rocket
 import sk.kasper.domain.model.Tag
 import sk.kasper.ui_common.theme.SpaceTheme
-import sk.kasper.ui_common.theme.section
 import sk.kasper.ui_timeline.R
-import sk.kasper.ui_timeline.TagComposable
 import sk.kasper.ui_timeline.TimelineViewModel
+import sk.kasper.ui_timeline.filter.FilterItem
+import sk.kasper.ui_timeline.filter.RocketViewModel
 import java.util.*
 
 
@@ -95,25 +95,12 @@ private fun FilterContent(
         item { Spacer(modifier = Modifier.height(16.dp)) }
         items(filterItems) { filterItem ->
             when (filterItem) {
-                is FilterItem.HeaderFilterItem -> {
-                    Box(
-                        modifier = Modifier
-                            .requiredHeightIn(min = 48.dp)
-                            .padding(horizontal = dimensionResource(id = R.dimen.padding_normal)),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        Text(
-                            text = stringResource(filterItem.stringRes),
-                            style = MaterialTheme.typography.section,
-                        )
-                    }
-                }
-                is FilterItem.TagFilterItem -> {
-                    TagFilterCheckbox(filterItem, onTagCheckChange)
-                }
-                is FilterItem.RocketFilterItem -> {
-                    RocketFilterCheckbox(filterItem, onRocketCheckChange)
-                }
+                is FilterItem.HeaderFilterItem -> Section(stringResource(filterItem.stringRes))
+                is FilterItem.TagFilterItem -> TagFilterCheckbox(filterItem, onTagCheckChange)
+                is FilterItem.RocketFilterItem -> RocketFilterCheckbox(
+                    filterItem,
+                    onRocketCheckChange
+                )
             }
         }
     }

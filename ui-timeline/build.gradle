@@ -39,6 +39,8 @@ dependencies {
     implementation project(":domain")
     implementation project(":ui-common")
 
+    implementation libs.accompanist.swiperefresh
+
     implementation libs.android.material
 
     implementation libs.androidx.appcompat
@@ -58,7 +60,6 @@ dependencies {
     implementation libs.androidx.vectordrawable
     implementation libs.androidx.drawerlayout
     implementation libs.androidx.constraintlayout
-    implementation libs.androidx.swiperefreshlayout
     implementation libs.androidx.recyclerview
 
     implementation libs.dagger.support

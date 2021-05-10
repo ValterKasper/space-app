@@ -1,4 +1,4 @@
-package sk.kasper.ui_timeline
+package sk.kasper.ui_timeline.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +14,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import sk.kasper.ui_common.theme.tag
+import sk.kasper.ui_timeline.R
+import sk.kasper.ui_timeline.TagViewModel
 import java.util.*
 
 @Composable
