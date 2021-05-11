@@ -1,7 +1,7 @@
 package sk.kasper.ui_timeline
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
@@ -12,11 +12,10 @@ import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.ui_common.settings.SettingsManager
-import sk.kasper.ui_common.utils.ObservableViewModel
+import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import sk.kasper.ui_timeline.TimelineAction.*
 import sk.kasper.ui_timeline.filter.FilterItem
 import sk.kasper.ui_timeline.filter.FilterSelectionListener
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -44,6 +43,7 @@ enum class Destination {
 }
 
 sealed class TimelineAction {
+    object Init : TimelineAction()
     object FilterBarClickAction : TimelineAction()
     object ErrorAction : TimelineAction()
     object ClearAllClickAction : TimelineAction()
@@ -64,146 +64,106 @@ sealed class SideEffect {
     object ShowFilter : SideEffect()
 }
 
-class Transform(
-    val state: TimelineState,
-    val action: TimelineAction? = null,
-    val sideEffect: SideEffect? = null
-)
-
-class StateChanger(val change: suspend TimelineState.() -> TimelineState)
-
-private suspend fun FlowCollector<StateChanger>.emitState(change: suspend TimelineState.() -> TimelineState) {
-    emit(StateChanger(change))
-}
-
 open class TimelineViewModel @Inject constructor(
     private val getTimelineItems: GetTimelineItems,
     private val refreshTimelineItems: RefreshTimelineItems,
     private val settingsManager: SettingsManager
-) : ObservableViewModel(),
+) : ReducerViewModel<TimelineState, TimelineAction, SideEffect>(TimelineState()),
     LaunchListItemViewModel.OnListInteractionListener,
     FilterSelectionListener {
 
-    val state = MutableStateFlow(TimelineState())
-
-    val sideEffects: MutableSharedFlow<SideEffect> = MutableSharedFlow(extraBufferCapacity = 100)
-
-    private val pendingActions = MutableSharedFlow<TimelineAction>()
-
-    fun submitAction(action: TimelineAction) {
+    init {
         viewModelScope.launch {
-            pendingActions.emit(action)
+            submitAction(Init)
         }
     }
 
-    init {
-        viewModelScope.launch {
-            val initial =
-                Transform(state = TimelineState(filterItems = createUnselectedFilterItems()))
-            pendingActions
-                .onEach { Timber.d("$it") }
-                .flatMapMerge { action ->
-                    if (action is LoadLaunches) {
-                        flow {
-                            when (refreshTimelineItems.refresh()) {
-                                is SuccessResponse -> emit(
-                                    LaunchesLoaded(
-                                        loadTimeline(action.filterSpec)
-                                    )
-                                )
-                                is ErrorResponse -> ErrorAction
-                                else -> ErrorAction
-                            }
-                        }
-                    } else {
-                        flow { emit(action) }
-                    }
+    override fun mapActionToActionFlow(action: TimelineAction) =
+        if (action is LoadLaunches) {
+            flow {
+                when (refreshTimelineItems.refresh()) {
+                    is SuccessResponse -> emit(
+                        LaunchesLoaded(
+                            loadTimeline(action.filterSpec)
+                        )
+                    )
+                    is ErrorResponse -> ErrorAction
+                    else -> ErrorAction
                 }
-                .scan(initial) { transform: Transform, action: TimelineAction ->
-                    var timelineAction: TimelineAction? = null
-                    var sideEffect: SideEffect? = null
-                    val state = when (action) {
-                        is TagFilterItemChangedAction -> {
-                            val newState = handleTagFilterItemChanged(action, transform.state)
-                            timelineAction =
-                                LoadLaunches(newState.filterSpec, force = false)
-                            newState
-                        }
-                        is RocketFilterItemChangedAction -> {
-                            val newState = handleRocketFilterItemChanged(action, transform.state)
-                            timelineAction =
-                                LoadLaunches(newState.filterSpec, force = false)
-                            newState
-                        }
-                        is ClearAllClickAction -> {
-                            timelineAction =
-                                LoadLaunches(FilterSpec.EMPTY_FILTER, force = false)
-                            transform.state.copy(
-                                filterSpec = FilterSpec.EMPTY_FILTER,
-                                clearButtonVisible = false,
-                                filterItems = createFilterItemsFromFilterSpec(FilterSpec.EMPTY_FILTER)
-                            )
-                        }
-                        is RefreshAction -> {
-                            timelineAction = LoadLaunches(
-                                transform.state.filterSpec,
-                                force = action.force
-                            )
-                            transform.state.copy(progressVisible = action.force)
-                        }
-                        is LaunchesLoaded -> {
-                            val list = action.launches
-                            val filterSpec = transform.state.filterSpec
-                            transform.state.copy(
-                                showNoMatchingLaunches = list.isEmpty() && filterSpec.filterNotEmpty(),
-                                showRetryToLoadLaunches = list.isEmpty() && !filterSpec.filterNotEmpty(),
-                                timelineItems = mapToTimeListItem(list),
-                                progressVisible = false
-                            )
-                        }
-                        is FilterBarClickAction -> {
-                            sideEffect = SideEffect.ShowFilter
-                            transform.state
-                        }
-                        is ItemClickedAction -> {
-                            sideEffect =
-                                SideEffect.NavigateTo("spaceapp://launch/${action.item.id}")
-                            transform.state
-                        }
-                        is ErrorAction -> {
-                            sideEffect = SideEffect.ConnectionError
-                            transform.state
-                        }
-                        is NavigateClickAction -> {
-                            val path = when (action.destination) {
-                                Destination.UI_TOOLKIT_PLAYGROUND -> "ui_toolkit_playground"
-                                Destination.COMPOSE_PLAYGROUND -> "compose_playground"
-                                Destination.SETTINGS -> "settings"
-                            }
-                            sideEffect = SideEffect.NavigateTo("spaceapp://$path")
-                            transform.state
-                        }
-                        else -> {
-                            throw IllegalStateException("Unknown action: $action")
-                        }
-                    }
-
-                    Transform(state = state, action = timelineAction, sideEffect = sideEffect)
-                }.collect { transform ->
-                    Timber.d("${transform.state}")
-                    state.value = transform.state
-                    transform.action?.let { action ->
-                        submitAction(action)
-                    }
-                    transform.sideEffect?.let {
-                        sideEffects.emit(it)
-                    }
-                }
+            }
+        } else {
+            super.mapActionToActionFlow(action)
         }
 
-        viewModelScope.launch {
-            // initial action
-            submitAction(RefreshAction(force = false))
+    override fun ScanScope.scan(
+        action: TimelineAction,
+        oldState: TimelineState
+    ): TimelineState {
+        return when (action) {
+            is Init -> {
+                oldState.copy(filterItems = createUnselectedFilterItems())
+            }
+            is TagFilterItemChangedAction -> {
+                val newState = handleTagFilterItemChanged(action, oldState)
+                emitAction(LoadLaunches(newState.filterSpec, force = false))
+                newState
+            }
+            is RocketFilterItemChangedAction -> {
+                val newState = handleRocketFilterItemChanged(action, oldState)
+                emitAction(LoadLaunches(newState.filterSpec, force = false))
+                newState
+            }
+            is ClearAllClickAction -> {
+                emitAction(LoadLaunches(FilterSpec.EMPTY_FILTER, force = false))
+                oldState.copy(
+                    filterSpec = FilterSpec.EMPTY_FILTER,
+                    clearButtonVisible = false,
+                    filterItems = createFilterItemsFromFilterSpec(FilterSpec.EMPTY_FILTER)
+                )
+            }
+            is RefreshAction -> {
+                emitAction(
+                    LoadLaunches(
+                        oldState.filterSpec,
+                        force = action.force
+                    )
+                )
+                oldState.copy(progressVisible = action.force)
+            }
+            is LaunchesLoaded -> {
+                val list = action.launches
+                val filterSpec = oldState.filterSpec
+                oldState.copy(
+                    showNoMatchingLaunches = list.isEmpty() && filterSpec.filterNotEmpty(),
+                    showRetryToLoadLaunches = list.isEmpty() && !filterSpec.filterNotEmpty(),
+                    timelineItems = mapToTimeListItem(list),
+                    progressVisible = false
+                )
+            }
+            is FilterBarClickAction -> {
+                emitSideEffect(SideEffect.ShowFilter)
+                oldState
+            }
+            is ItemClickedAction -> {
+                emitSideEffect(SideEffect.NavigateTo("spaceapp://launch/${action.item.id}"))
+                oldState
+            }
+            is ErrorAction -> {
+                emitSideEffect(SideEffect.ConnectionError)
+                oldState
+            }
+            is NavigateClickAction -> {
+                val path = when (action.destination) {
+                    Destination.UI_TOOLKIT_PLAYGROUND -> "ui_toolkit_playground"
+                    Destination.COMPOSE_PLAYGROUND -> "compose_playground"
+                    Destination.SETTINGS -> "settings"
+                }
+                emitSideEffect(SideEffect.NavigateTo("spaceapp://$path"))
+                oldState
+            }
+            else -> {
+                throw IllegalStateException("Unknown action: $action")
+            }
         }
     }
 
@@ -359,39 +319,5 @@ open class TimelineViewModel @Inject constructor(
             .plus(FilterItem.HeaderFilterItem(R.string.title_rockets))
             .plus(createUnselectedFilterRocketItems())
     }
-
-    /** API design testing zone */
-    fun updateState(block: TimelineState.() -> TimelineState) {}
-
-    fun emitSideEffect(sideEffect: SideEffect) {}
-
-    class onAction<A>(val processAction: suspend A.() -> Unit) {}
-
-    class onActionWithState<A>(val processAction: suspend A.(TimelineState) -> Unit) {}
-
-    // takto by mohol vyzerat cely viewModel
-    init {
-        onAction<LoadLaunches> {
-            val listItems = mapToTimeListItem(loadTimeline(filterSpec))
-
-            updateState {
-                copy(timelineItems = listItems)
-            }
-        }
-
-        onActionWithState<RefreshAction> { state ->
-            val listItems = mapToTimeListItem(loadTimeline(state.filterSpec))
-
-            updateState {
-                copy(timelineItems = listItems)
-            }
-        }
-
-        onAction<FilterBarClickAction> {
-            emitSideEffect(SideEffect.ShowFilter)
-        }
-    }
-
-    /** END of API design testing zone */
 
 }

@@ -40,13 +40,12 @@ class TimelineFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel: TimelineViewModel by viewModels()
         binding.filterComposeView.setContent {
-            FilterDrawer(viewModel)
+            FilterDrawer(timelineViewModel)
         }
 
         binding.timelineComposeView.setContent {
-            Timeline(viewModel)
+            Timeline(timelineViewModel)
         }
 
         // todo do something
