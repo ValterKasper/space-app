@@ -92,6 +92,7 @@ dependencies {
     implementation project(':ui-settings')
     implementation project(':ui-timeline')
     implementation project(':ui-playground')
+    implementation project(':ui-launch')
 
     implementation libs.android.flexbox
     implementation libs.android.material
@@ -142,8 +143,6 @@ dependencies {
     testImplementation libs.threetenabp.test
 
     implementation libs.picasso
-
-    implementation libs.photoview
 
     implementation libs.google.firebase.analytics
     implementation libs.google.firebase.crashlytics

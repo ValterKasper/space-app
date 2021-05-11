@@ -13,7 +13,9 @@ import sk.kasper.domain.repository.*
 import sk.kasper.space.database.*
 import sk.kasper.space.repository.*
 import sk.kasper.space.sync.SyncLaunchesImpl
+import sk.kasper.space.tag.TagMapperImpl
 import sk.kasper.space.work.AppWorkerFactory
+import sk.kasper.ui_common.tag.TagMapper
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -63,14 +65,20 @@ class AppModule(val context: Context) {
     fun providesLaunchRepository(launchRepositoryImpl: LaunchRepositoryImpl): LaunchRepository = launchRepositoryImpl
 
     @Provides
-    fun providesFalconInfoRepository(falconInfoRepositoryImpl: FalconInfoRepositoryImpl): FalconInfoRepository = falconInfoRepositoryImpl
+    fun providesFalconInfoRepository(falconInfoRepositoryImpl: FalconInfoRepositoryImpl): FalconInfoRepository =
+        falconInfoRepositoryImpl
 
     @Provides
-    fun providesLaunchSiteRepository(launchSiteRepositoryImpl: LaunchSiteRepositoryImpl): LaunchSiteRepository = launchSiteRepositoryImpl
+    fun providesLaunchSiteRepository(launchSiteRepositoryImpl: LaunchSiteRepositoryImpl): LaunchSiteRepository =
+        launchSiteRepositoryImpl
 
     @Provides
     @Singleton
     fun providesSyncLaunches(syncLaunchesImpl: SyncLaunchesImpl): SyncLaunches = syncLaunchesImpl
+
+    @Provides
+    @Singleton
+    fun providesTagMapper(tagMapper: TagMapperImpl): TagMapper = tagMapper
 
     @Provides
     @Named("Main")

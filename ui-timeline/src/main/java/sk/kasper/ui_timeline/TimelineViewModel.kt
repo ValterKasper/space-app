@@ -12,6 +12,7 @@ import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.ui_common.tag.TagMapper
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import sk.kasper.ui_timeline.TimelineAction.*
 import sk.kasper.ui_timeline.filter.FilterItem
@@ -67,7 +68,8 @@ sealed class SideEffect {
 open class TimelineViewModel @Inject constructor(
     private val getTimelineItems: GetTimelineItems,
     private val refreshTimelineItems: RefreshTimelineItems,
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
+    private val tagMapper: TagMapper,
 ) : ReducerViewModel<TimelineState, TimelineAction, SideEffect>(TimelineState()),
     LaunchListItemViewModel.OnListInteractionListener,
     FilterSelectionListener {
@@ -172,9 +174,9 @@ open class TimelineViewModel @Inject constructor(
         oldState: TimelineState
     ): TimelineState {
         val tagTypes = if (action.tagFilterItem.selected) {
-            oldState.filterSpec.tagTypes.plus(action.tagFilterItem.tagType)
+            oldState.filterSpec.tagTypes.plus(tagMapper.toDomainTag(action.tagFilterItem.tag))
         } else {
-            oldState.filterSpec.tagTypes.minus(action.tagFilterItem.tagType)
+            oldState.filterSpec.tagTypes.minus(tagMapper.toDomainTag(action.tagFilterItem.tag))
         }
 
         val filterSpec = oldState.filterSpec.copy(tagTypes = tagTypes)
@@ -212,7 +214,7 @@ open class TimelineViewModel @Inject constructor(
             .plus(FilterItem.HeaderFilterItem(R.string.title_tags))
             .plus(FilterSpec.ALL_TAGS.map {
                 FilterItem.TagFilterItem(
-                    it,
+                    tagMapper.toUiTag(it),
                     actualFilterSpec.tagTypes.contains(it)
                 )
             })
@@ -242,7 +244,7 @@ open class TimelineViewModel @Inject constructor(
         list
             .filter { showUnconfirmedLaunches || it.accurateDate }
             .filter { it.launchDateTime.isAfter(todayStartDateTime) }
-            .map { LaunchListItem.fromLaunch(it) }
+            .map { LaunchListItem.fromLaunch(it, tagMapper) }
             .groupBy {
                 when {
                     !it.accurateDate -> LabelListItem.Month(it.launchDateTime.monthValue)
@@ -307,7 +309,7 @@ open class TimelineViewModel @Inject constructor(
     }
 
     private fun createUnselectedFilterTagItems() =
-        FilterSpec.ALL_TAGS.map { FilterItem.TagFilterItem(it, false) }
+        FilterSpec.ALL_TAGS.map { FilterItem.TagFilterItem(tagMapper.toUiTag(it), false) }
 
     private fun createUnselectedFilterRocketItems() =
         FilterSpec.ALL_ROCKETS.map { FilterItem.RocketFilterItem(it, false) }

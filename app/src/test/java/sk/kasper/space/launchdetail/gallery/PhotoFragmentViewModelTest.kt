@@ -1,10 +1,8 @@
 package sk.kasper.space.launchdetail.gallery
 
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
+import sk.kasper.ui_launch.gallery.PhotoFragmentViewModel
 
 @RunWith(MockitoJUnitRunner::class)
 class PhotoFragmentViewModelTest {

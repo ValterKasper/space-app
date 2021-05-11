@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/launchFragment"
-        android:name="sk.kasper.space.launchdetail.LaunchFragment"
+        android:name="sk.kasper.ui_launch.LaunchFragment"
         android:label=" ">
         <argument
             android:name="launchId"
@@ -37,11 +37,11 @@
     </fragment>
     <fragment
         android:id="@+id/photoPagerFragment"
-        android:name="sk.kasper.space.launchdetail.gallery.PhotoPagerFragment"
+        android:name="sk.kasper.ui_launch.gallery.PhotoPagerFragment"
         android:label="PhotoPagerFragment">
         <argument
             android:name="photoPagerData"
-            app:argType="sk.kasper.space.launchdetail.gallery.PhotoPagerData" />
+            app:argType="sk.kasper.ui_launch.gallery.PhotoPagerData" />
     </fragment>
     <fragment
         android:id="@+id/librariesFragment"

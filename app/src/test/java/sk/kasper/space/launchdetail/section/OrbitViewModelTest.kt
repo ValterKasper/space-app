@@ -1,19 +1,13 @@
 package sk.kasper.space.launchdetail.section
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 import sk.kasper.domain.model.Orbit
 import sk.kasper.domain.usecase.launchdetail.GetOrbit
-import sk.kasper.space.utils.CoroutinesMainDispatcherRule
+import sk.kasper.ui_launch.section.OrbitViewModel
 
 @RunWith(MockitoJUnitRunner::class)
 class OrbitViewModelTest {

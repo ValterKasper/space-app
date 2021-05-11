@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.*
 import sk.kasper.domain.model.Rocket
-import sk.kasper.domain.model.Tag
+import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_timeline.R
 import sk.kasper.ui_timeline.TimelineViewModel
@@ -153,7 +153,7 @@ private fun TagFilterCheckbox(
         filterItem.selected,
         { checked -> onTagCheckChange(filterItem.copy(selected = checked)) }
     ) {
-        TagComposable(filterItem.tagType)
+        TagComposable(filterItem.tag)
     }
 }
 
@@ -181,8 +181,8 @@ private fun FilterDrawerPreview() {
     FilterContent(
         listOf(
             FilterItem.HeaderFilterItem(R.string.tags),
-            FilterItem.TagFilterItem(Tag.ISS, true),
-            FilterItem.TagFilterItem(Tag.MARS, false),
+            FilterItem.TagFilterItem(UiTag.ISS, true),
+            FilterItem.TagFilterItem(UiTag.MARS, false),
             FilterItem.HeaderFilterItem(R.string.title_rockets),
             FilterItem.RocketFilterItem(Rocket.ARIANE_5, true),
             FilterItem.RocketFilterItem(Rocket.FALCON_9, false),

@@ -29,7 +29,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Rocket
-import sk.kasper.domain.model.Tag
+import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.ui.LaunchDateTime
@@ -219,7 +219,7 @@ private fun LaunchListItem(item: LaunchListItem, onItemClick: (LaunchListItem) -
             )
             Row(modifier = Modifier.padding(top = 4.dp)) {
                 item.tags.forEach {
-                    TagComposable(tagType = it.type)
+                    TagComposable(tag = it)
                     Spacer(modifier = Modifier.requiredWidth(2.dp))
                 }
             }
@@ -291,7 +291,8 @@ fun LaunchListItemPreview() {
                 rocketName = "Atlas V",
                 accurateDate = true,
                 accurateTime = true,
-                tags = listOf(Tag.CUBE_SAT, Tag.ISS, Tag.MARS).map { Tag("id", it) }),
+                tags = listOf(UiTag.CUBE_SAT, UiTag.ISS, UiTag.MARS)
+            ),
         )
     }
 }

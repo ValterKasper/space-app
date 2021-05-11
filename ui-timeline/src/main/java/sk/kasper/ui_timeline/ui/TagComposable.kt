@@ -13,14 +13,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.tag
 import sk.kasper.ui_timeline.R
-import sk.kasper.ui_timeline.TagViewModel
 import java.util.*
 
 @Composable
-fun TagComposable(tagType: Long) {
-    val tagViewModel = TagViewModel(tagType)
+fun TagComposable(tag: UiTag) {
     Surface(
         shape = MaterialTheme.shapes.tag,
         color = colorResource(id = R.color.tagBackground)
@@ -31,7 +30,7 @@ fun TagComposable(tagType: Long) {
         ) {
             Text(
                 style = MaterialTheme.typography.body2,
-                text = stringResource(tagViewModel.label).capitalize(Locale.getDefault())
+                text = stringResource(tag.label).capitalize(Locale.getDefault())
             )
 
             Spacer(modifier = Modifier.size(6.dp))
@@ -39,7 +38,7 @@ fun TagComposable(tagType: Long) {
             // just circle
             Box(
                 modifier = Modifier
-                    .background(colorResource(id = tagViewModel.color), CircleShape)
+                    .background(colorResource(id = tag.color), CircleShape)
                     .size(dimensionResource(id = R.dimen.launch_tag_circle_size))
             ) {}
         }

@@ -10,6 +10,7 @@ import sk.kasper.space.api.di.RemoteApiModule
 import sk.kasper.space.database.di.DatabaseModule
 import sk.kasper.space.mainactivity.di.MainActivityModule
 import sk.kasper.space.work.WorkerBindingModule
+import sk.kasper.ui_launch.di.LaunchAssistedInjectModule
 import sk.kasper.ui_timeline.di.TimelineViewModelsBindingModule
 import javax.inject.Singleton
 
@@ -20,6 +21,7 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         MainActivityModule::class,
         AppModule::class,
+        LaunchAssistedInjectModule::class,
         AssistedInjectModule::class,
         WorkerBindingModule::class,
         TimelineViewModelsBindingModule::class,

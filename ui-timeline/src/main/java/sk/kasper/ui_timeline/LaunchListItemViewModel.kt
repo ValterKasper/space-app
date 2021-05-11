@@ -7,19 +7,19 @@ import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
-import sk.kasper.domain.model.Tag
+import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.utils.FormattedTimeType
 import sk.kasper.ui_timeline.utils.rocketIdToDrawableRes
 
-open class LaunchListItemViewModel(val listener: OnListInteractionListener)
-    : BaseObservable() {
+// todo update
+open class LaunchListItemViewModel(val listener: OnListInteractionListener) : BaseObservable() {
 
     interface OnListInteractionListener {
         fun onItemClick(item: LaunchListItem)
     }
 
     @get:Bindable
-    val tags: ObservableList<Tag> = ObservableArrayList()
+    val tags: ObservableList<UiTag> = ObservableArrayList()
 
     @get:Bindable
     var tagsVisible: Boolean = true

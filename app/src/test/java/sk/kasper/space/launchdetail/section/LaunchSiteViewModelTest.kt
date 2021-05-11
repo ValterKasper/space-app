@@ -1,22 +1,13 @@
 package sk.kasper.space.launchdetail.section
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
-import sk.kasper.domain.model.ErrorResponse
-import sk.kasper.domain.model.LaunchSite
-import sk.kasper.domain.model.Position
-import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.launchdetail.GetLaunchSite
-import sk.kasper.space.utils.CoroutinesMainDispatcherRule
+import sk.kasper.ui_launch.section.SectionViewModel
 
 @RunWith(MockitoJUnitRunner::class)
 open class LaunchSiteViewModelTest {
