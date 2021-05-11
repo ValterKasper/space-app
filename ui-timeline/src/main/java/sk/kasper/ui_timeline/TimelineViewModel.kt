@@ -11,6 +11,7 @@ import sk.kasper.domain.model.Launch
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
+import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.TagMapper
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
@@ -70,8 +71,8 @@ open class TimelineViewModel @Inject constructor(
     private val refreshTimelineItems: RefreshTimelineItems,
     private val settingsManager: SettingsManager,
     private val tagMapper: TagMapper,
+    private val rocketMapper: RocketMapper,
 ) : ReducerViewModel<TimelineState, TimelineAction, SideEffect>(TimelineState()),
-    LaunchListItemViewModel.OnListInteractionListener,
     FilterSelectionListener {
 
     init {
@@ -244,7 +245,7 @@ open class TimelineViewModel @Inject constructor(
         list
             .filter { showUnconfirmedLaunches || it.accurateDate }
             .filter { it.launchDateTime.isAfter(todayStartDateTime) }
-            .map { LaunchListItem.fromLaunch(it, tagMapper) }
+            .map { LaunchListItem.fromLaunch(it, tagMapper, rocketMapper) }
             .groupBy {
                 when {
                     !it.accurateDate -> LabelListItem.Month(it.launchDateTime.monthValue)
@@ -288,7 +289,7 @@ open class TimelineViewModel @Inject constructor(
         submitAction(RefreshAction(force = true))
     }
 
-    override fun onItemClick(item: LaunchListItem) {
+    fun onItemClick(item: LaunchListItem) {
         submitAction(ItemClickedAction(item))
     }
 

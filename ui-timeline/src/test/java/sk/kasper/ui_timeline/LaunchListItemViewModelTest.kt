@@ -26,7 +26,7 @@ class LaunchListItemViewModelTest {
 
     @Before
     fun setUp() {
-        launchListItemViewModel = object : LaunchListItemViewModel(listener) {
+        launchListItemViewModel = object : LaunchListItemViewModel() {
             override fun getCurrentDateTime(): LocalDateTime {
                 return LOCAL_DATE_TIME_NOW
             }

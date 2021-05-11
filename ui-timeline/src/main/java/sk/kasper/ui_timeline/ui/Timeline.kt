@@ -28,7 +28,6 @@ import com.google.accompanist.insets.toPaddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.model.Rocket
 import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
@@ -95,7 +94,11 @@ fun Timeline(viewModel: TimelineViewModel) {
                     ) {
                         items(state.timelineItems) { item ->
                             when (item) {
-                                is LaunchListItem -> LaunchListItem(item, viewModel::onItemClick)
+                                is LaunchListItem -> LaunchListItemLayout(
+                                    LaunchListItemViewModel(
+                                        item
+                                    ), viewModel::onItemClick
+                                )
                                 is LabelListItem -> LabelListItem(item)
                             }
                         }
@@ -182,20 +185,15 @@ private fun FilterBar(onFilterBarClick: () -> Unit = {}, onClearAllClick: () -> 
 }
 
 @Composable
-private fun LaunchListItem(item: LaunchListItem, onItemClick: (LaunchListItem) -> Unit = {}) {
+private fun LaunchListItemLayout(
+    viewModel: LaunchListItemViewModel,
+    onItemClick: (LaunchListItem) -> Unit = {}
+) {
     Row(Modifier
         .fillMaxWidth()
-        .clickable { onItemClick(item) }
+        .clickable { onItemClick(viewModel.item) }
         .padding(vertical = 12.dp)
     ) {
-        val viewModel =
-            LaunchListItemViewModel(object : LaunchListItemViewModel.OnListInteractionListener {
-                override fun onItemClick(item: LaunchListItem) {
-                }
-            }).apply {
-                launchListItem = item
-            }
-
         RocketIcon(
             modifier = Modifier.padding(
                 start = dimensionResource(id = R.dimen.padding_normal),
@@ -218,7 +216,7 @@ private fun LaunchListItem(item: LaunchListItem, onItemClick: (LaunchListItem) -
                 viewModel.formattedTimeVisible
             )
             Row(modifier = Modifier.padding(top = 4.dp)) {
-                item.tags.forEach {
+                viewModel.tags.forEach {
                     TagComposable(tag = it)
                     Spacer(modifier = Modifier.requiredWidth(2.dp))
                 }
@@ -282,17 +280,19 @@ private fun RocketIcon(
 @Composable
 fun LaunchListItemPreview() {
     SpaceTheme {
-        LaunchListItem(
-            LaunchListItem(
-                "id",
-                "Atlas V 421 | SBIRS GEO-5",
-                LocalDateTime.of(2021, 7, 25, 10, 59),
-                rocketId = Rocket.ATLAS_5,
-                rocketName = "Atlas V",
-                accurateDate = true,
-                accurateTime = true,
-                tags = listOf(UiTag.CUBE_SAT, UiTag.ISS, UiTag.MARS)
-            ),
+        LaunchListItemLayout(
+            LaunchListItemViewModel(
+                LaunchListItem(
+                    "id",
+                    "Atlas V 421 | SBIRS GEO-5",
+                    LocalDateTime.of(2021, 7, 25, 10, 59),
+                    rocketResId = R.drawable.ariane_5,
+                    rocketName = "Atlas V",
+                    accurateDate = true,
+                    accurateTime = true,
+                    tags = listOf(UiTag.CUBE_SAT, UiTag.ISS, UiTag.MARS)
+                )
+            )
         )
     }
 }

@@ -11,10 +11,12 @@ import kotlinx.coroutines.Dispatchers
 import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.repository.*
 import sk.kasper.space.database.*
+import sk.kasper.space.mapper.RocketMapperImpl
+import sk.kasper.space.mapper.TagMapperImpl
 import sk.kasper.space.repository.*
 import sk.kasper.space.sync.SyncLaunchesImpl
-import sk.kasper.space.tag.TagMapperImpl
 import sk.kasper.space.work.AppWorkerFactory
+import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.tag.TagMapper
 import javax.inject.Named
 import javax.inject.Singleton
@@ -78,7 +80,11 @@ class AppModule(val context: Context) {
 
     @Provides
     @Singleton
-    fun providesTagMapper(tagMapper: TagMapperImpl): TagMapper = tagMapper
+    fun providesTagMapper(mapper: TagMapperImpl): TagMapper = mapper
+
+    @Provides
+    @Singleton
+    fun providesRocketMapper(mapper: RocketMapperImpl): RocketMapper = mapper
 
     @Provides
     @Named("Main")

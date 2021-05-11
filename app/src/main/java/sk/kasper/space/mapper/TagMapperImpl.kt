@@ -1,4 +1,4 @@
-package sk.kasper.space.tag
+package sk.kasper.space.mapper
 
 import sk.kasper.domain.model.Tag
 import sk.kasper.ui_common.tag.TagMapper

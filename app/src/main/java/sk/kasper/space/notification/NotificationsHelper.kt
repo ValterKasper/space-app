@@ -17,15 +17,18 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import org.threeten.bp.Duration
 import sk.kasper.space.R
-import sk.kasper.space.utils.rocketIdToDrawableRes
 import sk.kasper.space.utils.toTimeStamp
+import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.utils.RoundedSquareLetterProvider
 import sk.kasper.ui_common.utils.RoundedSquareTransformation
 import sk.kasper.ui_common.utils.toPixels
 import sk.kasper.ui_launch.LaunchFragmentArgs
 import javax.inject.Inject
 
-class NotificationsHelper @Inject constructor(context: Context) : ContextWrapper(context) {
+class NotificationsHelper @Inject constructor(
+    private val rocketMapper: RocketMapper,
+    context: Context
+) : ContextWrapper(context) {
 
     companion object {
         private const val LAUNCHES_CHANNEL = "launches"
@@ -103,7 +106,7 @@ class NotificationsHelper @Inject constructor(context: Context) : ContextWrapper
     }
 
     private fun getRocketLargeIcon(rocketId: Long?, rocketName: String): Bitmap {
-        val rocketIdToDrawableRes = rocketIdToDrawableRes(rocketId)
+        val rocketIdToDrawableRes = rocketMapper.toDrawableRes(rocketId)
 
         return if (rocketIdToDrawableRes == 0) {
             RoundedSquareLetterProvider(this).createLetter(rocketName.first())
