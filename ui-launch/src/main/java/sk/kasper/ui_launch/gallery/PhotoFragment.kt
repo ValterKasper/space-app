@@ -1,46 +1,34 @@
-package sk.kasper.space.launchdetail.gallery
+package sk.kasper.ui_launch.gallery
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
-import provideViewModel
+import sk.kasper.space.launchdetail.gallery.PhotoItem
+import sk.kasper.ui_common.BaseFragment
+import sk.kasper.ui_common.utils.viewModels
 import sk.kasper.ui_launch.databinding.FragmentPhotoBinding
-import sk.kasper.ui_launch.gallery.PhotoFragmentViewModel
 
-class PhotoFragment : Fragment() {
+class PhotoFragment : BaseFragment() {
 
-    private lateinit var viewModel: PhotoFragmentViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel = provideViewModel {
-            val imageRes =
-                requireNotNull(requireArguments().getParcelable<PhotoItem>(KEY_PHOTO_ITEM))
-            PhotoFragmentViewModel(imageRes)
-        }
+    private val viewModel: PhotoFragmentViewModel by viewModels {
+        val imageRes = requireArguments().getParcelable<PhotoItem>(KEY_PHOTO_ITEM)!!
+        PhotoFragmentViewModel(imageRes)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val binding = FragmentPhotoBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
         Picasso.with(context)
-                .load(viewModel.url)
-                .into(binding.image)
+            .load(viewModel.url)
+            .into(binding.image)
 
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        view?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     }
 
     companion object {

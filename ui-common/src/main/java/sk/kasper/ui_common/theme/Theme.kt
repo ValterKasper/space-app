@@ -30,7 +30,7 @@ private val SpaceDarkPalette = darkColors(
 
 private val Shapes = Shapes(
         small = RoundedCornerShape(6.dp),
-        medium = RoundedCornerShape(24.dp),
+        medium = RoundedCornerShape(6.dp),
         large = CutCornerShape(
                 topStart = 16.dp,
                 topEnd = 16.dp,

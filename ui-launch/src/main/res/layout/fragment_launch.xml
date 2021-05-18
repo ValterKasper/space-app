@@ -148,17 +148,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/collapsingToolbarLayout">
-<!--
 
+                <!-- GALLERY -->
                 <androidx.compose.ui.platform.ComposeView
-                    android:id="@+id/missionSectionComposeView"
+                    android:id="@+id/galleryComposeView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/padding_normal"
-                    android:layout_marginEnd="@dimen/padding_normal"
-                    app:paddingLeftSystemWindowInsets="@{ true }"
-                    app:paddingRightSystemWindowInsets="@{ true }"/>
--->
+                    android:layout_height="wrap_content" />
 
                 <!-- LAUNCH SITE -->
                 <TextView
@@ -221,35 +216,6 @@
                     app:capitalizeText="@{safeUnbox(orbitViewModel.orbitName)}"
                     app:visible="@{orbitViewModel.visible}"
                     tools:text="@string/geostationary_orbit"/>
-
-
-                <!-- GALLERY -->
-                <TextView
-                    style="@style/SectionTitleStyle.LaunchDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/padding_normal"
-                    android:layout_marginEnd="@dimen/padding_normal"
-                    app:paddingLeftSystemWindowInsets="@{ true }"
-                    app:capitalizeText="@{safeUnbox(galleryViewModel.title)}"
-                    app:visible="@{galleryViewModel.visible}"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/galleryRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="8dp"
-                    android:scrollbarStyle="outsideOverlay"
-                    android:scrollbars="none"
-                    app:paddingLeftSystemWindowInsets="@{ true }"
-                    app:paddingRightSystemWindowInsets="@{ true }"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:visible="@{galleryViewModel.visible}"
-                    tools:listitem="@layout/gallery_list_item"/>
 
             </LinearLayout>
 

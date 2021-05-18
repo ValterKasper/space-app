@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,12 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.findNavController
+import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.navigationBarsPadding
@@ -45,7 +48,7 @@ class ComposePlaygroundFragment : BaseFragment() {
         COMPONENTS("components"),
     }
 
-    private val defaultTab = PlaygroundTab.SHAPE
+    private val defaultTab = PlaygroundTab.COMPONENTS
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,7 +96,7 @@ class ComposePlaygroundFragment : BaseFragment() {
             Surface(
                 color = MaterialTheme.colors.primarySurface
             ) {
-                TabRow(
+                ScrollableTabRow(
                     backgroundColor = Color.Transparent,
                     modifier = Modifier.navigationBarsPadding(bottom = false),
                     selectedTabIndex = selectedPlaygroundTab.value.ordinal
@@ -246,7 +249,10 @@ class ComposePlaygroundFragment : BaseFragment() {
 
     @Composable
     fun ComponentsScreen() {
-        Column(Modifier.navigationBarsPadding()) {
+        Column(
+            Modifier.navigationBarsPadding(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -285,6 +291,60 @@ class ComposePlaygroundFragment : BaseFragment() {
 
                     }
                 }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ImageBox(
+                Modifier.requiredHeight(128.dp),
+                contentScale = ContentScale.FillHeight,
+                contentDescription = "FillHeight"
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ImageBox(
+                Modifier
+                    .requiredHeight(128.dp)
+                    .requiredWidth(128.dp),
+                contentScale = ContentScale.Fit,
+                contentDescription = "Fit"
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ImageBox(
+                Modifier
+                    .requiredHeight(128.dp)
+                    .requiredWidth(128.dp),
+                contentScale = ContentScale.Crop,
+                contentDescription = "Crop"
+            )
+        }
+    }
+
+    @Composable
+    private fun ImageBox(
+        modifier: Modifier = Modifier,
+        contentScale: ContentScale,
+        contentDescription: String
+    ) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            modifier = modifier
+                .border(2.dp, Color.LightGray)
+        ) {
+            Box(contentAlignment = BottomCenter) {
+                Image(
+                    painter = rememberCoilPainter(request = "https://placebear.com/640/420"),
+                    contentScale = contentScale,
+                    contentDescription = contentDescription
+                )
+                Text(
+                    text = contentDescription,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    color = MaterialTheme.colors.onPrimary
+                )
             }
         }
     }

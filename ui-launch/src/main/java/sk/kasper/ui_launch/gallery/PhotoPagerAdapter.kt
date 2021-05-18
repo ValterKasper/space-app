@@ -2,7 +2,6 @@ package sk.kasper.ui_launch.gallery
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
-import sk.kasper.space.launchdetail.gallery.PhotoFragment
 import sk.kasper.space.launchdetail.gallery.PhotoItem
 
 // Note: Initialize with the child fragment manager.
