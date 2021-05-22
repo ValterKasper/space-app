@@ -77,19 +77,33 @@ open class SettingsManager @Inject constructor(private val context: Context) : S
         }
 
     val apiEndpoint: ApiEndpoint
-        get() = when (sharedPreferences.getString(context.getString(R.string.pref_api_endpoint), "0")) {
+        get() = when (sharedPreferences.getString(
+            context.getString(R.string.pref_api_endpoint),
+            "0"
+        )) {
             "0" -> ApiEndpoint.PRODUCTION
             "1" -> ApiEndpoint.LOCALHOST
             "2" -> ApiEndpoint.RASPBERRY
             else -> ApiEndpoint.PRODUCTION
         }
 
+    fun toggleTheme() {
+        nightMode = if (nightMode == AppCompatDelegate.MODE_NIGHT_NO) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+    }
+
     private fun getBoolean(key: SettingKey, defaultValue: Boolean): Boolean {
         return sharedPreferences.getBoolean(getSharedPreferenceKeyFromSettingKey(key), defaultValue)
     }
 
     private fun getIntFromString(key: SettingKey, defaultValue: Int): Int {
-        return sharedPreferences.getString(getSharedPreferenceKeyFromSettingKey(key), defaultValue.toString())!!.toInt()
+        return sharedPreferences.getString(
+            getSharedPreferenceKeyFromSettingKey(key),
+            defaultValue.toString()
+        )!!.toInt()
     }
 
     private fun setIntToString(key: SettingKey, value: Int) {

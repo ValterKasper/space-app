@@ -1,25 +1,25 @@
 package sk.kasper.ui_common.ui
 
 import android.text.format.DateUtils
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import org.ocpsoft.prettytime.PrettyTime
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
+import org.threeten.bp.ZoneOffset
 import sk.kasper.ui_common.R
 import sk.kasper.ui_common.utils.FormattedTimeType
 import java.util.*
 
 @Composable
 fun LaunchDateTime(
+    modifier: Modifier = Modifier,
     launchDateTime: LocalDateTime,
     formattedTimeType: FormattedTimeType,
     dateConfirmed: Boolean,
@@ -34,7 +34,12 @@ fun LaunchDateTime(
         val launchFormatTimeParts = mutableListOf<String>()
         val launchDate = Date()
         launchFormatTimeParts.clear()
-        val timeStamp = launchDateTime.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000
+
+        val timeStamp = if (LocalInspectionMode.current) {
+            LocalDateTime.of(2020, 4, 6, 12, 30).toEpochSecond(ZoneOffset.UTC)
+        } else {
+            launchDateTime.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000
+        }
 
         if (prettyTimeVisible) {
             launchDate.time = timeStamp
@@ -60,14 +65,11 @@ fun LaunchDateTime(
 
         text = launchFormatTimeParts.joinToString(separator = " • ")
     }
-
     Text(
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
         text = text,
         style = MaterialTheme.typography.body2,
-        modifier = Modifier
-            .padding(bottom = 4.dp)
-            .alpha(0.62f)
+        modifier = modifier
     )
 }

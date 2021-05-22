@@ -1,6 +1,6 @@
 [versions]
 accompanist = '0.9.1'
-agp = '7.0.0-alpha15'
+agp = '7.0.0-beta02'
 compose = '1.0.0-beta06'
 coroutines = '1.4.3'
 dagger = '2.27'

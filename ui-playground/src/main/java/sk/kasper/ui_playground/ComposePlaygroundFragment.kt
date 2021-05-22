@@ -35,11 +35,16 @@ import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import sk.kasper.ui_common.BaseFragment
+import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import java.util.*
+import javax.inject.Inject
 
 class ComposePlaygroundFragment : BaseFragment() {
+
+    @Inject
+    lateinit var settingsManager: SettingsManager
 
     enum class PlaygroundTab(val text: String) {
         TYPE("type"),
@@ -146,7 +151,7 @@ class ComposePlaygroundFragment : BaseFragment() {
                 }
             },
             actions = {
-                IconButton(onClick = { findNavController().popBackStack() }) {
+                IconButton(onClick = { settingsManager.toggleTheme() }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_tonality),
                         contentDescription = "Toggle theme",

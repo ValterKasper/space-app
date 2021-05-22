@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/timelineFragment">
+    app:startDestination="@id/launchFragment">
 
     <fragment
         android:id="@+id/timelineFragment"
@@ -22,7 +22,8 @@
         android:label=" ">
         <argument
             android:name="launchId"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="89a150ea-6e4b-489f-853c-3603ae684611" />
         <action
             android:id="@+id/action_launchFragment_to_photoPagerFragment"
             app:destination="@id/photoPagerFragment" />

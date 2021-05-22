@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
+import sk.kasper.ui_common.utils.viewModels
 import sk.kasper.ui_timeline.databinding.FragmentTimelineBinding
 import sk.kasper.ui_timeline.ui.FilterDrawer
 import sk.kasper.ui_timeline.ui.Timeline

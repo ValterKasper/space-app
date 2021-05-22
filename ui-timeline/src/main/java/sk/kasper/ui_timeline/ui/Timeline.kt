@@ -32,6 +32,7 @@ import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.ui.LaunchDateTime
+import sk.kasper.ui_common.ui.TagsRow
 import sk.kasper.ui_common.utils.RoundedSquareLetterProvider
 import sk.kasper.ui_timeline.*
 import sk.kasper.ui_timeline.R
@@ -208,19 +209,17 @@ private fun LaunchListItemLayout(
                 text = viewModel.title,
                 style = MaterialTheme.typography.body1
             )
-            LaunchDateTime(
-                viewModel.launchDateTime,
-                viewModel.formattedTimeType,
-                viewModel.dateConfirmed,
-                viewModel.prettyTimeVisible,
-                viewModel.formattedTimeVisible
-            )
-            Row(modifier = Modifier.padding(top = 4.dp)) {
-                viewModel.tags.forEach {
-                    TagComposable(tag = it)
-                    Spacer(modifier = Modifier.requiredWidth(2.dp))
-                }
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                LaunchDateTime(
+                    Modifier.padding(bottom = 4.dp),
+                    viewModel.launchDateTime,
+                    viewModel.formattedTimeType,
+                    viewModel.dateConfirmed,
+                    viewModel.prettyTimeVisible,
+                    viewModel.formattedTimeVisible
+                )
             }
+            TagsRow(Modifier.padding(top = 4.dp), viewModel.tags)
         }
     }
 }

@@ -1,5 +1,7 @@
-package sk.kasper.ui_timeline.ui
+package sk.kasper.ui_common.ui
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -12,17 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import sk.kasper.ui_common.R
 import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.tag
-import sk.kasper.ui_timeline.R
 import java.util.*
 
 @Composable
 fun TagComposable(tag: UiTag) {
     Surface(
         shape = MaterialTheme.shapes.tag,
-        color = colorResource(id = R.color.tagBackground)
+        color = colorResource(id = R.color.tagBackground),
+        contentColor = MaterialTheme.colors.onBackground
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -43,4 +47,16 @@ fun TagComposable(tag: UiTag) {
             ) {}
         }
     }
+}
+
+@Composable
+@Preview(uiMode = UI_MODE_NIGHT_YES, name = "Night")
+fun TagComposablePreviewNight() {
+    TagComposable(tag = UiTag.MARS)
+}
+
+@Composable
+@Preview(uiMode = UI_MODE_NIGHT_NO, name = "Day")
+fun TagComposablePreviewDay() {
+    TagComposable(tag = UiTag.MARS)
 }

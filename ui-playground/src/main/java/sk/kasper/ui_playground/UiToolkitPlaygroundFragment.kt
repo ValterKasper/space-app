@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -48,7 +47,7 @@ class UiToolkitPlaygroundFragment : BaseFragment() {
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.menu_toggle_theme -> {
-                        toggleTheme()
+                        settingsManager.toggleTheme()
                         true
                     }
                     else -> false
@@ -91,14 +90,6 @@ class UiToolkitPlaygroundFragment : BaseFragment() {
             if (!success) {
                 Timber.e("Style parsing failed.")
             }
-        }
-    }
-
-    private fun toggleTheme() {
-        settingsManager.nightMode = if (settingsManager.nightMode == AppCompatDelegate.MODE_NIGHT_NO) {
-            AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            AppCompatDelegate.MODE_NIGHT_NO
         }
     }
 }

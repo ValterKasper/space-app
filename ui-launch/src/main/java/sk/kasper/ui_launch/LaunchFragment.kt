@@ -10,33 +10,35 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.google.accompanist.coil.rememberCoilPainter
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.toPaddingValues
+import com.google.accompanist.imageloading.ImageLoadState
+import com.google.accompanist.insets.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -49,12 +51,20 @@ import kotlinx.coroutines.flow.collect
 import sk.kasper.domain.model.LaunchSite
 import sk.kasper.space.launchdetail.section.FalconInfoViewModel
 import sk.kasper.ui_common.BaseFragment
+import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.SpaceTheme
-import sk.kasper.ui_common.utils.*
+import sk.kasper.ui_common.theme.section
+import sk.kasper.ui_common.ui.LaunchDateTime
+import sk.kasper.ui_common.ui.TagsRow
+import sk.kasper.ui_common.utils.doOnApplyWindowInsets
+import sk.kasper.ui_common.utils.dp
+import sk.kasper.ui_common.utils.getThemeColor
+import sk.kasper.ui_common.utils.viewModels
 import sk.kasper.ui_launch.databinding.FragmentLaunchBinding
 import sk.kasper.ui_launch.databinding.FragmentLaunchRocketSectionBinding
 import sk.kasper.ui_launch.section.*
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
@@ -118,14 +128,6 @@ class LaunchFragment : BaseFragment() {
     ): View? {
 
         binding = FragmentLaunchBinding.inflate(inflater, container, false)
-        binding.tagsView.adapter = TagAdapter()
-        binding.tagsView.addItemDecoration(
-            HorizontalSpaceItemDecoration(
-                R.dimen.launch_tag_horizontal_space.toPixels(
-                    requireContext()
-                )
-            )
-        )
 
         requireActivity().window.statusBarColor =
             ContextCompat.getColor(requireContext(), R.color.systemUiOverlayColor)
@@ -135,8 +137,6 @@ class LaunchFragment : BaseFragment() {
         setupLaunchSiteViewModel()
         setupGallery()
         setupOrbit()
-
-        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
 
         return binding.root
     }
@@ -151,35 +151,37 @@ class LaunchFragment : BaseFragment() {
         binding.galleryComposeView.setContent {
             SpaceTheme {
                 ProvideWindowInsets {
-                    Column {
-                        val state by galleryViewModel.state.collectAsState()
-                        Text(
-                            stringResource(id = state.title),
-                            style = MaterialTheme.typography.h5,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 20.dp)
-                                .navigationBarsPadding(bottom = false)
-                        )
-                        LazyRow(
-                            contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(
-                                bottom = false,
-                                top = false,
-                                additionalHorizontal = 16.dp
-                            ),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            items(state.galleryItems) { item ->
-                                Surface(
-                                    shape = MaterialTheme.shapes.medium,
-                                    modifier = Modifier.clickable {
-                                        galleryViewModel.submitAction(OnPhotoClicked(item))
-                                    }) {
-                                    Image(
-                                        painter = rememberCoilPainter(item.thumbnailUrl),
-                                        contentDescription = item.description,
-                                        contentScale = ContentScale.FillHeight,
-                                        modifier = Modifier.height(dimensionResource(id = R.dimen.launch_gallery_item_height))
-                                    )
+                    Surface(color = MaterialTheme.colors.background) {
+                        Column {
+                            val state by galleryViewModel.state.collectAsState()
+                            Text(
+                                stringResource(id = state.title),
+                                style = MaterialTheme.typography.h5,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp, vertical = 20.dp)
+                                    .navigationBarsPadding(bottom = false)
+                            )
+                            LazyRow(
+                                contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(
+                                    bottom = false,
+                                    top = false,
+                                    additionalHorizontal = 16.dp
+                                ),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                items(state.galleryItems) { item ->
+                                    Surface(
+                                        shape = MaterialTheme.shapes.medium,
+                                        modifier = Modifier.clickable {
+                                            galleryViewModel.submitAction(OnPhotoClicked(item))
+                                        }) {
+                                        Image(
+                                            painter = rememberCoilPainter(item.thumbnailUrl),
+                                            contentDescription = item.description,
+                                            contentScale = ContentScale.FillHeight,
+                                            modifier = Modifier.height(dimensionResource(id = R.dimen.launch_gallery_item_height))
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -192,11 +194,145 @@ class LaunchFragment : BaseFragment() {
     private fun getLaunchId() = requireArguments().getString("launchId")!!
 
     private fun setupLaunchViewModel() {
-        binding.viewModel = launchViewModel
-        launchViewModel.showVideoUrl.observe(viewLifecycleOwner, Observer {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-            startActivity(intent)
-        })
+        lifecycleScope.launchWhenStarted {
+            launchViewModel.sideEffects.collect {
+                when (it) {
+                    is ShowVideo -> {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.url))
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+
+        binding.composeToolbarToolbarLayout.setContent {
+            val state by launchViewModel.state.collectAsState()
+            LaunchHeader(
+                state = state,
+                upClick = { findNavController().navigateUp() },
+                onShowVideoClick = { launchViewModel.submitAction(VideoClick) }
+            )
+        }
+    }
+
+    @Preview
+    @Composable
+    fun LaunchHeaderPreview() {
+        LaunchHeader(
+            state = LaunchState(
+                tags = listOf(UiTag.CUBE_SAT, UiTag.PROBE, UiTag.MARS),
+                missionName = "Meteor-M №2-1 Meteor-M №2-1 Meteor-M №2-1"
+            )
+        )
+    }
+
+    @Composable
+    fun LaunchHeader(
+        state: LaunchState,
+        upClick: () -> Unit = {},
+        onShowVideoClick: () -> Unit = {}
+    ) {
+        SpaceTheme(isDarkTheme = true) {
+            ProvideWindowInsets {
+                val painter = rememberCoilPainter(
+                    request = state.mainPhoto,
+                    previewPlaceholder = state.mainPhotoFallback,
+                    fadeIn = true
+                )
+
+                Surface(color = MaterialTheme.colors.background) {
+                    Box {
+                        HeaderImage(painter)
+                        // find better way solution to show fallback photo
+                        if (painter.loadState is ImageLoadState.Error) {
+                            HeaderImage(painterResource(id = state.mainPhotoFallback))
+                        }
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .fillMaxWidth()
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colors = listOf(
+                                            Color.Transparent,
+                                            colorResource(id = R.color.textProtectionGradientStart)
+                                        )
+                                    )
+                                )
+                                .padding(dimensionResource(id = R.dimen.padding_normal))
+                                .navigationBarsPadding(bottom = false)
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(bottom = 8.dp),
+                                text = state.missionName,
+                                style = MaterialTheme.typography.section,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+
+                            LaunchDateTime(
+                                launchDateTime = state.launchDateTime,
+                                formattedTimeType = state.formattedTimeType,
+                                dateConfirmed = state.dateConfirmed,
+                                prettyTimeVisible = false,
+                                formattedTimeVisible = state.formattedTimeVisible
+                            )
+
+                            if (state.tags.isNotEmpty()) {
+                                // header has always dark theme but tags follows current light/dark theme
+                                SpaceTheme {
+                                    TagsRow(Modifier.padding(top = 8.dp), list = state.tags)
+                                }
+                            }
+                        }
+                        IconButton(
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                                .statusBarsPadding()
+                                .navigationBarsPadding(bottom = false),
+                            onClick = { upClick() }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_arrow_back),
+                                contentDescription = "back",
+                            )
+                        }
+
+                        if (state.showVideoUrl) {
+                            TextButton(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(
+                                        top = 8.dp,
+                                        end = dimensionResource(id = R.dimen.padding_normal)
+                                    )
+                                    .navigationBarsPadding()
+                                    .systemBarsPadding(),
+                                onClick = { onShowVideoClick() }
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.watch_launch_live).toUpperCase(
+                                        Locale.getDefault()
+                                    ),
+                                    color = colorResource(id = R.color.youtube_red)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun HeaderImage(painter: Painter) {
+        Image(
+            modifier = Modifier
+                .height(260.dp)
+                .fillMaxWidth(),
+            contentScale = ContentScale.Crop,
+            painter = painter,
+            contentDescription = stringResource(id = R.string.rocket_photo)
+        )
     }
 
     private fun setupOrbit() {
@@ -205,7 +341,10 @@ class LaunchFragment : BaseFragment() {
     }
 
     private fun setupRocketSection() {
-        AsyncLayoutInflater(requireContext()).inflate(R.layout.fragment_launch_rocket_section, binding.sectionsLinearLayout) { view, _, parent ->
+        AsyncLayoutInflater(requireContext()).inflate(
+            R.layout.fragment_launch_rocket_section,
+            binding.sectionsLinearLayout
+        ) { view, _, parent ->
             val rocketSectionViewModel: RocketSectionViewModel by viewModels {
                 rocketSectionViewModelFactory.create(
                     getLaunchId()

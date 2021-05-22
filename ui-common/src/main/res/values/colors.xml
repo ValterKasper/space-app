@@ -13,4 +13,6 @@
 
     <color name="navigationBarColor">@color/systemUiOverlayColor</color>
 
+    <color name="textProtectionGradientStart">#b3000000</color>
+
 </resources>
