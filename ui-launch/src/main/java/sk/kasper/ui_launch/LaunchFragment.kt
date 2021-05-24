@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -32,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -43,9 +45,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.flow.collect
 import sk.kasper.domain.model.LaunchSite
@@ -56,14 +56,12 @@ import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.theme.section
 import sk.kasper.ui_common.ui.LaunchDateTime
 import sk.kasper.ui_common.ui.TagsRow
-import sk.kasper.ui_common.utils.doOnApplyWindowInsets
-import sk.kasper.ui_common.utils.dp
 import sk.kasper.ui_common.utils.getThemeColor
 import sk.kasper.ui_common.utils.viewModels
+import sk.kasper.ui_common.view.OrbitView
 import sk.kasper.ui_launch.databinding.FragmentLaunchBinding
 import sk.kasper.ui_launch.databinding.FragmentLaunchRocketSectionBinding
 import sk.kasper.ui_launch.section.*
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -126,7 +124,6 @@ class LaunchFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentLaunchBinding.inflate(inflater, container, false)
 
         requireActivity().window.statusBarColor =
@@ -337,7 +334,40 @@ class LaunchFragment : BaseFragment() {
 
     private fun setupOrbit() {
         val viewModel: OrbitViewModel by viewModels { orbitViewModelFactory.create(getLaunchId()) }
-        binding.orbitViewModel = viewModel
+
+        binding.composeOrbit.setContent {
+            val state by viewModel.state.collectAsState()
+            if (state.visible) {
+                Column {
+                    Text(
+                        stringResource(id = R.string.section_orbit),
+                        style = MaterialTheme.typography.section,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 20.dp)
+                            .navigationBarsPadding(bottom = false)
+                    )
+
+                    AndroidView(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(184.dp),
+                        factory = ::OrbitView,
+                        update = { view -> view.orbit = state.orbit })
+
+                    Text(
+                        text = stringResource(id = state.nameId),
+                        modifier = Modifier
+                            .align(CenterHorizontally)
+                            .padding(
+                                start = dimensionResource(id = R.dimen.padding_normal),
+                                end = dimensionResource(id = R.dimen.padding_normal),
+                                top = dimensionResource(id = R.dimen.spacing_normal)
+                            ),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
+            }
+        }
     }
 
     private fun setupRocketSection() {
@@ -367,6 +397,7 @@ class LaunchFragment : BaseFragment() {
     private fun setupLaunchSiteViewModel() {
         // todo is crashing
         // binding.mapView.onCreate(null)
+/*
         binding.mapView.getMapAsync { map ->
             MapsInitializer.initialize(context)
             map.uiSettings.isMapToolbarEnabled = false
@@ -387,6 +418,7 @@ class LaunchFragment : BaseFragment() {
 
             observeLaunchSiteViewModel(map, binding)
         }
+*/
 
         binding.launchSiteViewModel = launchSiteViewModel
     }

@@ -12,10 +12,6 @@
             name="launchSiteViewModel"
             type="sk.kasper.ui_launch.section.LaunchSiteViewModel" />
 
-        <variable
-            name="orbitViewModel"
-            type="sk.kasper.ui_launch.section.OrbitViewModel" />
-
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -54,7 +50,7 @@
                     android:layout_height="wrap_content" />
 
                 <!-- LAUNCH SITE -->
-                <TextView
+<!--                <TextView
                     style="@style/SectionTitleStyle.LaunchDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,7 +67,7 @@
                     android:layout_height="184dp"
                     app:liteMode="true"
                     app:mapType="normal"
-                    app:visible="@{launchSiteViewModel.visible}"/>
+                    app:visible="@{launchSiteViewModel.visible}"/>-->
 
                 <TextView
                     android:id="@+id/launchSiteInfo"
@@ -83,37 +79,14 @@
                     app:paddingLeftSystemWindowInsets="@{ true }"
                     android:textAppearance="?attr/textAppearanceBody1"
                     app:visible="@{launchSiteViewModel.visible}"
-                    tools:text="@tools:sample/lorem"/>
+                    tools:text="@tools:sample/lorem" />
 
 
                 <!-- ORBIT -->
-                <TextView
-                    style="@style/SectionTitleStyle.LaunchDetail"
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/composeOrbit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/padding_normal"
-                    android:layout_marginEnd="@dimen/padding_normal"
-                    android:text="@string/section_orbit"
-                    app:visible="@{orbitViewModel.visible}"/>
-
-                <sk.kasper.ui_common.view.OrbitView
-                    android:layout_width="match_parent"
-                    android:layout_height="184dp"
-                    app:orbit="@{orbitViewModel.orbit}"
-                    app:visible="@{orbitViewModel.visible}" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/padding_normal"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:layout_marginEnd="@dimen/padding_normal"
-                    android:textAlignment="center"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    app:paddingLeftSystemWindowInsets="@{ true }"
-                    app:capitalizeText="@{safeUnbox(orbitViewModel.orbitName)}"
-                    app:visible="@{orbitViewModel.visible}"
-                    tools:text="@string/geostationary_orbit"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
