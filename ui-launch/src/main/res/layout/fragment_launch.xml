@@ -5,10 +5,6 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="sk.kasper.ui_launch.LaunchViewModel" />
-
-        <variable
             name="launchSiteViewModel"
             type="sk.kasper.ui_launch.section.LaunchSiteViewModel" />
 
@@ -85,6 +81,12 @@
                 <!-- ORBIT -->
                 <androidx.compose.ui.platform.ComposeView
                     android:id="@+id/composeOrbit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!-- ROCKET -->
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/rocketComposeView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
