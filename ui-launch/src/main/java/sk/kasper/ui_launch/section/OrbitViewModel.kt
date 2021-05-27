@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import sk.kasper.domain.model.Orbit
+import sk.kasper.domain.model.Response
 import sk.kasper.domain.usecase.launchdetail.GetOrbit
 import sk.kasper.ui_common.view.OrbitToDraw
 import sk.kasper.ui_launch.R
@@ -24,11 +25,11 @@ class OrbitViewModel @AssistedInject constructor(
         submitAction(Action.Init)
     }
 
-    override suspend fun load(): Orbit {
+    override suspend fun load(): Response<Orbit> {
         return getOrbit.getOrbit(launchId = launchId)
     }
 
-    override fun mapLoadToState(load: Orbit): OrbitState {
+    override fun mapLoadToState(load: Orbit, oldState: OrbitState): OrbitState {
         return when (load) {
             Orbit.LEO -> OrbitState(
                 orbit = OrbitToDraw.LEO,
@@ -42,6 +43,10 @@ class OrbitViewModel @AssistedInject constructor(
             )
             else -> OrbitState(visible = false)
         }
+    }
+
+    override fun mapErrorToState(message: String?, oldState: OrbitState): OrbitState {
+        return oldState.copy(visible = false)
     }
 
     @AssistedInject.Factory

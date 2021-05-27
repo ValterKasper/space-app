@@ -7,7 +7,7 @@ import sk.kasper.domain.model.Orbit
 import sk.kasper.domain.repository.LaunchRepository
 import sk.kasper.space.BuildConfig
 import sk.kasper.space.database.LaunchDao
-import sk.kasper.space.utils.safeEnumValueOf
+import sk.kasper.space.utils.enumValueOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,10 +29,10 @@ open class LaunchRepositoryImpl @Inject constructor(private val launchDao: Launc
         return launchDao.getLaunch(id).toLaunch()
     }
 
-    override fun getOrbit(id: String): Orbit {
+    override fun getOrbit(id: String): Orbit? {
         return launchDao.getOrbit(id)?.let {
-            safeEnumValueOf(it, Orbit.UNKNOWN)
-        } ?: Orbit.UNKNOWN
+            enumValueOrNull<Orbit>(it)
+        }
     }
 
     protected open fun getCurrentDateTime(): LocalDateTime {

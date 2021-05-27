@@ -1,74 +1,63 @@
 package sk.kasper.ui_launch.section
 
-import androidx.databinding.Bindable
-import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import kotlinx.coroutines.launch
-import sk.kasper.domain.model.ErrorResponse
-import sk.kasper.domain.model.SuccessResponse
+import sk.kasper.domain.model.Response
+import sk.kasper.domain.model.Rocket
 import sk.kasper.domain.usecase.launchdetail.GetRocketForLaunch
-import sk.kasper.ui_launch.BR
 import sk.kasper.ui_launch.R
 
+data class RocketSectionState(
+    val rocketName: String = "",
+    val height: String = "",
+    val diameter: String = "",
+    val mass: String = "",
+    val payloadLeo: String = "",
+    val payloadGto: String = "",
+    val thrust: String = "",
+    val stages: String = "",
+    val title: Int = R.string.section_rocket,
+    val visible: Boolean = false
+)
+
+
 class RocketSectionViewModel @AssistedInject constructor(
-        @Assisted launchId: String,
-        private val getRocketForLaunch: GetRocketForLaunch): SectionViewModel() {
-
-    @get:Bindable
-    var rocketName = ""
-
-    @get:Bindable
-    var height = ""
-
-    @get:Bindable
-    var diameter = ""
-
-    @get:Bindable
-    var mass = ""
-
-    @get:Bindable
-    var payloadLeo = ""
-
-    @get:Bindable
-    var payloadGto = ""
-
-    @get:Bindable
-    var thrust = ""
-
-    @get:Bindable
-    var stages = ""
+    @Assisted private val launchId: String,
+    private val getRocketForLaunch: GetRocketForLaunch
+) : LoaderViewModel<RocketSectionState, Rocket>(RocketSectionState()) {
 
     init {
-        title = R.string.section_rocket
-
-        viewModelScope.launch {
-            getRocketForLaunch.getRocket(launchId).also {
-                when (it) {
-                    is SuccessResponse -> {
-                        rocketName = it.data.rocketName
-                        height = "${it.data.height} m"
-                        diameter = "${it.data.diameter} m"
-                        mass = "${it.data.mass} kg"
-                        payloadLeo = "${it.data.payloadLeo} kg"
-                        payloadGto = "${it.data.payloadGto} kg"
-                        thrust = "${it.data.thrust} kN"
-                        stages = "${it.data.stages}"
-                        notifyChange()
-                    }
-                    is ErrorResponse -> {
-                        visible = false
-                        notifyPropertyChanged(BR.visible)
-                    }
-                }
-
-            }
-        }
+        submitAction(Action.Init)
     }
 
     @AssistedInject.Factory
     interface Factory {
         fun create(launchId: String): RocketSectionViewModel
+    }
+
+    override suspend fun load(): Response<Rocket> {
+        return getRocketForLaunch.getRocket(launchId)
+    }
+
+    override fun mapLoadToState(load: Rocket, oldState: RocketSectionState): RocketSectionState {
+        return RocketSectionState(
+            rocketName = load.rocketName,
+            height = "${load.height} m",
+            diameter = "${load.diameter} m",
+            mass = "${load.mass} kg",
+            payloadLeo = "${load.payloadLeo} kg",
+            payloadGto = "${load.payloadGto} kg",
+            thrust = "${load.thrust} kN",
+            stages = "${load.stages}",
+            visible = true
+        )
+    }
+
+    override fun mapErrorToState(
+        message: String?,
+        oldState: RocketSectionState
+    ): RocketSectionState {
+        return oldState.copy(visible = false)
     }
 
 }

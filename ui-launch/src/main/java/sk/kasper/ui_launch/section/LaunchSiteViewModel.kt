@@ -1,45 +1,50 @@
 package sk.kasper.ui_launch.section
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import kotlinx.coroutines.launch
+import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.LaunchSite
-import sk.kasper.domain.model.SuccessResponse
+import sk.kasper.domain.model.Response
 import sk.kasper.domain.usecase.launchdetail.GetLaunchSite
-import sk.kasper.ui_launch.BR
 import sk.kasper.ui_launch.R
 
-class LaunchSiteViewModel @AssistedInject constructor(
-        @Assisted launchId: String,
-        @Assisted googleApiAvailable: Boolean,
-        private val getLaunchSite: GetLaunchSite): SectionViewModel() {
+data class LaunchSizeState(
+    val launchSite: LaunchSite? = null,
+    val title: Int = R.string.section_launch_site,
+    val visible: Boolean = false
+)
 
-    val launchSite: MutableLiveData<LaunchSite> = MutableLiveData()
+class LaunchSiteViewModel @AssistedInject constructor(
+    @Assisted private val launchId: String,
+    @Assisted private val googleApiAvailable: Boolean, // todo malo by prist z usecasu; mozno by nemalo byt z LoaderViewModel
+    private val getLaunchSite: GetLaunchSite
+) : LoaderViewModel<LaunchSizeState, LaunchSite>(LaunchSizeState()) {
 
     init {
-        title = R.string.section_launch_site
-        visible = googleApiAvailable
+        submitAction(Action.Init)
+    }
 
-        viewModelScope.launch {
-            when (val launchSiteResponse = getLaunchSite.getLaunchSite(launchId)) {
-                is SuccessResponse -> {
-                    launchSite.value = launchSiteResponse.data
-                }
-                else -> {
-                    visible = false
-                    notifyPropertyChanged(BR.visible)
-                }
-            }
+    override suspend fun load(): Response<LaunchSite> {
+        return if (googleApiAvailable) {
+            getLaunchSite.getLaunchSite(launchId)
+        } else {
+            ErrorResponse("google api not available")
         }
+    }
 
+    override fun mapLoadToState(load: LaunchSite, oldState: LaunchSizeState): LaunchSizeState {
+        return oldState.copy(launchSite = load, visible = true)
+    }
+
+    override fun mapErrorToState(message: String?, oldState: LaunchSizeState): LaunchSizeState {
+        return oldState.copy(visible = false)
     }
 
     @AssistedInject.Factory
     interface Factory {
         fun create(
-                launchId: String,
-                googleApiAvailable: Boolean): LaunchSiteViewModel
+            launchId: String,
+            googleApiAvailable: Boolean
+        ): LaunchSiteViewModel
     }
 }

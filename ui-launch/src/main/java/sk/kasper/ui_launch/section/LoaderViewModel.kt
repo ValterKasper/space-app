@@ -2,6 +2,9 @@ package sk.kasper.ui_launch.section
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import sk.kasper.domain.model.ErrorResponse
+import sk.kasper.domain.model.Response
+import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import sk.kasper.ui_launch.section.LoaderViewModel.Action.Show
 
@@ -11,22 +14,19 @@ abstract class LoaderViewModel<STATE, LOAD>(defaultState: STATE) :
     sealed class Action {
         object Init : Action()
         data class Show<LOAD>(val load: LOAD) : Action()
-        data class OnError(val e: Exception) : Action()
+        data class OnError(val message: String?) : Action()
     }
 
-    enum class SideEffect {
-    }
+    enum class SideEffect
 
     // todo how to handle Init from init
 
     final override fun mapActionToActionFlow(action: Action): Flow<Action> {
         return if (action == Action.Init) {
             flow {
-                try {
-                    emit(Show(load()))
-                } catch (e: Exception) {
-                    // todo handle errors
-                    emit(Action.OnError(e))
+                when (val load = load()) {
+                    is SuccessResponse -> emit(Show(load.data))
+                    is ErrorResponse -> emit(Action.OnError(load.message))
                 }
             }
         } else {
@@ -38,13 +38,22 @@ abstract class LoaderViewModel<STATE, LOAD>(defaultState: STATE) :
         return when (action) {
             is Show<*> -> {
                 @Suppress("UNCHECKED_CAST")
-                mapLoadToState(action.load as LOAD)
+                mapLoadToState(action.load as LOAD, oldState)
+            }
+            is Action.OnError -> {
+                mapErrorToState(action.message, oldState)
             }
             else -> oldState
         }
     }
 
-    abstract fun mapLoadToState(load: LOAD): STATE
+    open fun mapLoadToState(load: LOAD, oldState: STATE): STATE {
+        return oldState
+    }
 
-    abstract suspend fun load(): LOAD
+    open fun mapErrorToState(message: String?, oldState: STATE): STATE {
+        return oldState
+    }
+
+    abstract suspend fun load(): Response<LOAD>
 }

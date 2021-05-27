@@ -1,7 +1,7 @@
 package sk.kasper.space.database.entity
 
 import sk.kasper.domain.model.FalconCore
-import sk.kasper.space.utils.safeEnumValueOf
+import sk.kasper.space.utils.safeEnumValue
 
 data class FalconCoreEntity(val reused: Boolean?,
                             val block: Int?,
@@ -14,11 +14,11 @@ data class FalconCoreEntity(val reused: Boolean?,
     }
 
     fun toFalconCore() = FalconCore(
-            reused!!,
-            block!!,
-            flights!!,
-            safeEnumValueOf(landingType!!, FalconCore.LandingType.UNKNOWN),
-            safeEnumValueOf(landingVehicle!!, FalconCore.LandingVehicle.UNKNOWN)
+        reused!!,
+        block!!,
+        flights!!,
+        safeEnumValue(landingType!!, FalconCore.LandingType.UNKNOWN),
+        safeEnumValue(landingVehicle!!, FalconCore.LandingVehicle.UNKNOWN)
     )
 
     fun isEmpty(): Boolean {

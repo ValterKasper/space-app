@@ -6,6 +6,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import sk.kasper.domain.usecase.launchdetail.GetFalconCore
+import sk.kasper.ui_launch.section.FalconInfoViewModel
 
 @RunWith(MockitoJUnitRunner::class)
 class FalconInfoViewModelTest {

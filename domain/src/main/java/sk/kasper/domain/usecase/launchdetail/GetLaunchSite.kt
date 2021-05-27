@@ -10,8 +10,9 @@ import javax.inject.Inject
 
 open class GetLaunchSite @Inject constructor(private val launchSiteRepository: LaunchSiteRepository){
 
-    suspend fun getLaunchSite(launchId: String): Response<LaunchSite>  = withContext(Dispatchers.IO) {
-        wrapToResponse { launchSiteRepository.getLaunchSite(launchId) }
-    }
+    suspend fun getLaunchSite(launchId: String): Response<LaunchSite> =
+        withContext(Dispatchers.IO) {
+            wrapToResponse { launchSiteRepository.getLaunchSite(launchId) }
+        }
 
 }
