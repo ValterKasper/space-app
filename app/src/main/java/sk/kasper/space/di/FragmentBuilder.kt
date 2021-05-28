@@ -2,7 +2,7 @@ package sk.kasper.space.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import sk.kasper.space.about.LibrariesFragment
+import sk.kasper.ui_common.about.LibrariesFragment
 import sk.kasper.ui_launch.LaunchFragment
 import sk.kasper.ui_launch.gallery.PhotoPagerFragment
 import sk.kasper.ui_playground.ComposePlaygroundFragment

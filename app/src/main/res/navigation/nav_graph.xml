@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/librariesFragment"
-        android:name="sk.kasper.space.about.LibrariesFragment"
+        android:name="sk.kasper.ui_common.about.LibrariesFragment"
         android:label="@string/libraries">
         <deepLink app:uri="spaceapp://libraries" />
     </fragment>
