@@ -1,4 +1,6 @@
-# Rocktly: Rocket launches schedule
+# Rocktly: Rocket launches schedule (Work in progress 🚧👷🏗️‍️)
+
+🚨 App is currently being rewritten to compose 🚨
 
 An android app that shows timeline of upcoming rocket launches. Showcases architecture of a real android application and usage of some libraries. Application loads data about rocket launches from the server and stores them to the database for off-line usage.
 
