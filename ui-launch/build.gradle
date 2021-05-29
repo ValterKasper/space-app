@@ -59,9 +59,6 @@ dependencies {
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
-    implementation libs.androidx.vectordrawable
-    implementation libs.androidx.constraintlayout
-
     implementation libs.google.android.play.services.maps
 
     implementation libs.dagger.support
@@ -71,8 +68,6 @@ dependencies {
     kaptAndroidTest libs.dagger.android.processor
     implementation libs.dagger.assisted.inject.annotations
     kapt libs.dagger.assisted.inject.processor
-
-    implementation libs.picasso
 
     implementation libs.timber
 

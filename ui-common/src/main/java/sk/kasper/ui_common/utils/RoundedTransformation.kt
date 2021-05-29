@@ -2,11 +2,9 @@ package sk.kasper.ui_common.utils
 
 import android.graphics.*
 
-import com.squareup.picasso.Transformation
+sealed class RoundedTransformation(private val cornerRadiusPx: Float) {
 
-sealed class RoundedTransformation(private val cornerRadiusPx: Float) : Transformation {
-
-    override fun transform(source: Bitmap): Bitmap {
+    fun transform(source: Bitmap): Bitmap {
         val (width, height) = getTargetSize(source)
 
         val x = (source.width - width) / 2
@@ -37,10 +35,6 @@ sealed class RoundedTransformation(private val cornerRadiusPx: Float) : Transfor
     protected abstract fun getTargetSize(source: Bitmap): Pair<Int, Int>
 
     protected abstract val roundedKey: String
-
-    override fun key(): String {
-        return "rounded-$roundedKey"
-    }
 
 }
 

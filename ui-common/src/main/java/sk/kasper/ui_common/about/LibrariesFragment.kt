@@ -40,7 +40,6 @@ class LibrariesFragment: BaseFragment() {
         Library("Dagger 2", "https://google.github.io/dagger/"),
         Library("Timber", "https://github.com/JakeWharton/timber"),
         Library("Threetenabp", "https://github.com/JakeWharton/ThreeTenABP"),
-        Library("Picasso", "http://square.github.io/picasso/"),
         Library("OkHttp", "http://square.github.io/okhttp/"),
         Library("Retrofit 2", "http://square.github.io/retrofit/")
     )

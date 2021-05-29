@@ -58,14 +58,10 @@ dependencies {
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
-    implementation libs.androidx.vectordrawable
     implementation libs.androidx.drawerlayout
-    implementation libs.androidx.constraintlayout
 
     implementation libs.dagger.support
     kapt libs.dagger.compiler
-
-    implementation libs.picasso
 
     implementation libs.timber
 

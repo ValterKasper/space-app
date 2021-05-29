@@ -58,7 +58,6 @@ dependencies {
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
-    implementation libs.androidx.vectordrawable
     implementation libs.androidx.drawerlayout
 
     implementation libs.dagger.support

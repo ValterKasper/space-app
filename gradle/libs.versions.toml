@@ -23,13 +23,11 @@ android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref
 android-material = "com.google.android.material:material:1.3.0"
 
 androidx-appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
-androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
 androidx-core = "androidx.core:core-ktx:1.3.2"
 androidx-drawerlayout = "androidx.drawerlayout:drawerlayout:1.1.1"
 androidx-legacy-preference = "androidx.legacy:legacy-preference-v14:1.0.0"
 androidx-legacy-support = "androidx.legacy:legacy-support-v4:1.0.0"
 androidx-preference = "androidx.preference:preference-ktx:1.1.1"
-androidx-vectordrawable = "androidx.vectordrawable:vectordrawable:1.1.0"
 androidx-work-runtime = "androidx.work:work-runtime-ktx:2.4.0"
 
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
@@ -82,8 +80,6 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 junit = { module = "junit:junit", version.ref = "junit" }
 
 mockito-kotlin = { module = "com.nhaarman.mockitokotlin2:mockito-kotlin", version.ref = "mockitokotlin" }
-
-picasso = "com.squareup.picasso:picasso:2.5.2"
 
 prettytime = "org.ocpsoft.prettytime:prettytime:4.0.4.Final"
 

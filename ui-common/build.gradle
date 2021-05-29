@@ -66,8 +66,6 @@ dependencies {
     kaptAndroidTest libs.dagger.android.processor
     kaptAndroidTest libs.dagger.compiler
 
-    implementation libs.picasso
-
     implementation libs.prettytime
 
     implementation libs.timber

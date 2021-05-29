@@ -24,9 +24,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Picasso
--dontwarn com.squareup.okhttp.**
-
 # Dagger
 -dontwarn com.google.errorprone.annotations.**
 

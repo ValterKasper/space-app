@@ -29,7 +29,6 @@ android {
         versionCode 18
         versionName "1.2.5"
         testInstrumentationRunner "sk.kasper.space.MockAndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
 
         buildConfigField 'long', 'SYNC_INTERVAL_HOURS', '4'
         buildConfigField 'long', 'TOO_OLD_LAUNCH_TO_BE_SHOWN_HOURS', '24'
@@ -91,9 +90,7 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
 
-    implementation libs.androidx.constraintlayout
     implementation libs.androidx.drawerlayout
-    implementation libs.androidx.vectordrawable
 
     implementation libs.androidx.lifecycle.common.java8
     implementation libs.androidx.lifecycle.process
@@ -131,8 +128,6 @@ dependencies {
 
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test
-
-    implementation libs.picasso
 
     implementation libs.google.firebase.analytics
     implementation libs.google.firebase.crashlytics
