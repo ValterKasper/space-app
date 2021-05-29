@@ -7,7 +7,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import sk.kasper.domain.usecase.launchdetail.GetLaunchSite
-import sk.kasper.ui_launch.section.SectionViewModel
 
 @RunWith(MockitoJUnitRunner::class)
 open class LaunchSiteViewModelTest {

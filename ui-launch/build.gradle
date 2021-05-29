@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs.kotlin'
 }
 
@@ -32,13 +31,8 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        dataBinding = true
         compose true
     }
-}
-
-androidExtensions {
-    features = ["parcelize"]
 }
 
 dependencies {

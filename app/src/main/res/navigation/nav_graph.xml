@@ -40,12 +40,6 @@
         <deepLink app:uri="spaceapp://libraries" />
     </fragment>
     <fragment
-        android:id="@+id/uiToolkitPlaygroundFragment"
-        android:name="sk.kasper.ui_playground.UiToolkitPlaygroundFragment"
-        android:label="@string/ui_toolkit_playground">
-        <deepLink app:uri="spaceapp://ui_toolkit_playground" />
-    </fragment>
-    <fragment
         android:id="@+id/composePlaygroundFragment"
         android:name="sk.kasper.ui_playground.ComposePlaygroundFragment"
         android:label="@string/compose_playground">

@@ -1,8 +1,6 @@
 package sk.kasper.ui_timeline
 
 import androidx.annotation.DrawableRes
-import androidx.databinding.ObservableArrayList
-import androidx.databinding.ObservableList
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import sk.kasper.ui_common.tag.UiTag
@@ -10,7 +8,7 @@ import sk.kasper.ui_common.utils.FormattedTimeType
 
 open class LaunchListItemViewModel(val item: LaunchListItem) {
 
-    val tags: ObservableList<UiTag> = ObservableArrayList()
+    val tags: MutableList<UiTag> = mutableListOf()
 
     val tagsVisible: Boolean
 

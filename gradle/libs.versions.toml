@@ -18,8 +18,6 @@ accompanist-insets = { module = "com.google.accompanist:accompanist-insets", ver
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 
-android-flexbox = "com.google.android:flexbox:1.1.0"
-
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 
 android-material = "com.google.android.material:material:1.3.0"
@@ -44,6 +42,7 @@ androidx-compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "com
 androidx-coretesting = "androidx.arch.core:core-testing:2.1.0"
 
 androidx-lifecycle-common-java8 = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+androidx-lifecycle-process = "androidx.lifecycle:lifecycle-process:2.3.1"
 
 androidx-navigation-args-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }

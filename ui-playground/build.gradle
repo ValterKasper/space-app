@@ -30,7 +30,6 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        dataBinding = true
         compose true
     }
 }
@@ -44,7 +43,6 @@ dependencies {
     implementation libs.accompanist.systemuicontroller
 
     implementation libs.android.material
-    implementation libs.android.flexbox
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core

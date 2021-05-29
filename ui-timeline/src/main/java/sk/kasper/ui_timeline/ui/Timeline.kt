@@ -136,9 +136,6 @@ private fun TimelineAppBar(viewModel: TimelineViewModel) {
 
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 if (BuildConfig.DEBUG) {
-                    DropdownMenuItem(onClick = { viewModel.navigateClick(Destination.UI_TOOLKIT_PLAYGROUND) }) {
-                        Text(stringResource(id = R.string.ui_toolkit_playground))
-                    }
                     DropdownMenuItem(onClick = { viewModel.navigateClick(Destination.COMPOSE_PLAYGROUND) }) {
                         Text(stringResource(id = R.string.compose_playground))
                     }

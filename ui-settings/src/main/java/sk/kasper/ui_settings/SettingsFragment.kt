@@ -14,8 +14,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.appbar.MaterialToolbar
 import sk.kasper.ui_common.analytics.Analytics
-import sk.kasper.ui_common.utils.applySystemWindows
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
+import sk.kasper.ui_common.utils.doOnApplyWindowInsets
 
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -95,6 +95,28 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             true
         }
         else -> false
+    }
+
+    private fun applySystemWindows(
+        view: View,
+        applyLeft: Boolean,
+        applyTop: Boolean,
+        applyRight: Boolean,
+        applyBottom: Boolean
+    ) {
+        view.doOnApplyWindowInsets { insets, padding ->
+            val left = if (applyLeft) insets.systemWindowInsetLeft else 0
+            val top = if (applyTop) insets.systemWindowInsetTop else 0
+            val right = if (applyRight) insets.systemWindowInsetRight else 0
+            val bottom = if (applyBottom) insets.systemWindowInsetBottom else 0
+
+            setPadding(
+                padding.left + left,
+                padding.top + top,
+                padding.right + right,
+                padding.bottom + bottom
+            )
+        }
     }
 
 }

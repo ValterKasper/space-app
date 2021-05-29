@@ -31,7 +31,6 @@ android {
         kotlinCompilerExtensionVersion libs.versions.compose.get()
     }
     buildFeatures {
-        dataBinding = true
         compose true
     }
 }
