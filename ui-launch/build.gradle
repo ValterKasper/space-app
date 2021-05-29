@@ -67,7 +67,6 @@ dependencies {
 
     implementation libs.androidx.vectordrawable
     implementation libs.androidx.constraintlayout
-    implementation libs.androidx.recyclerview
 
     implementation libs.google.android.play.services.maps
 
@@ -80,8 +79,6 @@ dependencies {
     kapt libs.dagger.assisted.inject.processor
 
     implementation libs.picasso
-
-    implementation libs.photoview
 
     implementation libs.timber
 

@@ -62,7 +62,6 @@ dependencies {
     implementation libs.androidx.vectordrawable
     implementation libs.androidx.drawerlayout
     implementation libs.androidx.constraintlayout
-    implementation libs.androidx.recyclerview
 
     implementation libs.dagger.support
     kapt libs.dagger.compiler

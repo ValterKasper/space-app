@@ -100,11 +100,9 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
 
-    implementation libs.androidx.cardview
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.drawerlayout
     implementation libs.androidx.vectordrawable
-    implementation libs.androidx.recyclerview
 
     implementation libs.androidx.lifecycle.common.java8
 

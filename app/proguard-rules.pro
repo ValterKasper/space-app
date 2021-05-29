@@ -70,7 +70,6 @@
 -dontnote org.apache.harmony.xnet.provider.jsse.SSLParametersImpl
 -dontnote sun.security.ssl.SSLContextImpl
 -dontnote dalvik.system.CloseGuard
--dontnote com.github.chrisbanes.photoview.PhotoView
 -dontnote com.google.android.material.**
 -dontnote com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar
 -dontnote sk.kasper.space.view.OrbitView

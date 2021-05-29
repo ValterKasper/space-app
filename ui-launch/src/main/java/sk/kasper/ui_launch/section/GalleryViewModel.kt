@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.flow
 import sk.kasper.domain.model.Photo
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.launchdetail.GetPhotos
-import sk.kasper.space.launchdetail.gallery.PhotoItem
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import sk.kasper.ui_launch.R
+import sk.kasper.ui_launch.gallery.PhotoItem
 import sk.kasper.ui_launch.gallery.PhotoPagerData
 
 data class GalleryState(

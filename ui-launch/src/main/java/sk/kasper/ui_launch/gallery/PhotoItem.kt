@@ -1,9 +1,7 @@
-package sk.kasper.space.launchdetail.gallery
+package sk.kasper.ui_launch.gallery
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
-@Parcelize
-data class PhotoItem(val url: String,
-                     val sourceName: String? = null,
-                     val description: String? = null): Parcelable
+data class PhotoItem(
+    val url: String,
+    val sourceName: String? = null,
+    val description: String? = null
+)

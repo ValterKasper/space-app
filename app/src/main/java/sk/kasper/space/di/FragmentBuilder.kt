@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import sk.kasper.ui_common.about.LibrariesFragment
 import sk.kasper.ui_launch.LaunchFragment
-import sk.kasper.ui_launch.gallery.PhotoPagerFragment
 import sk.kasper.ui_playground.ComposePlaygroundFragment
 import sk.kasper.ui_playground.UiToolkitPlaygroundFragment
 import sk.kasper.ui_timeline.TimelineFragment
@@ -33,8 +32,5 @@ abstract class FragmentBuilder {
     @ContributesAndroidInjector
     internal abstract fun bindComposePlaygroundFragment(): ComposePlaygroundFragment
 
-    @FragmentScope
-    @ContributesAndroidInjector
-    internal abstract fun bindPhotoPagerFragment(): PhotoPagerFragment
 
 }
