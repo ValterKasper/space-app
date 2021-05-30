@@ -3,16 +3,9 @@ package sk.kasper.space.api.di
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import sk.kasper.space.BuildConfig
 import sk.kasper.space.api.FakeRemoteApi
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.ui_common.settings.SettingsManager
-import timber.log.Timber
 import javax.inject.Singleton
 
 @Module
@@ -53,17 +46,19 @@ class RemoteApiModule {
                 .build()
 
         val apiEndpoint = settingsManager.apiEndpoint
-        if (!BuildConfig.DEBUG && apiEndpoint != SettingsManager.ApiEndpoint.PRODUCTION) {
+        if (!BuildConfig.DEBUG && apiEndpoint != SettingsManager.PRODUCTION) {
             throw IllegalStateException("Connecting to non production server in release build")
         }
 
         val retrofit = Retrofit.Builder()
                 .client(client)
-                .baseUrl(when (apiEndpoint) {
-                    SettingsManager.ApiEndpoint.PRODUCTION -> "https://li807-27.members.linode.com:8443/"
-                    SettingsManager.ApiEndpoint.LOCALHOST -> "http://10.0.2.2:8080/"
-                    SettingsManager.ApiEndpoint.RASPBERRY -> "http://10.0.0.2:8080/"
-                })
+                .baseUrl(
+                    when (apiEndpoint) {
+                        SettingsManager.PRODUCTION -> "https://li807-27.members.linode.com:8443/"
+                        SettingsManager.LOCALHOST -> "http://10.0.2.2:8080/"
+                        SettingsManager.RASPBERRY -> "http://10.0.0.2:8080/"
+                        else -> throw IllegalStateException()
+                    })
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 

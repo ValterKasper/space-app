@@ -2,32 +2,44 @@ package sk.kasper.ui_common.settings
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import sk.kasper.ui_common.R
 import javax.inject.Inject
+import javax.inject.Singleton
 
 enum class SettingKey(@StringRes val stringRes: Int) {
-    NIGHT_MODE(R.string.pref_night_mode),
-    NIGHT_MODE_PRE_Q(R.string.pref_night_pre_q_mode),
+    NIGHT_MODE(if (isLowerSdkVersionThan(Build.VERSION_CODES.Q)) R.string.pref_night_pre_q_mode else R.string.pref_night_mode),
     SHOW_UNCONFIRMED_LAUNCHES(R.string.pref_show_unconfirmed_launches),
     DURATION_BEFORE_NOTIFICATION_IS_SHOWN(R.string.pref_duration_before_notification_is_shown),
     SHOW_LAUNCH_NOTIFICATION(R.string.pref_show_launch_notifications),
+    API_ENDPOINT(R.string.pref_api_endpoint),
     INVALID(0)
 }
 
+private fun isLowerSdkVersionThan(sdkVersion: Int) =
+    Build.VERSION.SDK_INT < sdkVersion
+
 typealias SettingChangeListener = (SettingKey) -> Unit
 
-open class SettingsManager @Inject constructor(private val context: Context) : SharedPreferences.OnSharedPreferenceChangeListener {
+@Singleton
+class SettingsManager @Inject constructor(private val context: Context) :
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
-    enum class ApiEndpoint {
-        PRODUCTION,
-        LOCALHOST,
-        RASPBERRY
+    companion object {
+        const val PRODUCTION = 0
+        const val LOCALHOST = 1
+        const val RASPBERRY = 2
     }
 
-    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val sharedPreferences: SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
 
     private val listeners = mutableListOf<SettingChangeListener>()
 
@@ -44,6 +56,26 @@ open class SettingsManager @Inject constructor(private val context: Context) : S
         }
     }
 
+    fun getIntAsFlow(key: SettingKey): Flow<Int> = callbackFlow {
+        val listener: (SettingKey) -> Unit = { c ->
+            if (c == key) sendBlocking(getInt(key))
+        }
+
+        addSettingChangeListener(listener)
+
+        awaitClose { removeSettingChangeListener(listener) }
+    }
+
+    fun getBoolAsFlow(key: SettingKey): Flow<Boolean> = callbackFlow {
+        val listener: (SettingKey) -> Unit = { c ->
+            if (c == key) sendBlocking(getBoolean(key))
+        }
+
+        addSettingChangeListener(listener)
+
+        awaitClose { removeSettingChangeListener(listener) }
+    }
+
     fun addSettingChangeListener(listener: SettingChangeListener) {
         listeners.add(listener)
     }
@@ -52,40 +84,26 @@ open class SettingsManager @Inject constructor(private val context: Context) : S
         listeners.remove(listener)
     }
 
-    open val showUnconfirmedLaunches: Boolean
-        get() = getBoolean(SettingKey.SHOW_UNCONFIRMED_LAUNCHES, true)
+    val showUnconfirmedLaunches: Boolean
+        get() = getBoolean(SettingKey.SHOW_UNCONFIRMED_LAUNCHES)
 
-    open val showLaunchNotifications: Boolean
-        get() = getBoolean(SettingKey.SHOW_LAUNCH_NOTIFICATION, true)
+    var showLaunchNotifications: Boolean
+        get() = getBoolean(SettingKey.SHOW_LAUNCH_NOTIFICATION)
+        set(value) = setBoolean(SettingKey.SHOW_LAUNCH_NOTIFICATION, value)
 
-    open val durationBeforeNotificationIsShown: Int
-        get() = getIntFromString(SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN, 60)
+    val durationBeforeNotificationIsShown: Int
+        get() = getInt(SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN)
 
-    open var nightMode: Int
-        get() = if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
-            getIntFromString(SettingKey.NIGHT_MODE_PRE_Q, AppCompatDelegate.MODE_NIGHT_NO)
-        } else {
-            getIntFromString(SettingKey.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        }
+    var nightMode: Int
+        get() = getInt(SettingKey.NIGHT_MODE)
         set(value) {
-            val key = if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
-                SettingKey.NIGHT_MODE_PRE_Q
-            } else {
-                SettingKey.NIGHT_MODE
-            }
-            setIntToString(key, value)
+            setInt(SettingKey.NIGHT_MODE, value)
         }
 
-    val apiEndpoint: ApiEndpoint
-        get() = when (sharedPreferences.getString(
-            context.getString(R.string.pref_api_endpoint),
-            "0"
-        )) {
-            "0" -> ApiEndpoint.PRODUCTION
-            "1" -> ApiEndpoint.LOCALHOST
-            "2" -> ApiEndpoint.RASPBERRY
-            else -> ApiEndpoint.PRODUCTION
-        }
+    val apiEndpoint: Int
+        get() = getInt(SettingKey.API_ENDPOINT)
+
+    val apiEndPointValues = listOf(PRODUCTION, RASPBERRY, LOCALHOST)
 
     fun toggleTheme() {
         nightMode = if (nightMode == AppCompatDelegate.MODE_NIGHT_NO) {
@@ -95,31 +113,59 @@ open class SettingsManager @Inject constructor(private val context: Context) : S
         }
     }
 
-    private fun getBoolean(key: SettingKey, defaultValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(getSharedPreferenceKeyFromSettingKey(key), defaultValue)
+    val durationValues = listOf(30, 60, 120)
+
+    val nightModeValues: List<Int>
+        get() = if (isLowerSdkVersionThan(Build.VERSION_CODES.Q)) {
+            listOf(AppCompatDelegate.MODE_NIGHT_NO, AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            listOf(
+                AppCompatDelegate.MODE_NIGHT_NO,
+                AppCompatDelegate.MODE_NIGHT_YES,
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            )
+        }
+
+    fun getBoolean(key: SettingKey): Boolean {
+        return sharedPreferences
+            .getBoolean(getSharedPreferenceKeyFromSettingKey(key), defaultValues[key] as Boolean)
     }
 
-    private fun getIntFromString(key: SettingKey, defaultValue: Int): Int {
+    fun setBoolean(key: SettingKey, value: Boolean) {
+        sharedPreferences.edit()
+            .putBoolean(getSharedPreferenceKeyFromSettingKey(key), value)
+            .apply()
+    }
+
+    fun getInt(key: SettingKey): Int {
         return sharedPreferences.getString(
             getSharedPreferenceKeyFromSettingKey(key),
-            defaultValue.toString()
+            defaultValues[key].toString()
         )!!.toInt()
     }
 
-    private fun setIntToString(key: SettingKey, value: Int) {
+    fun setInt(key: SettingKey, value: Int) {
         return sharedPreferences
-                .edit()
-                .putString(getSharedPreferenceKeyFromSettingKey(key), value.toString())
-                .apply()
+            .edit()
+            .putString(getSharedPreferenceKeyFromSettingKey(key), value.toString())
+            .apply()
     }
+
+    private val defaultValues: Map<SettingKey, Any> = mapOf(
+        SettingKey.NIGHT_MODE to if (isLowerSdkVersionThan(Build.VERSION_CODES.Q)) AppCompatDelegate.MODE_NIGHT_NO else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+        SettingKey.SHOW_UNCONFIRMED_LAUNCHES to true,
+        SettingKey.SHOW_LAUNCH_NOTIFICATION to true,
+        SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN to 60,
+        SettingKey.API_ENDPOINT to PRODUCTION,
+    )
 
     private fun getSettingKeyFromSharedPreferenceKey(key: String): SettingKey {
         return when (context.resources.getIdentifier(key, "string", context.packageName)) {
-            R.string.pref_night_mode -> SettingKey.NIGHT_MODE
-            R.string.pref_night_pre_q_mode -> SettingKey.NIGHT_MODE_PRE_Q
+            R.string.pref_night_mode, R.string.pref_night_pre_q_mode -> SettingKey.NIGHT_MODE
             R.string.pref_show_unconfirmed_launches -> SettingKey.SHOW_UNCONFIRMED_LAUNCHES
             R.string.pref_duration_before_notification_is_shown -> SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN
             R.string.pref_show_launch_notifications -> SettingKey.SHOW_LAUNCH_NOTIFICATION
+            R.string.pref_api_endpoint -> SettingKey.API_ENDPOINT
             else -> SettingKey.INVALID
         }
     }

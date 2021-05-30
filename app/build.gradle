@@ -104,7 +104,6 @@ dependencies {
 
     implementation libs.androidx.work.runtime
 
-    implementation libs.androidx.legacy.support
     implementation libs.androidx.preference
 
     implementation libs.kotlin.stdlib.jdk7

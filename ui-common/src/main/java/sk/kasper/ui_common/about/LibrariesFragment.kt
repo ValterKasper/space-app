@@ -26,7 +26,6 @@ import sk.kasper.ui_common.R
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 
-@ExperimentalMaterialApi
 class LibrariesFragment: BaseFragment() {
 
     data class Library(val name: String, val link: String)
@@ -44,6 +43,7 @@ class LibrariesFragment: BaseFragment() {
         Library("Retrofit 2", "http://square.github.io/retrofit/")
     )
 
+    @ExperimentalMaterialApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,6 +71,7 @@ class LibrariesFragment: BaseFragment() {
         }
     }
 
+    @ExperimentalMaterialApi
     @Composable
     private fun Libraries(onLibraryClick: (Library) -> Unit) {
         LazyColumn {

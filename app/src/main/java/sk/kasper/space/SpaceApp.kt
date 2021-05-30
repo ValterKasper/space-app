@@ -1,27 +1,15 @@
 package sk.kasper.space
 
 import android.app.Application
-import android.util.Log
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.Configuration
-import androidx.work.WorkManager
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.database.Database
 import sk.kasper.space.di.AppComponent
-import sk.kasper.space.di.AppModule
-import sk.kasper.space.di.DaggerAppComponent
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
-import sk.kasper.ui_common.settings.SettingKey
 import sk.kasper.ui_common.settings.SettingsManager
-import sk.kasper.space.sync.SyncWorker
-import sk.kasper.ui_common.analytics.Analytics
-import sk.kasper.ui_common.analytics.FirebaseAnalyticsLogger
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -78,7 +66,7 @@ open class SpaceApp: Application(), HasAndroidInjector {
         AppCompatDelegate.setDefaultNightMode(settingsManager.nightMode)
 
         settingsManager.addSettingChangeListener { settingKey ->
-            if (settingKey == SettingKey.NIGHT_MODE || settingKey == SettingKey.NIGHT_MODE_PRE_Q) {
+            if (settingKey == SettingKey.NIGHT_MODE) {
                 AppCompatDelegate.setDefaultNightMode(settingsManager.nightMode)
             }
         }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="api_endpoint">Api endpoint</string>
+    <string name="production" translatable="false">Production</string>
+    <string name="localhost" translatable="false">Localhost</string>
+    <string name="raspberry" translatable="false">Raspberry</string>
+    <string name="show_launch_notifications">Launch</string>
+    <string name="show_launch_notifications_summary">Notify about upcoming launches</string>
+    <string name="show_launch_notifications_before">Show before</string>
+    <string name="show_unconfirmed_launches">Unconfirmed launches</string>
+    <string name="show_unconfirmed_launches_summary">Show launches without specified date</string>
+    <string name="half_hour">30 minutes</string>
+    <string name="one_hour">1 hour</string>
+    <string name="two_hours">2 hours</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="follow_system">Follow system</string>
+    <string name="choose_theme">Choose theme</string>
+    <string name="debug">Debugging options</string>
+    <string name="notifications">Notifications</string>
+</resources>

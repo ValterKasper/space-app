@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector
 import sk.kasper.ui_common.about.LibrariesFragment
 import sk.kasper.ui_launch.LaunchFragment
 import sk.kasper.ui_playground.ComposePlaygroundFragment
+import sk.kasper.ui_settings.SettingsFragment
 import sk.kasper.ui_timeline.TimelineFragment
 
 
@@ -22,6 +23,10 @@ abstract class FragmentBuilder {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun bindLibrariesFragment(): LibrariesFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun bindSettingsFragment(): SettingsFragment
 
     @FragmentScope
     @ContributesAndroidInjector

@@ -2,7 +2,6 @@
 <resources>
 
     <style name="SpaceAppTheme" parent="AppTheme.DayNight.Immersive">
-        <item name="preferenceTheme">@style/PreferenceTheme</item>
     </style>
 
 </resources>

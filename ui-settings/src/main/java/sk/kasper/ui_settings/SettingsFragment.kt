@@ -1,122 +1,178 @@
 package sk.kasper.ui_settings
 
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.view.MenuItem
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import com.google.android.material.appbar.MaterialToolbar
-import sk.kasper.ui_common.analytics.Analytics
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
+import kotlinx.coroutines.flow.collect
+import sk.kasper.ui_common.BaseFragment
+import sk.kasper.ui_common.settings.SettingKey
+import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.ui_common.theme.SpaceTheme
+import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
-import sk.kasper.ui_common.utils.doOnApplyWindowInsets
+import sk.kasper.ui_settings.preferences.ListPreference
+import sk.kasper.ui_settings.preferences.PreferenceCategory
+import sk.kasper.ui_settings.preferences.ProvideSettingsManager
+import sk.kasper.ui_settings.preferences.SwitchPreference
+import javax.inject.Inject
 
+class SettingsFragment : BaseFragment() {
 
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+    @Inject
+    lateinit var settingsManager: SettingsManager
 
-    private lateinit var showBeforePreference: ListPreference
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (!BuildConfig.DEBUG) {
-            preferenceManager.findPreference<Preference>(getString(R.string.pref_debug_category))?.isVisible = false
-            preferenceManager.findPreference<Preference>(getString(R.string.pref_api_endpoint))?.isVisible = false
+    @ExperimentalMaterialApi
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val endpointValues = settingsManager.apiEndPointValues.associateWith {
+            mapOf(
+                SettingsManager.PRODUCTION to R.string.production,
+                SettingsManager.LOCALHOST to R.string.localhost,
+                SettingsManager.RASPBERRY to R.string.raspberry,
+            ).getValue(it)
+        }
+        val durationValues = settingsManager.durationValues.associateWith {
+            mapOf(
+                30 to R.string.half_hour,
+                60 to R.string.one_hour,
+                120 to R.string.two_hours,
+            ).getValue(it)
+        }
+        val themeValues: Map<Int, Int> = settingsManager.nightModeValues.associateWith {
+            mapOf(
+                AppCompatDelegate.MODE_NIGHT_NO to R.string.light,
+                AppCompatDelegate.MODE_NIGHT_YES to R.string.dark,
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM to R.string.follow_system
+            ).getValue(it)
         }
 
-        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
-            preferenceManager.findPreference<Preference>(getString(R.string.pref_night_mode))?.isVisible = false
-        } else {
-            preferenceManager.findPreference<Preference>(getString(R.string.pref_night_pre_q_mode))?.isVisible = false
-        }
-
-        showBeforePreference = preferenceManager.findPreference<Preference>(getString(R.string.pref_duration_before_notification_is_shown)) as ListPreference
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        updateDurationToLaunchSummary()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(R.xml.settings)
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        when (key) {
-            getString(R.string.pref_duration_before_notification_is_shown) -> {
-                updateDurationToLaunchSummary()
-
-                Analytics.log(
-                        Analytics.Event.SETTING_SHOW_BEFORE,
-                        mapOf(Analytics.Param.VALUE to showBeforePreference.value))
+        lifecycleScope.launchWhenStarted {
+            settingsManager.getIntAsFlow(SettingKey.API_ENDPOINT).collect {
+                Toast.makeText(
+                    requireContext(),
+                    "Restart app to use selected api endpoint",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            getString(R.string.pref_api_endpoint) -> Toast.makeText(requireContext(), "Restart app to use selected api endpoint", Toast.LENGTH_SHORT).show()
+        }
+
+        return ComposeView(requireContext()).apply {
+            setContent {
+                SpaceTheme {
+                    ProvideWindowInsets {
+                        Column {
+                            TopAppBar {
+                                openLibraries()
+                            }
+                            ProvideSettingsManager(settingsManager = settingsManager) {
+                                Column(
+                                    modifier = Modifier.navigationBarsPadding()
+                                ) {
+
+                                    ListPreference(
+                                        settingKey = SettingKey.NIGHT_MODE,
+                                        title = R.string.choose_theme,
+                                        values = themeValues
+                                    )
+
+                                    SwitchPreference(
+                                        settingKey = SettingKey.SHOW_UNCONFIRMED_LAUNCHES,
+                                        title = R.string.show_unconfirmed_launches,
+                                        summary = R.string.show_unconfirmed_launches_summary
+                                    )
+
+                                    PreferenceCategory(title = R.string.notifications) {
+                                        SwitchPreference(
+                                            settingKey = SettingKey.SHOW_LAUNCH_NOTIFICATION,
+                                            title = R.string.show_launch_notifications,
+                                            summary = R.string.show_launch_notifications_summary
+                                        )
+
+                                        ListPreference(
+                                            settingKey = SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN,
+                                            title = R.string.show_launch_notifications_before,
+                                            values = durationValues
+                                        )
+                                    }
+
+                                    if (BuildConfig.DEBUG) {
+                                        PreferenceCategory(title = R.string.debug) {
+                                            ListPreference(
+                                                settingKey = SettingKey.API_ENDPOINT,
+                                                title = R.string.api_endpoint,
+                                                values = endpointValues
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private fun updateDurationToLaunchSummary() {
-        showBeforePreference.summary = showBeforePreference.entry
+    private fun openLibraries() {
+        val uri = Uri.parse("spaceapp://libraries")
+        findNavController().navigate(uri, createSlideAnimNavOptions())
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    @Composable
+    private fun TopAppBar(onShowLibraries: () -> Unit = {}) {
+        InsetAwareTopAppBar(
+            title = {
+                Text(
+                    text = stringResource(id = R.string.settings),
+                    maxLines = 1,
+                    style = MaterialTheme.typography.h6,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = { findNavController().popBackStack() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_arrow_back),
+                        contentDescription = "back",
+                    )
+                }
+            },
+            actions = {
+                var expanded by remember { mutableStateOf(false) }
+                IconButton(onClick = { expanded = true }) {
+                    Icon(
+                        painterResource(id = R.drawable.ic_baseline_more_vert_24),
+                        contentDescription = null
+                    )
+                }
 
-        with(view.findViewById<MaterialToolbar>(R.id.toolbar)) {
-            inflateMenu(R.menu.menu_settings)
-            setOnMenuItemClickListener(::onMenuItemClicked)
-            NavigationUI.setupWithNavController(this, findNavController())
-            applySystemWindows(this, applyLeft = true, applyTop = true, applyBottom = false, applyRight = true)
-        }
-        with(view.findViewById<View>(android.R.id.list_container)) {
-            applySystemWindows(this, applyLeft = true, applyTop = false, applyBottom = true, applyRight = true)
-        }
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    DropdownMenuItem(onClick = { onShowLibraries() }) {
+                        Text(stringResource(id = R.string.libraries))
+                    }
+                }
+            }
+        )
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        view?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-    }
-
-    private fun onMenuItemClicked(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.menu_libraries -> {
-            val uri = Uri.parse("spaceapp://libraries")
-            findNavController().navigate(uri, createSlideAnimNavOptions())
-            true
-        }
-        else -> false
-    }
-
-    private fun applySystemWindows(
-        view: View,
-        applyLeft: Boolean,
-        applyTop: Boolean,
-        applyRight: Boolean,
-        applyBottom: Boolean
-    ) {
-        view.doOnApplyWindowInsets { insets, padding ->
-            val left = if (applyLeft) insets.systemWindowInsetLeft else 0
-            val top = if (applyTop) insets.systemWindowInsetTop else 0
-            val right = if (applyRight) insets.systemWindowInsetRight else 0
-            val bottom = if (applyBottom) insets.systemWindowInsetBottom else 0
-
-            setPadding(
-                padding.left + left,
-                padding.top + top,
-                padding.right + right,
-                padding.bottom + bottom
-            )
-        }
-    }
 
 }
