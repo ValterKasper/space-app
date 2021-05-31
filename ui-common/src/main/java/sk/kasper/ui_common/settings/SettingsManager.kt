@@ -54,6 +54,16 @@ class SettingsManager @Inject constructor(private val context: Context) :
         }
     }
 
+    fun getSettingChanges(): Flow<SettingKey> = callbackFlow {
+        val listener: (SettingKey) -> Unit = { c ->
+            sendBlocking(c)
+        }
+
+        addSettingChangeListener(listener)
+
+        awaitClose { removeSettingChangeListener(listener) }
+    }
+
     fun getIntAsFlow(key: SettingKey): Flow<Int> = callbackFlow {
         val listener: (SettingKey) -> Unit = { c ->
             if (c == key) sendBlocking(getInt(key))

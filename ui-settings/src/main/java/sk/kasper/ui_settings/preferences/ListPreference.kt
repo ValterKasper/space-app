@@ -19,12 +19,14 @@ fun ListPreference(
     modifier: Modifier = Modifier,
     settingKey: SettingKey,
     title: Int,
-    values: Map<Int, Int>
+    values: Map<Int, Int>,
+    selectedValue: Int,
+    onValueChange: (SettingKey, Int) -> Unit
 ) {
-    val settingsManager = LocalSettingsManager.current
+//    val settingsManager = LocalSettingsManager.current
 
-    val selectedValue = settingsManager.getIntAsFlow(settingKey)
-        .collectAsState(settingsManager.getInt(settingKey))
+/*    val selectedValue = settingsManager.getIntAsFlow(settingKey)
+        .collectAsState(settingsManager.getInt(settingKey))*/
 
     var showDialog by remember { mutableStateOf(false) }
 
@@ -33,7 +35,7 @@ fun ListPreference(
             .padding(vertical = 4.dp)
             .clickable { showDialog = true },
         text = { Text(stringResource(title)) },
-        secondaryText = { Text(stringResource(id = values.getValue(selectedValue.value))) }
+        secondaryText = { Text(stringResource(id = values.getValue(selectedValue))) }
     )
 
     if (showDialog) {
@@ -55,14 +57,14 @@ fun ListPreference(
                             verticalAlignment = CenterVertically,
                             modifier = Modifier
                                 .clickable {
-                                    settingsManager.setInt(settingKey, value)
+                                    onValueChange(settingKey, value)
                                     showDialog = false
                                 }
                                 .height(48.dp)
                                 .fillMaxWidth(),
                         ) {
                             RadioButton(
-                                selected = value == selectedValue.value,
+                                selected = value == selectedValue,
                                 modifier = Modifier.padding(end = 24.dp),
                                 onClick = null
                             )

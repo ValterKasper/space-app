@@ -11,6 +11,7 @@ import sk.kasper.space.database.di.DatabaseModule
 import sk.kasper.space.mainactivity.di.MainActivityModule
 import sk.kasper.space.work.WorkerBindingModule
 import sk.kasper.ui_launch.di.LaunchAssistedInjectModule
+import sk.kasper.ui_settings.di.SettingsViewModelsBindingModule
 import sk.kasper.ui_timeline.di.TimelineViewModelsBindingModule
 import javax.inject.Singleton
 
@@ -25,6 +26,7 @@ import javax.inject.Singleton
         AssistedInjectModule::class,
         WorkerBindingModule::class,
         TimelineViewModelsBindingModule::class,
+        SettingsViewModelsBindingModule::class,
         RemoteApiModule::class,
         DatabaseModule::class
     ]

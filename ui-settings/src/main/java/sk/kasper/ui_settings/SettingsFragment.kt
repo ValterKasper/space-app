@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -26,6 +25,7 @@ import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
+import sk.kasper.ui_common.utils.viewModels
 import sk.kasper.ui_settings.preferences.ListPreference
 import sk.kasper.ui_settings.preferences.PreferenceCategory
 import sk.kasper.ui_settings.preferences.ProvideSettingsManager
@@ -43,28 +43,6 @@ class SettingsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val endpointValues = settingsManager.apiEndPointValues.associateWith {
-            mapOf(
-                SettingsManager.PRODUCTION to R.string.production,
-                SettingsManager.LOCALHOST to R.string.localhost,
-                SettingsManager.RASPBERRY to R.string.raspberry,
-            ).getValue(it)
-        }
-        val durationValues = settingsManager.durationValues.associateWith {
-            mapOf(
-                30 to R.string.half_hour,
-                60 to R.string.one_hour,
-                120 to R.string.two_hours,
-            ).getValue(it)
-        }
-        val themeValues: Map<Int, Int> = settingsManager.nightModeValues.associateWith {
-            mapOf(
-                AppCompatDelegate.MODE_NIGHT_NO to R.string.light,
-                AppCompatDelegate.MODE_NIGHT_YES to R.string.dark,
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM to R.string.follow_system
-            ).getValue(it)
-        }
-
         lifecycleScope.launchWhenStarted {
             settingsManager.getIntAsFlow(SettingKey.API_ENDPOINT).collect {
                 Toast.makeText(
@@ -75,11 +53,14 @@ class SettingsFragment : BaseFragment() {
             }
         }
 
+        val viewModel: SettingsViewModel by viewModels()
+
         return ComposeView(requireContext()).apply {
             setContent {
                 SpaceTheme {
                     ProvideWindowInsets {
                         Column {
+                            val state by viewModel.state.collectAsState()
                             TopAppBar {
                                 openLibraries()
                             }
@@ -87,46 +68,57 @@ class SettingsFragment : BaseFragment() {
                                 Column(
                                     modifier = Modifier.navigationBarsPadding()
                                 ) {
-
-                                    ListPreference(
-                                        settingKey = SettingKey.NIGHT_MODE,
-                                        title = R.string.choose_theme,
-                                        values = themeValues
-                                    )
-
-                                    SwitchPreference(
-                                        settingKey = SettingKey.SHOW_UNCONFIRMED_LAUNCHES,
-                                        title = R.string.show_unconfirmed_launches,
-                                        summary = R.string.show_unconfirmed_launches_summary
-                                    )
-
-                                    PreferenceCategory(title = R.string.notifications) {
-                                        SwitchPreference(
-                                            settingKey = SettingKey.SHOW_LAUNCH_NOTIFICATION,
-                                            title = R.string.show_launch_notifications,
-                                            summary = R.string.show_launch_notifications_summary
-                                        )
-
-                                        ListPreference(
-                                            settingKey = SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN,
-                                            title = R.string.show_launch_notifications_before,
-                                            values = durationValues
-                                        )
-                                    }
-
-                                    if (BuildConfig.DEBUG) {
-                                        PreferenceCategory(title = R.string.debug) {
-                                            ListPreference(
-                                                settingKey = SettingKey.API_ENDPOINT,
-                                                title = R.string.api_endpoint,
-                                                values = endpointValues
-                                            )
-                                        }
-                                    }
+                                    Preferences(list = state.settings, viewModel = viewModel)
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    @ExperimentalMaterialApi
+    @Composable
+    private fun Preferences(list: List<SettingItem>, viewModel: SettingsViewModel) {
+        list.forEach {
+            when (it) {
+                is SettingItem.Category -> {
+                    PreferenceCategory(title = it.title) {
+                        Preferences(list = it.items, viewModel = viewModel)
+                    }
+                }
+                is SettingItem.Choice -> {
+                    ListPreference(
+                        settingKey = it.key,
+                        title = it.title,
+                        values = it.values,
+                        selectedValue = it.selected,
+                        onValueChange = { key, value ->
+                            viewModel.submitAction(
+                                SettingsAction.SetIntValue(
+                                    key,
+                                    value
+                                )
+                            )
+                        }
+                    )
+                }
+                is SettingItem.Switch -> {
+                    SwitchPreference(
+                        settingKey = it.key,
+                        title = it.title,
+                        summary = it.summary,
+                        checked = it.checked,
+                        onValueChange = { key, value ->
+                            viewModel.submitAction(
+                                SettingsAction.SetBooleanValue(
+                                    key,
+                                    value
+                                )
+                            )
+                        }
+                    )
                 }
             }
         }
