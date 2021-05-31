@@ -3,24 +3,22 @@ package sk.kasper.ui_common.settings
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import sk.kasper.ui_common.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
-enum class SettingKey(@StringRes val stringRes: Int) {
-    NIGHT_MODE(if (isLowerSdkVersionThan(Build.VERSION_CODES.Q)) R.string.pref_night_pre_q_mode else R.string.pref_night_mode),
-    SHOW_UNCONFIRMED_LAUNCHES(R.string.pref_show_unconfirmed_launches),
-    DURATION_BEFORE_NOTIFICATION_IS_SHOWN(R.string.pref_duration_before_notification_is_shown),
-    SHOW_LAUNCH_NOTIFICATION(R.string.pref_show_launch_notifications),
-    API_ENDPOINT(R.string.pref_api_endpoint),
-    INVALID(0)
+enum class SettingKey(val key: String) {
+    NIGHT_MODE(if (isLowerSdkVersionThan(Build.VERSION_CODES.Q)) "pref_night_pre_q_mode" else "pref_night_mode"),
+    SHOW_UNCONFIRMED_LAUNCHES("pref_show_unconfirmed_launches"),
+    DURATION_BEFORE_NOTIFICATION_IS_SHOWN("pref_duration_before_notification_is_shown"),
+    SHOW_LAUNCH_NOTIFICATION("pref_show_launch_notifications"),
+    API_ENDPOINT("pref_api_endpoint"),
+    INVALID("pref_invalid")
 }
 
 private fun isLowerSdkVersionThan(sdkVersion: Int) =
@@ -128,18 +126,18 @@ class SettingsManager @Inject constructor(private val context: Context) :
 
     fun getBoolean(key: SettingKey): Boolean {
         return sharedPreferences
-            .getBoolean(getSharedPreferenceKeyFromSettingKey(key), defaultValues[key] as Boolean)
+            .getBoolean(key.key, defaultValues[key] as Boolean)
     }
 
     fun setBoolean(key: SettingKey, value: Boolean) {
         sharedPreferences.edit()
-            .putBoolean(getSharedPreferenceKeyFromSettingKey(key), value)
+            .putBoolean(key.key, value)
             .apply()
     }
 
     fun getInt(key: SettingKey): Int {
         return sharedPreferences.getString(
-            getSharedPreferenceKeyFromSettingKey(key),
+            key.key,
             defaultValues[key].toString()
         )!!.toInt()
     }
@@ -147,7 +145,7 @@ class SettingsManager @Inject constructor(private val context: Context) :
     fun setInt(key: SettingKey, value: Int) {
         return sharedPreferences
             .edit()
-            .putString(getSharedPreferenceKeyFromSettingKey(key), value.toString())
+            .putString(key.key, value.toString())
             .apply()
     }
 
@@ -160,18 +158,14 @@ class SettingsManager @Inject constructor(private val context: Context) :
     )
 
     private fun getSettingKeyFromSharedPreferenceKey(key: String): SettingKey {
-        return when (context.resources.getIdentifier(key, "string", context.packageName)) {
-            R.string.pref_night_mode, R.string.pref_night_pre_q_mode -> SettingKey.NIGHT_MODE
-            R.string.pref_show_unconfirmed_launches -> SettingKey.SHOW_UNCONFIRMED_LAUNCHES
-            R.string.pref_duration_before_notification_is_shown -> SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN
-            R.string.pref_show_launch_notifications -> SettingKey.SHOW_LAUNCH_NOTIFICATION
-            R.string.pref_api_endpoint -> SettingKey.API_ENDPOINT
+        return when (key) {
+            "pref_night_mode", "pref_night_pre_q_mode" -> SettingKey.NIGHT_MODE
+            "pref_show_unconfirmed_launches" -> SettingKey.SHOW_UNCONFIRMED_LAUNCHES
+            "pref_duration_before_notification_is_shown" -> SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN
+            "pref_show_launch_notifications" -> SettingKey.SHOW_LAUNCH_NOTIFICATION
+            "pref_api_endpoint" -> SettingKey.API_ENDPOINT
             else -> SettingKey.INVALID
         }
-    }
-
-    private fun getSharedPreferenceKeyFromSettingKey(key: SettingKey): String {
-        return context.getString(key.stringRes)
     }
 
 }
