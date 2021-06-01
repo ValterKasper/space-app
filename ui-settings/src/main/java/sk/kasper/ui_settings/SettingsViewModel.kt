@@ -12,94 +12,14 @@ import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import javax.inject.Inject
 
-data class SettingsState(val settings: List<SettingItem>)
-
-sealed class SettingItem {
-    data class Category(@StringRes val title: Int, val items: List<SettingItem>) :
-        SettingItem()
-
-    data class Choice(
-        @StringRes val title: Int,
-        val key: SettingKey,
-        val values: Map<Int, Int>,
-        val selected: Int,
-    ) : SettingItem()
-
-    data class Switch(
-        val key: SettingKey = SettingKey.INVALID,
-        @StringRes val title: Int,
-        val summary: Int = 0,
-        val checked: Boolean = false,
-    ) : SettingItem()
-}
-
-sealed class SettingsAction {
-    object ReloadSettings : SettingsAction()
-    data class SettingChanged(val settingKey: SettingKey) : SettingsAction()
-    data class SetIntValue(val key: SettingKey, val value: Int) : SettingsAction()
-    data class SetBooleanValue(val key: SettingKey, val value: Boolean) : SettingsAction()
-}
-
-enum class SettingsSideEffect {
-    SHOW_RESTART_APP_TOAST
-}
-
 class SettingsViewModel @Inject constructor(private val settingsManager: SettingsManager) :
     ReducerViewModel<SettingsState, SettingsAction, SettingsSideEffect>(
         SettingsState(emptyList())
     ) {
 
-    private val themeValues: Map<Int, Int> = settingsManager.nightModeValues.associateWith {
-        mapOf(
-            AppCompatDelegate.MODE_NIGHT_NO to R.string.light,
-            AppCompatDelegate.MODE_NIGHT_YES to R.string.dark,
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM to R.string.follow_system
-        ).getValue(it)
-    }
-
-    private val endpointValues = settingsManager.apiEndPointValues.associateWith {
-        mapOf(
-            SettingsManager.PRODUCTION to R.string.production,
-            SettingsManager.LOCALHOST to R.string.localhost,
-            SettingsManager.RASPBERRY to R.string.raspberry,
-        ).getValue(it)
-    }
-
-    private val durationValues = settingsManager.durationValues.associateWith {
-        mapOf(
-            30 to R.string.half_hour,
-            60 to R.string.one_hour,
-            120 to R.string.two_hours,
-        ).getValue(it)
-    }
-
-    init {
-        submitAction(SettingsAction.ReloadSettings)
-
-        viewModelScope.launch {
-            settingsManager.getSettingChanges().collect {
-                submitAction(SettingsAction.SettingChanged(it))
-            }
-        }
-    }
-
     @ExperimentalStdlibApi
-    override fun ScanScope.scan(action: SettingsAction, oldState: SettingsState): SettingsState {
-        return when (action) {
-            is SettingsAction.SettingChanged -> {
-                emitSideEffect(SettingsSideEffect.SHOW_RESTART_APP_TOAST)
-                SettingsState(createPreferenceItems())
-            }
-            SettingsAction.ReloadSettings -> {
-                SettingsState(createPreferenceItems())
-            }
-            else -> oldState
-        }
-    }
-
-    @ExperimentalStdlibApi
-    private fun createPreferenceItems(): List<SettingItem> {
-        return SettingsBuilder {
+    private fun createSettingItems(): List<SettingItem> {
+        return Settings {
             Choice(
                 key = SettingKey.NIGHT_MODE,
                 title = R.string.choose_theme,
@@ -140,7 +60,55 @@ class SettingsViewModel @Inject constructor(private val settingsManager: Setting
                     )
                 }
             }
-        }.items
+        }
+    }
+
+    private val themeValues: Map<Int, Int> = settingsManager.nightModeValues.associateWith {
+        mapOf(
+            AppCompatDelegate.MODE_NIGHT_NO to R.string.light,
+            AppCompatDelegate.MODE_NIGHT_YES to R.string.dark,
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM to R.string.follow_system
+        ).getValue(it)
+    }
+
+    private val endpointValues = settingsManager.apiEndPointValues.associateWith {
+        mapOf(
+            SettingsManager.PRODUCTION to R.string.production,
+            SettingsManager.LOCALHOST to R.string.localhost,
+            SettingsManager.RASPBERRY to R.string.raspberry,
+        ).getValue(it)
+    }
+
+    private val durationValues = settingsManager.durationValues.associateWith {
+        mapOf(
+            30 to R.string.half_hour,
+            60 to R.string.one_hour,
+            120 to R.string.two_hours,
+        ).getValue(it)
+    }
+
+    init {
+        submitAction(SettingsAction.ReloadSettings)
+
+        viewModelScope.launch {
+            settingsManager.getSettingChanges().collect {
+                submitAction(SettingsAction.SettingChanged(it))
+            }
+        }
+    }
+
+    @ExperimentalStdlibApi
+    override fun ScanScope.scan(action: SettingsAction, oldState: SettingsState): SettingsState {
+        return when (action) {
+            is SettingsAction.SettingChanged -> {
+                emitSideEffect(SettingsSideEffect.SHOW_RESTART_APP_TOAST)
+                SettingsState(createSettingItems())
+            }
+            SettingsAction.ReloadSettings -> {
+                SettingsState(createSettingItems())
+            }
+            else -> oldState
+        }
     }
 
     override fun mapActionToActionFlow(action: SettingsAction): Flow<SettingsAction> {
@@ -157,13 +125,15 @@ class SettingsViewModel @Inject constructor(private val settingsManager: Setting
         }
     }
 
-    private class SettingsBuilder(buildingBlock: SettingsBuilder.() -> Unit) {
+    private fun Settings(buildingBlock: SettingsBuilder.() -> Unit): List<SettingItem> {
+        return SettingsBuilder().apply {
+            buildingBlock()
+        }.items
+    }
+
+    private inner class SettingsBuilder {
         private var _items: MutableList<SettingItem> = mutableListOf()
         val items: List<SettingItem> = _items
-
-        init {
-            buildingBlock()
-        }
 
         fun Switch(
             key: SettingKey,
@@ -187,10 +157,42 @@ class SettingsViewModel @Inject constructor(private val settingsManager: Setting
         fun Category(@StringRes title: Int, buildingBlock: SettingsBuilder.() -> Unit) {
             _items.add(
                 SettingItem.Category(
-                    items = SettingsBuilder(buildingBlock)._items,
+                    items = Settings(buildingBlock),
                     title = title
                 )
             )
         }
     }
+}
+
+data class SettingsState(val settings: List<SettingItem>)
+
+sealed class SettingItem {
+    data class Category(@StringRes val title: Int, val items: List<SettingItem>) :
+        SettingItem()
+
+    data class Choice(
+        @StringRes val title: Int,
+        val key: SettingKey,
+        val values: Map<Int, Int>,
+        val selected: Int,
+    ) : SettingItem()
+
+    data class Switch(
+        val key: SettingKey = SettingKey.INVALID,
+        @StringRes val title: Int,
+        val summary: Int = 0,
+        val checked: Boolean = false,
+    ) : SettingItem()
+}
+
+sealed class SettingsAction {
+    object ReloadSettings : SettingsAction()
+    data class SettingChanged(val settingKey: SettingKey) : SettingsAction()
+    data class SetIntValue(val key: SettingKey, val value: Int) : SettingsAction()
+    data class SetBooleanValue(val key: SettingKey, val value: Boolean) : SettingsAction()
+}
+
+enum class SettingsSideEffect {
+    SHOW_RESTART_APP_TOAST
 }
