@@ -1,6 +1,7 @@
 package sk.kasper.ui_timeline.ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -258,8 +259,7 @@ private fun RocketIcon(
             }
         }
     } else {
-        // todo compose for some reason doesn't work with webp
-        Icon(
+        Image(
             painter = painterResource(id = rocketIconId),
             modifier = modifier
                 .clip(RoundedCornerShape(dimensionResource(id = R.dimen.rounded_corners_radius)))
