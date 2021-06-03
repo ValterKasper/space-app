@@ -1,5 +1,6 @@
 package sk.kasper.ui_timeline.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -73,19 +74,21 @@ fun Timeline(viewModel: TimelineViewModel) {
 
                     if (state.showRetryToLoadLaunches) {
                         Box(Modifier.fillMaxSize()) {
-                            Column(modifier = Modifier.align(Alignment.Center)) {
-                                Text(
-                                    text = stringResource(id = R.string.your_connections_is_off),
-                                    style = MaterialTheme.typography.h6,
-                                    modifier = Modifier
-                                        .alpha(0.62f)
-                                )
-                                Text(
-                                    text = stringResource(id = R.string.pull_to_refresh_to_try_again),
-                                    style = MaterialTheme.typography.body1,
-                                    modifier = Modifier
-                                        .alpha(0.62f)
-                                )
+                            Surface(elevation = 8.dp) {
+                                Column(modifier = Modifier.align(Alignment.Center)) {
+                                    Text(
+                                        text = stringResource(id = R.string.your_connections_is_off),
+                                        style = MaterialTheme.typography.h6,
+                                        modifier = Modifier
+                                            .alpha(0.62f)
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.pull_to_refresh_to_try_again),
+                                        style = MaterialTheme.typography.body1,
+                                        modifier = Modifier
+                                            .alpha(0.62f)
+                                    )
+                                }
                             }
                         }
                     }
@@ -188,37 +191,40 @@ private fun LaunchListItemLayout(
     viewModel: LaunchListItemViewModel,
     onItemClick: (LaunchListItem) -> Unit = {}
 ) {
-    Row(Modifier
-        .fillMaxWidth()
-        .clickable { onItemClick(viewModel.item) }
-        .padding(vertical = 12.dp)
-    ) {
-        RocketIcon(
-            modifier = Modifier.padding(
-                start = dimensionResource(id = R.dimen.padding_normal),
-                top = 4.dp,
-                bottom = 8.dp
-            ),
-            rocketName = viewModel.title,
-            rocketIconId = viewModel.rocketIcon
-        )
-        Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal))) {
-            Text(
-                text = viewModel.title,
-                style = MaterialTheme.typography.body1
+    Surface {
+        Row(Modifier
+            .fillMaxWidth()
+            .clickable { onItemClick(viewModel.item) }
+            .padding(vertical = 12.dp)
+        ) {
+            RocketIcon(
+                modifier = Modifier.padding(
+                    start = dimensionResource(id = R.dimen.padding_normal),
+                    top = 4.dp,
+                    bottom = 8.dp
+                ),
+                rocketName = viewModel.title,
+                rocketIconId = viewModel.rocketIcon
             )
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                LaunchDateTime(
-                    Modifier.padding(bottom = 4.dp),
-                    viewModel.launchDateTime,
-                    viewModel.formattedTimeType,
-                    viewModel.dateConfirmed,
-                    viewModel.prettyTimeVisible,
-                    viewModel.formattedTimeVisible
+            Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal))) {
+                Text(
+                    text = viewModel.title,
+                    style = MaterialTheme.typography.body1
                 )
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                    LaunchDateTime(
+                        Modifier.padding(bottom = 4.dp),
+                        viewModel.launchDateTime,
+                        viewModel.formattedTimeType,
+                        viewModel.dateConfirmed,
+                        viewModel.prettyTimeVisible,
+                        viewModel.formattedTimeVisible
+                    )
+                }
+                TagsRow(Modifier.padding(top = 4.dp), viewModel.tags)
             }
-            TagsRow(Modifier.padding(top = 4.dp), viewModel.tags)
         }
+
     }
 }
 
@@ -236,7 +242,9 @@ private fun LabelListItem(item: LabelListItem) {
             simpleDateFormat.format(calendar.time)
         }
     }
-    Section(text = text)
+    Surface {
+        Section(text = text)
+    }
 }
 
 @Composable
@@ -269,28 +277,40 @@ private fun RocketIcon(
     }
 }
 
-@Preview(
-    showBackground = true,
-    backgroundColor = android.graphics.Color.WHITE.toLong()
-)
+
 @Composable
-fun LaunchListItemPreview() {
+fun LaunchListItemForPreview() {
     SpaceTheme {
-        LaunchListItemLayout(
-            LaunchListItemViewModel(
-                LaunchListItem(
-                    "id",
-                    "Atlas V 421 | SBIRS GEO-5",
-                    LocalDateTime.of(2021, 7, 25, 10, 59),
-                    rocketResId = R.drawable.ariane_5,
-                    rocketName = "Atlas V",
-                    accurateDate = true,
-                    accurateTime = true,
-                    tags = listOf(UiTag.CUBE_SAT, UiTag.ISS, UiTag.MARS)
+        Surface {
+            LaunchListItemLayout(
+                LaunchListItemViewModel(
+                    LaunchListItem(
+                        "id",
+                        "Atlas V 421 | SBIRS GEO-5",
+                        LocalDateTime.of(2021, 7, 25, 10, 59),
+                        rocketResId = R.drawable.ariane_5,
+                        rocketName = "Atlas V",
+                        accurateDate = true,
+                        accurateTime = true,
+                        tags = listOf(UiTag.CUBE_SAT, UiTag.ISS, UiTag.MARS)
+                    ),
+                    LocalDateTime.of(2020, 2, 28, 12, 30)
                 )
             )
-        )
+        }
     }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+fun LaunchListItemForPreviewDay() {
+    LaunchListItemForPreview()
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun LaunchListItemForPreviewNight() {
+    LaunchListItemForPreview()
 }
 
 @Preview(

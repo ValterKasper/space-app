@@ -142,7 +142,7 @@ class LaunchFragment : BaseFragment() {
                                         OrbitSection(orbitViewModel)
                                         RocketSection(rocketSectionViewModel)
                                         FalconSection(falconInfoViewModel)
-                                        LaunchSiteSection(launchSiteViewModel)
+                                        //LaunchSiteSection(launchSiteViewModel)
                                     }
                                 }
                             }

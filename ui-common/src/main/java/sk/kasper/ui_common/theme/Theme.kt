@@ -14,6 +14,8 @@ private val Cyan700 = Color(0xFF0097A7)
 private val Cyan200 = Color(0xFF80DEEA)
 private val Blue500 = Color(0xff2196f3)
 
+private val negroni = Color(0xFFFEE5BF)
+
 private val SpaceLightPalette = lightColors(
         primary = Cyan500,
         primaryVariant = Cyan500,
@@ -24,7 +26,8 @@ private val SpaceDarkPalette = darkColors(
         primary = Cyan700,
         primaryVariant = Cyan500,
         secondary = Blue500,
-        onSurface = Cyan200,
+        onSurface = negroni,
+        onBackground = negroni,
         surface = Color.Black,
 )
 

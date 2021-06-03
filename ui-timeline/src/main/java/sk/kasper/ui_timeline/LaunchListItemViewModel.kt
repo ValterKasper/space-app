@@ -6,7 +6,10 @@ import org.threeten.bp.LocalTime
 import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.utils.FormattedTimeType
 
-open class LaunchListItemViewModel(val item: LaunchListItem) {
+open class LaunchListItemViewModel(
+    val item: LaunchListItem,
+    currentTime: LocalDateTime = LocalDateTime.now()
+) {
 
     val tags: MutableList<UiTag> = mutableListOf()
 
@@ -40,7 +43,7 @@ open class LaunchListItemViewModel(val item: LaunchListItem) {
         launchDateTime = item.launchDateTime
 
         dateConfirmed = true
-        val currentDateTime = LocalDateTime.now()
+        val currentDateTime: LocalDateTime = currentTime
         val weekLaterDateTime = currentDateTime.plusDays(7)
         val todayMidnightDateTime =
             LocalDateTime.of(currentDateTime.toLocalDate(), LocalTime.MIDNIGHT).plusDays(1)

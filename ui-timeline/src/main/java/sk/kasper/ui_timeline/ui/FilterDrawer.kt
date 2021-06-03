@@ -32,7 +32,7 @@ fun FilterDrawer(viewModel: TimelineViewModel) {
     val state by viewModel.state.collectAsState()
     SpaceTheme {
         ProvideWindowInsets {
-            Surface(color = MaterialTheme.colors.background) {
+            Surface {
                 Column {
                     FilterHeader(state.clearButtonVisible, viewModel::onClearAllClick)
                     FilterContent(

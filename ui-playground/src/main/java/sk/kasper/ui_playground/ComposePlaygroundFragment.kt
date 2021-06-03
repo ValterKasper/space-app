@@ -210,41 +210,33 @@ class ComposePlaygroundFragment : BaseFragment() {
             "onSurface" to MaterialTheme.colors.onSurface,
             "onError" to MaterialTheme.colors.onError,
         ).forEach { (name, color) ->
-            val contentColor = if (color in listOf(
-                    MaterialTheme.colors.onSecondary,
-                    MaterialTheme.colors.onBackground,
-                    MaterialTheme.colors.onSurface
-                )
-            ) MaterialTheme.colors.surface
-            else
-                contentColorFor(backgroundColor = color)
-
-            Surface(
-                modifier = Modifier
-                    .height(64.dp)
-                    .fillMaxWidth(),
-                color = color,
-                contentColor = contentColor
-            ) {
-                Row(
+            CompositionLocalProvider(LocalContentColor provides Color(0xFF2C9607)) {
+                Surface(
                     modifier = Modifier
-                        .padding(8.dp)
-                        .navigationBarsPadding(bottom = false)
+                        .height(64.dp)
+                        .fillMaxWidth(),
+                    color = color
                 ) {
-                    Text(
+                    Row(
                         modifier = Modifier
-                            .weight(1f)
-                            .align(Top),
-                        text = name.capitalize(Locale.getDefault()),
-                        style = MaterialTheme.typography.body1
-                    )
-                    Text(
-                        modifier = Modifier.align(Bottom),
-                        text = "0x" + color.toArgb().toUInt().toString(16).toUpperCase(
-                            Locale.getDefault()
-                        ),
-                        style = MaterialTheme.typography.body2
-                    )
+                            .padding(8.dp)
+                            .navigationBarsPadding(bottom = false)
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .weight(1f)
+                                .align(Top),
+                            text = name.capitalize(Locale.getDefault()),
+                            style = MaterialTheme.typography.body1
+                        )
+                        Text(
+                            modifier = Modifier.align(Bottom),
+                            text = "0x" + color.toArgb().toUInt().toString(16).toUpperCase(
+                                Locale.getDefault()
+                            ),
+                            style = MaterialTheme.typography.body2
+                        )
+                    }
                 }
             }
         }
