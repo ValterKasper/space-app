@@ -38,7 +38,7 @@ fun HeaderSection(viewModel: LaunchViewModel, upClick: () -> Unit) {
     LaunchHeader(
         state = state,
         upClick = { upClick() },
-        onShowVideoClick = { viewModel.submitAction(VideoClick) }
+        onShowVideoClick = { viewModel.onVideoClick() }
     )
 }
 
