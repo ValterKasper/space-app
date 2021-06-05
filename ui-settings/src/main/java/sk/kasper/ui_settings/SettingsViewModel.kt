@@ -3,21 +3,20 @@ package sk.kasper.ui_settings
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import sk.kasper.ui_common.settings.SettingKey
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import javax.inject.Inject
 
+
+@OptIn(ExperimentalStdlibApi::class)
 class SettingsViewModel @Inject constructor(private val settingsManager: SettingsManager) :
-    ReducerViewModel<SettingsState, SettingsAction, SettingsSideEffect>(
+    ReducerViewModel<SettingsState, SettingsSideEffect>(
         SettingsState(emptyList())
     ) {
 
-    @ExperimentalStdlibApi
     private fun createSettingItems(): List<SettingItem> {
         return Settings {
             Choice(
@@ -88,41 +87,35 @@ class SettingsViewModel @Inject constructor(private val settingsManager: Setting
     }
 
     init {
-        submitAction(SettingsAction.ReloadSettings)
+        reloadSettings()
 
         viewModelScope.launch {
             settingsManager.getSettingChanges().collect {
-                submitAction(SettingsAction.SettingChanged(it))
+                onSettingChanged(it)
             }
         }
     }
 
-    @ExperimentalStdlibApi
-    override fun ScanScope.scan(action: SettingsAction, oldState: SettingsState): SettingsState {
-        return when (action) {
-            is SettingsAction.SettingChanged -> {
-                emitSideEffect(SettingsSideEffect.SHOW_RESTART_APP_TOAST)
-                SettingsState(createSettingItems())
-            }
-            SettingsAction.ReloadSettings -> {
-                SettingsState(createSettingItems())
-            }
-            else -> oldState
+    fun setBooleanValue(key: SettingKey, value: Boolean) = action {
+        settingsManager.setBoolean(key, value)
+    }
+
+    fun setIntValue(key: SettingKey, value: Int) = action {
+        settingsManager.setInt(key, value)
+    }
+
+    private fun reloadSettings() = action {
+        reduce {
+            copy(settings = createSettingItems())
         }
     }
 
-    override fun mapActionToActionFlow(action: SettingsAction): Flow<SettingsAction> {
-        return when (action) {
-            is SettingsAction.SetBooleanValue -> {
-                settingsManager.setBoolean(action.key, action.value)
-                flowOf()
-            }
-            is SettingsAction.SetIntValue -> {
-                settingsManager.setInt(action.key, action.value)
-                flowOf()
-            }
-            else -> super.mapActionToActionFlow(action)
+    private fun onSettingChanged(settingKey: SettingKey) = action {
+        reduce {
+            copy(settings = createSettingItems())
         }
+
+        emitSideEffect(SettingsSideEffect.SHOW_RESTART_APP_TOAST)
     }
 
     private fun Settings(buildingBlock: SettingsBuilder.() -> Unit): List<SettingItem> {
@@ -184,13 +177,6 @@ sealed class SettingItem {
         val summary: Int = 0,
         val checked: Boolean = false,
     ) : SettingItem()
-}
-
-sealed class SettingsAction {
-    object ReloadSettings : SettingsAction()
-    data class SettingChanged(val settingKey: SettingKey) : SettingsAction()
-    data class SetIntValue(val key: SettingKey, val value: Int) : SettingsAction()
-    data class SetBooleanValue(val key: SettingKey, val value: Boolean) : SettingsAction()
 }
 
 enum class SettingsSideEffect {

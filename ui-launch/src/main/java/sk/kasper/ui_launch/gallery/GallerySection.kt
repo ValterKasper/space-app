@@ -25,7 +25,6 @@ import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.toPaddingValues
 import sk.kasper.ui_launch.R
 import sk.kasper.ui_launch.section.GalleryViewModel
-import sk.kasper.ui_launch.section.OnPhotoClicked
 
 @Composable
 fun GallerySection(viewModel: GalleryViewModel) {
@@ -50,7 +49,7 @@ fun GallerySection(viewModel: GalleryViewModel) {
                 Surface(
                     shape = MaterialTheme.shapes.medium,
                     modifier = Modifier.clickable {
-                        viewModel.submitAction(OnPhotoClicked(item))
+                        viewModel.onPhotoClicked(item)
                     }) {
                     Image(
                         painter = rememberCoilPainter(item.thumbnailUrl),

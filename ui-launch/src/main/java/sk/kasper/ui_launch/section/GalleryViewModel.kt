@@ -2,8 +2,6 @@ package sk.kasper.ui_launch.section
 
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import sk.kasper.domain.model.Photo
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.launchdetail.GetPhotos
@@ -21,64 +19,46 @@ data class GalleryState(
 sealed class GallerySideEffect
 data class ShowPhotoPager(val photoPagerData: PhotoPagerData) : GallerySideEffect()
 
-sealed class GalleryAction
-data class OnPhotoClicked(val photo: Photo) : GalleryAction()
-data class ShowGalleryItems(val galleryItems: List<Photo>) : GalleryAction()
-object ShowError : GalleryAction()
-object Init : GalleryAction()
-
 class GalleryViewModel @AssistedInject constructor(
     @Assisted private val launchId: String,
     private val getPhotos: GetPhotos
-) : ReducerViewModel<GalleryState, GalleryAction, GallerySideEffect>(GalleryState()) {
+) : ReducerViewModel<GalleryState, GallerySideEffect>(GalleryState()) {
 
     init {
-        submitAction(Init)
+        initAction()
     }
 
-    override fun mapActionToActionFlow(action: GalleryAction): Flow<GalleryAction> {
-        return if (action is Init) {
-            flow {
-                getPhotos.getPhotos(launchId).also {
-                    when (it) {
-                        is SuccessResponse -> emit(ShowGalleryItems(it.data))
-                        else -> emit(ShowError)
-                    }
+    private fun initAction() = action {
+        getPhotos.getPhotos(launchId).also {
+            when (it) {
+                is SuccessResponse -> reduce {
+                    copy(
+                        visible = it.data.isNotEmpty(),
+                        galleryItems = it.data
+                    )
+                }
+                else -> reduce {
+                    copy(visible = false)
                 }
             }
-        } else {
-            super.mapActionToActionFlow(action)
         }
     }
 
-    override fun ScanScope.scan(action: GalleryAction, oldState: GalleryState): GalleryState {
-        return when (action) {
-            is OnPhotoClicked -> {
-                emitSideEffect(
-                    ShowPhotoPager(
-                        PhotoPagerData(oldState.galleryItems.indexOf(action.photo),
-                            oldState.galleryItems.map {
-                                PhotoItem(
-                                    it.fullSizeUrl,
-                                    it.sourceName,
-                                    it.description
-                                )
-                            })
-                    )
-                )
-                oldState
-            }
-            is ShowError -> {
-                oldState.copy(visible = false)
-            }
-            is ShowGalleryItems -> {
-                oldState.copy(
-                    visible = action.galleryItems.isNotEmpty(),
-                    galleryItems = action.galleryItems
-                )
-            }
-            else -> oldState
-        }
+    fun onPhotoClicked(photo: Photo) = action {
+        val oldState = snapshot()
+
+        emitSideEffect(
+            ShowPhotoPager(
+                PhotoPagerData(oldState.galleryItems.indexOf(photo),
+                    oldState.galleryItems.map {
+                        PhotoItem(
+                            it.fullSizeUrl,
+                            it.sourceName,
+                            it.description
+                        )
+                    })
+            )
+        )
     }
 
     @AssistedInject.Factory

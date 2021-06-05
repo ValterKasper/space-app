@@ -8,7 +8,7 @@ import sk.kasper.ui_common.analytics.Analytics
 import sk.kasper.ui_common.tag.TagMapper
 import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.utils.FormattedTimeType
-import sk.kasper.ui_common.viewmodel.ReducerViewModel2
+import sk.kasper.ui_common.viewmodel.ReducerViewModel
 
 data class LaunchState(
     val missionName: String = "",
@@ -32,7 +32,7 @@ class LaunchViewModel @AssistedInject constructor(
     private val getLaunch: GetLaunch,
     private val tagMapper: TagMapper,
     @Assisted private val launchId: String
-) : ReducerViewModel2<LaunchState, LaunchSideEffect>(LaunchState()) {
+) : ReducerViewModel<LaunchState, LaunchSideEffect>(LaunchState()) {
 
     init {
         init()

@@ -22,7 +22,7 @@ class OrbitViewModel @AssistedInject constructor(
 ) : LoaderViewModel<OrbitState, Orbit>(OrbitState()) {
 
     init {
-        submitAction(Action.Init)
+        loadAction()
     }
 
     override suspend fun load(): Response<Orbit> {

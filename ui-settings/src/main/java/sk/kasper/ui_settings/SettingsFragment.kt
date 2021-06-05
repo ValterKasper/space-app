@@ -28,7 +28,6 @@ import sk.kasper.ui_common.utils.createSlideAnimNavOptions
 import sk.kasper.ui_common.utils.viewModels
 import sk.kasper.ui_settings.preferences.ListPreference
 import sk.kasper.ui_settings.preferences.PreferenceCategory
-import sk.kasper.ui_settings.preferences.ProvideSettingsManager
 import sk.kasper.ui_settings.preferences.SwitchPreference
 import javax.inject.Inject
 
@@ -64,12 +63,8 @@ class SettingsFragment : BaseFragment() {
                             TopAppBar {
                                 openLibraries()
                             }
-                            ProvideSettingsManager(settingsManager = settingsManager) {
-                                Column(
-                                    modifier = Modifier.navigationBarsPadding()
-                                ) {
-                                    Preferences(list = state.settings, viewModel = viewModel)
-                                }
+                            Surface(modifier = Modifier.navigationBarsPadding()) {
+                                Preferences(list = state.settings, viewModel = viewModel)
                             }
                         }
                     }
@@ -81,44 +76,32 @@ class SettingsFragment : BaseFragment() {
     @ExperimentalMaterialApi
     @Composable
     private fun Preferences(list: List<SettingItem>, viewModel: SettingsViewModel) {
-        list.forEach {
-            when (it) {
-                is SettingItem.Category -> {
-                    PreferenceCategory(title = it.title) {
-                        Preferences(list = it.items, viewModel = viewModel)
+        Column {
+            list.forEach {
+                when (it) {
+                    is SettingItem.Category -> {
+                        PreferenceCategory(title = it.title) {
+                            Preferences(list = it.items, viewModel = viewModel)
+                        }
                     }
-                }
-                is SettingItem.Choice -> {
-                    ListPreference(
-                        settingKey = it.key,
-                        title = it.title,
-                        values = it.values,
-                        selectedValue = it.selected,
-                        onValueChange = { key, value ->
-                            viewModel.submitAction(
-                                SettingsAction.SetIntValue(
-                                    key,
-                                    value
-                                )
-                            )
-                        }
-                    )
-                }
-                is SettingItem.Switch -> {
-                    SwitchPreference(
-                        settingKey = it.key,
-                        title = it.title,
-                        summary = it.summary,
-                        checked = it.checked,
-                        onValueChange = { key, value ->
-                            viewModel.submitAction(
-                                SettingsAction.SetBooleanValue(
-                                    key,
-                                    value
-                                )
-                            )
-                        }
-                    )
+                    is SettingItem.Choice -> {
+                        ListPreference(
+                            settingKey = it.key,
+                            title = it.title,
+                            values = it.values,
+                            selectedValue = it.selected,
+                            onValueChange = { key, value -> viewModel.setIntValue(key, value) }
+                        )
+                    }
+                    is SettingItem.Switch -> {
+                        SwitchPreference(
+                            settingKey = it.key,
+                            title = it.title,
+                            summary = it.summary,
+                            checked = it.checked,
+                            onValueChange = { key, value -> viewModel.setBooleanValue(key, value) }
+                        )
+                    }
                 }
             }
         }

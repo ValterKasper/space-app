@@ -11,7 +11,7 @@ import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.TagMapper
-import sk.kasper.ui_common.viewmodel.ReducerViewModel2
+import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import sk.kasper.ui_timeline.filter.FilterItem
 import sk.kasper.ui_timeline.filter.FilterSelectionListener
 import javax.inject.Inject
@@ -51,7 +51,7 @@ open class TimelineViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
     private val tagMapper: TagMapper,
     private val rocketMapper: RocketMapper,
-) : ReducerViewModel2<TimelineState, SideEffect>(TimelineState()),
+) : ReducerViewModel<TimelineState, SideEffect>(TimelineState()),
     FilterSelectionListener {
 
     init {

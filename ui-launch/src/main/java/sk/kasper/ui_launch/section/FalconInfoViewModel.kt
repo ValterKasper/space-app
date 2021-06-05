@@ -34,7 +34,7 @@ class FalconInfoViewModel @AssistedInject constructor(
 ) {
 
     init {
-        submitAction(Action.Init)
+        loadAction()
     }
 
     override suspend fun load(): Response<FalconCore> {

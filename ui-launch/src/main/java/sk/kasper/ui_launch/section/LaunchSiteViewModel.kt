@@ -21,7 +21,7 @@ class LaunchSiteViewModel @AssistedInject constructor(
 ) : LoaderViewModel<LaunchSizeState, LaunchSite>(LaunchSizeState()) {
 
     init {
-        submitAction(Action.Init)
+        loadAction()
     }
 
     override suspend fun load(): Response<LaunchSite> {

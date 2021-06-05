@@ -27,7 +27,7 @@ class RocketSectionViewModel @AssistedInject constructor(
 ) : LoaderViewModel<RocketSectionState, Rocket>(RocketSectionState()) {
 
     init {
-        submitAction(Action.Init)
+        loadAction()
     }
 
     @AssistedInject.Factory
