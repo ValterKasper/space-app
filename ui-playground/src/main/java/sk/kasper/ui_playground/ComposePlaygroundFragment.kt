@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +23,7 @@ import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
@@ -25,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.findNavController
@@ -53,9 +60,11 @@ class ComposePlaygroundFragment : BaseFragment() {
         COLOR("color"),
         SHAPE("shape"),
         COMPONENTS("components"),
+        ANIMATIONS("anim"),
+        FILTER("filter"),
     }
 
-    private val defaultTab = PlaygroundTab.COMPONENTS
+    private val defaultTab = PlaygroundTab.ANIMATIONS
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,6 +94,8 @@ class ComposePlaygroundFragment : BaseFragment() {
                                         PlaygroundTab.COLOR -> ColorsScreen()
                                         PlaygroundTab.COMPONENTS -> ComponentsScreen()
                                         PlaygroundTab.SHAPE -> ShapeScreen()
+                                        PlaygroundTab.ANIMATIONS -> AnimationsScreen()
+                                        PlaygroundTab.FILTER -> FilterScreen()
                                     }
                                 }
                             }
@@ -93,6 +104,110 @@ class ComposePlaygroundFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    @Composable
+    @Preview
+    private fun FilterRowPreview() {
+        SpaceTheme {
+            FilterRow(mapOf("ISS" to true, "Mars" to false))
+        }
+    }
+
+    @OptIn(ExperimentalAnimationApi::class)
+    @Composable
+    private fun FilterRow(
+        map: Map<String, Boolean>,
+        onClearAllClick: () -> Unit = { },
+        onTagSelected: (String, Boolean) -> Unit = { _, _ -> }
+    ) {
+        Surface {
+            Row(modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()) {
+                map.forEach { (name, selected) ->
+                    Tag(name, selected = selected, onTagSelected)
+                }
+
+                AnimatedVisibility(
+                    visible = map.any { it.value },
+                    enter = fadeIn() + slideInHorizontally()
+                ) {
+                    val shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))
+                    Box(modifier = Modifier
+                        .size(32.dp)
+                        .padding(2.dp)
+                        .border(
+                            2.dp,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.8f),
+                            shape = shape
+                        )
+                        .clip(shape = shape)
+                        .clickable { onClearAllClick() }
+                        .padding(4.dp)) {
+                        Text(
+                            text = "X",
+                            modifier = Modifier.align(Alignment.Center),
+                            style = MaterialTheme.typography.body2
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun Tag(text: String, selected: Boolean, onTagSelected: (String, Boolean) -> Unit) {
+        val shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))
+        val alpha = if (selected) 0.4f else 0.0f
+        Text(
+            text,
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier
+                .padding(2.dp)
+                .border(
+                    2.dp,
+                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.8f),
+                    shape = shape
+                )
+                .clip(shape = shape)
+                .clickable { onTagSelected(text, !selected) }
+                .background(color = MaterialTheme.colors.onSurface.copy(alpha = alpha))
+                .padding(start = 12.dp, end = 12.dp, top = 4.dp, bottom = 3.dp)
+        )
+    }
+
+    @Composable
+    private fun FilterScreen() {
+        val topLevel = listOf("ISS", "Falcon")
+
+        val map = remember {
+            mutableStateMapOf<String, Boolean>().apply {
+                topLevel.forEach {
+                    put(it, false)
+                }
+            }
+        }
+
+        val mapToShow = if (map["ISS"] == true) {
+            mapOf("ISS" to true, "Crewd" to false, "Soyuz" to false)
+        } else {
+            map
+        }
+
+        FilterRow(mapToShow, onClearAllClick = {
+            map.clear()
+            map.apply {
+                topLevel.forEach {
+                    put(it, false)
+                }
+            }
+        }) { n, s -> map[n] = s }
+    }
+
+    @Composable
+    private fun AnimationsScreen() {
+
     }
 
     @Composable

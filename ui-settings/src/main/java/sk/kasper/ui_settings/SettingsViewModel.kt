@@ -15,51 +15,47 @@ import javax.inject.Inject
 @OptIn(ExperimentalStdlibApi::class)
 @HiltViewModel
 class SettingsViewModel @Inject constructor(private val settingsManager: SettingsManager) :
-    ReducerViewModel<SettingsState, SettingsSideEffect>(
-        SettingsState(emptyList())
-    ) {
+    ReducerViewModel<SettingsState, SettingsSideEffect>(SettingsState(emptyList())) {
 
-    private fun createSettingItems(): List<SettingItem> {
-        return Settings {
-            Choice(
-                key = SettingKey.NIGHT_MODE,
-                title = R.string.choose_theme,
-                values = themeValues,
-                selected = settingsManager.getInt(SettingKey.NIGHT_MODE),
-            )
+    private fun createSettings() = Settings {
+        Choice(
+            key = SettingKey.NIGHT_MODE,
+            title = R.string.choose_theme,
+            values = themeValues,
+            selected = settingsManager.getInt(SettingKey.NIGHT_MODE),
+        )
 
+        Switch(
+            key = SettingKey.SHOW_UNCONFIRMED_LAUNCHES,
+            checked = settingsManager.getBoolean(SettingKey.SHOW_UNCONFIRMED_LAUNCHES),
+            title = R.string.show_unconfirmed_launches,
+            summary = R.string.show_unconfirmed_launches_summary
+        )
+
+        Category(title = R.string.notifications) {
             Switch(
-                key = SettingKey.SHOW_UNCONFIRMED_LAUNCHES,
-                checked = settingsManager.getBoolean(SettingKey.SHOW_UNCONFIRMED_LAUNCHES),
-                title = R.string.show_unconfirmed_launches,
-                summary = R.string.show_unconfirmed_launches_summary
+                key = SettingKey.SHOW_LAUNCH_NOTIFICATION,
+                title = R.string.show_launch_notifications,
+                checked = settingsManager.getBoolean(SettingKey.SHOW_LAUNCH_NOTIFICATION),
+                summary = R.string.show_launch_notifications_summary
             )
 
-            Category(title = R.string.notifications) {
-                Switch(
-                    key = SettingKey.SHOW_LAUNCH_NOTIFICATION,
-                    title = R.string.show_launch_notifications,
-                    checked = settingsManager.getBoolean(SettingKey.SHOW_LAUNCH_NOTIFICATION),
-                    summary = R.string.show_launch_notifications_summary
-                )
+            Choice(
+                key = SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN,
+                title = R.string.show_launch_notifications_before,
+                values = durationValues,
+                selected = settingsManager.getInt(SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN),
+            )
+        }
 
+        if (BuildConfig.SHOW_API_ENDPOINTS_PREFERENCE) {
+            Category(title = R.string.debug) {
                 Choice(
-                    key = SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN,
-                    title = R.string.show_launch_notifications_before,
-                    values = durationValues,
-                    selected = settingsManager.getInt(SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN),
+                    key = SettingKey.API_ENDPOINT,
+                    title = R.string.api_endpoint,
+                    values = endpointValues,
+                    selected = settingsManager.getInt(SettingKey.API_ENDPOINT)
                 )
-            }
-
-            if (BuildConfig.SHOW_API_ENDPOINTS_PREFERENCE) {
-                Category(title = R.string.debug) {
-                    Choice(
-                        key = SettingKey.API_ENDPOINT,
-                        title = R.string.api_endpoint,
-                        values = endpointValues,
-                        selected = settingsManager.getInt(SettingKey.API_ENDPOINT)
-                    )
-                }
             }
         }
     }
@@ -108,13 +104,13 @@ class SettingsViewModel @Inject constructor(private val settingsManager: Setting
 
     private fun reloadSettings() = action {
         reduce {
-            copy(settings = createSettingItems())
+            copy(settings = createSettings())
         }
     }
 
     private fun onSettingChanged(settingKey: SettingKey) = action {
         reduce {
-            copy(settings = createSettingItems())
+            copy(settings = createSettings())
         }
 
         emitSideEffect(SettingsSideEffect.SHOW_RESTART_APP_TOAST)
