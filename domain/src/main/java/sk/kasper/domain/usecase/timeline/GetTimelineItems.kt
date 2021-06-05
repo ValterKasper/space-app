@@ -2,9 +2,7 @@ package sk.kasper.domain.usecase.timeline
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import sk.kasper.domain.model.FilterSpec
-import sk.kasper.domain.model.Launch
-import sk.kasper.domain.model.SyncLaunches
+import sk.kasper.domain.model.*
 import sk.kasper.domain.repository.LaunchRepository
 import javax.inject.Inject
 
@@ -12,10 +10,18 @@ open class GetTimelineItems @Inject constructor(
         private val launchRepository: LaunchRepository,
         private val syncLaunches: SyncLaunches) {
 
-    open suspend fun getTimelineItems(filterSpec: FilterSpec = FilterSpec.EMPTY_FILTER): List<Launch> {
+    open suspend fun getTimelineItems(filterSpec: FilterSpec = FilterSpec.EMPTY_FILTER): Response<List<Launch>> {
         return withContext(Dispatchers.IO) {
-            syncLaunches.doSync(force = false)
-            return@withContext filterLaunches(launchRepository.getLaunches(), filterSpec)
+            if (syncLaunches.doSync(force = false)) {
+                return@withContext SuccessResponse(
+                    filterLaunches(
+                        launchRepository.getLaunches(),
+                        filterSpec
+                    )
+                )
+            } else {
+                return@withContext ErrorResponse()
+            }
         }
     }
 

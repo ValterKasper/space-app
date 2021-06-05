@@ -7,4 +7,4 @@ sealed class Response<out T> {
     }
 }
 data class SuccessResponse<out T>(val data: T) : Response<T>()
-data class ErrorResponse(val message: String?) : Response<Nothing>()
+data class ErrorResponse(val message: String? = null) : Response<Nothing>()
