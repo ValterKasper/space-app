@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,6 +47,7 @@ import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class ComposePlaygroundFragment : BaseFragment() {
@@ -64,7 +64,7 @@ class ComposePlaygroundFragment : BaseFragment() {
         FILTER("filter"),
     }
 
-    private val defaultTab = PlaygroundTab.ANIMATIONS
+    private val defaultTab = PlaygroundTab.FILTER
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,9 +108,9 @@ class ComposePlaygroundFragment : BaseFragment() {
 
     @Composable
     @Preview
-    private fun FilterRowPreview() {
+    private fun FilterScreenPreview() {
         SpaceTheme {
-            FilterRow(mapOf("ISS" to true, "Mars" to false))
+            FilterScreen()
         }
     }
 
@@ -118,6 +118,7 @@ class ComposePlaygroundFragment : BaseFragment() {
     @Composable
     private fun FilterRow(
         map: Map<String, Boolean>,
+        foreign: Map<String, Boolean>,
         onClearAllClick: () -> Unit = { },
         onTagSelected: (String, Boolean) -> Unit = { _, _ -> }
     ) {
@@ -125,13 +126,9 @@ class ComposePlaygroundFragment : BaseFragment() {
             Row(modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth()) {
-                map.forEach { (name, selected) ->
-                    Tag(name, selected = selected, onTagSelected)
-                }
-
                 AnimatedVisibility(
                     visible = map.any { it.value },
-                    enter = fadeIn() + slideInHorizontally()
+                    enter = fadeIn() + expandHorizontally()
                 ) {
                     val shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))
                     Box(modifier = Modifier
@@ -147,9 +144,31 @@ class ComposePlaygroundFragment : BaseFragment() {
                         .padding(4.dp)) {
                         Text(
                             text = "X",
-                            modifier = Modifier.align(Alignment.Center),
+                            modifier = Modifier.align(Center),
                             style = MaterialTheme.typography.body2
                         )
+                    }
+                }
+
+                map.forEach { (name, selected) ->
+                    Tag(name, selected = selected, onTagSelected)
+                }
+
+                val hasForeign = foreign.isNotEmpty()
+//                val animationSpec: AnimationSpec<Float> =
+//                    SpringSpec(stiffness = Spring.StiffnessMedium, dampingRatio = 0.8f)
+                val animationSpec: AnimationSpec<Float> =
+                    tween(easing = LinearOutSlowInEasing)
+                val amount by animateFloatAsState(
+                    targetValue = if (hasForeign) 0.0f else 1.0f,
+                    animationSpec = animationSpec
+                )
+
+                if (hasForeign) {
+                    Row(modifier = Modifier.placeBehindHorizontal(amount)) {
+                        foreign.forEach { (name, selected) ->
+                            Tag(name, selected = selected, onTagSelected)
+                        }
                     }
                 }
             }
@@ -177,6 +196,16 @@ class ComposePlaygroundFragment : BaseFragment() {
         )
     }
 
+    private data class FilterState(
+        val a: List<String> = listOf("ISS", "Falcon"),
+        val aVisible: Boolean = true,
+        val b: List<String> = emptyList(),
+        val bVisible: Boolean = false,
+        val c: List<String> = emptyList(),
+        val cVisible: Boolean = false,
+        val clearVisible: Boolean = false
+    )
+
     @Composable
     private fun FilterScreen() {
         val topLevel = listOf("ISS", "Falcon")
@@ -190,12 +219,18 @@ class ComposePlaygroundFragment : BaseFragment() {
         }
 
         val mapToShow = if (map["ISS"] == true) {
-            mapOf("ISS" to true, "Crewd" to false, "Soyuz" to false)
+            mapOf("ISS" to true)
         } else {
             map
         }
 
-        FilterRow(mapToShow, onClearAllClick = {
+        val foreign = if (map["ISS"] == true) {
+            mapOf("Crewd" to false, "Soyuz" to false)
+        } else {
+            emptyMap()
+        }
+
+        FilterRow(mapToShow, foreign, onClearAllClick = {
             map.clear()
             map.apply {
                 topLevel.forEach {
@@ -205,9 +240,104 @@ class ComposePlaygroundFragment : BaseFragment() {
         }) { n, s -> map[n] = s }
     }
 
+    enum class AnimState {
+        A, B
+    }
+
+    @OptIn(ExperimentalAnimationApi::class)
     @Composable
     private fun AnimationsScreen() {
+        var flag by remember {
+            mutableStateOf(true)
+        }
 
+        val color by animateColorAsState(if (flag) Color(0xFF03A9F4) else Color(0xFF8BC34A))
+        val size by animateDpAsState(targetValue = if (flag) 48.dp else 64.dp)
+        var animState by remember {
+            mutableStateOf(AnimState.A)
+        }
+
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(onClick = {
+                flag = !flag
+                animState = if (animState == AnimState.A) AnimState.B else AnimState.A
+            }) {
+                Text(text = "Toggle")
+            }
+
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .background(color)
+            ) {
+            }
+            Row(modifier = Modifier.height(72.dp)) {
+                if (flag) {
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .background(MaterialTheme.colors.primary)
+                    ) {
+                    }
+                }
+            }
+
+            Row(modifier = Modifier.height(72.dp)) {
+                Box(
+                    modifier = Modifier
+                        .size(size)
+                        .background(MaterialTheme.colors.primary)
+                ) {
+                }
+            }
+
+            Row(modifier = Modifier.height(72.dp)) {
+                val transition = updateTransition(targetState = animState, label = "aaa")
+
+                val col by transition.animateColor(label = "") {
+                    when (it) {
+                        AnimState.A -> Color(0xFF9C27B0)
+                        AnimState.B -> Color(0xFFFF5722)
+                    }
+                }
+                val siz by transition.animateDp(label = "") {
+                    when (it) {
+                        AnimState.A -> 32.dp
+                        AnimState.B -> 48.dp
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .size(siz)
+                        .background(col)
+                ) {
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Green)
+            ) {
+                BoxWithConstraints() {
+                    Text("My minWidth is $minWidth while my maxWidth is $maxWidth")
+                }
+            }
+        }
+    }
+
+    private fun Modifier.placeBehindHorizontal(amount: Float) = layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+
+        layout(constraints.maxWidth, placeable.height) {
+            val fl: Float = (constraints.maxWidth) * amount
+            placeable.place(fl.roundToInt(), 0)
+        }
     }
 
     @Composable
