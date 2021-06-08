@@ -119,8 +119,17 @@ class ComposePlaygroundFragment : BaseFragment() {
         }
     }
 
+    companion object {
+        val topTags = listOf("Mars", "ISS", "Falcon")
+        val extensionTags = mapOf(
+            "Mars" to listOf("Rover"),
+            "ISS" to listOf("Crewd"),
+            "Falcon" to listOf("Cargo")
+        )
+    }
+
     private data class FilterState(
-        val beforeTags: List<String> = listOf("Mars", "ISS", "Falcon"),
+        val beforeTags: List<String> = topTags,
         val beforeTagsVisible: Boolean = true,
         val selectedTags: List<String> = emptyList(),
         val selectedTagsVisible: Boolean = false,
@@ -138,19 +147,31 @@ class ComposePlaygroundFragment : BaseFragment() {
         }
 
         FilterRow(state = filterState, onClearAllClick = {
-            filterState = FilterState()
-        }, onTagSelected = {
-            filterState = FilterState(
-                clearVisible = true,
-                beforeTags = listOf("Mars"),
-                beforeTagsVisible = true,
-                selectedTags = listOf("ISS"),
-                selectedTagsVisible = true,
-                afterTags = listOf("Falcon"),
-                afterTagsVisible = true,
-                extensionTags = listOf("Crewd"),
-                extensionTagsVisible = true,
+            filterState = filterState.copy(
+                clearVisible = false,
+                selectedTags = filterState.selectedTags.filter { topTags.contains(it) }
             )
+        }, onTagSelected = { tag ->
+            val index = topTags.indexOf(tag)
+
+            if (index == -1) {
+                filterState = filterState.copy(
+                    extensionTags = emptyList(),
+                    selectedTags = filterState.selectedTags + listOf(tag)
+                )
+            } else {
+                filterState = FilterState(
+                    clearVisible = true,
+                    beforeTags = topTags.subList(0, index),
+                    beforeTagsVisible = true,
+                    selectedTags = listOf(tag),
+                    selectedTagsVisible = true,
+                    afterTags = topTags.subList(index + 1, topTags.size),
+                    afterTagsVisible = true,
+                    extensionTags = extensionTags[tag] ?: emptyList(),
+                    extensionTagsVisible = true,
+                )
+            }
         })
     }
 
@@ -167,10 +188,6 @@ class ComposePlaygroundFragment : BaseFragment() {
                     .padding(8.dp)
                     .fillMaxWidth()) {
 
-                AnimatedVisibility(visible = state.clearVisible) {
-                    FilterClearButton(onClearAllClick)
-                }
-
                 var exitTransitionEnded by remember { mutableStateOf(false) }
                 val exitTransition =
                     updateTransition(targetState = !state.clearVisible, label = "exit transition")
@@ -182,6 +199,10 @@ class ComposePlaygroundFragment : BaseFragment() {
                 }
 
                 exitTransitionEnded = exitPaddingTop == 48.dp
+
+                AnimatedVisibility(visible = state.clearVisible && exitTransitionEnded) {
+                    FilterClearButton(onClearAllClick)
+                }
 
                 state.beforeTags.forEach { name ->
                     AnimatedVisibility(
@@ -204,7 +225,7 @@ class ComposePlaygroundFragment : BaseFragment() {
                     state.selectedTags.forEach { name ->
                         FilterTag(
                             name,
-                            selected = true,
+                            selected = state.clearVisible,
                             onTagSelected = { tag, _ -> onTagSelected(tag) })
                     }
                 }
