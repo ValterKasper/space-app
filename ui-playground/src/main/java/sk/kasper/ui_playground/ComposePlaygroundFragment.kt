@@ -8,11 +8,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -48,6 +49,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.ui_common.theme.Montserrat
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import java.util.*
@@ -115,12 +117,14 @@ class ComposePlaygroundFragment : BaseFragment() {
     @Preview
     private fun FilterScreenPreview() {
         SpaceTheme {
-            FilterScreen()
+            Surface(modifier = Modifier.height(200.dp)) {
+                FilterScreen()
+            }
         }
     }
 
     companion object {
-        val topTags = listOf("Mars", "ISS", "Falcon")
+        val topTags = listOf("Mars", "ISS", "Falcon", "Soyuz", "Ariane 5", "Starship")
         val extensionTags = mapOf(
             "Mars" to listOf("Rover"),
             "ISS" to listOf("Crewd"),
@@ -183,10 +187,15 @@ class ComposePlaygroundFragment : BaseFragment() {
         onTagSelected: (String) -> Unit = { _ -> }
     ) {
         Surface {
+            val s by remember {
+                mutableStateOf(ScrollState(0))
+            }
             Row(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(s)
                     .padding(8.dp)
-                    .fillMaxWidth()) {
+            ) {
 
                 var exitTransitionEnded by remember { mutableStateOf(false) }
                 val exitTransition =
@@ -212,7 +221,7 @@ class ComposePlaygroundFragment : BaseFragment() {
                         Box(
                             modifier = Modifier
                                 .alpha(exitAlpha)
-                                .padding(top = exitPaddingTop)
+                                .padding(top = exitPaddingTop),
                         ) {
                             FilterTag(name,
                                 selected = false,
@@ -244,19 +253,12 @@ class ComposePlaygroundFragment : BaseFragment() {
                     }
                 }
 
-                val tailTagsPositionX by animateFloatAsState(
-                    targetValue = if (state.extensionTagsVisible && exitTransitionEnded) 0.0f else 1.0f,
-                    animationSpec = tween(easing = LinearOutSlowInEasing)
-                )
-
                 if (state.extensionTagsVisible) {
-                    Row(modifier = Modifier.placeBehindHorizontal(tailTagsPositionX)) {
-                        state.extensionTags.forEach { name ->
-                            FilterTag(
-                                name,
-                                selected = false,
-                                onTagSelected = { tag, _ -> onTagSelected(tag) })
-                        }
+                    state.extensionTags.forEach { name ->
+                        FilterTag(
+                            name,
+                            selected = false,
+                            onTagSelected = { tag, _ -> onTagSelected(tag) })
                     }
                 }
             }
@@ -266,7 +268,7 @@ class ComposePlaygroundFragment : BaseFragment() {
     @Composable
     private fun FilterClearButton(onClearAllClick: () -> Unit) {
         Box(modifier = Modifier
-            .size(32.dp)
+            .size(40.dp)
             .padding(2.dp)
             .border(
                 2.dp,
@@ -276,10 +278,10 @@ class ComposePlaygroundFragment : BaseFragment() {
             .clip(shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50)))
             .clickable { onClearAllClick() }
             .padding(4.dp)) {
-            Text(
-                text = "X",
+            Icon(
                 modifier = Modifier.align(Center),
-                style = MaterialTheme.typography.body2
+                painter = painterResource(id = R.drawable.ic_baseline_close_24),
+                contentDescription = "Clear filter"
             )
         }
     }
@@ -300,9 +302,13 @@ class ComposePlaygroundFragment : BaseFragment() {
         )[text.length % 4]
         Text(
             text,
-            style = MaterialTheme.typography.body2,
-            color = lerp(color, Color.Black, 0.55f),
+            style = MaterialTheme.typography.body1.copy(
+                fontWeight = FontWeight.Medium,
+                fontFamily = Montserrat
+            ),
+            color = lerp(color, MaterialTheme.colors.onSurface, 0.7f),
             modifier = Modifier
+                .height(40.dp)
                 .padding(2.dp)
                 .border(
                     2.dp,
@@ -312,7 +318,7 @@ class ComposePlaygroundFragment : BaseFragment() {
                 .clip(shape = shape)
                 .clickable { onTagSelected(text, !selected) }
                 .background(color = color.copy(alpha = alpha))
-                .padding(start = 12.dp, end = 12.dp, top = 4.dp, bottom = 3.dp)
+                .padding(start = 12.dp, end = 12.dp, top = 5.dp)
         )
     }
 
