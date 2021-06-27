@@ -187,7 +187,7 @@ private fun FilterBar(onFilterBarClick: () -> Unit = {}, onClearAllClick: () -> 
 }
 
 @Composable
-private fun LaunchListItemLayout(
+fun LaunchListItemLayout(
     viewModel: LaunchListItemViewModel,
     onItemClick: (LaunchListItem) -> Unit = {}
 ) {
@@ -195,13 +195,12 @@ private fun LaunchListItemLayout(
         Row(Modifier
             .fillMaxWidth()
             .clickable { onItemClick(viewModel.item) }
-            .padding(vertical = 12.dp)
+            .padding(vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             RocketIcon(
                 modifier = Modifier.padding(
-                    start = dimensionResource(id = R.dimen.padding_normal),
-                    top = 4.dp,
-                    bottom = 8.dp
+                    start = dimensionResource(id = R.dimen.padding_normal)
                 ),
                 rocketName = viewModel.title,
                 rocketIconId = viewModel.rocketIcon
@@ -209,7 +208,8 @@ private fun LaunchListItemLayout(
             Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_normal))) {
                 Text(
                     text = viewModel.title,
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(bottom = 2.dp)
                 )
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                     LaunchDateTime(
@@ -221,7 +221,9 @@ private fun LaunchListItemLayout(
                         viewModel.formattedTimeVisible
                     )
                 }
-                TagsRow(Modifier.padding(top = 4.dp), viewModel.tags)
+                if (viewModel.tagsVisible) {
+                    TagsRow(Modifier.padding(top = 4.dp), viewModel.tags)
+                }
             }
         }
 
@@ -279,7 +281,7 @@ private fun RocketIcon(
 
 
 @Composable
-fun LaunchListItemForPreview() {
+fun LaunchListItemForPreview(showTags: Boolean = true) {
     SpaceTheme {
         Surface {
             LaunchListItemLayout(
@@ -292,7 +294,11 @@ fun LaunchListItemForPreview() {
                         rocketName = "Atlas V",
                         accurateDate = true,
                         accurateTime = true,
-                        tags = listOf(UiTag.CUBE_SAT, UiTag.ISS, UiTag.MARS)
+                        tags = if (showTags) listOf(
+                            UiTag.CUBE_SAT,
+                            UiTag.ISS,
+                            UiTag.MARS
+                        ) else emptyList()
                     ),
                     LocalDateTime.of(2020, 2, 28, 12, 30)
                 )
@@ -305,6 +311,12 @@ fun LaunchListItemForPreview() {
 @Composable
 fun LaunchListItemForPreviewDay() {
     LaunchListItemForPreview()
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+fun LaunchListItemForPreviewDayNoTags() {
+    LaunchListItemForPreview(showTags = false)
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)

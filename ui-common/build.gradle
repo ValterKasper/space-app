@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation libs.accompanist.insets
+    implementation libs.accompanist.systemuicontroller
 
     implementation libs.android.material
 
