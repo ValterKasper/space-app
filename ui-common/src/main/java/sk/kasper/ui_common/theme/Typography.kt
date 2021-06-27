@@ -15,7 +15,7 @@ val Montserrat = FontFamily(
     Font(R.font.montserrat_semibold, FontWeight.SemiBold),
 )
 
-private val SourceSansPro = FontFamily(
+val SourceSansPro = FontFamily(
     Font(R.font.source_sans_pro_regular),
     Font(R.font.source_sans_pro_semibold, FontWeight.SemiBold),
     Font(R.font.source_sans_pro_bold, FontWeight.Bold),

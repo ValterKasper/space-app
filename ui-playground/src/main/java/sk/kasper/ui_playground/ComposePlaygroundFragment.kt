@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,17 +24,13 @@ import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -49,7 +45,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.settings.SettingsManager
-import sk.kasper.ui_common.theme.Montserrat
+import sk.kasper.ui_common.tag.FilterScreen
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import java.util.*
@@ -121,205 +117,6 @@ class ComposePlaygroundFragment : BaseFragment() {
                 FilterScreen()
             }
         }
-    }
-
-    companion object {
-        val topTags = listOf("Mars", "ISS", "Falcon", "Soyuz", "Ariane 5", "Starship")
-        val extensionTags = mapOf(
-            "Mars" to listOf("Rover"),
-            "ISS" to listOf("Crewd"),
-            "Falcon" to listOf("Cargo")
-        )
-    }
-
-    private data class FilterState(
-        val beforeTags: List<String> = topTags,
-        val beforeTagsVisible: Boolean = true,
-        val selectedTags: List<String> = emptyList(),
-        val selectedTagsVisible: Boolean = false,
-        val afterTags: List<String> = emptyList(),
-        val afterTagsVisible: Boolean = false,
-        val extensionTags: List<String> = emptyList(),
-        val extensionTagsVisible: Boolean = false,
-        val clearVisible: Boolean = false
-    )
-
-    @Composable
-    private fun FilterScreen() {
-        var filterState by remember {
-            mutableStateOf(FilterState())
-        }
-
-        FilterRow(state = filterState, onClearAllClick = {
-            filterState = filterState.copy(
-                clearVisible = false,
-                selectedTags = filterState.selectedTags.filter { topTags.contains(it) }
-            )
-        }, onTagSelected = { tag ->
-            val index = topTags.indexOf(tag)
-
-            if (index == -1) {
-                filterState = filterState.copy(
-                    extensionTags = emptyList(),
-                    selectedTags = filterState.selectedTags + listOf(tag)
-                )
-            } else {
-                filterState = FilterState(
-                    clearVisible = true,
-                    beforeTags = topTags.subList(0, index),
-                    beforeTagsVisible = true,
-                    selectedTags = listOf(tag),
-                    selectedTagsVisible = true,
-                    afterTags = topTags.subList(index + 1, topTags.size),
-                    afterTagsVisible = true,
-                    extensionTags = extensionTags[tag] ?: emptyList(),
-                    extensionTagsVisible = true,
-                )
-            }
-        })
-    }
-
-    @OptIn(ExperimentalAnimationApi::class)
-    @Composable
-    private fun FilterRow(
-        state: FilterState,
-        onClearAllClick: () -> Unit = { },
-        onTagSelected: (String) -> Unit = { _ -> }
-    ) {
-        Surface {
-            val s by remember {
-                mutableStateOf(ScrollState(0))
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(s)
-                    .padding(8.dp)
-            ) {
-
-                var exitTransitionEnded by remember { mutableStateOf(false) }
-                val exitTransition =
-                    updateTransition(targetState = !state.clearVisible, label = "exit transition")
-                val exitAlpha by exitTransition.animateFloat(label = "exit animate alpha") {
-                    if (it) 1.0f else 0.0f
-                }
-                val exitPaddingTop by exitTransition.animateDp(label = "exit animate dp") {
-                    if (it) 0.dp else 48.dp
-                }
-
-                exitTransitionEnded = exitPaddingTop == 48.dp
-
-                AnimatedVisibility(visible = state.clearVisible && exitTransitionEnded) {
-                    FilterClearButton(onClearAllClick)
-                }
-
-                state.beforeTags.forEach { name ->
-                    AnimatedVisibility(
-                        state.beforeTagsVisible && !exitTransitionEnded,
-                        initiallyVisible = true
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .alpha(exitAlpha)
-                                .padding(top = exitPaddingTop),
-                        ) {
-                            FilterTag(name,
-                                selected = false,
-                                onTagSelected = { tag, _ -> onTagSelected(tag) })
-                        }
-                    }
-                }
-
-                if (state.selectedTagsVisible) {
-                    state.selectedTags.forEach { name ->
-                        FilterTag(
-                            name,
-                            selected = state.clearVisible,
-                            onTagSelected = { tag, _ -> onTagSelected(tag) })
-                    }
-                }
-
-                state.afterTags.forEach { name ->
-                    AnimatedVisibility(state.afterTagsVisible && !exitTransitionEnded) {
-                        Box(
-                            modifier = Modifier
-                                .alpha(exitAlpha)
-                                .padding(top = exitPaddingTop)
-                        ) {
-                            FilterTag(name,
-                                selected = false,
-                                onTagSelected = { tag, _ -> onTagSelected(tag) })
-                        }
-                    }
-                }
-
-                if (state.extensionTagsVisible) {
-                    state.extensionTags.forEach { name ->
-                        FilterTag(
-                            name,
-                            selected = false,
-                            onTagSelected = { tag, _ -> onTagSelected(tag) })
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun FilterClearButton(onClearAllClick: () -> Unit) {
-        Box(modifier = Modifier
-            .size(40.dp)
-            .padding(2.dp)
-            .border(
-                2.dp,
-                color = MaterialTheme.colors.onSurface.copy(alpha = 0.7f),
-                shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))
-            )
-            .clip(shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50)))
-            .clickable { onClearAllClick() }
-            .padding(4.dp)) {
-            Icon(
-                modifier = Modifier.align(Center),
-                painter = painterResource(id = R.drawable.ic_baseline_close_24),
-                contentDescription = "Clear filter"
-            )
-        }
-    }
-
-    @Composable
-    private fun FilterTag(
-        text: String,
-        selected: Boolean,
-        onTagSelected: (String, Boolean) -> Unit
-    ) {
-        val shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))
-        val alpha = if (selected) 0.2f else 0.0f
-        val color = listOf(
-            Color(0xFFF44336),
-            Color(0xFF009688),
-            Color(0xFF8BC34A),
-            Color(0xFFFF9800)
-        )[text.length % 4]
-        Text(
-            text,
-            style = MaterialTheme.typography.body1.copy(
-                fontWeight = FontWeight.Medium,
-                fontFamily = Montserrat
-            ),
-            color = lerp(color, MaterialTheme.colors.onSurface, 0.7f),
-            modifier = Modifier
-                .height(40.dp)
-                .padding(2.dp)
-                .border(
-                    2.dp,
-                    color = color.copy(alpha = 0.7f),
-                    shape = shape
-                )
-                .clip(shape = shape)
-                .clickable { onTagSelected(text, !selected) }
-                .background(color = color.copy(alpha = alpha))
-                .padding(start = 12.dp, end = 12.dp, top = 5.dp)
-        )
     }
 
     enum class AnimState {

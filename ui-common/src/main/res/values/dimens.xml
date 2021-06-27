@@ -18,7 +18,7 @@
     <dimen name="filter_nav_drawer_width">256dp</dimen>
     <dimen name="label_min_height">48dp</dimen>
 
-    <dimen name="rounded_corners_radius">6dp</dimen>
+    <dimen name="rounded_corners_radius">16dp</dimen>
     <dimen name="rocket_icon_size">56dp</dimen>
     <dimen name="rocket_icon_text_size">32sp</dimen>
     <dimen name="label_value_view_vertical_padding">2dp</dimen>
