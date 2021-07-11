@@ -6,7 +6,9 @@ import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -20,35 +22,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import sk.kasper.ui_common.R
 import sk.kasper.ui_common.theme.SourceSansPro
 
 
-enum class Tag(val title: String, val color: Color) {
-    Mars("Mars", Color(0xFFFF5722)),
-    Moon("Moon", Color(0xFF9C27B0)),
-    ISS("ISS", Color(0xFF009688)),
-    SpaceX("SpaceX", Color(0xFF3F51B5)),
-    Falcon("Falcon 9", Color(0xFF9C27B0)),
-    FalconHeavy("Falcon heavy", Color(0xFF8BC34A)),
-    Starship("Starship", Color(0xFF673AB7)),
-    SpaceShuttle("Space shuttle", Color(0xFF03A9F4)),
-    Soyuz("Soyuz", Color(0xFFFF9800)),
-    Ariane5("Ariane 5", Color(0xFF4CAF50)),
-    Rover("Rover", Color(0xFF9C27B0)),
-    Cargo("Cargo", Color(0xFF00BCD4)),
-    Crew("Crew", Color(0xFF8BC34A)),
+interface Tag {
+    val title: String
+    val color: Color
 }
 
-val topTags = listOf(Tag.Mars, Tag.ISS, Tag.Moon, Tag.SpaceX, Tag.Ariane5, Tag.Soyuz)
-val extensionTags = mapOf(
-    Tag.ISS to listOf(Tag.SpaceShuttle, Tag.Falcon),
-    Tag.SpaceX to listOf(Tag.Falcon, Tag.FalconHeavy, Tag.Starship)
-)
+data class FilterDefinition(val topTags: List<Tag>, val extensionTags: Map<Tag, List<Tag>>)
 
 private data class FilterState(
-    val beforeTags: List<Tag> = topTags,
+    val beforeTags: List<Tag>,
     val beforeTagsVisible: Boolean = true,
     val selectedTags: List<Tag> = emptyList(),
     val selectedTagsVisible: Boolean = false,
@@ -60,20 +50,20 @@ private data class FilterState(
 )
 
 @Composable
-fun FilterScreen(onFilterClicked: () -> Unit = {}) {
+fun Filter(onFilterClicked: () -> Unit = {}, filterDefinition: FilterDefinition) {
     var filterState by remember {
-        mutableStateOf(FilterState())
+        mutableStateOf(FilterState(filterDefinition.topTags))
     }
 
     FilterRow(state = filterState, onClearAllClick = {
         onFilterClicked()
         filterState = filterState.copy(
             clearVisible = false,
-            selectedTags = filterState.selectedTags.filter { topTags.contains(it) }
+            selectedTags = filterState.selectedTags.filter { filterDefinition.topTags.contains(it) }
         )
     }, onTagSelected = { tag ->
         onFilterClicked()
-        val index = topTags.indexOf(tag)
+        val index = filterDefinition.topTags.indexOf(tag)
 
         if (index == -1) {
             filterState = filterState.copy(
@@ -83,13 +73,16 @@ fun FilterScreen(onFilterClicked: () -> Unit = {}) {
         } else {
             filterState = FilterState(
                 clearVisible = true,
-                beforeTags = topTags.subList(0, index),
+                beforeTags = filterDefinition.topTags.subList(0, index),
                 beforeTagsVisible = true,
                 selectedTags = listOf(tag),
                 selectedTagsVisible = true,
-                afterTags = topTags.subList(index + 1, topTags.size),
+                afterTags = filterDefinition.topTags.subList(
+                    index + 1,
+                    filterDefinition.topTags.size
+                ),
                 afterTagsVisible = true,
-                extensionTags = extensionTags[tag] ?: emptyList(),
+                extensionTags = filterDefinition.extensionTags[tag] ?: emptyList(),
                 extensionTagsVisible = true,
             )
         }
@@ -185,6 +178,7 @@ private fun FilterRow(
 @Composable
 private fun FilterClearButton(onClearAllClick: () -> Unit) {
     Box(modifier = Modifier
+        .semantics { contentDescription = "clear button" }
         .size(36.dp)
         .padding(2.dp)
         .border(
@@ -207,11 +201,20 @@ private fun FilterClearButton(onClearAllClick: () -> Unit) {
 private fun FilterTag(
     tag: Tag,
     selected: Boolean,
-    onTagSelected: (Tag, Boolean) -> Unit
+    onTagSelected: (Tag, Boolean) -> Unit,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))
     val alpha = if (selected) 0.2f else 0.0f
     val color = tag.color
+    val toggleableModifier =
+        Modifier.toggleable(
+            value = selected,
+            onValueChange = { newValue -> onTagSelected(tag, newValue) },
+            role = Role.Checkbox,
+            interactionSource = interactionSource,
+            indication = null
+        )
     Text(
         tag.title,
         style = MaterialTheme.typography.body2.copy(
@@ -220,6 +223,7 @@ private fun FilterTag(
         ),
         color = lerp(color, MaterialTheme.colors.onSurface, 0.55f),
         modifier = Modifier
+            .then(toggleableModifier)
             .height(36.dp)
             .padding(3.dp)
             .border(
@@ -228,7 +232,6 @@ private fun FilterTag(
                 shape = shape
             )
             .clip(shape = shape)
-            .clickable { onTagSelected(tag, !selected) }
             .background(color = color.copy(alpha = alpha))
             .padding(start = 16.dp, end = 16.dp, top = 4.dp)
     )

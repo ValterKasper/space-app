@@ -32,7 +32,6 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.findNavController
@@ -45,7 +44,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.settings.SettingsManager
-import sk.kasper.ui_common.tag.FilterScreen
+import sk.kasper.ui_common.tag.Filter
+import sk.kasper.ui_common.tag.FilterDefinition
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import java.util.*
@@ -98,23 +98,18 @@ class ComposePlaygroundFragment : BaseFragment() {
                                         PlaygroundTab.COMPONENTS -> ComponentsScreen()
                                         PlaygroundTab.SHAPE -> ShapeScreen()
                                         PlaygroundTab.ANIMATIONS -> AnimationsScreen()
-                                        PlaygroundTab.FILTER -> FilterScreen()
+                                        PlaygroundTab.FILTER -> Filter(
+                                            filterDefinition = FilterDefinition(
+                                                topTags = emptyList(),
+                                                extensionTags = emptyMap()
+                                            )
+                                        )
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-    }
-
-    @Composable
-    @Preview
-    private fun FilterScreenPreview() {
-        SpaceTheme {
-            Surface(modifier = Modifier.height(200.dp)) {
-                FilterScreen()
             }
         }
     }
