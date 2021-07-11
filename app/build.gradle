@@ -5,19 +5,25 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.firebase.crashlytics'
     id 'com.google.gms.google-services'
+//    id 'dagger.hilt.android.plugin'
 }
 
 android {
     signingConfigs {
         config {
-            final def keystoreFile = file(System.getenv("SPACE_APP_KEYSTORE_PATH"))
-            if (keystoreFile.exists()) {
-                storeFile keystoreFile
-                storePassword System.getenv("SPACE_APP_KEYSTORE_PASSWORD")
-                keyAlias "StarlinerKey"
-                keyPassword System.getenv("SPACE_APP_KEY_PASSWORD")
+            final def keystorePath = System.getenv("SPACE_APP_KEYSTORE_PATH")
+            if (keystorePath != null && !keystorePath.isEmpty()) {
+                final def keystoreFile = file(keystorePath)
+                if (keystoreFile.exists()) {
+                    storeFile keystoreFile
+                    storePassword System.getenv("SPACE_APP_KEYSTORE_PASSWORD")
+                    keyAlias "StarlinerKey"
+                    keyPassword System.getenv("SPACE_APP_KEY_PASSWORD")
+                } else {
+                    println "couldn't find keystore file: " + keystoreFile.path
+                }
             } else {
-                println "couldn't find keystore file: " + keystoreFile.path
+                println "keystore keystorePath does not exist"
             }
         }
     }
