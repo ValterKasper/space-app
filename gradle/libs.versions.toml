@@ -35,6 +35,9 @@ androidx-compose-material-material = { module = "androidx.compose.material:mater
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 androidx-compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
+
 androidx-coretesting = "androidx.arch.core:core-testing:2.1.0"
 
 androidx-lifecycle-common-java8 = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
