@@ -1,7 +1,8 @@
 package sk.kasper.ui_launch
 
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.ui_common.analytics.Analytics
@@ -86,7 +87,7 @@ class LaunchViewModel @AssistedInject constructor(
         }
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(launchId: String): LaunchViewModel
     }

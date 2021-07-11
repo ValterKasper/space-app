@@ -2,8 +2,9 @@ package sk.kasper.space.sync
 
 import android.content.Context
 import androidx.work.*
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.space.BuildConfig
 import sk.kasper.space.work.ChildWorkerFactory
@@ -49,7 +50,9 @@ class SyncWorker @AssistedInject constructor(
         }
     }
 
-    @AssistedInject.Factory
-    interface Factory : ChildWorkerFactory
+    @AssistedFactory
+    interface Factory : ChildWorkerFactory {
+        override fun create(appContext: Context, workerParams: WorkerParameters): SyncWorker
+    }
 
 }

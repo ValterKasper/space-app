@@ -2,14 +2,15 @@ package sk.kasper.space.notification.showLaunchNotificationJob
 
 import android.content.Context
 import androidx.work.*
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.space.notification.NotificationsHelper
-import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.space.utils.toTimeStamp
 import sk.kasper.space.work.ChildWorkerFactory
+import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -37,17 +38,27 @@ class ShowLaunchNotificationWorker @AssistedInject constructor(
                     .setConstraints(constrains)
                     .setInputData(workDataOf(LAUNCH_ID_KEY to launchId))
                     .setInitialDelay(dateTimeNotification.toTimeStamp() - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                    .build()
+                .build()
         }
     }
 
     override suspend fun doWork(): Result {
         val launchId = inputData.getString(LAUNCH_ID_KEY) ?: ""
-        ShowLaunchNotificationWorkController(getLaunch, notificationsHelper, LocalDateTime.now(), settingsManager).doWork(launchId)
+        ShowLaunchNotificationWorkController(
+            getLaunch,
+            notificationsHelper,
+            LocalDateTime.now(),
+            settingsManager
+        ).doWork(launchId)
         return Result.success()
     }
 
-    @AssistedInject.Factory
-    interface Factory : ChildWorkerFactory
+    @AssistedFactory
+    interface Factory : ChildWorkerFactory {
+        override fun create(
+            appContext: Context,
+            workerParams: WorkerParameters
+        ): ShowLaunchNotificationWorker
+    }
 
 }

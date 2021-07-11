@@ -58,10 +58,8 @@ dependencies {
     implementation platform(libs.google.firebase.bom)
     implementation libs.google.firebase.analytics
 
-    compileOnly libs.dagger.assisted.inject.annotations
     implementation libs.dagger.support
     kapt libs.dagger.android.processor
-    kapt libs.dagger.assisted.inject.processor
     kapt libs.dagger.compiler
     kaptAndroidTest libs.dagger.android.processor
     kaptAndroidTest libs.dagger.compiler

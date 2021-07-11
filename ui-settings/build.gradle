@@ -63,8 +63,6 @@ dependencies {
     kaptAndroidTest libs.dagger.compiler
     kapt libs.dagger.android.processor
     kaptAndroidTest libs.dagger.android.processor
-    implementation libs.dagger.assisted.inject.annotations
-    kapt libs.dagger.assisted.inject.processor
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.test.junit

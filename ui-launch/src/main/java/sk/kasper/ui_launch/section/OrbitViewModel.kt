@@ -1,8 +1,9 @@
 package sk.kasper.ui_launch.section
 
 import androidx.annotation.StringRes
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import sk.kasper.domain.model.Orbit
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.usecase.launchdetail.GetOrbit
@@ -49,7 +50,7 @@ class OrbitViewModel @AssistedInject constructor(
         return oldState.copy(visible = false)
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(launchId: String): OrbitViewModel
     }

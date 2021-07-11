@@ -1,7 +1,8 @@
 package sk.kasper.ui_launch.section
 
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import sk.kasper.domain.model.Photo
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.launchdetail.GetPhotos
@@ -61,7 +62,7 @@ class GalleryViewModel @AssistedInject constructor(
         )
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(launchId: String): GalleryViewModel
     }
