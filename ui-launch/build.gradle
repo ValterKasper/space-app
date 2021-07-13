@@ -61,13 +61,10 @@ dependencies {
 
     implementation libs.google.android.play.services.maps
 
-    implementation libs.dagger.support
-    kapt libs.dagger.compiler
-    kaptAndroidTest libs.dagger.compiler
-    kapt libs.dagger.android.processor
-    kaptAndroidTest libs.dagger.android.processor
-    implementation 'com.google.dagger:hilt-android:2.37'
-    kapt 'com.google.dagger:hilt-compiler:2.37'
+    androidTestImplementation libs.dagger.hilt.android
+    kaptAndroidTest libs.dagger.hilt.android
+    implementation libs.dagger.hilt.android
+    kapt libs.dagger.hilt.compiler
 
     implementation libs.timber
 

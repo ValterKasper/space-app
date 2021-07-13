@@ -14,8 +14,7 @@ buildscript {
         classpath libs.google.firebase.crashlyticsGradle
         classpath libs.google.gms.google.services
         classpath libs.kotlin.gradle.plugin
-        // todo to toml
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.37'
+        classpath libs.dagger.hilt.gradle.plugin
     }
 }
 

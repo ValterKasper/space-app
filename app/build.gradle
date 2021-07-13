@@ -44,9 +44,6 @@ android {
         manifestPlaceholders += [
                 google_maps_key: "${System.getenv("SPACE_APP_GOOGLE_MAPS_KEY")}",
         ]
-
-        //TODO: remove this after migration to Hilt
-        javaCompileOptions.annotationProcessorOptions.arguments['dagger.hilt.disableModulesHaveInstallInCheck'] = 'true'
     }
     buildTypes {
         release {
@@ -123,19 +120,10 @@ dependencies {
 
     implementation libs.google.android.play.services.maps
 
-    implementation libs.dagger.support
-    kapt libs.dagger.compiler
-    kaptAndroidTest libs.dagger.compiler
-    kapt libs.dagger.android.processor
-    kaptAndroidTest libs.dagger.android.processor
-
-    // todo move to toml
-    implementation 'com.google.dagger:hilt-android:2.37'
-    kapt 'com.google.dagger:hilt-compiler:2.37'
-
-    // For instrumentation tests
-    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.37'
-    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.37'
+    androidTestImplementation libs.dagger.hilt.android
+    kaptAndroidTest libs.dagger.hilt.android
+    implementation libs.dagger.hilt.android
+    kapt libs.dagger.hilt.compiler
 
     implementation libs.retrofit.retrofit
     implementation libs.retrofit.converter.gson

@@ -54,16 +54,14 @@ dependencies {
     implementation libs.androidx.compose.material.material
     implementation libs.androidx.compose.ui.tooling
     implementation libs.androidx.compose.ui.ui
-    implementation 'com.google.dagger:hilt-android:2.37'
-    kapt 'com.google.dagger:hilt-compiler:2.37'
 
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
     implementation libs.androidx.drawerlayout
 
-    implementation libs.dagger.support
-    kapt libs.dagger.compiler
+    implementation libs.dagger.hilt.android
+    kapt libs.dagger.hilt.compiler
 
     implementation libs.google.android.play.services.maps
 
