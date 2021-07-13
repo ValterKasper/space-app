@@ -6,6 +6,9 @@ import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import sk.kasper.domain.model.SyncLaunches
@@ -22,19 +25,15 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 
+@InstallIn(SingletonComponent::class)
 @Module
-class AppModule(val context: Context) {
+class AppModule {
 
 
     @Singleton
     @Provides
-    fun provideSharedPreferences(): SharedPreferences {
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
-    }
-
-    @Provides
-    fun providesContext(): Context {
-        return context
     }
 
     @Provides

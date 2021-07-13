@@ -15,6 +15,7 @@ import android.text.format.DateUtils
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
+import dagger.hilt.android.qualifiers.ApplicationContext
 import org.threeten.bp.Duration
 import sk.kasper.space.R
 import sk.kasper.space.utils.toTimeStamp
@@ -27,7 +28,7 @@ import javax.inject.Inject
 
 class NotificationsHelper @Inject constructor(
     private val rocketMapper: RocketMapper,
-    context: Context
+    @ApplicationContext context: Context
 ) : ContextWrapper(context) {
 
     companion object {

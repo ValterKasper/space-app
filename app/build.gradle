@@ -5,7 +5,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.firebase.crashlytics'
     id 'com.google.gms.google-services'
-//    id 'dagger.hilt.android.plugin'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -44,6 +44,9 @@ android {
         manifestPlaceholders += [
                 google_maps_key: "${System.getenv("SPACE_APP_GOOGLE_MAPS_KEY")}",
         ]
+
+        //TODO: remove this after migration to Hilt
+        javaCompileOptions.annotationProcessorOptions.arguments['dagger.hilt.disableModulesHaveInstallInCheck'] = 'true'
     }
     buildTypes {
         release {
@@ -81,6 +84,10 @@ android {
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
     }
+}
+
+kapt {
+    correctErrorTypes true
 }
 
 dependencies {
@@ -121,8 +128,14 @@ dependencies {
     kaptAndroidTest libs.dagger.compiler
     kapt libs.dagger.android.processor
     kaptAndroidTest libs.dagger.android.processor
-    compileOnly libs.dagger.assisted.inject.annotations
-    kapt libs.dagger.assisted.inject.processor
+
+    // todo move to toml
+    implementation 'com.google.dagger:hilt-android:2.37'
+    kapt 'com.google.dagger:hilt-compiler:2.37'
+
+    // For instrumentation tests
+    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.37'
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.37'
 
     implementation libs.retrofit.retrofit
     implementation libs.retrofit.converter.gson

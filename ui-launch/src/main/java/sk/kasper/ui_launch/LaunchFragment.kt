@@ -23,6 +23,7 @@ import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.theme.SpaceTheme
@@ -32,7 +33,7 @@ import sk.kasper.ui_launch.gallery.GallerySection
 import sk.kasper.ui_launch.section.*
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class LaunchFragment : BaseFragment() {
 
     @Inject

@@ -2,19 +2,23 @@ package sk.kasper.space.mainactivity.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import sk.kasper.ui_common.di.ActivityScope
-import sk.kasper.space.di.FragmentBuilder
+import dagger.hilt.InstallIn
+import dagger.hilt.android.scopes.ActivityScoped
+import dagger.hilt.components.SingletonComponent
 import sk.kasper.space.mainactivity.MainActivity
 import sk.kasper.ui_common.viewmodel.di.ViewModelModule
 
 
+@InstallIn(SingletonComponent::class)
 @Module
 abstract class MainActivityModule {
 
-    @ActivityScope
-    @ContributesAndroidInjector(modules = [
-        ViewModelModule::class,
-        FragmentBuilder::class])
+    @ActivityScoped
+    @ContributesAndroidInjector(
+        modules = [
+            ViewModelModule::class
+        ]
+    )
     abstract fun bindMainActivity(): MainActivity
 
 }

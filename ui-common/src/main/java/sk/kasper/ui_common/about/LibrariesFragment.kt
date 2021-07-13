@@ -21,11 +21,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.findNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
+import dagger.hilt.android.AndroidEntryPoint
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.R
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 
+@AndroidEntryPoint
 class LibrariesFragment: BaseFragment() {
 
     data class Library(val name: String, val link: String)

@@ -2,6 +2,7 @@ package sk.kasper.space.api
 
 import android.content.Context
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.ChronoUnit
@@ -16,14 +17,16 @@ private const val RESPONSE_FILE_NAME = "fake_api_response.json"
 private val BACK_TO_THE_FUTURE_OFFSET = Duration.of(4, ChronoUnit.HOURS)
 
 @Singleton
-class FakeRemoteApi @Inject constructor(private val context: Context) : RemoteApi {
+class FakeRemoteApi @Inject constructor(@ApplicationContext private val context: Context) :
+    RemoteApi {
 
     private val now = LocalDateTime.now()
 
     override suspend fun timeline(): RemoteLaunchesResponse {
         val originalResponse = Gson().fromJson(
-                context.readFileFromAssets(RESPONSE_FILE_NAME),
-                RemoteLaunchesResponse::class.java)
+            context.readFileFromAssets(RESPONSE_FILE_NAME),
+            RemoteLaunchesResponse::class.java
+        )
 
         // Back to the future ©
         val firstLaunchDateTime = originalResponse.launches!!.first().launchTs.toLocalDateTime()

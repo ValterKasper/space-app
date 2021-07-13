@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.settings.SettingKey
@@ -31,6 +32,7 @@ import sk.kasper.ui_settings.preferences.PreferenceCategory
 import sk.kasper.ui_settings.preferences.SwitchPreference
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment() {
 
     @Inject

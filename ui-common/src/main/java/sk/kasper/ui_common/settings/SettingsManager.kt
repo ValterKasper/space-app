@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +28,7 @@ private fun isLowerSdkVersionThan(sdkVersion: Int) =
 typealias SettingChangeListener = (SettingKey) -> Unit
 
 @Singleton
-class SettingsManager @Inject constructor(private val context: Context) :
+class SettingsManager @Inject constructor(@ApplicationContext private val context: Context) :
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {

@@ -2,11 +2,11 @@ package sk.kasper.ui_common.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import sk.kasper.ui_common.di.ActivityScope
+import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 import javax.inject.Provider
 
-@ActivityScope
+@ActivityScoped
 class ViewModelFactory @Inject constructor(
         private val viewModelProviders: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>)
     : ViewModelProvider.Factory {

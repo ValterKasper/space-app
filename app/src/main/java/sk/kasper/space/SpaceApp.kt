@@ -8,14 +8,9 @@ import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.hilt.android.HiltAndroidApp
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.database.Database
-import sk.kasper.space.di.AppComponent
-import sk.kasper.space.di.AppModule
-import sk.kasper.space.di.DaggerAppComponent
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.sync.SyncWorker
 import sk.kasper.ui_common.analytics.Analytics
@@ -25,13 +20,11 @@ import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber
 import javax.inject.Inject
 
-open class SpaceApp: Application(), HasAndroidInjector {
+@HiltAndroidApp
+open class SpaceApp : Application() {
 
     @Inject
     lateinit var checker: LaunchNotificationChecker
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     @Inject
     lateinit var remoteApi: RemoteApi
@@ -45,18 +38,7 @@ open class SpaceApp: Application(), HasAndroidInjector {
     @Inject
     lateinit var workManagerConfiguration: Configuration
 
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
-
-    protected open fun createAppComponent(): AppComponent {
-        return DaggerAppComponent.builder()
-                .application(this)
-                .appModule(AppModule(this))
-                .build()
-    }
-
     override fun onCreate() {
-        super.onCreate()
-
         AndroidThreeTen.init(this)
 
         if (BuildConfig.DEBUG) {
@@ -67,7 +49,7 @@ open class SpaceApp: Application(), HasAndroidInjector {
             Analytics.plant(FirebaseAnalyticsLogger(this))
         }
 
-        createAppComponent().inject(this)
+        super.onCreate()
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(checker)
 

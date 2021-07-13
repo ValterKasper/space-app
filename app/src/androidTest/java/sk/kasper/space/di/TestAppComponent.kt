@@ -6,7 +6,8 @@ import sk.kasper.space.work.WorkerBindingModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [
+@Component(
+    modules = [
         AndroidSupportInjectionModule::class,
         MockMainActivityModule::class,
         AssistedInjectModule::class,
@@ -14,5 +15,6 @@ import javax.inject.Singleton
         AppModule::class,
         MockDatabaseModule::class,
         MockRemoteApiModule::class
-])
-interface TestAppComponent: AppComponent
+    ]
+)
+interface TestAppComponent : AggregatorModule

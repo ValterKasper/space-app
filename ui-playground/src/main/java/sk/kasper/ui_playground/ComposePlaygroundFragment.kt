@@ -34,6 +34,7 @@ import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.theme.SpaceTheme
@@ -41,6 +42,7 @@ import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ComposePlaygroundFragment : BaseFragment() {
 
     @Inject
