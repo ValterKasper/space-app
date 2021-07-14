@@ -18,9 +18,11 @@ import sk.kasper.space.mapper.RocketMapperImpl
 import sk.kasper.space.mapper.TagMapperImpl
 import sk.kasper.space.repository.*
 import sk.kasper.space.sync.SyncLaunchesImpl
+import sk.kasper.space.utils.GoogleApiHelperImpl
 import sk.kasper.space.work.AppWorkerFactory
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.tag.TagMapper
+import sk.kasper.ui_launch.usecase.GoogleApiHelper
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -97,5 +99,10 @@ class AppModule {
             .setWorkerFactory(appWorkerFactory)
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun providesGoogleApiHelper(googleApiHelper: GoogleApiHelperImpl): GoogleApiHelper =
+        googleApiHelper
 
 }

@@ -7,6 +7,7 @@ import sk.kasper.domain.model.LaunchSite
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.usecase.launchdetail.GetLaunchSite
 import sk.kasper.ui_launch.R
+import sk.kasper.ui_launch.usecase.GoogleApiHelper
 import javax.inject.Inject
 
 data class LaunchSizeState(
@@ -18,7 +19,8 @@ data class LaunchSizeState(
 @HiltViewModel
 class LaunchSiteViewModel @Inject constructor(
     private val handle: SavedStateHandle,
-    private val getLaunchSite: GetLaunchSite
+    private val getLaunchSite: GetLaunchSite,
+    private val googleApiHelper: GoogleApiHelper,
 ) : LoaderViewModel<LaunchSizeState, LaunchSite>(LaunchSizeState()) {
 
     init {
@@ -26,8 +28,7 @@ class LaunchSiteViewModel @Inject constructor(
     }
 
     override suspend fun load(): Response<LaunchSite> {
-        // todo googleApiAvailable malo by prist z usecasu; mozno by nemalo byt z LoaderViewModel
-        return if (false) {
+        return if (googleApiHelper.isGoogleApiAvailable()) {
             getLaunchSite.getLaunchSite(handle.get("launchId")!!)
         } else {
             ErrorResponse("google api not available")
