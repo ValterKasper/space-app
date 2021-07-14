@@ -1,8 +1,7 @@
 package sk.kasper.ui_launch.section
 
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.Photo
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.launchdetail.GetPhotos
@@ -10,6 +9,7 @@ import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import sk.kasper.ui_launch.R
 import sk.kasper.ui_launch.gallery.PhotoItem
 import sk.kasper.ui_launch.gallery.PhotoPagerData
+import javax.inject.Inject
 
 data class GalleryState(
     val title: Int = R.string.gallery,
@@ -20,8 +20,9 @@ data class GalleryState(
 sealed class GallerySideEffect
 data class ShowPhotoPager(val photoPagerData: PhotoPagerData) : GallerySideEffect()
 
-class GalleryViewModel @AssistedInject constructor(
-    @Assisted private val launchId: String,
+@HiltViewModel
+class GalleryViewModel @Inject constructor(
+    private val handle: SavedStateHandle,
     private val getPhotos: GetPhotos
 ) : ReducerViewModel<GalleryState, GallerySideEffect>(GalleryState()) {
 
@@ -30,7 +31,7 @@ class GalleryViewModel @AssistedInject constructor(
     }
 
     private fun initAction() = action {
-        getPhotos.getPhotos(launchId).also {
+        getPhotos.getPhotos(handle.get("launchId")!!).also {
             when (it) {
                 is SuccessResponse -> reduce {
                     copy(
@@ -60,11 +61,6 @@ class GalleryViewModel @AssistedInject constructor(
                     })
             )
         )
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(launchId: String): GalleryViewModel
     }
 
 }

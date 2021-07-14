@@ -5,13 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import sk.kasper.ui_common.utils.backpress.BackPressManager
 import sk.kasper.ui_common.utils.backpress.OnBackPressListener
-import sk.kasper.ui_common.viewmodel.ViewModelFactory
 import javax.inject.Inject
 
 open class BaseFragment : Fragment(), OnBackPressListener {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
     lateinit var backPressManager: BackPressManager

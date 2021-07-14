@@ -1,13 +1,13 @@
 package sk.kasper.ui_launch.section
 
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.LaunchSite
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.usecase.launchdetail.GetLaunchSite
 import sk.kasper.ui_launch.R
+import javax.inject.Inject
 
 data class LaunchSizeState(
     val launchSite: LaunchSite? = null,
@@ -15,9 +15,9 @@ data class LaunchSizeState(
     val visible: Boolean = false
 )
 
-class LaunchSiteViewModel @AssistedInject constructor(
-    @Assisted private val launchId: String,
-    @Assisted private val googleApiAvailable: Boolean, // todo malo by prist z usecasu; mozno by nemalo byt z LoaderViewModel
+@HiltViewModel
+class LaunchSiteViewModel @Inject constructor(
+    private val handle: SavedStateHandle,
     private val getLaunchSite: GetLaunchSite
 ) : LoaderViewModel<LaunchSizeState, LaunchSite>(LaunchSizeState()) {
 
@@ -26,8 +26,9 @@ class LaunchSiteViewModel @AssistedInject constructor(
     }
 
     override suspend fun load(): Response<LaunchSite> {
-        return if (googleApiAvailable) {
-            getLaunchSite.getLaunchSite(launchId)
+        // todo googleApiAvailable malo by prist z usecasu; mozno by nemalo byt z LoaderViewModel
+        return if (false) {
+            getLaunchSite.getLaunchSite(handle.get("launchId")!!)
         } else {
             ErrorResponse("google api not available")
         }
@@ -41,11 +42,4 @@ class LaunchSiteViewModel @AssistedInject constructor(
         return oldState.copy(visible = false)
     }
 
-    @AssistedFactory
-    interface Factory {
-        fun create(
-            launchId: String,
-            googleApiAvailable: Boolean
-        ): LaunchSiteViewModel
-    }
 }

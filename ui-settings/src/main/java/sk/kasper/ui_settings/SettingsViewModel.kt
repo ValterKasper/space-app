@@ -3,6 +3,7 @@ package sk.kasper.ui_settings
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import sk.kasper.ui_common.settings.SettingKey
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 
 @OptIn(ExperimentalStdlibApi::class)
+@HiltViewModel
 class SettingsViewModel @Inject constructor(private val settingsManager: SettingsManager) :
     ReducerViewModel<SettingsState, SettingsSideEffect>(
         SettingsState(emptyList())

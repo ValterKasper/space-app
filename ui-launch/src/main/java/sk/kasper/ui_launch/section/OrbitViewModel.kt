@@ -1,14 +1,14 @@
 package sk.kasper.ui_launch.section
 
 import androidx.annotation.StringRes
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.Orbit
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.usecase.launchdetail.GetOrbit
 import sk.kasper.ui_common.view.OrbitToDraw
 import sk.kasper.ui_launch.R
+import javax.inject.Inject
 
 data class OrbitState(
     val orbit: OrbitToDraw = OrbitToDraw.LEO,
@@ -17,9 +17,10 @@ data class OrbitState(
     val visible: Boolean = false
 )
 
-class OrbitViewModel @AssistedInject constructor(
+@HiltViewModel
+class OrbitViewModel @Inject constructor(
     private val getOrbit: GetOrbit,
-    @Assisted private val launchId: String
+    private val handle: SavedStateHandle,
 ) : LoaderViewModel<OrbitState, Orbit>(OrbitState()) {
 
     init {
@@ -27,7 +28,7 @@ class OrbitViewModel @AssistedInject constructor(
     }
 
     override suspend fun load(): Response<Orbit> {
-        return getOrbit.getOrbit(launchId = launchId)
+        return getOrbit.getOrbit(handle.get("launchId")!!)
     }
 
     override fun mapLoadToState(load: Orbit, oldState: OrbitState): OrbitState {
@@ -48,11 +49,6 @@ class OrbitViewModel @AssistedInject constructor(
 
     override fun mapErrorToState(message: String?, oldState: OrbitState): OrbitState {
         return oldState.copy(visible = false)
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(launchId: String): OrbitViewModel
     }
 
 }

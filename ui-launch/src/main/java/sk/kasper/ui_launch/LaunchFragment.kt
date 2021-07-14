@@ -17,52 +17,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.dimensionResource
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.utils.getThemeColor
-import sk.kasper.ui_common.utils.viewModels
 import sk.kasper.ui_launch.gallery.GallerySection
 import sk.kasper.ui_launch.section.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LaunchFragment : BaseFragment() {
 
-    @Inject
-    lateinit var orbitViewModelFactory: OrbitViewModel.Factory
+    private val launchViewModel: LaunchViewModel by viewModels()
 
-    @Inject
-    lateinit var launchViewModelFactory: LaunchViewModel.Factory
-
-    @Inject
-    lateinit var falconInfoViewModelFactory: FalconInfoViewModel.Factory
-
-    @Inject
-    lateinit var galleryViewModelFactory: GalleryViewModel.Factory
-
-    @Inject
-    lateinit var rocketSectionViewModelFactory: RocketSectionViewModel.Factory
-
-    @Inject
-    lateinit var launchSiteViewModelFactory: LaunchSiteViewModel.Factory
-
-    private val launchViewModel: LaunchViewModel by viewModels {
-        launchViewModelFactory.create(getLaunchId())
-    }
-
-    private val galleryViewModel: GalleryViewModel by viewModels {
-        galleryViewModelFactory.create(getLaunchId())
-    }
-
-    private fun getLaunchId() = requireArguments().getString("launchId")!!
+    private val galleryViewModel: GalleryViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,31 +71,13 @@ class LaunchFragment : BaseFragment() {
         requireActivity().window.statusBarColor =
             ContextCompat.getColor(requireContext(), R.color.systemUiOverlayColor)
 
-        val orbitViewModel: OrbitViewModel by viewModels {
-            orbitViewModelFactory.create(
-                getLaunchId()
-            )
-        }
+        val orbitViewModel: OrbitViewModel by viewModels()
 
-        val rocketSectionViewModel: RocketSectionViewModel by viewModels {
-            rocketSectionViewModelFactory.create(
-                getLaunchId()
-            )
-        }
+        val rocketSectionViewModel: RocketSectionViewModel by viewModels()
 
-        val falconInfoViewModel: FalconInfoViewModel by viewModels {
-            falconInfoViewModelFactory.create(
-                getLaunchId()
-            )
-        }
+        val falconInfoViewModel: FalconInfoViewModel by viewModels()
 
-        val launchSiteViewModel: LaunchSiteViewModel by viewModels {
-            launchSiteViewModelFactory.create(
-                getLaunchId(),
-                ConnectionResult.SUCCESS == GoogleApiAvailability.getInstance()
-                    .isGooglePlayServicesAvailable(context)
-            )
-        }
+        val launchSiteViewModel: LaunchSiteViewModel by viewModels()
 
         return ComposeView(requireContext()).apply {
             setContent {

@@ -1,12 +1,12 @@
 package sk.kasper.ui_launch.section
 
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.model.Rocket
 import sk.kasper.domain.usecase.launchdetail.GetRocketForLaunch
 import sk.kasper.ui_launch.R
+import javax.inject.Inject
 
 data class RocketSectionState(
     val rocketName: String = "",
@@ -21,9 +21,9 @@ data class RocketSectionState(
     val visible: Boolean = false
 )
 
-
-class RocketSectionViewModel @AssistedInject constructor(
-    @Assisted private val launchId: String,
+@HiltViewModel
+class RocketSectionViewModel @Inject constructor(
+    private val handle: SavedStateHandle,
     private val getRocketForLaunch: GetRocketForLaunch
 ) : LoaderViewModel<RocketSectionState, Rocket>(RocketSectionState()) {
 
@@ -31,13 +31,8 @@ class RocketSectionViewModel @AssistedInject constructor(
         loadAction()
     }
 
-    @AssistedFactory
-    interface Factory {
-        fun create(launchId: String): RocketSectionViewModel
-    }
-
     override suspend fun load(): Response<Rocket> {
-        return getRocketForLaunch.getRocket(launchId)
+        return getRocketForLaunch.getRocket(handle.get("launchId")!!)
     }
 
     override fun mapLoadToState(load: Rocket, oldState: RocketSectionState): RocketSectionState {

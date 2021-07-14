@@ -1,5 +1,6 @@
 package sk.kasper.ui_timeline
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import sk.kasper.domain.model.ErrorResponse
@@ -45,6 +46,7 @@ sealed class SideEffect {
     object ShowFilter : SideEffect()
 }
 
+@HiltViewModel
 open class TimelineViewModel @Inject constructor(
     private val getTimelineItems: GetTimelineItems,
     private val refreshTimelineItems: RefreshTimelineItems,

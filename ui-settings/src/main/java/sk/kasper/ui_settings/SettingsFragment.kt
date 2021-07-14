@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.accompanist.insets.ProvideWindowInsets
@@ -26,7 +27,6 @@ import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
-import sk.kasper.ui_common.utils.viewModels
 import sk.kasper.ui_settings.preferences.ListPreference
 import sk.kasper.ui_settings.preferences.PreferenceCategory
 import sk.kasper.ui_settings.preferences.SwitchPreference

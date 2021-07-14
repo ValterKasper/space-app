@@ -1,14 +1,14 @@
 package sk.kasper.ui_launch.section
 
 import androidx.annotation.StringRes
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.FalconCore
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.usecase.launchdetail.GetFalconCore
 import sk.kasper.ui_common.utils.FormattedString
 import sk.kasper.ui_launch.R
+import javax.inject.Inject
 
 data class FalconInfoState(
     val visible: Boolean = false,
@@ -27,8 +27,9 @@ data class FalconInfoState(
     val blockStatus: FormattedString = FormattedString.empty(),
 )
 
-class FalconInfoViewModel @AssistedInject constructor(
-    @Assisted private val launchId: String,
+@HiltViewModel
+class FalconInfoViewModel @Inject constructor(
+    private val handle: SavedStateHandle,
     private val getFalconCore: GetFalconCore
 ) : LoaderViewModel<FalconInfoState, FalconCore>(
     FalconInfoState()
@@ -39,7 +40,7 @@ class FalconInfoViewModel @AssistedInject constructor(
     }
 
     override suspend fun load(): Response<FalconCore> {
-        return getFalconCore.getFalconCore(launchId)
+        return getFalconCore.getFalconCore(handle.get("launchId")!!)
     }
 
     override fun mapLoadToState(load: FalconCore, oldState: FalconInfoState): FalconInfoState {
@@ -119,11 +120,6 @@ class FalconInfoViewModel @AssistedInject constructor(
 
     override fun mapErrorToState(message: String?, oldState: FalconInfoState): FalconInfoState {
         return oldState.copy(visible = false)
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(launchId: String): FalconInfoViewModel
     }
 
 }

@@ -1,8 +1,7 @@
 package sk.kasper.ui_launch
 
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.ui_common.analytics.Analytics
@@ -10,6 +9,7 @@ import sk.kasper.ui_common.tag.TagMapper
 import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.utils.FormattedTimeType
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
+import javax.inject.Inject
 
 data class LaunchState(
     val missionName: String = "",
@@ -29,10 +29,11 @@ data class LaunchState(
 sealed class LaunchSideEffect
 data class ShowVideo(val url: String) : LaunchSideEffect()
 
-class LaunchViewModel @AssistedInject constructor(
+@HiltViewModel
+class LaunchViewModel @Inject constructor(
     private val getLaunch: GetLaunch,
     private val tagMapper: TagMapper,
-    @Assisted private val launchId: String
+    private val handle: SavedStateHandle,
 ) : ReducerViewModel<LaunchState, LaunchSideEffect>(LaunchState()) {
 
     init {
@@ -45,6 +46,7 @@ class LaunchViewModel @AssistedInject constructor(
     }
 
     private fun init() = action {
+        val launchId: String = handle.get("launchId")!!
         val launch = getLaunch.getLaunch(launchId)
         val launchNameParts = launch.launchNameParts
 
@@ -85,11 +87,6 @@ class LaunchViewModel @AssistedInject constructor(
                 formattedTimeType = formattedTimeType
             )
         }
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(launchId: String): LaunchViewModel
     }
 
 }
