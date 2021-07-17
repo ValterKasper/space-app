@@ -55,10 +55,11 @@ android {
         debug {
             manifestPlaceholders += [usesCleartextTraffic: "true"]
         }
-        stagging {
+        staging {
             initWith debug
             getIsDefault().set(true)
             buildConfigField 'boolean', 'USE_FAKE_API', "true"
+            buildConfigField 'String', 'BOOTSTRAP_RESPONSE_API_FILE_NAME', "\"bootstrap_api_response.json\""
         }
     }
     compileOptions {

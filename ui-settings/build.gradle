@@ -22,7 +22,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        stagging {
+        staging {
             initWith debug
             buildConfigField 'boolean', 'SHOW_API_ENDPOINTS_PREFERENCE', "true"
         }
