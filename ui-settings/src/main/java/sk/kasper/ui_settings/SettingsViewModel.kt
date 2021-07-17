@@ -51,7 +51,7 @@ class SettingsViewModel @Inject constructor(private val settingsManager: Setting
                 )
             }
 
-            if (BuildConfig.DEBUG) {
+            if (BuildConfig.SHOW_API_ENDPOINTS_PREFERENCE) {
                 Category(title = R.string.debug) {
                     Choice(
                         key = SettingKey.API_ENDPOINT,

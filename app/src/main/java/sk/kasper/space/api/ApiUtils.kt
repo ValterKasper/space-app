@@ -1,27 +1,17 @@
-package sk.kasper.space.api.di
+package sk.kasper.space.api
 
-import dagger.Lazy
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sk.kasper.space.BuildConfig
-import sk.kasper.space.api.FakeRemoteApi
-import sk.kasper.space.api.RemoteApi
 import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
-class RemoteApiModule {
+object ApiUtils {
 
-    private val authInterceptor = Interceptor { chain->
+    private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url
             .newBuilder()
             .addQueryParameter("apiKey", BuildConfig.API_KEY)
@@ -43,13 +33,7 @@ class RemoteApiModule {
         level = HttpLoggingInterceptor.Level.BASIC
     }
 
-    @Singleton
-    @Provides
-    fun providesRemoteApi(settingsManager: SettingsManager, fakeRemoteApi: Lazy<FakeRemoteApi>): RemoteApi {
-        if (BuildConfig.USE_FAKE_RESPONSE_API) {
-            return fakeRemoteApi.get()
-        }
-
+    fun createRemoteApi(settingsManager: SettingsManager): RemoteApi {
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
@@ -68,7 +52,8 @@ class RemoteApiModule {
                     SettingsManager.LOCALHOST -> "http://10.0.2.2:8080/"
                     SettingsManager.RASPBERRY -> "http://10.0.0.2:8080/"
                     else -> throw IllegalStateException()
-                })
+                }
+            )
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

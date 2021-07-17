@@ -39,7 +39,6 @@ android {
         buildConfigField 'long', 'SYNC_INTERVAL_HOURS', '4'
         buildConfigField 'long', 'TOO_OLD_LAUNCH_TO_BE_SHOWN_HOURS', '24'
         buildConfigField 'String', 'API_KEY', "\"${System.getenv("SPACE_APP_API_KEY")}\""
-        buildConfigField 'boolean', 'USE_FAKE_RESPONSE_API', "$use_fake_reponse_api"
 
         manifestPlaceholders += [
                 google_maps_key: "${System.getenv("SPACE_APP_GOOGLE_MAPS_KEY")}",
@@ -55,6 +54,11 @@ android {
         }
         debug {
             manifestPlaceholders += [usesCleartextTraffic: "true"]
+        }
+        stagging {
+            initWith debug
+            getIsDefault().set(true)
+            buildConfigField 'boolean', 'USE_FAKE_API', "true"
         }
     }
     compileOptions {
