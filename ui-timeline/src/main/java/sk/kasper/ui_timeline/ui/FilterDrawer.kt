@@ -17,9 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.*
 import sk.kasper.domain.model.Rocket
+import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.SpaceTheme
-import sk.kasper.ui_common.ui.TagComposable
 import sk.kasper.ui_timeline.R
 import sk.kasper.ui_timeline.TimelineViewModel
 import sk.kasper.ui_timeline.filter.FilterItem
@@ -154,7 +154,7 @@ private fun TagFilterCheckbox(
         filterItem.selected,
         { checked -> onTagCheckChange(filterItem.copy(selected = checked)) }
     ) {
-        TagComposable(filterItem.tag)
+        FilterTag(filterItem.tag)
     }
 }
 

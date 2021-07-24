@@ -28,9 +28,10 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.tag.Filter
 import sk.kasper.ui_common.tag.FilterDefinition
-import sk.kasper.ui_common.tag.Tag
+import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_timeline.ui.LaunchListItemLayout
+import timber.log.Timber
 
 @AndroidEntryPoint
 class TagsFragment : BaseFragment() {
@@ -316,8 +317,7 @@ class TagsFragment : BaseFragment() {
 
                             Header {
                                 val ordinal = listState.ordinal
-                                // todo uncomment
-                                // listState = getNextState(ordinal)
+                                listState = getNextState(ordinal)
                             }
 
                             LazyColumn(modifier = Modifier.padding(top = 108.dp)) {
@@ -343,35 +343,21 @@ class TagsFragment : BaseFragment() {
         }
     }
 
-    enum class SpaceTag(override val title: String, override val color: Color) : Tag {
-        Mars("Mars", Color(0xFFFF5722)),
-        Moon("Moon", Color(0xFF9C27B0)),
-        ISS("ISS", Color(0xFF009688)),
-        SpaceX("SpaceX", Color(0xFF3F51B5)),
-        Falcon("Falcon 9", Color(0xFF9C27B0)),
-        FalconHeavy("Falcon heavy", Color(0xFF8BC34A)),
-        Starship("Starship", Color(0xFF673AB7)),
-        SpaceShuttle("Space shuttle", Color(0xFF03A9F4)),
-        Soyuz("Soyuz", Color(0xFFFF9800)),
-        Ariane5("Ariane 5", Color(0xFF4CAF50)),
-        Rover("Rover", Color(0xFF9C27B0)),
-        Cargo("Cargo", Color(0xFF00BCD4)),
-        Crew("Crew", Color(0xFF8BC34A)),
-    }
-
-    private val filterDefinition = FilterDefinition(
-        listOf(
-            SpaceTag.Mars,
-            SpaceTag.ISS,
-            SpaceTag.Moon,
-            SpaceTag.SpaceX,
-            SpaceTag.Ariane5,
-            SpaceTag.Soyuz
-        ), mapOf(
-            SpaceTag.ISS to listOf(SpaceTag.SpaceShuttle, SpaceTag.Falcon),
-            SpaceTag.SpaceX to listOf(SpaceTag.Falcon, SpaceTag.FalconHeavy, SpaceTag.Starship)
-        )
-    )
+//    enum class SpaceTag(override val title: String, override val color: Color) : Tag {
+//        Mars("Mars", Color(0xFFFF5722)),
+//        Moon("Moon", Color(0xFF9C27B0)),
+//        ISS("ISS", Color(0xFF009688)),
+//        SpaceX("SpaceX", Color(0xFF3F51B5)),
+//        Falcon("Falcon 9", Color(0xFF9C27B0)),
+//        FalconHeavy("Falcon heavy", Color(0xFF8BC34A)),
+//        Starship("Starship", Color(0xFF673AB7)),
+//        SpaceShuttle("Space shuttle", Color(0xFF03A9F4)),
+//        Soyuz("Soyuz", Color(0xFFFF9800)),
+//        Ariane5("Ariane 5", Color(0xFF4CAF50)),
+//        Rover("Rover", Color(0xFF9C27B0)),
+//        Cargo("Cargo", Color(0xFF00BCD4)),
+//        Crew("Crew", Color(0xFF8BC34A)),
+//    }
 
     @Composable
     private fun Header(function: () -> Unit) {
@@ -402,10 +388,27 @@ class TagsFragment : BaseFragment() {
                     painter = painterResource(id = R.drawable.ic_baseline_more_vert_24),
                     contentDescription = "Insets",
                 )
-
             }
 
-            Filter(onFilterClicked = function, filterDefinition)
+            Filter(onTagSelected = { tag, selected ->
+                Timber.d("onTagSelected($tag, $selected)")
+                function()
+            }, {
+                Timber.d("onClearAll")
+            }, filterDefinition)
         }
     }
 }
+
+val filterDefinition = FilterDefinition(
+    listOf(
+        UiTag.MARS,
+        UiTag.ISS,
+        UiTag.PROBE,
+        UiTag.SECRET,
+        UiTag.SATELLITE,
+    ), mapOf(
+        UiTag.ISS to listOf(UiTag.MANNED),
+        UiTag.MARS to listOf(UiTag.MANNED, UiTag.ROVER)
+    )
+)

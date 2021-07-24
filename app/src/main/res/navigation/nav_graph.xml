@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/composePlaygroundFragment">
+    app:startDestination="@id/timelineFragment">
 
     <fragment
         android:id="@+id/timelineFragment"
@@ -45,5 +45,9 @@
         android:label="@string/compose_playground">
         <deepLink app:uri="spaceapp://compose_playground" />
     </fragment>
+    <fragment
+        android:id="@+id/tagsFragment"
+        android:name="sk.kasper.ui_timeline.TagsFragment"
+        android:label="TagsFragment" />
 
 </navigation>

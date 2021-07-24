@@ -30,6 +30,7 @@ import com.google.accompanist.insets.toPaddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.threeten.bp.LocalDateTime
+import sk.kasper.ui_common.tag.Filter
 import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
@@ -38,6 +39,7 @@ import sk.kasper.ui_common.ui.TagsRow
 import sk.kasper.ui_common.utils.RoundedSquareLetterProvider
 import sk.kasper.ui_timeline.*
 import sk.kasper.ui_timeline.R
+import sk.kasper.ui_timeline.filter.FilterItem
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,58 +58,70 @@ fun Timeline(viewModel: TimelineViewModel) {
                     FilterBar(viewModel::onFilterBarClick, viewModel::onClearAllClick)
                 }
 
-                SwipeRefresh(
-                    state = rememberSwipeRefreshState(state.progressVisible),
-                    onRefresh = viewModel::onRefresh
-                ) {
-                    if (state.showNoMatchingLaunches) {
-                        Box(Modifier.fillMaxSize()) {
-                            Text(
-                                text = stringResource(id = R.string.no_matching_launches),
-                                style = MaterialTheme.typography.h6,
-                                modifier = Modifier
-                                    .alpha(0.62f)
-                                    .align(Alignment.Center)
-                            )
+                Box {
+                    SwipeRefresh(
+                        state = rememberSwipeRefreshState(state.progressVisible),
+                        onRefresh = viewModel::onRefresh
+                    ) {
+                        if (state.showNoMatchingLaunches) {
+                            Box(Modifier.fillMaxSize()) {
+                                Text(
+                                    text = stringResource(id = R.string.no_matching_launches),
+                                    style = MaterialTheme.typography.h6,
+                                    modifier = Modifier
+                                        .alpha(0.62f)
+                                        .align(Alignment.Center)
+                                )
+                            }
                         }
-                    }
 
-                    if (state.showRetryToLoadLaunches) {
-                        Box(Modifier.fillMaxSize()) {
-                            Surface(elevation = 8.dp) {
-                                Column(modifier = Modifier.align(Alignment.Center)) {
-                                    Text(
-                                        text = stringResource(id = R.string.your_connections_is_off),
-                                        style = MaterialTheme.typography.h6,
-                                        modifier = Modifier
-                                            .alpha(0.62f)
+                        if (state.showRetryToLoadLaunches) {
+                            Box(Modifier.fillMaxSize()) {
+                                Surface(elevation = 8.dp) {
+                                    Column(modifier = Modifier.align(Alignment.Center)) {
+                                        Text(
+                                            text = stringResource(id = R.string.your_connections_is_off),
+                                            style = MaterialTheme.typography.h6,
+                                            modifier = Modifier
+                                                .alpha(0.62f)
+                                        )
+                                        Text(
+                                            text = stringResource(id = R.string.pull_to_refresh_to_try_again),
+                                            style = MaterialTheme.typography.body1,
+                                            modifier = Modifier
+                                                .alpha(0.62f)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(
+                                additionalTop = 56.dp,
+                                top = false
+                            )
+                        ) {
+                            items(state.timelineItems) { item ->
+                                when (item) {
+                                    is LaunchListItem -> LaunchListItemLayout(
+                                        LaunchListItemViewModel(
+                                            item
+                                        ), viewModel::onItemClick
                                     )
-                                    Text(
-                                        text = stringResource(id = R.string.pull_to_refresh_to_try_again),
-                                        style = MaterialTheme.typography.body1,
-                                        modifier = Modifier
-                                            .alpha(0.62f)
-                                    )
+                                    is LabelListItem -> LabelListItem(item)
                                 }
                             }
                         }
                     }
 
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(top = false)
-                    ) {
-                        items(state.timelineItems) { item ->
-                            when (item) {
-                                is LaunchListItem -> LaunchListItemLayout(
-                                    LaunchListItemViewModel(
-                                        item
-                                    ), viewModel::onItemClick
-                                )
-                                is LabelListItem -> LabelListItem(item)
-                            }
-                        }
-                    }
+                    Filter(filterDefinition = filterDefinition, onTagSelected = { tag, selected ->
+                        viewModel.onTagFilterItemChanged(FilterItem.TagFilterItem(tag, selected))
+                    }, onClearAll = {
+                        viewModel.onClearAllClick()
+                    })
                 }
             }
         }
@@ -124,12 +138,6 @@ private fun TimelineAppBar(viewModel: TimelineViewModel) {
             )
         },
         actions = {
-            IconButton(onClick = { viewModel.onFilterBarClick() }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_action_filter),
-                    contentDescription = stringResource(id = R.string.filter),
-                )
-            }
             var expanded by remember { mutableStateOf(false) }
             IconButton(onClick = { expanded = true }) {
                 Icon(

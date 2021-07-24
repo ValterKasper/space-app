@@ -4,7 +4,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import sk.kasper.ui_common.R
 
-enum class UiTag(@StringRes val label: Int, @ColorRes val color: Int) {
+enum class UiTag(@StringRes override val label: Int, @ColorRes override val color: Int) : Tag {
     ISS(R.string.tag_iss, R.color.tag_color_8),
     MANNED(R.string.tag_manned, R.color.tag_color_1),
     SATELLITE(R.string.tag_satellite, R.color.tag_color_7),
