@@ -111,11 +111,44 @@ class FilterKtTest {
             .assertIsOff()
 
         composeTestRule
-            .onNodeWithContentDescription("clear button")
+            .onClearButton()
             .assertDoesNotExist()
         composeTestRule
             .onNodeWithText(TAG_B.title)
             .assertExists()
+    }
+
+    @Test
+    fun selectTag_thenClearAll_againSelectTag_shouldBeSelected() {
+        showFilter()
+
+        composeTestRule
+            .onNodeWithText(TAG_A.title)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(TAG_A.title)
+            .assertIsOn()
+
+        composeTestRule
+            .onClearButton()
+            .performClick()
+        composeTestRule
+            .onClearButton()
+            .assertDoesNotExist()
+        composeTestRule
+            .onNodeWithText(TAG_A.title)
+            .assertIsOff()
+
+        composeTestRule
+            .onNodeWithText(TAG_A.title)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(TAG_A.title)
+            .assertIsOn()
+    }
+
+    fun SemanticsNodeInteractionsProvider.onClearButton(): SemanticsNodeInteraction {
+        return onNodeWithContentDescription("clear button")
     }
 
     private fun showFilter() {

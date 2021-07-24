@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.LocalDateTime
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.tag.Filter
@@ -31,6 +32,7 @@ import sk.kasper.ui_common.tag.Tag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_timeline.ui.LaunchListItemLayout
 
+@AndroidEntryPoint
 class TagsFragment : BaseFragment() {
 
     companion object {
@@ -314,7 +316,8 @@ class TagsFragment : BaseFragment() {
 
                             Header {
                                 val ordinal = listState.ordinal
-                                listState = getNextState(ordinal)
+                                // todo uncomment
+                                // listState = getNextState(ordinal)
                             }
 
                             LazyColumn(modifier = Modifier.padding(top = 108.dp)) {

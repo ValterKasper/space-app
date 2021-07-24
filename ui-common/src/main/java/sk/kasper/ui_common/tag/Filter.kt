@@ -57,34 +57,47 @@ fun Filter(onFilterClicked: () -> Unit = {}, filterDefinition: FilterDefinition)
 
     FilterRow(state = filterState, onClearAllClick = {
         onFilterClicked()
-        filterState = filterState.copy(
-            clearVisible = false,
-            selectedTags = filterState.selectedTags.filter { filterDefinition.topTags.contains(it) }
-        )
+        filterState = FilterState(filterDefinition.topTags)
     }, onTagSelected = { tag ->
         onFilterClicked()
         val index = filterDefinition.topTags.indexOf(tag)
 
-        if (index == -1) {
-            filterState = filterState.copy(
-                extensionTags = emptyList(),
-                selectedTags = filterState.selectedTags + listOf(tag)
-            )
+        val isExtensionTag = index == -1
+        if (isExtensionTag) {
+            filterState = if (filterState.selectedTags.contains(tag)) {
+                val selectedTags = filterState.selectedTags - tag
+                val selectedTopLevelTag = selectedTags.first()
+
+                filterState.copy(
+                    extensionTags = filterDefinition.extensionTags.getValue(selectedTopLevelTag),
+                    selectedTags = selectedTags
+                )
+            } else {
+                filterState.copy(
+                    extensionTags = emptyList(),
+                    selectedTags = filterState.selectedTags + listOf(tag)
+                )
+            }
         } else {
-            filterState = FilterState(
-                clearVisible = true,
-                beforeTags = filterDefinition.topTags.subList(0, index),
-                beforeTagsVisible = true,
-                selectedTags = listOf(tag),
-                selectedTagsVisible = true,
-                afterTags = filterDefinition.topTags.subList(
-                    index + 1,
-                    filterDefinition.topTags.size
-                ),
-                afterTagsVisible = true,
-                extensionTags = filterDefinition.extensionTags[tag] ?: emptyList(),
-                extensionTagsVisible = true,
-            )
+            filterState = if (filterState.selectedTags.contains(tag)) {
+                FilterState(filterDefinition.topTags)
+            } else {
+                FilterState(
+                    clearVisible = true,
+                    beforeTags = filterDefinition.topTags.subList(0, index),
+                    beforeTagsVisible = true,
+                    selectedTags = listOf(tag),
+                    selectedTagsVisible = true,
+                    afterTags = filterDefinition.topTags.subList(
+                        index + 1,
+                        filterDefinition.topTags.size
+                    ),
+                    afterTagsVisible = true,
+                    extensionTags = filterDefinition.extensionTags[tag] ?: emptyList(),
+                    extensionTagsVisible = true,
+                )
+
+            }
         }
     })
 }
