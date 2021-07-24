@@ -1,4 +1,4 @@
-package sk.kasper.space.api
+package sk.kasper.space.api.di
 
 import android.content.Context
 import com.google.gson.Gson
