@@ -36,28 +36,28 @@ interface FilterItem {
     val color: Int
 }
 
-data class FilterDefinition(
-    val topFilterItems: List<FilterItem>,
-    val extensionFilterItems: Map<FilterItem, List<FilterItem>>
+data class FilterDefinition<T : FilterItem>(
+    val topFilterItems: List<T>,
+    val extensionFilterItems: Map<T, List<T>>
 )
 
-private data class FilterState(
-    val beforeFilterItems: List<FilterItem>,
+private data class FilterState<T : FilterItem>(
+    val beforeFilterItems: List<T>,
     val beforeFilterItemsVisible: Boolean = true,
-    val selectedFilterItems: List<FilterItem> = emptyList(),
+    val selectedFilterItems: List<T> = emptyList(),
     val selectedFilterItemsVisible: Boolean = false,
-    val afterFilterItems: List<FilterItem> = emptyList(),
+    val afterFilterItems: List<T> = emptyList(),
     val afterFilterItemsVisible: Boolean = false,
-    val extensionFilterItems: List<FilterItem> = emptyList(),
+    val extensionFilterItems: List<T> = emptyList(),
     val extensionFilterItemsVisible: Boolean = false,
     val clearVisible: Boolean = false
 )
 
 @Composable
-fun Filter(
-    onItemSelected: (FilterItem, Boolean) -> Unit = { _, _ -> },
+fun <T : FilterItem> Filter(
+    onItemSelected: (T, Boolean) -> Unit = { _, _ -> },
     onClearAll: () -> Unit = {},
-    filterDefinition: FilterDefinition
+    filterDefinition: FilterDefinition<T>
 ) {
     var filterState by remember {
         mutableStateOf(FilterState(filterDefinition.topFilterItems))
@@ -118,10 +118,10 @@ fun Filter(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun FilterRow(
-    state: FilterState,
+private fun <TAG : FilterItem> FilterRow(
+    state: FilterState<TAG>,
     onClearAllClick: () -> Unit = { },
-    onItemSelected: (FilterItem) -> Unit = { _ -> }
+    onItemSelected: (TAG) -> Unit = { _ -> }
 ) {
     Surface {
         val s by remember {

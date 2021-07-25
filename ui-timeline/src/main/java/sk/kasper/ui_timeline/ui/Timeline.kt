@@ -32,7 +32,6 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.threeten.bp.LocalDateTime
 import sk.kasper.ui_common.tag.Filter
 import sk.kasper.ui_common.tag.FilterTag
-import sk.kasper.ui_common.tag.LaunchFilterItem
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.ui.LaunchDateTime
@@ -120,7 +119,7 @@ fun Timeline(viewModel: TimelineViewModel) {
                     Filter(
                         filterDefinition = filterDefinition,
                         onItemSelected = { filterItem, selected ->
-                            viewModel.onFilterItemChanged(filterItem as LaunchFilterItem, selected)
+                            viewModel.onFilterItemChanged(filterItem, selected)
                         },
                         onClearAll = {
                             viewModel.onClearAllClick()

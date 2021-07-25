@@ -26,10 +26,10 @@ import sk.kasper.ui_common.theme.SourceSansPro
 import sk.kasper.ui_common.theme.SpaceTheme
 
 @Composable
-fun FilterItemComposable(
-    filterItem: FilterItem,
+fun <T : FilterItem> FilterItemComposable(
+    filterItem: T,
     selected: Boolean = true,
-    onItemSelected: (FilterItem, Boolean) -> Unit = { _, _ -> },
+    onItemSelected: (T, Boolean) -> Unit = { _, _ -> },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))

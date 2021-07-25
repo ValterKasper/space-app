@@ -26,10 +26,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.LocalDateTime
 import sk.kasper.ui_common.BaseFragment
-import sk.kasper.ui_common.tag.Filter
-import sk.kasper.ui_common.tag.FilterDefinition
-import sk.kasper.ui_common.tag.FilterRocket
-import sk.kasper.ui_common.tag.FilterTag
+import sk.kasper.ui_common.tag.*
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_timeline.ui.LaunchListItemLayout
 import timber.log.Timber
@@ -401,7 +398,7 @@ class TagsFragment : BaseFragment() {
     }
 }
 
-val filterDefinition = FilterDefinition(
+val filterDefinition: FilterDefinition<LaunchFilterItem> = FilterDefinition(
     listOf(
         FilterRocket.FALCON_9,
         FilterTag.MARS,
