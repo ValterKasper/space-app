@@ -3,6 +3,7 @@ package sk.kasper.space.mapper
 import sk.kasper.domain.model.Rocket
 import sk.kasper.ui_common.R
 import sk.kasper.ui_common.rocket.RocketMapper
+import sk.kasper.ui_common.tag.FilterRocket
 import javax.inject.Inject
 
 class RocketMapperImpl @Inject constructor() : RocketMapper {
@@ -21,6 +22,29 @@ class RocketMapperImpl @Inject constructor() : RocketMapper {
             Rocket.GSLV_MK_II -> R.drawable.gslv_mk_ii
             Rocket.GSLV_MK_III -> R.drawable.gslv_mk_iii
             else -> 0
+        }
+    }
+
+    override fun toStringRes(rocketId: Long?): Int {
+        return when (rocketId) {
+            Rocket.ARIANE_5 -> R.string.rocket_ariane_5
+            Rocket.FALCON_9 -> R.string.rocket_falcon_9
+            Rocket.SOYUZ -> R.string.rocket_soyuz
+            Rocket.DELTA_4_HEAVY -> R.string.rocket_delta_VI_heavy
+            Rocket.FALCON_HEAVY -> R.string.rocket_falcon_heavy
+            Rocket.ATLAS_5 -> R.string.rocket_atlas_V
+            else -> 0
+        }
+    }
+
+    override fun toDomainRocket(rocket: FilterRocket): Long {
+        return when (rocket) {
+            FilterRocket.SOYUZ -> Rocket.SOYUZ
+            FilterRocket.ARIANE_5 -> Rocket.ARIANE_5
+            FilterRocket.FALCON_9 -> Rocket.FALCON_9
+            FilterRocket.DELTA_4_HEAVY -> Rocket.DELTA_4_HEAVY
+            FilterRocket.FALCON_HEAVY -> Rocket.FALCON_HEAVY
+            FilterRocket.ATLAS_5 -> Rocket.ATLAS_5
         }
     }
 

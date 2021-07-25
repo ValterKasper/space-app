@@ -3,7 +3,7 @@ package sk.kasper.ui_timeline
 import androidx.annotation.DrawableRes
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
-import sk.kasper.ui_common.tag.UiTag
+import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.utils.FormattedTimeType
 
 open class LaunchListItemViewModel(
@@ -11,7 +11,7 @@ open class LaunchListItemViewModel(
     currentTime: LocalDateTime = LocalDateTime.now()
 ) {
 
-    val tags: MutableList<UiTag> = mutableListOf()
+    val tags: MutableList<FilterTag> = mutableListOf()
 
     val tagsVisible: Boolean
 

@@ -1,39 +1,39 @@
 package sk.kasper.space.mapper
 
 import sk.kasper.domain.model.Tag
+import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.tag.TagMapper
-import sk.kasper.ui_common.tag.UiTag
 import javax.inject.Inject
 
 
 class TagMapperImpl @Inject constructor() : TagMapper {
 
-    override fun toUiTag(tagId: Long): UiTag {
+    override fun toUiTag(tagId: Long): FilterTag {
         return when (tagId) {
-            Tag.ISS -> UiTag.ISS
-            Tag.MANNED -> UiTag.MANNED
-            Tag.SATELLITE -> UiTag.SATELLITE
-            Tag.TEST_FLIGHT -> UiTag.TEST_FLIGHT
-            Tag.SECRET -> UiTag.SECRET
-            Tag.CUBE_SAT -> UiTag.CUBE_SAT
-            Tag.ROVER -> UiTag.ROVER
-            Tag.MARS -> UiTag.MARS
-            Tag.PROBE -> UiTag.PROBE
+            Tag.ISS -> FilterTag.ISS
+            Tag.MANNED -> FilterTag.MANNED
+            Tag.SATELLITE -> FilterTag.SATELLITE
+            Tag.TEST_FLIGHT -> FilterTag.TEST_FLIGHT
+            Tag.SECRET -> FilterTag.SECRET
+            Tag.CUBE_SAT -> FilterTag.CUBE_SAT
+            Tag.ROVER -> FilterTag.ROVER
+            Tag.MARS -> FilterTag.MARS
+            Tag.PROBE -> FilterTag.PROBE
             else -> throw IllegalStateException("Unknown tag id $tagId")
         }
     }
 
-    override fun toDomainTag(tag: UiTag): Long {
+    override fun toDomainTag(tag: FilterTag): Long {
         return when (tag) {
-            UiTag.ISS -> Tag.ISS
-            UiTag.MANNED -> Tag.MANNED
-            UiTag.SATELLITE -> Tag.SATELLITE
-            UiTag.TEST_FLIGHT -> Tag.TEST_FLIGHT
-            UiTag.SECRET -> Tag.SECRET
-            UiTag.CUBE_SAT -> Tag.CUBE_SAT
-            UiTag.ROVER -> Tag.ROVER
-            UiTag.MARS -> Tag.MARS
-            UiTag.PROBE -> Tag.PROBE
+            FilterTag.ISS -> Tag.ISS
+            FilterTag.MANNED -> Tag.MANNED
+            FilterTag.SATELLITE -> Tag.SATELLITE
+            FilterTag.TEST_FLIGHT -> Tag.TEST_FLIGHT
+            FilterTag.SECRET -> Tag.SECRET
+            FilterTag.CUBE_SAT -> Tag.CUBE_SAT
+            FilterTag.ROVER -> Tag.ROVER
+            FilterTag.MARS -> Tag.MARS
+            FilterTag.PROBE -> Tag.PROBE
             else -> throw IllegalStateException("Unknown tag $tag")
         }
     }

@@ -100,8 +100,8 @@ class ComposePlaygroundFragment : BaseFragment() {
                                         PlaygroundTab.ANIMATIONS -> AnimationsScreen()
                                         PlaygroundTab.FILTER -> Filter(
                                             filterDefinition = FilterDefinition(
-                                                topTags = emptyList(),
-                                                extensionTags = emptyMap()
+                                                topFilterItems = emptyList(),
+                                                extensionFilterItems = emptyMap()
                                             )
                                         )
                                     }

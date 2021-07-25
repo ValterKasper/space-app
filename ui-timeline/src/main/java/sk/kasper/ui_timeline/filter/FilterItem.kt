@@ -1,7 +1,6 @@
 package sk.kasper.ui_timeline.filter
 
-import androidx.annotation.StringRes
-import sk.kasper.ui_common.tag.UiTag
+import sk.kasper.ui_common.tag.FilterTag
 
 sealed class FilterItem {
 
@@ -13,16 +12,12 @@ sealed class FilterItem {
 
     abstract fun getType(): Int
 
-    data class TagFilterItem(val tag: UiTag, val selected: Boolean) : FilterItem() {
+    data class TagFilterItem(val tag: FilterTag, val selected: Boolean) : FilterItem() {
         override fun getType() = TAG_TYPE
     }
 
     data class RocketFilterItem(val rocketId: Long, val selected: Boolean): FilterItem() {
         override fun getType() = ROCKET_TYPE
-    }
-
-    class HeaderFilterItem(@StringRes val stringRes: Int): FilterItem() {
-        override fun getType() = HEADER_TYPE
     }
 
 }

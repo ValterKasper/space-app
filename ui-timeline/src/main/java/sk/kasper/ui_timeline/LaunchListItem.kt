@@ -4,8 +4,8 @@ import androidx.annotation.DrawableRes
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Launch
 import sk.kasper.ui_common.rocket.RocketMapper
+import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.tag.TagMapper
-import sk.kasper.ui_common.tag.UiTag
 
 data class LaunchListItem(
     val id: String,
@@ -15,7 +15,7 @@ data class LaunchListItem(
     val rocketName: String?,
     val accurateDate: Boolean,
     val accurateTime: Boolean,
-    val tags: List<UiTag>
+    val tags: List<FilterTag>
 ) : TimelineListItem {
 
     companion object {

@@ -1,10 +1,10 @@
 package sk.kasper.ui_common.tag
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Rule
 import org.junit.Test
+import sk.kasper.ui_common.R
 import sk.kasper.ui_common.tag.FilterKtTest.TestTag.*
 
 class FilterKtTest {
@@ -12,18 +12,22 @@ class FilterKtTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    enum class TestTag(override val title: String, override val color: Color = Color(0xFFFF5722)) :
-        Tag {
-        TAG_A("tag a"),
-        TAG_B("tag b"),
-        TAG_WITH_EXT("tag with extension tag"),
-        EXT_TAG_X("extension tag x"),
-        EXT_TAG_Y("extension tag y"),
+    enum class TestTag(
+        override val label: Int,
+        val title: String,
+        override val color: Int = R.color.cyan_700
+    ) :
+        FilterItem {
+        TAG_A(R.string.tag_iss, "ISS"),
+        TAG_B(R.string.tag_mars, "mars"),
+        TAG_WITH_EXT(R.string.tag_manned, "manned"),
+        EXT_TAG_X(R.string.tag_secret, "secret"),
+        EXT_TAG_Y(R.string.tag_rover, "rover"),
     }
 
     private val filterDefinition = FilterDefinition(
-        topTags = listOf(TAG_WITH_EXT, TAG_A, TAG_B),
-        extensionTags = mapOf(
+        topFilterItems = listOf(TAG_WITH_EXT, TAG_A, TAG_B),
+        extensionFilterItems = mapOf(
             TAG_WITH_EXT to listOf(EXT_TAG_X, EXT_TAG_Y)
         )
     )

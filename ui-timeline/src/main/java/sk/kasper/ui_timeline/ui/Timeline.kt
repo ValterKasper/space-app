@@ -31,7 +31,8 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.threeten.bp.LocalDateTime
 import sk.kasper.ui_common.tag.Filter
-import sk.kasper.ui_common.tag.UiTag
+import sk.kasper.ui_common.tag.FilterTag
+import sk.kasper.ui_common.tag.LaunchFilterItem
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.ui.LaunchDateTime
@@ -39,7 +40,6 @@ import sk.kasper.ui_common.ui.TagsRow
 import sk.kasper.ui_common.utils.RoundedSquareLetterProvider
 import sk.kasper.ui_timeline.*
 import sk.kasper.ui_timeline.R
-import sk.kasper.ui_timeline.filter.FilterItem
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -117,11 +117,14 @@ fun Timeline(viewModel: TimelineViewModel) {
                         }
                     }
 
-                    Filter(filterDefinition = filterDefinition, onTagSelected = { tag, selected ->
-                        viewModel.onTagFilterItemChanged(FilterItem.TagFilterItem(tag, selected))
-                    }, onClearAll = {
-                        viewModel.onClearAllClick()
-                    })
+                    Filter(
+                        filterDefinition = filterDefinition,
+                        onItemSelected = { filterItem, selected ->
+                            viewModel.onFilterItemChanged(filterItem as LaunchFilterItem, selected)
+                        },
+                        onClearAll = {
+                            viewModel.onClearAllClick()
+                        })
                 }
             }
         }
@@ -303,9 +306,9 @@ fun LaunchListItemForPreview(showTags: Boolean = true) {
                         accurateDate = true,
                         accurateTime = true,
                         tags = if (showTags) listOf(
-                            UiTag.CUBE_SAT,
-                            UiTag.ISS,
-                            UiTag.MARS
+                            FilterTag.CUBE_SAT,
+                            FilterTag.ISS,
+                            FilterTag.MARS
                         ) else emptyList()
                     ),
                     LocalDateTime.of(2020, 2, 28, 12, 30)

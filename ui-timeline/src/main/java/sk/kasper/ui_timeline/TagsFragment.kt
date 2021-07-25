@@ -28,7 +28,8 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.tag.Filter
 import sk.kasper.ui_common.tag.FilterDefinition
-import sk.kasper.ui_common.tag.UiTag
+import sk.kasper.ui_common.tag.FilterRocket
+import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_timeline.ui.LaunchListItemLayout
 import timber.log.Timber
@@ -390,7 +391,7 @@ class TagsFragment : BaseFragment() {
                 )
             }
 
-            Filter(onTagSelected = { tag, selected ->
+            Filter(onItemSelected = { tag, selected ->
                 Timber.d("onTagSelected($tag, $selected)")
                 function()
             }, {
@@ -402,13 +403,15 @@ class TagsFragment : BaseFragment() {
 
 val filterDefinition = FilterDefinition(
     listOf(
-        UiTag.MARS,
-        UiTag.ISS,
-        UiTag.PROBE,
-        UiTag.SECRET,
-        UiTag.SATELLITE,
+        FilterRocket.FALCON_9,
+        FilterTag.MARS,
+        FilterTag.ISS,
+        FilterTag.PROBE,
+        FilterTag.SECRET,
+        FilterTag.SATELLITE,
+        FilterRocket.SOYUZ
     ), mapOf(
-        UiTag.ISS to listOf(UiTag.MANNED),
-        UiTag.MARS to listOf(UiTag.MANNED, UiTag.ROVER)
+        FilterTag.ISS to listOf(FilterTag.MANNED),
+        FilterTag.MARS to listOf(FilterTag.MANNED, FilterTag.ROVER)
     )
 )

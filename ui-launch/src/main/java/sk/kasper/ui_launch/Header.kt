@@ -25,7 +25,7 @@ import com.google.accompanist.imageloading.ImageLoadState
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
-import sk.kasper.ui_common.tag.UiTag
+import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.theme.section
 import sk.kasper.ui_common.ui.LaunchDateTime
@@ -155,7 +155,7 @@ private fun HeaderImage(painter: Painter) {
 fun LaunchHeaderPreview() {
     LaunchHeader(
         state = LaunchState(
-            tags = listOf(UiTag.CUBE_SAT, UiTag.PROBE, UiTag.MARS),
+            tags = listOf(FilterTag.CUBE_SAT, FilterTag.PROBE, FilterTag.MARS),
             missionName = "Meteor-M №2-1 Meteor-M №2-1 Meteor-M №2-1"
         )
     )

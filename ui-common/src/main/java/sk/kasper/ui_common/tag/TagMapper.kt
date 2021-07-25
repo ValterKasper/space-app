@@ -1,6 +1,6 @@
 package sk.kasper.ui_common.tag
 
 interface TagMapper {
-    fun toUiTag(tagId: Long): UiTag
-    fun toDomainTag(tag: UiTag): Long
+    fun toUiTag(tagId: Long): FilterTag
+    fun toDomainTag(tag: FilterTag): Long
 }

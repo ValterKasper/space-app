@@ -5,8 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.ui_common.analytics.Analytics
+import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.tag.TagMapper
-import sk.kasper.ui_common.tag.UiTag
 import sk.kasper.ui_common.utils.FormattedTimeType
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import javax.inject.Inject
@@ -18,7 +18,7 @@ data class LaunchState(
     val launchDateTime: LocalDateTime = LocalDateTime.MIN,
     val formattedTimeType: FormattedTimeType = FormattedTimeType.FULL,
     val formattedTimeVisible: Boolean = true,
-    val tags: List<UiTag> = emptyList(),
+    val tags: List<FilterTag> = emptyList(),
     val mainPhoto: String? = null,
     val mainPhotoFallback: Int = R.drawable.ic_launch_fallback_main_photo,
     val dateConfirmed: Boolean = true,

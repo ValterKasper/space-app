@@ -11,10 +11,11 @@ import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.ui_common.tag.FilterRocket
+import sk.kasper.ui_common.tag.FilterTag
+import sk.kasper.ui_common.tag.LaunchFilterItem
 import sk.kasper.ui_common.tag.TagMapper
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
-import sk.kasper.ui_timeline.filter.FilterItem
-import sk.kasper.ui_timeline.filter.FilterSelectionListener
 import javax.inject.Inject
 
 
@@ -23,15 +24,11 @@ data class TimelineState(
     val showRetryToLoadLaunches: Boolean = false,
     val clearButtonVisible: Boolean = false,
     val filterSpec: FilterSpec = FilterSpec.EMPTY_FILTER,
-    val filterItems: List<FilterItem> = emptyList(),
     val timelineItems: List<TimelineListItem> = emptyList(),
     val progressVisible: Boolean = false
 ) {
     override fun toString(): String {
-        val count = filterItems
-            .filterIsInstance<FilterItem.TagFilterItem>()
-            .count(FilterItem.TagFilterItem::selected)
-        return "TIs = ${timelineItems.size}, filterSpec = ${filterSpec}, clearButtonVisibility = ${clearButtonVisible}, progress = ${progressVisible}, selected = $count"
+        return "TIs = ${timelineItems.size}, filterSpec = ${filterSpec}, clearButtonVisibility = ${clearButtonVisible}, progress = ${progressVisible}"
     }
 }
 
@@ -53,17 +50,13 @@ open class TimelineViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
     private val tagMapper: TagMapper,
     private val rocketMapper: RocketMapper,
-) : ReducerViewModel<TimelineState, SideEffect>(TimelineState()),
-    FilterSelectionListener {
+) : ReducerViewModel<TimelineState, SideEffect>(TimelineState()) {
 
     init {
         init()
     }
 
     private fun init() = action {
-        reduce {
-            copy(filterItems = createUnselectedFilterItems())
-        }
         reloadTimelineItems(filterSpec = FilterSpec.EMPTY_FILTER)
     }
 
@@ -93,8 +86,7 @@ open class TimelineViewModel @Inject constructor(
         reduce {
             copy(
                 filterSpec = FilterSpec.EMPTY_FILTER,
-                clearButtonVisible = false,
-                filterItems = createFilterItemsFromFilterSpec(FilterSpec.EMPTY_FILTER)
+                clearButtonVisible = false
             )
         }
     }
@@ -107,74 +99,34 @@ open class TimelineViewModel @Inject constructor(
         emitSideEffect(SideEffect.NavigateTo("spaceapp://$path"))
     }
 
-    override fun onTagFilterItemChanged(tagFilterItem: FilterItem.TagFilterItem) = action {
+    fun onFilterItemChanged(filterItem: LaunchFilterItem, selected: Boolean) = action {
         val oldState = snapshot()
-        val newState = handleTagFilterItemChanged(oldState, tagFilterItem)
-        reloadTimelineItems(newState.filterSpec)
-    }
-
-    override fun onRocketFilterItemChanged(rocketFilterItem: FilterItem.RocketFilterItem) = action {
-        val oldState = snapshot()
-        val newState = handleRocketFilterItemChanged(oldState, rocketFilterItem)
-        reloadTimelineItems(newState.filterSpec)
-    }
-
-    private fun handleTagFilterItemChanged(
-        oldState: TimelineState,
-        tagFilterItem: FilterItem.TagFilterItem
-    ): TimelineState {
-        val tagTypes = if (tagFilterItem.selected) {
-            oldState.filterSpec.tagTypes.plus(tagMapper.toDomainTag(tagFilterItem.tag))
-        } else {
-            oldState.filterSpec.tagTypes.minus(tagMapper.toDomainTag(tagFilterItem.tag))
+        val filterSpec = when (filterItem) {
+            is FilterTag -> {
+                val tagTypes = if (selected) {
+                    oldState.filterSpec.tagTypes.plus(tagMapper.toDomainTag(filterItem))
+                } else {
+                    oldState.filterSpec.tagTypes.minus(tagMapper.toDomainTag(filterItem))
+                }
+                oldState.filterSpec.copy(tagTypes = tagTypes)
+            }
+            is FilterRocket -> {
+                val rocketTypes = if (selected) {
+                    oldState.filterSpec.rockets.plus(rocketMapper.toDomainRocket(filterItem))
+                } else {
+                    oldState.filterSpec.rockets.minus(rocketMapper.toDomainRocket(filterItem))
+                }
+                oldState.filterSpec.copy(rockets = rocketTypes)
+            }
+            else -> throw IllegalStateException()
         }
-
-        val filterSpec = oldState.filterSpec.copy(tagTypes = tagTypes)
-
-        return oldState.copy(
+        val newState = oldState.copy(
             filterSpec = filterSpec,
             progressVisible = true,
-            clearButtonVisible = filterSpec.filterNotEmpty(),
-            filterItems = createFilterItemsFromFilterSpec(filterSpec)
+            clearButtonVisible = filterSpec.filterNotEmpty()
         )
-    }
 
-    private fun handleRocketFilterItemChanged(
-        oldState: TimelineState,
-        rocketFilterItem: FilterItem.RocketFilterItem
-    ): TimelineState {
-        val rocketTypes = if (rocketFilterItem.selected) {
-            oldState.filterSpec.rockets.plus(rocketFilterItem.rocketId)
-        } else {
-            oldState.filterSpec.rockets.minus(rocketFilterItem.rocketId)
-        }
-
-        val filterSpec = oldState.filterSpec.copy(rockets = rocketTypes)
-
-        return oldState.copy(
-            filterSpec = filterSpec,
-            progressVisible = true,
-            clearButtonVisible = filterSpec.filterNotEmpty(),
-            filterItems = createFilterItemsFromFilterSpec(filterSpec)
-        )
-    }
-
-    private fun createFilterItemsFromFilterSpec(actualFilterSpec: FilterSpec): List<FilterItem> {
-        return emptyList<FilterItem>()
-            .plus(FilterItem.HeaderFilterItem(R.string.title_tags))
-            .plus(FilterSpec.ALL_TAGS.map {
-                FilterItem.TagFilterItem(
-                    tagMapper.toUiTag(it),
-                    actualFilterSpec.tagTypes.contains(it)
-                )
-            })
-            .plus(FilterItem.HeaderFilterItem(R.string.title_rockets))
-            .plus(FilterSpec.ALL_ROCKETS.map {
-                FilterItem.RocketFilterItem(
-                    it,
-                    actualFilterSpec.rockets.contains(it)
-                )
-            })
+        reloadTimelineItems(newState.filterSpec)
     }
 
     private suspend fun loadTimeline(filterSpec: FilterSpec): List<Launch> {
@@ -256,20 +208,6 @@ open class TimelineViewModel @Inject constructor(
                 progressVisible = false
             )
         }
-    }
-
-    private fun createUnselectedFilterTagItems() =
-        FilterSpec.ALL_TAGS.map { FilterItem.TagFilterItem(tagMapper.toUiTag(it), false) }
-
-    private fun createUnselectedFilterRocketItems() =
-        FilterSpec.ALL_ROCKETS.map { FilterItem.RocketFilterItem(it, false) }
-
-    private fun createUnselectedFilterItems(): List<FilterItem> {
-        return emptyList<FilterItem>()
-            .plus(FilterItem.HeaderFilterItem(R.string.title_tags))
-            .plus(createUnselectedFilterTagItems())
-            .plus(FilterItem.HeaderFilterItem(R.string.title_rockets))
-            .plus(createUnselectedFilterRocketItems())
     }
 
 }

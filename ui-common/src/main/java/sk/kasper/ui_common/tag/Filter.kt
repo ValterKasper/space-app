@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import sk.kasper.ui_common.R
 
 
-interface Tag {
+interface FilterItem {
     @get:StringRes
     val label: Int
 
@@ -36,73 +36,79 @@ interface Tag {
     val color: Int
 }
 
-data class FilterDefinition(val topTags: List<Tag>, val extensionTags: Map<Tag, List<Tag>>)
+data class FilterDefinition(
+    val topFilterItems: List<FilterItem>,
+    val extensionFilterItems: Map<FilterItem, List<FilterItem>>
+)
 
 private data class FilterState(
-    val beforeTags: List<Tag>,
-    val beforeTagsVisible: Boolean = true,
-    val selectedTags: List<Tag> = emptyList(),
-    val selectedTagsVisible: Boolean = false,
-    val afterTags: List<Tag> = emptyList(),
-    val afterTagsVisible: Boolean = false,
-    val extensionTags: List<Tag> = emptyList(),
-    val extensionTagsVisible: Boolean = false,
+    val beforeFilterItems: List<FilterItem>,
+    val beforeFilterItemsVisible: Boolean = true,
+    val selectedFilterItems: List<FilterItem> = emptyList(),
+    val selectedFilterItemsVisible: Boolean = false,
+    val afterFilterItems: List<FilterItem> = emptyList(),
+    val afterFilterItemsVisible: Boolean = false,
+    val extensionFilterItems: List<FilterItem> = emptyList(),
+    val extensionFilterItemsVisible: Boolean = false,
     val clearVisible: Boolean = false
 )
 
 @Composable
 fun Filter(
-    onTagSelected: (Tag, Boolean) -> Unit = { _, _ -> },
+    onItemSelected: (FilterItem, Boolean) -> Unit = { _, _ -> },
     onClearAll: () -> Unit = {},
     filterDefinition: FilterDefinition
 ) {
     var filterState by remember {
-        mutableStateOf(FilterState(filterDefinition.topTags))
+        mutableStateOf(FilterState(filterDefinition.topFilterItems))
     }
 
     FilterRow(state = filterState, onClearAllClick = {
         onClearAll()
-        filterState = FilterState(filterDefinition.topTags)
-    }, onTagSelected = { tag ->
-        val index = filterDefinition.topTags.indexOf(tag)
+        filterState = FilterState(filterDefinition.topFilterItems)
+    }, onItemSelected = { item ->
+        val index = filterDefinition.topFilterItems.indexOf(item)
 
-        val isExtensionTag = index == -1
-        if (isExtensionTag) {
-            filterState = if (filterState.selectedTags.contains(tag)) {
-                val selectedTags = filterState.selectedTags - tag
-                val selectedTopLevelTag = selectedTags.first()
+        val isExtensionFilterItem = index == -1
+        if (isExtensionFilterItem) {
+            filterState = if (filterState.selectedFilterItems.contains(item)) {
+                val selectedFilterItems = filterState.selectedFilterItems - item
+                val selectedTopLevelTFilterItems = selectedFilterItems.first()
 
-                onTagSelected(tag, false)
+                onItemSelected(item, false)
                 filterState.copy(
-                    extensionTags = filterDefinition.extensionTags.getValue(selectedTopLevelTag),
-                    selectedTags = selectedTags
+                    extensionFilterItems = filterDefinition.extensionFilterItems.getValue(
+                        selectedTopLevelTFilterItems
+                    ),
+                    selectedFilterItems = selectedFilterItems
                 )
             } else {
-                onTagSelected(tag, true)
+                onItemSelected(item, true)
                 filterState.copy(
-                    extensionTags = emptyList(),
-                    selectedTags = filterState.selectedTags + listOf(tag)
+                    extensionFilterItems = emptyList(),
+                    selectedFilterItems = filterState.selectedFilterItems + listOf(item)
                 )
             }
         } else {
-            filterState = if (filterState.selectedTags.contains(tag)) {
+            filterState = if (filterState.selectedFilterItems.contains(item)) {
                 onClearAll()
-                FilterState(filterDefinition.topTags)
+                FilterState(filterDefinition.topFilterItems)
             } else {
-                onTagSelected(tag, true)
+                onItemSelected(item, true)
                 FilterState(
                     clearVisible = true,
-                    beforeTags = filterDefinition.topTags.subList(0, index),
-                    beforeTagsVisible = true,
-                    selectedTags = listOf(tag),
-                    selectedTagsVisible = true,
-                    afterTags = filterDefinition.topTags.subList(
+                    beforeFilterItems = filterDefinition.topFilterItems.subList(0, index),
+                    beforeFilterItemsVisible = true,
+                    selectedFilterItems = listOf(item),
+                    selectedFilterItemsVisible = true,
+                    afterFilterItems = filterDefinition.topFilterItems.subList(
                         index + 1,
-                        filterDefinition.topTags.size
+                        filterDefinition.topFilterItems.size
                     ),
-                    afterTagsVisible = true,
-                    extensionTags = filterDefinition.extensionTags[tag] ?: emptyList(),
-                    extensionTagsVisible = true,
+                    afterFilterItemsVisible = true,
+                    extensionFilterItems = filterDefinition.extensionFilterItems[item]
+                        ?: emptyList(),
+                    extensionFilterItemsVisible = true,
                 )
 
             }
@@ -115,7 +121,7 @@ fun Filter(
 private fun FilterRow(
     state: FilterState,
     onClearAllClick: () -> Unit = { },
-    onTagSelected: (Tag) -> Unit = { _ -> }
+    onItemSelected: (FilterItem) -> Unit = { _ -> }
 ) {
     Surface {
         val s by remember {
@@ -144,9 +150,9 @@ private fun FilterRow(
                 FilterClearButton(onClearAllClick)
             }
 
-            state.beforeTags.forEach { name ->
+            state.beforeFilterItems.forEach { name ->
                 AnimatedVisibility(
-                    state.beforeTagsVisible && !exitTransitionEnded,
+                    state.beforeFilterItemsVisible && !exitTransitionEnded,
                     initiallyVisible = true
                 ) {
                     Box(
@@ -154,42 +160,42 @@ private fun FilterRow(
                             .alpha(exitAlpha)
                             .padding(top = exitPaddingTop),
                     ) {
-                        FilterTag(name,
+                        FilterItemComposable(name,
                             selected = false,
-                            onTagSelected = { tag, _ -> onTagSelected(tag) })
+                            onItemSelected = { item, _ -> onItemSelected(item) })
                     }
                 }
             }
 
-            if (state.selectedTagsVisible) {
-                state.selectedTags.forEach { name ->
-                    FilterTag(
+            if (state.selectedFilterItemsVisible) {
+                state.selectedFilterItems.forEach { name ->
+                    FilterItemComposable(
                         name,
                         selected = state.clearVisible,
-                        onTagSelected = { tag, _ -> onTagSelected(tag) })
+                        onItemSelected = { item, _ -> onItemSelected(item) })
                 }
             }
 
-            state.afterTags.forEach { name ->
-                AnimatedVisibility(state.afterTagsVisible && !exitTransitionEnded) {
+            state.afterFilterItems.forEach { name ->
+                AnimatedVisibility(state.afterFilterItemsVisible && !exitTransitionEnded) {
                     Box(
                         modifier = Modifier
                             .alpha(exitAlpha)
                             .padding(top = exitPaddingTop)
                     ) {
-                        FilterTag(name,
+                        FilterItemComposable(name,
                             selected = false,
-                            onTagSelected = { tag, _ -> onTagSelected(tag) })
+                            onItemSelected = { item, _ -> onItemSelected(item) })
                     }
                 }
             }
 
-            if (state.extensionTagsVisible) {
-                state.extensionTags.forEach { name ->
-                    FilterTag(
+            if (state.extensionFilterItemsVisible) {
+                state.extensionFilterItems.forEach { name ->
+                    FilterItemComposable(
                         name,
                         selected = false,
-                        onTagSelected = { tag, _ -> onTagSelected(tag) })
+                        onItemSelected = { item, _ -> onItemSelected(item) })
                 }
             }
         }
