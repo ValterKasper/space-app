@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import sk.kasper.ui_common.theme.SourceSansPro
 import sk.kasper.ui_common.theme.SpaceTheme
+import java.util.*
 
 @Composable
 fun <T : FilterItem> FilterItemComposable(
@@ -44,15 +45,14 @@ fun <T : FilterItem> FilterItemComposable(
             indication = null
         )
     Text(
-        stringResource(filterItem.label),
+        stringResource(filterItem.label).capitalize(Locale.getDefault()),
         style = MaterialTheme.typography.body2.copy(
-//            fontWeight = FontWeight.SemiBold,
             fontFamily = SourceSansPro
         ),
         color = lerp(color, MaterialTheme.colors.onSurface, 0.55f),
         modifier = Modifier
             .then(toggleableModifier)
-            .height(36.dp)
+            .height(32.dp)
             .padding(3.dp)
             .border(
                 2.dp,
@@ -61,7 +61,7 @@ fun <T : FilterItem> FilterItemComposable(
             )
             .clip(shape = shape)
             .background(color = color.copy(alpha = alpha))
-            .padding(start = 16.dp, end = 16.dp, top = 4.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 2.dp)
     )
 }
 

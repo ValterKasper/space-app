@@ -7,10 +7,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.Icon
@@ -21,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -123,7 +121,15 @@ private fun <TAG : FilterItem> FilterRow(
     onClearAllClick: () -> Unit = { },
     onItemSelected: (TAG) -> Unit = { _ -> }
 ) {
-    Surface {
+    Box {
+        Surface(
+            elevation = 4.dp,
+            modifier = Modifier
+                .background(Color.Green)
+                .fillMaxWidth()
+                .height(48.dp)
+        ) { }
+
         val s by remember {
             mutableStateOf(ScrollState(0))
         }
@@ -206,7 +212,7 @@ private fun <TAG : FilterItem> FilterRow(
 private fun FilterClearButton(onClearAllClick: () -> Unit) {
     Box(modifier = Modifier
         .semantics { contentDescription = "clear button" }
-        .size(36.dp)
+        .size(32.dp)
         .padding(2.dp)
         .border(
             2.dp,
