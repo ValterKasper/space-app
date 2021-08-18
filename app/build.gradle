@@ -27,6 +27,7 @@ android {
             }
         }
     }
+
     compileSdkVersion buildConfig.compileSdk
     defaultConfig {
         applicationId "sk.kasper.space"
