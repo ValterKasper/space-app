@@ -5,8 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Test
 import org.junit.runner.RunWith
 import sk.kasper.space.robot.droid.LaunchDroid
-import sk.kasper.space.robot.launchDetail
-import sk.kasper.space.robot.timeline
+/*
 
 @RunWith(AndroidJUnit4::class)
 class TimelineTest : BaseMainActivityTest() {
@@ -38,3 +37,4 @@ class TimelineTest : BaseMainActivityTest() {
     }
 
 }
+*/

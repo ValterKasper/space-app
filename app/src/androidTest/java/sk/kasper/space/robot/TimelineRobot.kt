@@ -12,6 +12,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
 import sk.kasper.space.R
+/*
 
 fun timeline(func: TimelineRobot.() -> Unit) = TimelineRobot().apply { func() }
 
@@ -67,4 +68,4 @@ class TimelineRobot {
                 .check(doesNotExist())
     }
 
-}
+}*/

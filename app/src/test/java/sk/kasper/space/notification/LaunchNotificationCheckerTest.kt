@@ -23,7 +23,7 @@ class LaunchNotificationCheckerTest {
 
     companion object {
         val CURRENT_DATE_TIME: LocalDateTime = LocalDateTime.of(2001, 4, 30, 10, 0)
-        const val LAUNCH_ID = 1L
+        const val LAUNCH_ID = "id"
     }
 
     private lateinit var checkerUnderTest: LaunchNotificationCheckerUnderTest
@@ -61,7 +61,10 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(
+            ArgumentMatchers.anyString(),
+            any()
+        )
     }
 
     @Test
@@ -72,7 +75,10 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(
+            ArgumentMatchers.anyString(),
+            any()
+        )
     }
 
     @Test
@@ -83,7 +89,10 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(
+            ArgumentMatchers.anyString(),
+            any()
+        )
     }
 
     @Test
@@ -94,7 +103,10 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(
+            ArgumentMatchers.anyString(),
+            any()
+        )
     }
 
     @Test
@@ -105,7 +117,10 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(ArgumentMatchers.anyLong(), any())
+        verify(workScheduler, never()).scheduleLaunchNotification(
+            ArgumentMatchers.anyString(),
+            any()
+        )
     }
 
     private fun createLaunchAtTime(launchDateTime: LocalDateTime, accurateDate: Boolean = true, accurateTime: Boolean = true) = createLaunch(id = LAUNCH_ID, launchDateTime = launchDateTime, accurateDate = accurateDate, accurateTime = accurateTime)

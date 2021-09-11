@@ -1,11 +1,19 @@
 package sk.kasper.space.notification.showLaunchNotificationJob
 
+import com.nhaarman.mockitokotlin2.*
+import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
+import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
+import sk.kasper.domain.utils.createLaunch
 import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.ui_common.settings.SettingsManager
 
@@ -76,12 +84,12 @@ class ShowLaunchNotificationWorkControllerTest {
     }
 
     private suspend fun onStartJob() {
-        controller.doWork(10L)
+        controller.doWork("10L")
     }
 
     private fun verifyShowNotification(launchDateTime: LocalDateTime) {
         verify(notificationsHelper).showLaunchNotification(check {
-            assertThat(it.id, `is`(10L))
+            assertThat(it.id, `is`("10L"))
             assertThat(it.launchDateTime, `is`(launchDateTime))
         })
     }
@@ -92,9 +100,9 @@ class ShowLaunchNotificationWorkControllerTest {
 
     private fun mockGetLaunchResponse(launchDateTime: LocalDateTime) = runBlocking {
         whenever(getLaunch.getLaunch(any())).thenReturn(createLaunch(
-                id = 10L,
-                launchName = "Name",
-                launchDateTime = launchDateTime
+            id = "id",
+            launchName = "Name",
+            launchDateTime = launchDateTime
         ))
     }
 

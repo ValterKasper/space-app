@@ -88,7 +88,7 @@ abstract class LaunchDao {
     abstract fun getOrbit(launchId: String): String?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertAll(vararg launches: LaunchEntity): List<Long>
+    abstract fun insertAll(vararg launches: LaunchEntity)
 
     @Query("DELETE FROM launch")
     abstract fun clear()

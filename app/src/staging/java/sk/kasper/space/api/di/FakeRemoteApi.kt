@@ -7,6 +7,7 @@ import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import sk.kasper.space.BuildConfig
+import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.api.entity.RemoteLaunchesResponse
 import sk.kasper.space.utils.readFileFromAssets
 import sk.kasper.space.utils.toLocalDateTime

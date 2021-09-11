@@ -19,10 +19,10 @@ class FilterKtTest {
     ) :
         FilterItem {
         TAG_A(R.string.tag_iss, "ISS"),
-        TAG_B(R.string.tag_mars, "mars"),
-        TAG_WITH_EXT(R.string.tag_manned, "manned"),
-        EXT_TAG_X(R.string.tag_secret, "secret"),
-        EXT_TAG_Y(R.string.tag_rover, "rover"),
+        TAG_B(R.string.tag_mars, "Mars"),
+        TAG_WITH_EXT(R.string.tag_manned, "Manned"),
+        EXT_TAG_X(R.string.tag_secret, "Secret"),
+        EXT_TAG_Y(R.string.tag_rover, "Rover"),
     }
 
     private val filterDefinition = FilterDefinition(

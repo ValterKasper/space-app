@@ -31,7 +31,14 @@ class LaunchRepositoryTest {
 
     @Test
     fun getLaunches_returnLaunchesFromLaunchDao() = runBlocking {
-        val launches = listOf(LaunchDetailEntity(1L, LOCAL_DATE_TIME_NOW.plusDays(7).toTimeStamp(), "R1", mainPhotoUrl = null))
+        val launches = listOf(
+            LaunchDetailEntity(
+                "id",
+                LOCAL_DATE_TIME_NOW.plusDays(7).toTimeStamp(),
+                "R1",
+                mainPhotoUrl = null
+            )
+        )
         returnLaunchesFromDao(launches)
 
         val repoLaunches = repo.getLaunches()

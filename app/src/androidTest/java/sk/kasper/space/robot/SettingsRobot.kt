@@ -12,6 +12,7 @@ import junit.framework.Assert.assertEquals
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.Matchers
 import sk.kasper.space.R
+/*
 
 fun settings(func: SettingsRobot.() -> Unit) = SettingsRobot().apply { func() }
 
@@ -59,4 +60,4 @@ class SettingsRobot {
                 .perform(ViewActions.click())
     }
 
-}
+}*/

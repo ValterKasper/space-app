@@ -1,17 +1,8 @@
 package sk.kasper.space.launchdetail.section
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import sk.kasper.domain.model.Orbit
-import sk.kasper.domain.usecase.launchdetail.GetOrbit
-import sk.kasper.ui_launch.section.OrbitViewModel
-
-@RunWith(MockitoJUnitRunner::class)
+//@RunWith(MockitoJUnitRunner::class)
 class OrbitViewModelTest {
-
+/*
     private lateinit var viewModel: OrbitViewModel
 
     @Mock
@@ -63,6 +54,6 @@ class OrbitViewModelTest {
 
     private fun createViewModel() {
         viewModel = OrbitViewModel(getOrbit, 0)
-    }
+    }*/
 
 }

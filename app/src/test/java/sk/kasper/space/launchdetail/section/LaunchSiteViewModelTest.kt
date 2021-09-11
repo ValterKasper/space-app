@@ -1,15 +1,8 @@
 package sk.kasper.space.launchdetail.section
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.*
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import sk.kasper.domain.usecase.launchdetail.GetLaunchSite
-
-@RunWith(MockitoJUnitRunner::class)
+//@RunWith(MockitoJUnitRunner::class)
 open class LaunchSiteViewModelTest {
+/*
 
     companion object {
         private const val LAUNCH_ID = 100L
@@ -55,5 +48,6 @@ open class LaunchSiteViewModelTest {
     private fun SectionViewModel.assertIsVisible(visible: Boolean) {
         assertThat(this.visible, `is`(visible))
     }
+*/
 
 }

@@ -7,12 +7,12 @@ import dagger.Provides
 import sk.kasper.space.database.Database
 import javax.inject.Singleton
 
-@Module
-class MockDatabaseModule {
-
-    @Singleton
-    @Provides
-    fun providesDatabase(context: Context): Database {
-        return Room.inMemoryDatabaseBuilder(context, Database::class.java).build()
-    }
-}
+//@Module
+//class MockDatabaseModule {
+//
+//    @Singleton
+//    @Provides
+//    fun providesDatabase(context: Context): Database {
+//        return Room.inMemoryDatabaseBuilder(context, Database::class.java).build()
+//    }
+//}

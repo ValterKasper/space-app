@@ -89,15 +89,24 @@ class SyncLaunchesImplTest {
     @Test
     fun doSync_force_synchronize() = runBlocking {
         val photoId: Long = 89
-        val launchId: Long = 1
-        val remoteFalconInfo = RemoteFalconInfo(listOf(RemoteFalconCore(true, 5, 1, RemoteSpaceXLandingType("Ocean"), RemoteSpaceXLandingVehicle("RTB"))))
+        val launchId = "id"
+        val remoteFalconInfo = RemoteFalconInfo(
+            listOf(
+                RemoteFalconCore(
+                    true,
+                    5,
+                    1,
+                    RemoteSpaceXLandingType("Ocean"),
+                    RemoteSpaceXLandingVehicle("RTB")
+                )
+            )
+        )
         whenever(remoteApi.timeline()).thenReturn(RemoteLaunchesResponse(
                 0,
                 listOf(RemoteLaunch(launchId, 321, "Launch", null, null, null, null, null, null, null, true, true, LAUNCH_SITE_ID, listOf(photoId), listOf(RemoteTag(Tag.ISS)), remoteFalconInfo)),
                 listOf(RemoteLaunchSite(LAUNCH_SITE_ID, "Site", "Pad", "URL", 10.0, 12.0)),
                 listOf(RemoteRocket(1L, "", 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1, null)),
                 listOf(RemotePhoto(photoId, "ThumbnailSizeUrl", "FullSizeUrl"))))
-        whenever(launchDao.insertAll(any())).thenReturn(listOf(launchId))
 
         assertTrue(syncLaunches.doSync(true))
 
