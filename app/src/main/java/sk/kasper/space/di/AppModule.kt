@@ -104,5 +104,4 @@ class AppModule {
     @Singleton
     fun providesGoogleApiHelper(googleApiHelper: GoogleApiHelperImpl): GoogleApiHelper =
         googleApiHelper
-
 }
