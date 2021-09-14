@@ -1,12 +1,36 @@
 package sk.kasper.ui_timeline
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert
+import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Ignore
+import org.junit.Rule
+import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
+import sk.kasper.domain.model.FilterSpec
+import sk.kasper.domain.model.SuccessResponse
+import sk.kasper.domain.usecase.timeline.GetTimelineItems
+import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
+import sk.kasper.domain.utils.createLaunch
+import sk.kasper.ui_common.rocket.RocketMapper
+import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.ui_common.tag.FilterItem
+import sk.kasper.ui_common.tag.TagMapper
+import sk.kasper.ui_timeline.utils.CoroutinesMainDispatcherRule
 
 private val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
 
+
 class TimelineViewModelTest {
-/*
+
     @get:Rule
     @ExperimentalCoroutinesApi
     var coroutinesMainDispatcherRule = CoroutinesMainDispatcherRule()
@@ -121,6 +145,7 @@ class TimelineViewModelTest {
     fun error_hideProgress() {
     }
 
+/*
     @Test
     fun `should show unselected filter items when filter is empty`() {
         onViewModel(initialModelFilterSpec = FilterSpec.EMPTY_FILTER) {
@@ -134,7 +159,8 @@ class TimelineViewModelTest {
             MatcherAssert.assertThat(View.GONE, `is`(viewModel.clearButtonVisibility.get()))
         }
     }
-
+*/
+/*
     @Test
     fun `should show selected tag filter item when tag is in filter spec`() {
         onViewModel(initialModelFilterSpec = FilterSpec(tagTypes = setOf(Tag.ISS))) {
@@ -144,7 +170,7 @@ class TimelineViewModelTest {
 
             MatcherAssert.assertThat(View.VISIBLE, `is`(viewModel.clearButtonVisibility.get()))
         }
-    }
+    }*/
 
     private fun onViewModel(
         initialModelFilterSpec: FilterSpec,
@@ -157,13 +183,10 @@ class TimelineViewModelTest {
         // todo fix
         lateinit var viewModel: TimelineViewModel
 
-        @Mock
-        private lateinit var timelineFilterSpecModel: TimelineFilterSpecModel
-
         init {
             MockitoAnnotations.initMocks(this)
 
-            whenever(timelineFilterSpecModel.value).thenReturn(initialModelValue)
+//            whenever(timelineFilterSpecModel.value).thenReturn(initialModelValue)
 
             // todo fix
 //            viewModel = TimelineViewModel(timelineFilterSpecModel)
@@ -176,9 +199,9 @@ class TimelineViewModelTest {
 
             Assert.assertNotNull(list)
 
-            list?.let {
+            list.let {
                 MatcherAssert.assertThat(filterItemsSize(), `is`(list.size))
-                Assert.assertTrue(list[FilterSpec.ALL_TAGS.size + 1] is FilterItem.HeaderFilterItem)
+//                Assert.assertTrue(list[FilterSpec.ALL_TAGS.size + 1] is FilterItem.HeaderFilterItem)
                 func(list)
             }
         }
@@ -215,9 +238,14 @@ class TimelineViewModelTest {
         @Mock
         private lateinit var settingsManager: SettingsManager
 
+        @Mock
+        private lateinit var tagMapper: TagMapper
+
+        @Mock
+        private lateinit var rocketMapper: RocketMapper
+
         private lateinit var viewModel: TimelineViewModelUnderTest
 
-        private val filterModel = TimelineFilterSpecModel()
         private val launches = mutableListOf<sk.kasper.domain.model.Launch>()
         private val expectedItems = mutableListOf<ExpectedListItem>()
 
@@ -236,35 +264,54 @@ class TimelineViewModelTest {
         }
 
         suspend fun check() {
-            whenever(getTimelineItems.getTimelineItems(FilterSpec.EMPTY_FILTER)).thenReturn(launches)
+            whenever(getTimelineItems.getTimelineItems(FilterSpec.EMPTY_FILTER)).thenReturn(
+                SuccessResponse(launches)
+            )
             whenever(settingsManager.showUnconfirmedLaunches).thenReturn(showUnconfirmedLaunches)
 
             viewModel = TimelineViewModelUnderTest()
 
-            Assert.assertThat(getCurrentTimelineItems().size, `is`(expectedItems.size))
-            assertEquals(viewModel.showNoMatchingLaunches, expectingNoMatchingLaunchesVisible)
-            assertEquals(viewModel.showRetryToLoadLaunches, expectingRetryToLoadLaunchesVisible)
-            assertEquals(false, viewModel.progressVisible.value)
+            // todo use different asserts
+            Assert.assertThat(getCurrentState().timelineItems.size, `is`(expectedItems.size))
+            assertEquals(
+                expectingNoMatchingLaunchesVisible,
+                getCurrentState().showNoMatchingLaunches
+            )
+            assertEquals(
+                expectingRetryToLoadLaunchesVisible,
+                getCurrentState().showRetryToLoadLaunches
+            )
+            assertEquals(false, getCurrentState().progressVisible)
 
             expectedItems.forEachIndexed { index, expectedListItem ->
                 val actualListItem = getCurrentTimelineItems()[index]
 
                 when (expectedListItem) {
-                    is ExpectedListItem.Launch-> {
+                    is ExpectedListItem.Launch -> {
                         Assert.assertTrue(actualListItem is LaunchListItem)
                         if (actualListItem is LaunchListItem) {
-                            val message = "of launch at position $index is expected to be accurate=${expectedListItem.accurate}"
-                            assertEquals("date $message", expectedListItem.accurate, actualListItem.accurateDate)
-                            assertEquals("time $message", expectedListItem.accurate, actualListItem.accurateTime)
+                            val message =
+                                "of launch at position $index is expected to be accurate=${expectedListItem.accurate}"
+                            assertEquals(
+                                "date $message",
+                                expectedListItem.accurate,
+                                actualListItem.accurateDate
+                            )
+                            assertEquals(
+                                "time $message",
+                                expectedListItem.accurate,
+                                actualListItem.accurateTime
+                            )
                         }
                     }
                     is ExpectedListItem.Label -> {
                         Assert.assertTrue(actualListItem is LabelListItem)
                         if (actualListItem is LabelListItem) {
                             assertEquals(
-                                    "expected label ${expectedListItem.labelListItem.javaClass.simpleName} at position $index but was ${actualListItem.javaClass.simpleName}",
-                                    expectedListItem.labelListItem,
-                                    actualListItem)
+                                "expected label ${expectedListItem.labelListItem.javaClass.simpleName} at position $index but was ${actualListItem.javaClass.simpleName}",
+                                expectedListItem.labelListItem,
+                                actualListItem
+                            )
                         }
                     }
                 }
@@ -272,11 +319,23 @@ class TimelineViewModelTest {
         }
 
         infix fun Boolean.launchAt(localDateTime: LocalDateTime) {
-            launches.add(createLaunch(launchDateTime = localDateTime, accurateDate = this, accurateTime = this))
+            launches.add(
+                createLaunch(
+                    launchDateTime = localDateTime,
+                    accurateDate = this,
+                    accurateTime = this
+                )
+            )
         }
 
         infix fun LocalDateTime.isLaunchTimeOf(accurate: Boolean) {
-            launches.add(createLaunch(launchDateTime = this, accurateDate = accurate, accurateTime = accurate))
+            launches.add(
+                createLaunch(
+                    launchDateTime = this,
+                    accurateDate = accurate,
+                    accurateTime = accurate
+                )
+            )
         }
 
         infix fun String.item(accurate: Boolean) {
@@ -287,16 +346,24 @@ class TimelineViewModelTest {
             expectedItems.add(ExpectedListItem.Label(label))
         }
 
-        private fun getCurrentTimelineItems() = viewModel.timelineItems.value!!
+        private fun getCurrentTimelineItems() = viewModel.state.value.timelineItems
+
+        private fun getCurrentState() = viewModel.state.value
 
         private sealed class ExpectedListItem {
-            data class Launch(val accurate: Boolean): ExpectedListItem()
-            data class Label(val labelListItem: LabelListItem): ExpectedListItem()
+            data class Launch(val accurate: Boolean) : ExpectedListItem()
+            data class Label(val labelListItem: LabelListItem) : ExpectedListItem()
         }
 
-        private inner class TimelineViewModelUnderTest : TimelineViewModel(getTimelineItems, refreshTimelineItems, settingsManager, filterModel) {
+        private inner class TimelineViewModelUnderTest : TimelineViewModel(
+            getTimelineItems,
+            refreshTimelineItems,
+            settingsManager,
+            tagMapper,
+            rocketMapper
+        ) {
             override fun getCurrentDateTime(): LocalDateTime = LOCAL_DATE_TIME_NOW
         }
-    }*/
+    }
 
 }
