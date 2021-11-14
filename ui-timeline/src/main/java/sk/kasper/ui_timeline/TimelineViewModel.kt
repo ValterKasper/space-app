@@ -199,12 +199,12 @@ open class TimelineViewModel @Inject constructor(
     }
 
     private suspend fun reloadTimelineItems(filterSpec: FilterSpec) {
-        val list = loadTimeline(filterSpec)
+        val list = mapToTimeListItem(loadTimeline(filterSpec))
         reduce {
             copy(
                 showNoMatchingLaunches = list.isEmpty() && filterSpec.filterNotEmpty(),
                 showRetryToLoadLaunches = list.isEmpty() && !filterSpec.filterNotEmpty(),
-                timelineItems = mapToTimeListItem(list),
+                timelineItems = list,
                 progressVisible = false
             )
         }

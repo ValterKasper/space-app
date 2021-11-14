@@ -74,6 +74,10 @@ dependencies {
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler
 
+    implementation libs.kotlin.coroutines.core
+    implementation libs.kotlin.coroutines.android
+    implementation libs.kotlin.coroutines.test
+
     implementation libs.prettytime
 
     implementation libs.timber

@@ -1,7 +1,9 @@
 package sk.kasper.ui_common.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -9,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 open class ReducerViewModel<STATE, SIDE_EFFECT>(defaultState: STATE) : ViewModel() {
 
@@ -20,12 +23,26 @@ open class ReducerViewModel<STATE, SIDE_EFFECT>(defaultState: STATE) : ViewModel
     val sideEffects: SharedFlow<SIDE_EFFECT> = _sideEffects
 
     companion object {
-        private val SINGLE_THREAD = newSingleThreadContext("reducer")
+        private val SINGLE_THREAD_DISPATCHER = newSingleThreadContext("reducer")
+        private var dispatcher: CoroutineDispatcher = SINGLE_THREAD_DISPATCHER
+
+        @VisibleForTesting
+        fun setDispatcher(coroutineDispatcher: CoroutineDispatcher) {
+            dispatcher = coroutineDispatcher
+        }
+
+        @VisibleForTesting
+        fun resetDispatcher() {
+            dispatcher = SINGLE_THREAD_DISPATCHER
+        }
     }
 
     protected fun action(transform: suspend () -> Unit) {
-        viewModelScope.launch(SINGLE_THREAD) {
+        Timber.d("action - 0")
+        viewModelScope.launch(dispatcher) {
+            Timber.d("action - launch - 1")
             transform()
+            Timber.d("action - launch - 2")
         }
     }
 
@@ -34,13 +51,13 @@ open class ReducerViewModel<STATE, SIDE_EFFECT>(defaultState: STATE) : ViewModel
     }
 
     protected suspend fun reduce(reducer: STATE.() -> STATE) {
-        withContext(SINGLE_THREAD) {
+        withContext(dispatcher) {
             _state.value = _state.value.reducer()
         }
     }
 
     protected suspend fun snapshot(): STATE {
-        return withContext(SINGLE_THREAD) {
+        return withContext(dispatcher) {
             _state.value
         }
     }

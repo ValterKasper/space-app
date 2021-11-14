@@ -67,7 +67,6 @@ dependencies {
 
     implementation libs.androidx.drawerlayout
 
-    androidTestImplementation libs.dagger.hilt.android
     kaptAndroidTest libs.dagger.hilt.android
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler
@@ -82,9 +81,7 @@ dependencies {
     implementation libs.kotlin.coroutines.test
     implementation libs.kotlin.stdlib.jdk7
 
-    androidTestImplementation libs.androidx.test.espresso.core
-    androidTestImplementation libs.androidx.test.junit
     testImplementation libs.androidx.coretesting
-    testImplementation libs.junit
     testImplementation libs.mockito.kotlin
+    testImplementation libs.google.truth
 }

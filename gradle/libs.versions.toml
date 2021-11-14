@@ -1,6 +1,6 @@
 [versions]
 accompanist = '0.9.1'
-agp = '7.0.2'
+agp = '7.0.3'
 compose = '1.0.0-beta06'
 coroutines = '1.4.3'
 dagger = '2.37'
@@ -70,6 +70,7 @@ google-firebase-crashlytics = "com.google.firebase:firebase-crashlytics:17.2.2"
 google-firebase-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.3.0"
 google-gms-google-services = "com.google.gms:google-services:4.3.5"
 google-android-play-services-maps = "com.google.android.gms:play-services-maps:17.0.0"
+google-truth = "com.google.truth:truth:1.1.3"
 
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }

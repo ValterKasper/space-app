@@ -1,14 +1,10 @@
 package sk.kasper.ui_timeline
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert
-import org.junit.Assert
-import org.junit.Assert.assertEquals
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
@@ -22,21 +18,17 @@ import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
-import sk.kasper.ui_common.tag.FilterItem
 import sk.kasper.ui_common.tag.TagMapper
-import sk.kasper.ui_timeline.utils.CoroutinesMainDispatcherRule
+import sk.kasper.ui_timeline.utils.ReducerCoroutineRule
+
 
 private val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
 
-
 class TimelineViewModelTest {
 
-    @get:Rule
     @ExperimentalCoroutinesApi
-    var coroutinesMainDispatcherRule = CoroutinesMainDispatcherRule()
-
     @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+    var reducerCoroutineRule = ReducerCoroutineRule()
 
     @Test
     fun noLaunches_noItems() = timelineListTest {
@@ -82,12 +74,11 @@ class TimelineViewModelTest {
     }
 
     @Test
-    @Ignore("oprav lebo neprechadza")
     fun singleLaunchTomorrow_inaccurate_monthLabelAndOneItem() = timelineListTest {
         inaccurate launchAt LOCAL_DATE_TIME_NOW.plusHours(25)
 
         expecting item LabelListItem.Month(1)
-        expecting item launch
+        expecting item inaccurate
     }
 
     @Test
@@ -135,87 +126,8 @@ class TimelineViewModelTest {
         expecting item launch
     }
 
-    @Test
-    @Ignore("add test for progress")
-    fun loading_progressVisibleAndShowItems() {
-    }
-
-    @Test
-    @Ignore("add test for error")
-    fun error_hideProgress() {
-    }
-
-/*
-    @Test
-    fun `should show unselected filter items when filter is empty`() {
-        onViewModel(initialModelFilterSpec = FilterSpec.EMPTY_FILTER) {
-            verifyActualFilterItems { values ->
-                Assert.assertTrue(values[0] is FilterItem.HeaderFilterItem)
-                Assert.assertTrue(values[1] is FilterItem.TagFilterItem)
-                Assert.assertFalse((values[1] as FilterItem.TagFilterItem).selected)
-                Assert.assertFalse((values[FilterSpec.ALL_TAGS.size + 2] as FilterItem.RocketFilterItem).selected)
-            }
-
-            MatcherAssert.assertThat(View.GONE, `is`(viewModel.clearButtonVisibility.get()))
-        }
-    }
-*/
-/*
-    @Test
-    fun `should show selected tag filter item when tag is in filter spec`() {
-        onViewModel(initialModelFilterSpec = FilterSpec(tagTypes = setOf(Tag.ISS))) {
-            verifyActualFilterItems { values ->
-                Assert.assertTrue((values[FilterSpec.ALL_TAGS.indexOf(Tag.ISS) + 1] as FilterItem.TagFilterItem).selected)
-            }
-
-            MatcherAssert.assertThat(View.VISIBLE, `is`(viewModel.clearButtonVisibility.get()))
-        }
-    }*/
-
-    private fun onViewModel(
-        initialModelFilterSpec: FilterSpec,
-        func: TimelineFilterViewModelRobot.() -> Unit
-    ) = TimelineFilterViewModelRobot(initialModelFilterSpec).apply {
-        func()
-    }
-
-    private class TimelineFilterViewModelRobot(initialModelValue: FilterSpec) {
-        // todo fix
-        lateinit var viewModel: TimelineViewModel
-
-        init {
-            MockitoAnnotations.initMocks(this)
-
-//            whenever(timelineFilterSpecModel.value).thenReturn(initialModelValue)
-
-            // todo fix
-//            viewModel = TimelineViewModel(timelineFilterSpecModel)
-        }
-
-        fun verifyActualFilterItems(func: (List<FilterItem>) -> Unit) {
-            // todo fix
-            //val list = viewModel.filterItems.value
-            val list = emptyList<FilterItem>()
-
-            Assert.assertNotNull(list)
-
-            list.let {
-                MatcherAssert.assertThat(filterItemsSize(), `is`(list.size))
-//                Assert.assertTrue(list[FilterSpec.ALL_TAGS.size + 1] is FilterItem.HeaderFilterItem)
-                func(list)
-            }
-        }
-
-        fun filterItemsSize() = 1 + 1 + FilterSpec.ALL_ROCKETS.size + FilterSpec.ALL_TAGS.size
-
-    }
-
     private infix fun LocalDateTime.plusHours(hours: Long): LocalDateTime {
         return this.plusHours(hours)
-    }
-
-    private infix fun LocalDateTime.plusDays(days: Long): LocalDateTime {
-        return this.plusDays(days)
     }
 
     private fun timelineListTest(given: suspend TimelineListTestBuilder.() -> Unit) = runBlocking {
@@ -271,47 +183,47 @@ class TimelineViewModelTest {
 
             viewModel = TimelineViewModelUnderTest()
 
-            // todo use different asserts
-            Assert.assertThat(getCurrentState().timelineItems.size, `is`(expectedItems.size))
-            assertEquals(
-                expectingNoMatchingLaunchesVisible,
-                getCurrentState().showNoMatchingLaunches
-            )
-            assertEquals(
-                expectingRetryToLoadLaunchesVisible,
-                getCurrentState().showRetryToLoadLaunches
-            )
-            assertEquals(false, getCurrentState().progressVisible)
+            assertThat(expectedItems.size)
+                .isEqualTo(getCurrentState().timelineItems.size)
+
+            assertThat(getCurrentState().showNoMatchingLaunches)
+                .isEqualTo(expectingNoMatchingLaunchesVisible)
+
+            assertThat(getCurrentState().showRetryToLoadLaunches)
+                .isEqualTo(expectingRetryToLoadLaunchesVisible)
+
+            assertThat(getCurrentState().progressVisible)
+                .isEqualTo(false)
 
             expectedItems.forEachIndexed { index, expectedListItem ->
                 val actualListItem = getCurrentTimelineItems()[index]
 
                 when (expectedListItem) {
                     is ExpectedListItem.Launch -> {
-                        Assert.assertTrue(actualListItem is LaunchListItem)
+                        assertThat(actualListItem is LaunchListItem)
+                            .isTrue()
+
                         if (actualListItem is LaunchListItem) {
                             val message =
                                 "of launch at position $index is expected to be accurate=${expectedListItem.accurate}"
-                            assertEquals(
-                                "date $message",
-                                expectedListItem.accurate,
-                                actualListItem.accurateDate
-                            )
-                            assertEquals(
-                                "time $message",
-                                expectedListItem.accurate,
-                                actualListItem.accurateTime
-                            )
+
+                            assertWithMessage("date $message")
+                                .that(actualListItem.accurateDate)
+                                .isEqualTo(expectedListItem.accurate)
+
+                            assertWithMessage("time $message")
+                                .that(actualListItem.accurateTime)
+                                .isEqualTo(expectedListItem.accurate)
                         }
                     }
                     is ExpectedListItem.Label -> {
-                        Assert.assertTrue(actualListItem is LabelListItem)
+                        assertThat(actualListItem is LabelListItem)
+                            .isTrue()
+
                         if (actualListItem is LabelListItem) {
-                            assertEquals(
-                                "expected label ${expectedListItem.labelListItem.javaClass.simpleName} at position $index but was ${actualListItem.javaClass.simpleName}",
-                                expectedListItem.labelListItem,
-                                actualListItem
-                            )
+                            assertWithMessage("expected label ${expectedListItem.labelListItem.javaClass.simpleName} at position $index but was ${actualListItem.javaClass.simpleName}")
+                                .that(actualListItem)
+                                .isEqualTo(expectedListItem.labelListItem)
                         }
                     }
                 }
