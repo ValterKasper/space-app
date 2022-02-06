@@ -2,11 +2,15 @@ package sk.kasper.space.mapper
 
 import sk.kasper.domain.model.Rocket
 import sk.kasper.ui_common.R
+import sk.kasper.ui_common.rocket.MapFilterRocketToDomainRocket
+import sk.kasper.ui_common.rocket.MapRocketToDrawableRes
+import sk.kasper.ui_common.rocket.MapRocketToStringRes
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.tag.FilterRocket
 import javax.inject.Inject
 
-class RocketMapperImpl @Inject constructor() : RocketMapper {
+class RocketMapperImpl @Inject constructor() : RocketMapper, MapFilterRocketToDomainRocket, MapRocketToDrawableRes,
+    MapRocketToStringRes {
 
     override fun toDrawableRes(rocketId: Long?): Int {
         return when (rocketId) {
@@ -46,6 +50,25 @@ class RocketMapperImpl @Inject constructor() : RocketMapper {
             FilterRocket.FALCON_HEAVY -> Rocket.FALCON_HEAVY
             FilterRocket.ATLAS_5 -> Rocket.ATLAS_5
         }
+    }
+
+    override fun map(rocketId: Long?): Int {
+        return toDrawableRes(rocketId)
+    }
+
+    override fun invoke(rocketId: Long?): Int {
+        return toStringRes(rocketId)
+    }
+
+    override fun invoke(rocket: FilterRocket): Long {
+        return toDomainRocket(rocket)
+    }
+
+}
+
+object X : MapFilterRocketToDomainRocket {
+    override fun invoke(rocket: FilterRocket): Long {
+        TODO("Not yet implemented")
     }
 
 }

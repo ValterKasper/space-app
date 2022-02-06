@@ -18,7 +18,8 @@ import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
-import sk.kasper.ui_common.tag.TagMapper
+import sk.kasper.ui_common.tag.MapToDomainTag
+import sk.kasper.ui_common.tag.MapToUiTag
 import sk.kasper.ui_timeline.utils.ReducerCoroutineRule
 
 
@@ -151,7 +152,10 @@ class TimelineViewModelTest {
         private lateinit var settingsManager: SettingsManager
 
         @Mock
-        private lateinit var tagMapper: TagMapper
+        private lateinit var mapToDomainTag: MapToDomainTag
+
+        @Mock
+        private lateinit var mapToUiTag: MapToUiTag
 
         @Mock
         private lateinit var rocketMapper: RocketMapper
@@ -271,7 +275,8 @@ class TimelineViewModelTest {
             getTimelineItems,
             refreshTimelineItems,
             settingsManager,
-            tagMapper,
+            mapToDomainTag,
+            mapToUiTag,
             rocketMapper
         ) {
             override fun getCurrentDateTime(): LocalDateTime = LOCAL_DATE_TIME_NOW

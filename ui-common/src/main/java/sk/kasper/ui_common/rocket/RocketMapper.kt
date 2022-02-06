@@ -15,3 +15,24 @@ interface RocketMapper {
     fun toDomainRocket(rocket: FilterRocket): Long
 
 }
+
+fun interface MapRocketToDrawableRes {
+
+    @DrawableRes
+    fun map(rocketId: Long?): Int
+
+}
+
+fun interface MapRocketToStringRes {
+
+    @StringRes
+    operator fun invoke(rocketId: Long?): Int
+
+}
+
+fun interface MapFilterRocketToDomainRocket {
+
+    @StringRes
+    operator fun invoke(rocket: FilterRocket): Long
+
+}

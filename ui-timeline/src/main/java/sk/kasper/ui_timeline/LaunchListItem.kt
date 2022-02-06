@@ -5,7 +5,7 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.Launch
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.tag.FilterTag
-import sk.kasper.ui_common.tag.TagMapper
+import sk.kasper.ui_common.tag.MapToUiTag
 
 data class LaunchListItem(
     val id: String,
@@ -20,7 +20,7 @@ data class LaunchListItem(
 
     companion object {
 
-        fun fromLaunch(launch: Launch, tagMapper: TagMapper, rocketMapper: RocketMapper) =
+        fun fromLaunch(launch: Launch, mapToUiTag: MapToUiTag, rocketMapper: RocketMapper) =
             LaunchListItem(
                 launch.id,
                 launch.launchName,
@@ -29,7 +29,7 @@ data class LaunchListItem(
                 launch.rocketName,
                 launch.accurateDate,
                 launch.accurateTime,
-                launch.tags.map { tagMapper.toUiTag(it.type) })
+                launch.tags.map { mapToUiTag(it.type) })
     }
 
     override fun getType() = TimelineListItem.LAUNCH_TYPE

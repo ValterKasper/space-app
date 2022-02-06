@@ -6,7 +6,7 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.launchdetail.GetLaunch
 import sk.kasper.ui_common.analytics.Analytics
 import sk.kasper.ui_common.tag.FilterTag
-import sk.kasper.ui_common.tag.TagMapper
+import sk.kasper.ui_common.tag.MapToUiTag
 import sk.kasper.ui_common.utils.FormattedTimeType
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import javax.inject.Inject
@@ -32,7 +32,7 @@ data class ShowVideo(val url: String) : LaunchSideEffect()
 @HiltViewModel
 class LaunchViewModel @Inject constructor(
     private val getLaunch: GetLaunch,
-    private val tagMapper: TagMapper,
+    private val toUiTag: MapToUiTag,
     private val handle: SavedStateHandle,
 ) : ReducerViewModel<LaunchState, LaunchSideEffect>(LaunchState()) {
 
@@ -80,7 +80,7 @@ class LaunchViewModel @Inject constructor(
                 launchDateTime = launch.launchDateTime,
                 description = launch.description ?: "",
                 mainPhoto = launch.mainPhotoUrl,
-                tags = launch.tags.map { tagMapper.toUiTag(it.type) },
+                tags = launch.tags.map { toUiTag(it.type) },
                 videoUrl = launch.videoUrl ?: "",
                 showVideoUrl = launch.videoUrl != null,
                 dateConfirmed = dateConfirmed,

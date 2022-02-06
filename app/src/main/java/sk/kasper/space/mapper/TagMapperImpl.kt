@@ -2,13 +2,14 @@ package sk.kasper.space.mapper
 
 import sk.kasper.domain.model.Tag
 import sk.kasper.ui_common.tag.FilterTag
-import sk.kasper.ui_common.tag.TagMapper
+import sk.kasper.ui_common.tag.MapToDomainTag
+import sk.kasper.ui_common.tag.MapToUiTag
 import javax.inject.Inject
 
 
-class TagMapperImpl @Inject constructor() : TagMapper {
+class TagMapperImpl @Inject constructor() : MapToUiTag, MapToDomainTag {
 
-    override fun toUiTag(tagId: Long): FilterTag {
+    override fun invoke(tagId: Long): FilterTag {
         return when (tagId) {
             Tag.ISS -> FilterTag.ISS
             Tag.MANNED -> FilterTag.MANNED
@@ -23,7 +24,7 @@ class TagMapperImpl @Inject constructor() : TagMapper {
         }
     }
 
-    override fun toDomainTag(tag: FilterTag): Long {
+    override fun invoke(tag: FilterTag): Long {
         return when (tag) {
             FilterTag.ISS -> Tag.ISS
             FilterTag.MANNED -> Tag.MANNED

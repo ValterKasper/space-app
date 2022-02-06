@@ -11,10 +11,7 @@ import sk.kasper.domain.usecase.timeline.GetTimelineItems
 import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
-import sk.kasper.ui_common.tag.FilterRocket
-import sk.kasper.ui_common.tag.FilterTag
-import sk.kasper.ui_common.tag.LaunchFilterItem
-import sk.kasper.ui_common.tag.TagMapper
+import sk.kasper.ui_common.tag.*
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import javax.inject.Inject
 
@@ -48,7 +45,8 @@ open class TimelineViewModel @Inject constructor(
     private val getTimelineItems: GetTimelineItems,
     private val refreshTimelineItems: RefreshTimelineItems,
     private val settingsManager: SettingsManager,
-    private val tagMapper: TagMapper,
+    private val mapToDomainTag: MapToDomainTag,
+    private val mapToUiTag: MapToUiTag,
     private val rocketMapper: RocketMapper,
 ) : ReducerViewModel<TimelineState, SideEffect>(TimelineState()) {
 
@@ -104,9 +102,9 @@ open class TimelineViewModel @Inject constructor(
         val filterSpec = when (filterItem) {
             is FilterTag -> {
                 val tagTypes = if (selected) {
-                    oldState.filterSpec.tagTypes.plus(tagMapper.toDomainTag(filterItem))
+                    oldState.filterSpec.tagTypes.plus(mapToDomainTag(filterItem))
                 } else {
-                    oldState.filterSpec.tagTypes.minus(tagMapper.toDomainTag(filterItem))
+                    oldState.filterSpec.tagTypes.minus(mapToDomainTag(filterItem))
                 }
                 oldState.filterSpec.copy(tagTypes = tagTypes)
             }
@@ -154,7 +152,7 @@ open class TimelineViewModel @Inject constructor(
         list
             .filter { showUnconfirmedLaunches || it.accurateDate }
             .filter { it.launchDateTime.isAfter(todayStartDateTime) }
-            .map { LaunchListItem.fromLaunch(it, tagMapper, rocketMapper) }
+            .map { LaunchListItem.fromLaunch(it, mapToUiTag, rocketMapper) }
             .groupBy {
                 when {
                     !it.accurateDate -> LabelListItem.Month(it.launchDateTime.monthValue)

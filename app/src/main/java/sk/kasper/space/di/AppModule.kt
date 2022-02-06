@@ -21,7 +21,8 @@ import sk.kasper.space.sync.SyncLaunchesImpl
 import sk.kasper.space.utils.GoogleApiHelperImpl
 import sk.kasper.space.work.AppWorkerFactory
 import sk.kasper.ui_common.rocket.RocketMapper
-import sk.kasper.ui_common.tag.TagMapper
+import sk.kasper.ui_common.tag.MapToDomainTag
+import sk.kasper.ui_common.tag.MapToUiTag
 import sk.kasper.ui_launch.usecase.GoogleApiHelper
 import javax.inject.Named
 import javax.inject.Singleton
@@ -81,7 +82,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesTagMapper(mapper: TagMapperImpl): TagMapper = mapper
+    fun providesMapToUiTag(mapper: TagMapperImpl): MapToUiTag = mapper
+
+    @Provides
+    @Singleton
+    fun providesMapToDomainTag(mapper: TagMapperImpl): MapToDomainTag = mapper
 
     @Provides
     @Singleton
