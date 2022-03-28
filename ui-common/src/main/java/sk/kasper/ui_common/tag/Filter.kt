@@ -159,7 +159,6 @@ private fun <TAG : FilterItem> FilterRow(
             state.beforeFilterItems.forEach { name ->
                 AnimatedVisibility(
                     state.beforeFilterItemsVisible && !exitTransitionEnded,
-                    initiallyVisible = true
                 ) {
                     Box(
                         modifier = Modifier

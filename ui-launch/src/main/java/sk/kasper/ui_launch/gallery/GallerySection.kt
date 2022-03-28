@@ -17,9 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.toPaddingValues
@@ -52,7 +52,8 @@ fun GallerySection(viewModel: GalleryViewModel) {
                         viewModel.onPhotoClicked(item)
                     }) {
                     Image(
-                        painter = rememberCoilPainter(item.thumbnailUrl),
+                        // TODO D: use item.thumbnailUrl
+                        painter = painterResource(id = R.drawable.ariane_5),
                         contentDescription = item.description,
                         contentScale = ContentScale.FillHeight,
                         modifier = Modifier.height(dimensionResource(id = R.dimen.launch_gallery_item_height))

@@ -20,8 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.rememberCoilPainter
-import com.google.accompanist.imageloading.ImageLoadState
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
@@ -50,19 +48,10 @@ private fun LaunchHeader(
     onShowVideoClick: () -> Unit = {}
 ) {
     SpaceTheme(isDarkTheme = true) {
-        val painter = rememberCoilPainter(
-            request = state.mainPhoto,
-            previewPlaceholder = state.mainPhotoFallback,
-            fadeIn = true
-        )
-
         Surface(color = MaterialTheme.colors.background) {
             Box {
-                HeaderImage(painter)
-                // find better way solution to show fallback photo
-                if (painter.loadState is ImageLoadState.Error) {
-                    HeaderImage(painterResource(id = state.mainPhotoFallback))
-                }
+                // TODO D: use state.mainPhoto
+                HeaderImage(painterResource(id = state.mainPhotoFallback))
                 Column(
                     modifier = Modifier
                         .align(Alignment.BottomStart)

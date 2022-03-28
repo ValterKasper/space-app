@@ -89,11 +89,11 @@ class LaunchFragment : BaseFragment() {
                                     Column(
                                         modifier = Modifier
                                             .padding(bottom = dimensionResource(id = R.dimen.padding_normal))
-                                            .navigationBarsPadding(left = false, right = false)
+                                            .navigationBarsPadding(start = false, end = false)
                                     ) {
                                         HeaderSection(
-                                            launchViewModel,
-                                            { findNavController().navigateUp() })
+                                            launchViewModel
+                                        ) { findNavController().navigateUp() }
                                         GallerySection(galleryViewModel)
                                         OrbitSection(orbitViewModel)
                                         RocketSection(rocketSectionViewModel)

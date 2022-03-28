@@ -1,20 +1,20 @@
 buildscript {
     ext.buildConfig = [
-        'compileSdk': 30,
+        'compileSdk': 32,
         'minSdk'    : 23,
-        'targetSdk' : 30,
+        'targetSdk' : 32,
     ]
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath libs.android.gradle.plugin
-        classpath libs.androidx.navigation.args.plugin
+        classpath libs.android.gradle
+        classpath libs.androidx.navigation.args
         classpath libs.google.firebase.crashlyticsGradle
         classpath libs.google.gms.google.services
-        classpath libs.kotlin.gradle.plugin
-        classpath libs.dagger.hilt.gradle.plugin
+        classpath libs.kotlin.gradle
+        classpath libs.dagger.hilt.gradle
     }
 }
 

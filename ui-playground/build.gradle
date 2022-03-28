@@ -42,7 +42,7 @@ dependencies {
     implementation project(":domain")
     implementation project(":ui-common")
 
-    implementation libs.accompanist.coil
+//    implementation libs.accompanist.coil
     implementation libs.accompanist.insets
     implementation libs.accompanist.systemuicontroller
 

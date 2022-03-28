@@ -38,7 +38,7 @@ class SettingsFragment : BaseFragment() {
     @Inject
     lateinit var settingsManager: SettingsManager
 
-    @ExperimentalMaterialApi
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
