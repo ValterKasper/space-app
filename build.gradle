@@ -7,7 +7,7 @@ buildscript {
         'jvmTarget': "11",
     ]
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
     dependencies {
@@ -22,7 +22,7 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
         maven { url "https://jitpack.io" }
     }
