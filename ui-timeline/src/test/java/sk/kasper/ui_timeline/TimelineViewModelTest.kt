@@ -5,7 +5,8 @@ import com.google.common.truth.Truth.assertWithMessage
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.junit.Rule
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -20,16 +21,10 @@ import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.MapToDomainTag
 import sk.kasper.ui_common.tag.MapToUiTag
-import sk.kasper.ui_timeline.utils.ReducerCoroutineRule
 
 
-private val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
-
+@ExperimentalCoroutinesApi
 class TimelineViewModelTest {
-
-    @ExperimentalCoroutinesApi
-    @get:Rule
-    var reducerCoroutineRule = ReducerCoroutineRule()
 
     @Test
     fun noLaunches_noItems() = timelineListTest {
@@ -39,7 +34,7 @@ class TimelineViewModelTest {
 
     @Test
     fun singleLaunchToday_todayLabelAndOneItem() = timelineListTest {
-        accurate launchAt LOCAL_DATE_TIME_NOW.plusHours(2)
+        accurate launchAt now.plusHours(2)
 
         expecting item LabelListItem.Today
         expecting item launch
@@ -50,7 +45,7 @@ class TimelineViewModelTest {
 
     @Test
     fun singleLaunchThisWeek_thisWeekLabelAndOneItem() = timelineListTest {
-        accurate launchAt LOCAL_DATE_TIME_NOW.plusDays(4)
+        accurate launchAt now.plusDays(4)
 
         expecting item LabelListItem.ThisWeek
         expecting item launch
@@ -60,7 +55,7 @@ class TimelineViewModelTest {
 
     @Test
     fun singleLaunchAfterThisWeek_monthLabelAndOneItem() = timelineListTest {
-        accurate launchAt LOCAL_DATE_TIME_NOW.plusDays(10)
+        accurate launchAt now.plusDays(10)
 
         expecting item LabelListItem.Month(1)
         expecting item launch
@@ -68,7 +63,7 @@ class TimelineViewModelTest {
 
     @Test
     fun singleLaunchTomorrow_tomorrowLabelAndOneItem() = timelineListTest {
-        accurate launchAt LOCAL_DATE_TIME_NOW.plusHours(25)
+        accurate launchAt now.plusHours(25)
 
         expecting item LabelListItem.Tomorrow
         expecting item launch
@@ -76,7 +71,7 @@ class TimelineViewModelTest {
 
     @Test
     fun singleLaunchTomorrow_inaccurate_monthLabelAndOneItem() = timelineListTest {
-        inaccurate launchAt LOCAL_DATE_TIME_NOW.plusHours(25)
+        inaccurate launchAt now.plusHours(25)
 
         expecting item LabelListItem.Month(1)
         expecting item inaccurate
@@ -86,14 +81,14 @@ class TimelineViewModelTest {
     fun singleLaunchTomorrow_inaccurate_unconfirmedLaunchesForbidden_noItems() = timelineListTest {
         showUnconfirmedLaunches = false
 
-        inaccurate launchAt LOCAL_DATE_TIME_NOW.plusHours(25)
+        inaccurate launchAt now.plusHours(25)
 
         expectingRetryToLoadLaunchesVisible = true
     }
 
     @Test
     fun singleLaunchEarlierToday_monthLabelAndOneItem() = timelineListTest {
-        accurate launchAt LOCAL_DATE_TIME_NOW.minusHours(4)
+        accurate launchAt now.minusHours(4)
 
         expecting item LabelListItem.Today
         expecting item launch
@@ -101,15 +96,15 @@ class TimelineViewModelTest {
 
     @Test
     fun singleLaunchYesterday_noItems() = timelineListTest {
-        accurate launchAt LOCAL_DATE_TIME_NOW.minusDays(1)
+        accurate launchAt now.minusDays(1)
 
         expectingRetryToLoadLaunchesVisible = true
     }
 
     @Test
     fun oneInaccurateOneAccurate_inaccurateIsLast() = timelineListTest {
-        inaccurate launchAt LOCAL_DATE_TIME_NOW.plusDays(1)
-        accurate launchAt LOCAL_DATE_TIME_NOW.plusDays(5)
+        inaccurate launchAt now.plusDays(1)
+        accurate launchAt now.plusDays(5)
 
         expecting item LabelListItem.ThisWeek
         expecting item accurate
@@ -119,8 +114,8 @@ class TimelineViewModelTest {
 
     @Test
     fun twoLaunchesTomorrow_tomorrowLabelAndTwoItems() = timelineListTest {
-        LOCAL_DATE_TIME_NOW plusHours 25 isLaunchTimeOf launch
-        LOCAL_DATE_TIME_NOW plusHours 26 isLaunchTimeOf launch
+        now plusHours 25 isLaunchTimeOf launch
+        now plusHours 26 isLaunchTimeOf launch
 
         expecting item LabelListItem.Tomorrow
         expecting item launch
@@ -140,6 +135,7 @@ class TimelineViewModelTest {
         Unit
     }
 
+    @ExperimentalCoroutinesApi
     private class TimelineListTestBuilder {
 
         @Mock
@@ -160,6 +156,8 @@ class TimelineViewModelTest {
         @Mock
         private lateinit var rocketMapper: RocketMapper
 
+        private val testCoroutineDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+
         private lateinit var viewModel: TimelineViewModelUnderTest
 
         private val launches = mutableListOf<sk.kasper.domain.model.Launch>()
@@ -169,6 +167,7 @@ class TimelineViewModelTest {
         val launch = true
         val inaccurate = false
         val expecting = "expecting"
+        val now: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
 
         var showUnconfirmedLaunches = true
 
@@ -179,7 +178,7 @@ class TimelineViewModelTest {
             MockitoAnnotations.initMocks(this)
         }
 
-        suspend fun check() {
+        fun check() = testCoroutineDispatcher.runBlockingTest {
             whenever(getTimelineItems.getTimelineItems(FilterSpec.EMPTY_FILTER)).thenReturn(
                 SuccessResponse(launches)
             )
@@ -277,9 +276,10 @@ class TimelineViewModelTest {
             settingsManager,
             mapToDomainTag,
             mapToUiTag,
-            rocketMapper
+            rocketMapper,
+            testCoroutineDispatcher
         ) {
-            override fun getCurrentDateTime(): LocalDateTime = LOCAL_DATE_TIME_NOW
+            override fun getCurrentDateTime(): LocalDateTime = now
         }
     }
 

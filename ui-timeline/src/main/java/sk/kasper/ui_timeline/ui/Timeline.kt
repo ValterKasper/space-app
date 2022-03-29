@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.toPaddingValues
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.threeten.bp.LocalDateTime
@@ -98,9 +98,10 @@ fun Timeline(viewModel: TimelineViewModel) {
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(
-                                additionalTop = 56.dp,
-                                top = false
+                            contentPadding = rememberInsetsPaddingValues(
+                                insets = LocalWindowInsets.current.systemBars,
+                                applyTop = false,
+                                additionalTop = 56.dp
                             )
                         ) {
                             items(state.timelineItems) { item ->

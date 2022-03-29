@@ -99,6 +99,12 @@ class AppModule {
     }
 
     @Provides
+    @Named("ViewModel")
+    fun providesViewModelCoroutineDispatcher(): CoroutineDispatcher {
+        return Dispatchers.Main
+    }
+
+    @Provides
     fun providesWorkManagerConfiguration(appWorkerFactory: AppWorkerFactory): Configuration {
         return Configuration.Builder()
             .setWorkerFactory(appWorkerFactory)
