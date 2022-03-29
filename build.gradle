@@ -3,6 +3,8 @@ buildscript {
         'compileSdk': 32,
         'minSdk'    : 23,
         'targetSdk' : 32,
+        'javaVersion': JavaVersion.VERSION_11,
+        'jvmTarget': "11",
     ]
     repositories {
         jcenter()
