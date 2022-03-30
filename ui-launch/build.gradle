@@ -89,4 +89,5 @@ dependencies {
     testImplementation libs.androidx.coretesting
     testImplementation libs.junit
     testImplementation libs.mockito.kotlin
+    testImplementation libs.google.truth
 }

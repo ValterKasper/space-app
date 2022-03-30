@@ -23,7 +23,7 @@ data class ShowPhotoPager(val photoPagerData: PhotoPagerData) : GallerySideEffec
 @HiltViewModel
 class GalleryViewModel @Inject constructor(
     private val handle: SavedStateHandle,
-    private val getPhotos: GetPhotos
+    private val getPhotos: GetPhotos,
 ) : ReducerViewModel<GalleryState, GallerySideEffect>(GalleryState()) {
 
     init {
@@ -31,7 +31,7 @@ class GalleryViewModel @Inject constructor(
     }
 
     private fun initAction() = action {
-        getPhotos.getPhotos(handle.get("launchId")!!).also {
+        getPhotos(handle.get("launchId")!!).also {
             when (it) {
                 is SuccessResponse -> reduce {
                     copy(

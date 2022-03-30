@@ -2,7 +2,7 @@
 accompanist = '0.23.1'
 agp = '7.1.2'
 compose = '1.1.1'
-coroutines = '1.4.3'
+coroutines = '1.6.0'
 dagger = '2.40.5'
 junit = '4.12'
 kotlin = '1.6.10'

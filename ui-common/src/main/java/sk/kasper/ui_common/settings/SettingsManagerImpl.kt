@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import sk.kasper.ui_common.settings.SettingsManager.Companion.LOCALHOST
@@ -54,7 +54,7 @@ internal class SettingsManagerImpl @Inject constructor(@ApplicationContext priva
 
     override fun getSettingChanges(): Flow<SettingKey> = callbackFlow {
         val listener: (SettingKey) -> Unit = { c ->
-            sendBlocking(c)
+            trySendBlocking(c)
         }
 
         addSettingChangeListener(listener)
@@ -64,7 +64,7 @@ internal class SettingsManagerImpl @Inject constructor(@ApplicationContext priva
 
     override fun getIntAsFlow(key: SettingKey): Flow<Int> = callbackFlow {
         val listener: (SettingKey) -> Unit = { c ->
-            if (c == key) sendBlocking(getInt(key))
+            if (c == key) trySendBlocking(getInt(key))
         }
 
         addSettingChangeListener(listener)
@@ -74,7 +74,7 @@ internal class SettingsManagerImpl @Inject constructor(@ApplicationContext priva
 
     override fun getBoolAsFlow(key: SettingKey): Flow<Boolean> = callbackFlow {
         val listener: (SettingKey) -> Unit = { c ->
-            if (c == key) sendBlocking(getBoolean(key))
+            if (c == key) trySendBlocking(getBoolean(key))
         }
 
         addSettingChangeListener(listener)
