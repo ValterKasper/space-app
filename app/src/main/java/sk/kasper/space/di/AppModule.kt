@@ -9,8 +9,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.repository.*
 import sk.kasper.domain.usecase.launchdetail.GetPhotos
@@ -26,7 +24,6 @@ import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.tag.MapToDomainTag
 import sk.kasper.ui_common.tag.MapToUiTag
 import sk.kasper.ui_launch.usecase.GoogleApiHelper
-import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -96,18 +93,6 @@ class AppModule {
     @Provides
     @Singleton
     fun providesRocketMapper(mapper: RocketMapperImpl): RocketMapper = mapper
-
-    @Provides
-    @Named("Main")
-    fun providesMainCoroutineDispatcher(): CoroutineDispatcher {
-        return Dispatchers.Main
-    }
-
-    @Provides
-    @Named("ViewModel")
-    fun providesViewModelCoroutineDispatcher(): CoroutineDispatcher {
-        return Dispatchers.Main
-    }
 
     @Provides
     fun providesWorkManagerConfiguration(appWorkerFactory: AppWorkerFactory): Configuration {

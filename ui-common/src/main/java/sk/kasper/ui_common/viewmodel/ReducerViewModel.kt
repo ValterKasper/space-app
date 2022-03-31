@@ -2,7 +2,6 @@ package sk.kasper.ui_common.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,12 +9,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
-open class ReducerViewModel<STATE, SIDE_EFFECT>(
-    defaultState: STATE,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
-) : ViewModel() {
+open class ReducerViewModel<STATE, SIDE_EFFECT>(defaultState: STATE) : ViewModel() {
 
     private val _state: MutableStateFlow<STATE> = MutableStateFlow(defaultState)
     val state: StateFlow<STATE> = _state
@@ -24,11 +19,8 @@ open class ReducerViewModel<STATE, SIDE_EFFECT>(
     val sideEffects: SharedFlow<SIDE_EFFECT> = _sideEffects
 
     protected fun action(transform: suspend () -> Unit) {
-        Timber.d("action - 0, $dispatcher")
-        viewModelScope.launch(dispatcher) {
-            Timber.d("action - launch - 1")
+        viewModelScope.launch(Dispatchers.Main) {
             transform()
-            Timber.d("action - launch - 2")
         }
     }
 
@@ -37,14 +29,12 @@ open class ReducerViewModel<STATE, SIDE_EFFECT>(
     }
 
     protected suspend fun reduce(reducer: STATE.() -> STATE) {
-        withContext(dispatcher) {
+        withContext(Dispatchers.Main) {
             _state.value = _state.value.reducer()
         }
     }
 
-    protected suspend fun snapshot(): STATE {
-        return withContext(dispatcher) {
-            _state.value
-        }
+    protected fun snapshot(): STATE {
+        return _state.value
     }
 }

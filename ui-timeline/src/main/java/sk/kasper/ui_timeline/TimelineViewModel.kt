@@ -1,7 +1,6 @@
 package sk.kasper.ui_timeline
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import sk.kasper.domain.model.ErrorResponse
@@ -15,7 +14,6 @@ import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.*
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import javax.inject.Inject
-import javax.inject.Named
 
 
 data class TimelineState(
@@ -49,9 +47,8 @@ open class TimelineViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
     private val mapToDomainTag: MapToDomainTag,
     private val mapToUiTag: MapToUiTag,
-    private val rocketMapper: RocketMapper,
-    @Named("ViewModel") dispatcher: CoroutineDispatcher
-) : ReducerViewModel<TimelineState, SideEffect>(TimelineState(), dispatcher) {
+    private val rocketMapper: RocketMapper
+) : ReducerViewModel<TimelineState, SideEffect>(TimelineState()) {
 
     init {
         init()

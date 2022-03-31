@@ -3,10 +3,15 @@ package sk.kasper.ui_timeline
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
 import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -25,6 +30,16 @@ import sk.kasper.ui_common.tag.MapToUiTag
 
 @ExperimentalCoroutinesApi
 class TimelineViewModelTest {
+
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(StandardTestDispatcher())
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
 
     @Test
     fun noLaunches_noItems() = timelineListTest {
@@ -156,8 +171,6 @@ class TimelineViewModelTest {
         @Mock
         private lateinit var rocketMapper: RocketMapper
 
-        private val testCoroutineDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
-
         private lateinit var viewModel: TimelineViewModelUnderTest
 
         private val launches = mutableListOf<sk.kasper.domain.model.Launch>()
@@ -178,7 +191,7 @@ class TimelineViewModelTest {
             MockitoAnnotations.initMocks(this)
         }
 
-        fun check() = testCoroutineDispatcher.runBlockingTest {
+        fun check() = runTest {
             whenever(getTimelineItems.getTimelineItems(FilterSpec.EMPTY_FILTER)).thenReturn(
                 SuccessResponse(launches)
             )
@@ -276,8 +289,7 @@ class TimelineViewModelTest {
             settingsManager,
             mapToDomainTag,
             mapToUiTag,
-            rocketMapper,
-            testCoroutineDispatcher
+            rocketMapper
         ) {
             override fun getCurrentDateTime(): LocalDateTime = now
         }
