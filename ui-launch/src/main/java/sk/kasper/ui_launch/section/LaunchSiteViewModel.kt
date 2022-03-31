@@ -29,7 +29,7 @@ class LaunchSiteViewModel @Inject constructor(
 
     override suspend fun load(): Response<LaunchSite> {
         return if (googleApiHelper.isGoogleApiAvailable()) {
-            getLaunchSite.getLaunchSite(handle.get("launchId")!!)
+            getLaunchSite(handle.get("launchId")!!)
         } else {
             ErrorResponse("google api not available")
         }

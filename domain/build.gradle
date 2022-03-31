@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation libs.dagger.dagger
-    kapt libs.dagger.compiler
+    implementation libs.dagger.hilt.core
+    kapt libs.dagger.hilt.compiler
 
     implementation libs.kotlin.coroutines.android
     implementation libs.kotlin.coroutines.core

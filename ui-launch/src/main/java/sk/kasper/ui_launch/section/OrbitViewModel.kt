@@ -28,7 +28,7 @@ class OrbitViewModel @Inject constructor(
     }
 
     override suspend fun load(): Response<Orbit> {
-        return getOrbit.getOrbit(handle.get("launchId")!!)
+        return getOrbit(handle.get("launchId")!!)
     }
 
     override fun mapLoadToState(load: Orbit, oldState: OrbitState): OrbitState {

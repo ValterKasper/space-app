@@ -1,0 +1,19 @@
+package sk.kasper.domain.usecase.launchdetail.impl
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import sk.kasper.domain.model.Response
+import sk.kasper.domain.model.Rocket
+import sk.kasper.domain.repository.RocketRepository
+import sk.kasper.domain.usecase.launchdetail.GetRocketForLaunch
+import sk.kasper.domain.utils.wrapToResponse
+import javax.inject.Inject
+
+internal class GetRocketForLaunchImpl @Inject constructor(private val repository: RocketRepository) :
+    GetRocketForLaunch {
+
+    override suspend operator fun invoke(launchId: String): Response<Rocket> = withContext(Dispatchers.IO) {
+        wrapToResponse { repository.getRocketForLaunch(launchId) }
+    }
+
+}

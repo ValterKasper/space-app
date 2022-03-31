@@ -47,7 +47,7 @@ class LaunchViewModel @Inject constructor(
 
     private fun init() = action {
         val launchId: String = handle.get("launchId")!!
-        val launch = getLaunch.getLaunch(launchId)
+        val launch = getLaunch(launchId)
         val launchNameParts = launch.launchNameParts
 
         val dateConfirmed: Boolean

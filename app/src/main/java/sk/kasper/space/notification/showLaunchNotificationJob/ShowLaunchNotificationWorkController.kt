@@ -22,7 +22,7 @@ class ShowLaunchNotificationWorkController(
         }
 
         try {
-            val launch = getLaunch.getLaunch(launchId)
+            val launch = getLaunch(launchId)
             Timber.d("onStartJob - success - notification shown")
             val duration = Duration.ofMinutes(settingsManager.durationBeforeNotificationIsShown.toLong())
             if (launch.launchDateTime.isAfter(currentDateTime) && launch.launchDateTime.isBefore(currentDateTime.plus(duration))) {

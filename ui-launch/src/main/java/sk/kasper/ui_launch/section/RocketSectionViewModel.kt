@@ -32,7 +32,7 @@ class RocketSectionViewModel @Inject constructor(
     }
 
     override suspend fun load(): Response<Rocket> {
-        return getRocketForLaunch.getRocket(handle.get("launchId")!!)
+        return getRocketForLaunch(handle.get("launchId")!!)
     }
 
     override fun mapLoadToState(load: Rocket, oldState: RocketSectionState): RocketSectionState {

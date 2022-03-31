@@ -39,9 +39,7 @@ class FalconInfoViewModel @Inject constructor(
         loadAction()
     }
 
-    override suspend fun load(): Response<FalconCore> {
-        return getFalconCore.getFalconCore(handle.get("launchId")!!)
-    }
+    override suspend fun load(): Response<FalconCore> = getFalconCore(handle.get("launchId")!!)
 
     override fun mapLoadToState(load: FalconCore, oldState: FalconInfoState): FalconInfoState {
         var landingTypeVisible = false

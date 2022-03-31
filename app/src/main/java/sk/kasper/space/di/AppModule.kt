@@ -11,8 +11,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.repository.*
-import sk.kasper.domain.usecase.launchdetail.GetPhotos
-import sk.kasper.domain.usecase.launchdetail.GetPhotosImpl
 import sk.kasper.space.database.*
 import sk.kasper.space.mapper.RocketMapperImpl
 import sk.kasper.space.mapper.TagMapperImpl
@@ -78,9 +76,6 @@ class AppModule {
     @Provides
     @Singleton
     fun providesSyncLaunches(syncLaunchesImpl: SyncLaunchesImpl): SyncLaunches = syncLaunchesImpl
-
-    @Provides
-    fun providesGetPhotos(getPhotosImpl: GetPhotosImpl): GetPhotos = getPhotosImpl
 
     @Provides
     @Singleton

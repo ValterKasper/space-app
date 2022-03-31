@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
-import sk.kasper.domain.usecase.launchdetail.GetLaunch
+import sk.kasper.domain.model.Launch
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.ui_common.settings.SettingsManager
@@ -31,9 +31,6 @@ class ShowLaunchNotificationWorkControllerTest {
     @Mock
     private lateinit var settingsManager: SettingsManager
 
-    @Mock
-    private lateinit var getLaunch: GetLaunch
-
     private lateinit var controller: ShowLaunchNotificationWorkController
 
     @Before
@@ -46,7 +43,7 @@ class ShowLaunchNotificationWorkControllerTest {
     @Test
     fun onStartJob_launchNotCompleted_showNotification() = runBlocking {
         val launchDateTime = LOCAL_DATE_TIME_NOW.plusMinutes(30)
-        mockGetLaunchResponse(launchDateTime)
+        setLaunchResponse(launchDateTime)
 
         onStartJob()
 
@@ -57,7 +54,7 @@ class ShowLaunchNotificationWorkControllerTest {
     fun onStartJob_launchNotificationsAreTurnedOff_doNothing() = runBlocking {
         whenever(settingsManager.showLaunchNotifications).thenReturn(false)
         val launchDateTime = LOCAL_DATE_TIME_NOW.plusMinutes(30)
-        mockGetLaunchResponse(launchDateTime)
+        setLaunchResponse(launchDateTime)
 
         onStartJob()
 
@@ -66,7 +63,7 @@ class ShowLaunchNotificationWorkControllerTest {
 
     @Test
     fun onStartJob_launchCompleted_doNothing() = runBlocking {
-        mockGetLaunchResponse(LOCAL_DATE_TIME_NOW.minusMinutes(30))
+        setLaunchResponse(LOCAL_DATE_TIME_NOW.minusMinutes(30))
 
         onStartJob()
 
@@ -76,7 +73,7 @@ class ShowLaunchNotificationWorkControllerTest {
     @Test
     fun onStartJob_launchFarInFuture_doNothing() = runBlocking {
         val longDuration = Duration.ofMinutes(DURATION_BEFORE_NOTIFICATION_IS_SHOWN_MINUTES.toLong()).plusMinutes(20)
-        mockGetLaunchResponse(LOCAL_DATE_TIME_NOW.plus(longDuration))
+        setLaunchResponse(LOCAL_DATE_TIME_NOW.plus(longDuration))
 
         onStartJob()
 
@@ -98,16 +95,23 @@ class ShowLaunchNotificationWorkControllerTest {
         verify(notificationsHelper, never()).showLaunchNotification(any())
     }
 
-    private fun mockGetLaunchResponse(launchDateTime: LocalDateTime) = runBlocking {
-        whenever(getLaunch.getLaunch(any())).thenReturn(createLaunch(
+    private var launchResponse: Launch? = null
+
+    private fun setLaunchResponse(launchDateTime: LocalDateTime) {
+        launchResponse = createLaunch(
             id = "id",
             launchName = "Name",
             launchDateTime = launchDateTime
-        ))
+        )
     }
 
     private fun prepareController() {
-        controller = ShowLaunchNotificationWorkController(getLaunch, notificationsHelper, LOCAL_DATE_TIME_NOW, settingsManager)
+        controller = ShowLaunchNotificationWorkController(
+            { launchResponse!! },
+            notificationsHelper,
+            LOCAL_DATE_TIME_NOW,
+            settingsManager
+        )
     }
 
 }
