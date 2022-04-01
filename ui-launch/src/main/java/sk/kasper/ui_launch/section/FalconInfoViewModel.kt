@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.FalconCore
 import sk.kasper.domain.model.Response
-import sk.kasper.domain.usecase.launchdetail.GetFalconCore
+import sk.kasper.domain.usecase.GetFalconCore
 import sk.kasper.ui_common.utils.FormattedString
 import sk.kasper.ui_launch.R
 import javax.inject.Inject

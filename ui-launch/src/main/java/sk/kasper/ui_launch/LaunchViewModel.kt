@@ -3,7 +3,7 @@ package sk.kasper.ui_launch
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.usecase.launchdetail.GetLaunch
+import sk.kasper.domain.usecase.GetLaunch
 import sk.kasper.ui_common.analytics.Analytics
 import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.tag.MapToUiTag

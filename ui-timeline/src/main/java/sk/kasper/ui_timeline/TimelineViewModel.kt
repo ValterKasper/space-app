@@ -7,8 +7,8 @@ import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.domain.model.Launch
 import sk.kasper.domain.model.SuccessResponse
-import sk.kasper.domain.usecase.timeline.GetTimelineItems
-import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
+import sk.kasper.domain.usecase.GetTimelineItems
+import sk.kasper.domain.usecase.RefreshTimelineItems
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.*
@@ -128,7 +128,7 @@ open class TimelineViewModel @Inject constructor(
     }
 
     private suspend fun loadTimeline(filterSpec: FilterSpec): List<Launch> {
-        return when (val response = getTimelineItems.getTimelineItems(filterSpec)) {
+        return when (val response = getTimelineItems(filterSpec)) {
             is SuccessResponse -> {
                 return response.data
             }
@@ -189,7 +189,7 @@ open class TimelineViewModel @Inject constructor(
     open fun getCurrentDateTime(): LocalDateTime = LocalDateTime.now()
 
     private suspend fun doSync() {
-        when (refreshTimelineItems.refresh()) {
+        when (refreshTimelineItems()) {
             is SuccessResponse -> {
             }
             is ErrorResponse -> emitSideEffect(SideEffect.ConnectionError)

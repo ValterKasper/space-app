@@ -1,11 +1,11 @@
-package sk.kasper.domain.usecase.launchdetail.impl
+package sk.kasper.domain.usecase.impl
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import sk.kasper.domain.model.Orbit
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.repository.LaunchRepository
-import sk.kasper.domain.usecase.launchdetail.GetOrbit
+import sk.kasper.domain.usecase.GetOrbit
 import sk.kasper.domain.utils.wrapNullableToResponse
 import javax.inject.Inject
 

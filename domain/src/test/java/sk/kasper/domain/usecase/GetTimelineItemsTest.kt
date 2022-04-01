@@ -1,4 +1,4 @@
-package sk.kasper.domain.usecase.timeline
+package sk.kasper.domain.usecase
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
@@ -12,13 +12,14 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import sk.kasper.domain.model.*
 import sk.kasper.domain.repository.LaunchRepository
+import sk.kasper.domain.usecase.impl.GetTimelineItemsImpl
 import sk.kasper.domain.utils.createLaunch
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class GetTimelineItemsTest {
 
-    private lateinit var useCase: GetTimelineItems
+    private lateinit var getTimelineItems: GetTimelineItemsImpl
 
     @Mock
     private lateinit var repo: LaunchRepository
@@ -33,7 +34,7 @@ class GetTimelineItemsTest {
 
     @Before
     fun setUp() {
-        useCase = GetTimelineItems(repo, sync)
+        getTimelineItems = GetTimelineItemsImpl(repo, sync)
     }
 
     @Test
@@ -41,7 +42,7 @@ class GetTimelineItemsTest {
         whenever(sync.doSync(any())).thenReturn(true)
         whenever(repo.getLaunches()).thenReturn(listOf(createLaunch(id = LAUNCH_ID_1, tags = emptyList())))
 
-        val timelineItems = useCase.getTimelineItems(FilterSpec.EMPTY_FILTER)
+        val timelineItems = getTimelineItems(FilterSpec.EMPTY_FILTER)
 
         assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(LAUNCH_ID_1)))
     }
@@ -56,7 +57,7 @@ class GetTimelineItemsTest {
             )
         )
 
-        val timelineItems = useCase.getTimelineItems(FilterSpec(setOf(Tag.CUBE_SAT)))
+        val timelineItems = getTimelineItems(FilterSpec(setOf(Tag.CUBE_SAT)))
 
         assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(LAUNCH_ID_2)))
     }
@@ -71,7 +72,7 @@ class GetTimelineItemsTest {
             )
         )
 
-        val timelineItems = useCase.getTimelineItems(FilterSpec(rockets = setOf(Rocket.FALCON_9)))
+        val timelineItems = getTimelineItems(FilterSpec(rockets = setOf(Rocket.FALCON_9)))
 
         assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(LAUNCH_ID_1)))
     }

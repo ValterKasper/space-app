@@ -5,11 +5,7 @@ import com.google.common.truth.Truth.assertWithMessage
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -19,14 +15,13 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.domain.model.SuccessResponse
-import sk.kasper.domain.usecase.timeline.GetTimelineItems
-import sk.kasper.domain.usecase.timeline.RefreshTimelineItems
+import sk.kasper.domain.usecase.GetTimelineItems
+import sk.kasper.domain.usecase.RefreshTimelineItems
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.MapToDomainTag
 import sk.kasper.ui_common.tag.MapToUiTag
-
 
 @ExperimentalCoroutinesApi
 class TimelineViewModelTest {
@@ -141,7 +136,7 @@ class TimelineViewModelTest {
         return this.plusHours(hours)
     }
 
-    private fun timelineListTest(given: suspend TimelineListTestBuilder.() -> Unit) = runBlocking {
+    private fun timelineListTest(given: suspend TimelineListTestBuilder.() -> Unit) = runTest {
         TimelineListTestBuilder().apply {
             given()
             check()
@@ -191,16 +186,18 @@ class TimelineViewModelTest {
             MockitoAnnotations.initMocks(this)
         }
 
-        fun check() = runTest {
-            whenever(getTimelineItems.getTimelineItems(FilterSpec.EMPTY_FILTER)).thenReturn(
+        suspend fun TestScope.check() {
+            whenever(getTimelineItems(FilterSpec.EMPTY_FILTER)).thenReturn(
                 SuccessResponse(launches)
             )
             whenever(settingsManager.showUnconfirmedLaunches).thenReturn(showUnconfirmedLaunches)
 
             viewModel = TimelineViewModelUnderTest()
 
-            assertThat(expectedItems.size)
-                .isEqualTo(getCurrentState().timelineItems.size)
+            advanceUntilIdle()
+
+            assertThat(getCurrentState().timelineItems.size)
+                .isEqualTo(expectedItems.size)
 
             assertThat(getCurrentState().showNoMatchingLaunches)
                 .isEqualTo(expectingNoMatchingLaunchesVisible)

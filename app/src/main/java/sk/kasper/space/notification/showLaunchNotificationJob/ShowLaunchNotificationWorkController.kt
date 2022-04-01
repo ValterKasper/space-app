@@ -2,7 +2,7 @@ package sk.kasper.space.notification.showLaunchNotificationJob
 
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.usecase.launchdetail.GetLaunch
+import sk.kasper.domain.usecase.GetLaunch
 import sk.kasper.space.notification.LaunchNotificationInfo
 import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.ui_common.settings.SettingsManager

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.model.Rocket
-import sk.kasper.domain.usecase.launchdetail.GetRocketForLaunch
+import sk.kasper.domain.usecase.GetRocketForLaunch
 import sk.kasper.ui_launch.R
 import javax.inject.Inject
 

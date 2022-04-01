@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.Orbit
 import sk.kasper.domain.model.Response
-import sk.kasper.domain.usecase.launchdetail.GetOrbit
+import sk.kasper.domain.usecase.GetOrbit
 import sk.kasper.ui_common.view.OrbitToDraw
 import sk.kasper.ui_launch.R
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package sk.kasper.domain.usecase.launchdetail
+package sk.kasper.domain.usecase
 
 import sk.kasper.domain.model.LaunchSite
 import sk.kasper.domain.model.Response

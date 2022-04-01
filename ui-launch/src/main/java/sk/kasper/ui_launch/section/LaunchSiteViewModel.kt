@@ -5,7 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.LaunchSite
 import sk.kasper.domain.model.Response
-import sk.kasper.domain.usecase.launchdetail.GetLaunchSite
+import sk.kasper.domain.usecase.GetLaunchSite
 import sk.kasper.ui_launch.R
 import sk.kasper.ui_launch.usecase.GoogleApiHelper
 import javax.inject.Inject

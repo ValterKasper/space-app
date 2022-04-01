@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.Photo
 import sk.kasper.domain.model.SuccessResponse
-import sk.kasper.domain.usecase.launchdetail.GetPhotos
+import sk.kasper.domain.usecase.GetPhotos
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import sk.kasper.ui_launch.R
 import sk.kasper.ui_launch.gallery.PhotoItem

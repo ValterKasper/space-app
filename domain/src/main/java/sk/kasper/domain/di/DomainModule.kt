@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import sk.kasper.domain.usecase.launchdetail.*
-import sk.kasper.domain.usecase.launchdetail.impl.*
+import sk.kasper.domain.usecase.*
+import sk.kasper.domain.usecase.impl.*
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -25,6 +25,14 @@ class DomainModule {
 
     @Provides
     internal fun providesGetOrbit(getOrbitImpl: GetOrbitImpl): GetOrbit = getOrbitImpl
+
+    @Provides
+    internal fun providesGetTimelineItems(getTimelineItemsImpl: GetTimelineItemsImpl): GetTimelineItems =
+        getTimelineItemsImpl
+
+    @Provides
+    internal fun providesRefreshTimelineItems(refreshTimelineItemsImpl: RefreshTimelineItemsImpl): RefreshTimelineItems =
+        refreshTimelineItemsImpl
 
     @Provides
     internal fun providesGetRocketForLaunch(getRocketForLaunchImpl: GetRocketForLaunchImpl): GetRocketForLaunch =
