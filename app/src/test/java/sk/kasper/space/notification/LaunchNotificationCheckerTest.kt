@@ -1,8 +1,11 @@
 package sk.kasper.space.notification
 
-import com.nhaarman.mockitokotlin2.*
-import kotlinx.coroutines.runBlocking
-import org.junit.Ignore
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
@@ -17,8 +20,8 @@ import sk.kasper.domain.utils.createLaunch
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.notification.showLaunchNotificationJob.ShowLaunchNotificationWorkerScheduler
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-@Ignore("Failing on CI with UnnecessaryStubbingException")
 class LaunchNotificationCheckerTest {
 
     companion object {
@@ -38,23 +41,7 @@ class LaunchNotificationCheckerTest {
     private lateinit var syncLaunches: SyncLaunches
 
     @Test
-    @Ignore("Fix me!!!")
-    fun launchesChanged_launchInNearFuture_shouldBeScheduled() = runBlocking {
-        val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusHours(22))
-
-        whenever(repository.getLaunches()).thenReturn(listOf(launch))
-        createChecker()
-        callOnSync()
-
-        verify(workScheduler).scheduleLaunchNotification(
-                eq(LAUNCH_ID),
-                argThat {
-                    isAfter(CURRENT_DATE_TIME) && isBefore(launch.launchDateTime)
-                })
-    }
-
-    @Test
-    fun launchesChanged_launchInNearFutureInaccurateDate_shouldNotBeScheduled() = runBlocking {
+    fun launchesChanged_launchInNearFutureInaccurateDate_shouldNotBeScheduled() = runTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusHours(22), accurateDate = false)
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
@@ -68,7 +55,7 @@ class LaunchNotificationCheckerTest {
     }
 
     @Test
-    fun launchesChanged_launchInNearFutureInaccurateTime_shouldNotBeScheduled() = runBlocking {
+    fun launchesChanged_launchInNearFutureInaccurateTime_shouldNotBeScheduled() = runTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusHours(22), accurateTime = false)
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
@@ -82,7 +69,7 @@ class LaunchNotificationCheckerTest {
     }
 
     @Test
-    fun launchesChanged_launchInVeryNearFuture_shouldNotBeScheduled() = runBlocking {
+    fun launchesChanged_launchInVeryNearFuture_shouldNotBeScheduled() = runTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusHours(1))
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
@@ -96,7 +83,7 @@ class LaunchNotificationCheckerTest {
     }
 
     @Test
-    fun launchesChanged_launchInFarFuture_shouldBeNotScheduled() = runBlocking {
+    fun launchesChanged_launchInFarFuture_shouldBeNotScheduled() = runTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.plusDays(30))
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))
@@ -110,7 +97,7 @@ class LaunchNotificationCheckerTest {
     }
 
     @Test
-    fun launchesChanged_launchHasHappened_shouldBeNotScheduled() = runBlocking {
+    fun launchesChanged_launchHasHappened_shouldBeNotScheduled() = runTest {
         val launch = createLaunchAtTime(CURRENT_DATE_TIME.minusMinutes(20))
 
         whenever(repository.getLaunches()).thenReturn(listOf(launch))

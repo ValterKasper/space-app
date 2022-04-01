@@ -15,11 +15,14 @@ import javax.inject.Singleton
 /**
  * Rozhodne, pre ktore starty sa naplanuju notifikacie a na aky cas
  */
+// TODO I: overenginered
+// TODO I: ako su pomenovane dlhozijuce komponent v inyvh android aplikaciach
 @Singleton
 open class LaunchNotificationChecker @Inject constructor(
-        private val repository: LaunchRepository,
-        private val syncLaunches: SyncLaunches,
-        private val showLaunchNotificationWorkerScheduler: ShowLaunchNotificationWorkerScheduler): DefaultLifecycleObserver, SyncLaunches.SyncListener {
+    private val repository: LaunchRepository,
+    private val syncLaunches: SyncLaunches,
+    private val showLaunchNotificationWorkerScheduler: ShowLaunchNotificationWorkerScheduler
+) : DefaultLifecycleObserver, SyncLaunches.SyncListener {
 
     companion object {
         private val MIN_DURATION_AFTER_NOW_FOR_SCHEDULING: Duration = Duration.ofHours(2)
@@ -29,6 +32,7 @@ open class LaunchNotificationChecker @Inject constructor(
     }
 
     override fun onSync() {
+        // TODO D: inject scope
         GlobalScope.launch {
             checkLaunches(repository.getLaunches())
         }

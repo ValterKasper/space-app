@@ -1,66 +1,84 @@
 package sk.kasper.domain.usecase.timeline
 
-//@RunWith(MockitoJUnitRunner::class)
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
+import sk.kasper.domain.model.*
+import sk.kasper.domain.repository.LaunchRepository
+import sk.kasper.domain.utils.createLaunch
+
+@ExperimentalCoroutinesApi
+@RunWith(MockitoJUnitRunner::class)
 class GetTimelineItemsTest {
 
-//    private lateinit var useCase: GetTimelineItems
-//
-//    @Mock
-//    private lateinit var repo: LaunchRepository
-//
-//    @Mock
-//    private lateinit var sync: SyncLaunches
-//
-//    @Before
-//    fun setUp() {
-//        useCase = GetTimelineItems(repo, sync)
-//    }
+    private lateinit var useCase: GetTimelineItems
 
-/*    @Test
-    fun getObservable_returnAll() = runBlocking {
-        val launchId = 1L
-        whenever(repo.getLaunches()).thenReturn(listOf(
-                createLaunch(launchId, emptyList())))
+    @Mock
+    private lateinit var repo: LaunchRepository
+
+    @Mock
+    private lateinit var sync: SyncLaunches
+
+    private companion object {
+        private const val LAUNCH_ID_1 = "ID 1"
+        private const val LAUNCH_ID_2 = "ID 2"
+    }
+
+    @Before
+    fun setUp() {
+        useCase = GetTimelineItems(repo, sync)
+    }
+
+    @Test
+    fun getObservable_returnAll() = runTest {
+        whenever(sync.doSync(any())).thenReturn(true)
+        whenever(repo.getLaunches()).thenReturn(listOf(createLaunch(id = LAUNCH_ID_1, tags = emptyList())))
 
         val timelineItems = useCase.getTimelineItems(FilterSpec.EMPTY_FILTER)
 
-        assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(launchId)))
+        assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(LAUNCH_ID_1)))
     }
 
     @Test
-    fun getObservable_filterByTag() = runBlocking {
-        val launchId1 = 1L
-        val launchId2 = 2L
-        whenever(repo.getLaunches()).thenReturn(listOf(
-                createLaunch(launchId1, listOf(11L)),
-                createLaunch(launchId2, listOf(12L))))
+    fun getObservable_filterByTag() = runTest {
+        whenever(sync.doSync(any())).thenReturn(true)
+        whenever(repo.getLaunches()).thenReturn(
+            listOf(
+                createLaunch(LAUNCH_ID_1, tags = listOf(Tag(LAUNCH_ID_1, Tag.ISS))),
+                createLaunch(LAUNCH_ID_2, tags = listOf(Tag(LAUNCH_ID_2, Tag.CUBE_SAT)))
+            )
+        )
 
-        val timelineItems = useCase.getTimelineItems(FilterSpec(setOf(12L)))
+        val timelineItems = useCase.getTimelineItems(FilterSpec(setOf(Tag.CUBE_SAT)))
 
-        assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(launchId2)))
+        assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(LAUNCH_ID_2)))
     }
 
     @Test
-    fun getObservable_filterByRocket() = runBlocking {
-        val launchId1 = 1L
-        val launchId2 = 2L
-        whenever(repo.getLaunches()).thenReturn(listOf(
-                createLaunch(launchId1, rocketId = Rocket.FALCON_9),
-                createLaunch(launchId2, rocketId = Rocket.ARIANE_5)))
+    fun getObservable_filterByRocket() = runTest {
+        whenever(sync.doSync(any())).thenReturn(true)
+        whenever(repo.getLaunches()).thenReturn(
+            listOf(
+                createLaunch(id = LAUNCH_ID_1, rocketId = Rocket.FALCON_9),
+                createLaunch(id = LAUNCH_ID_2, rocketId = Rocket.ARIANE_5)
+            )
+        )
 
         val timelineItems = useCase.getTimelineItems(FilterSpec(rockets = setOf(Rocket.FALCON_9)))
 
-        assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(launchId1)))
+        assertTrue(checkSuccessResponseLaunches(timelineItems, setOf(LAUNCH_ID_1)))
     }
 
-    private fun checkSuccessResponseLaunches(it: List<Launch>, launchIds: Set<Long>): Boolean {
-        return it.map { it.id }.toSet() == launchIds
+    private fun checkSuccessResponseLaunches(it: Response<List<Launch>>, launchIds: Set<String>): Boolean {
+        it as SuccessResponse
+        return it.data.map { it.id }.toSet() == launchIds
     }
-
-    private fun createLaunch(launchId: Long, tagTypes: List<Long> = emptyList(), rocketId: Long? = null) = createLaunch(
-            id = launchId,
-            launchName = "Launch $launchId",
-            rocketId = rocketId,
-            tags = tagTypes.map { Tag(launchId, it) })*/
 
 }

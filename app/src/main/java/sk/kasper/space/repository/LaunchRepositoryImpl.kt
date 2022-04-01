@@ -14,6 +14,7 @@ import javax.inject.Singleton
 @Singleton
 open class LaunchRepositoryImpl @Inject constructor(private val launchDao: LaunchDao) : LaunchRepository {
 
+    // TODO D: should be in domain
     companion object {
         val TOO_OLD_DURATION: Duration = Duration.ofHours(BuildConfig.TOO_OLD_LAUNCH_TO_BE_SHOWN_HOURS)
     }

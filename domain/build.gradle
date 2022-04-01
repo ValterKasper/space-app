@@ -10,10 +10,12 @@ dependencies {
 
     implementation libs.kotlin.coroutines.android
     implementation libs.kotlin.coroutines.core
+    testImplementation libs.kotlin.coroutines.test
     implementation libs.kotlin.stdlib.jdk7
 
     implementation libs.threetenabp.threetenabp
 
     testImplementation libs.junit
     testImplementation libs.mockito.kotlin
+    testImplementation libs.google.truth
 }

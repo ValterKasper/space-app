@@ -14,10 +14,11 @@ import sk.kasper.space.database.entity.TagEntity
 import timber.log.Timber
 import javax.inject.Inject
 
+// TODO I: logika odtialto do domeny
 class SyncLaunchesImpl @Inject constructor(
-        private val service: RemoteApi,
-        private val database: Database,
-        private val preferences: SharedPreferences) : SyncLaunches {
+    private val service: RemoteApi,
+    private val database: Database,
+    private val preferences: SharedPreferences) : SyncLaunches {
 
     companion object {
         const val KEY_LAUNCHES_FETCHED_ALREADY = "launches-fetched-already"
@@ -48,13 +49,13 @@ class SyncLaunchesImpl @Inject constructor(
                     val launchesResponse = response.launches.orEmpty()
                     val launchAndTagEntities = launchesResponse.map {
                         LaunchAndTagsEntity(
-                                it.toLaunchEntity(),
-                                it.tags.map { it.type })
+                            it.toLaunchEntity(),
+                            it.tags.map { it.type })
                     }
                     val tagEntities = launchAndTagEntities
-                            .map {
-                                it.tagTypes.map { tagType -> TagEntity(launchId = it.launch.id, type = tagType) }
-                            }.flatten()
+                        .map {
+                            it.tagTypes.map { tagType -> TagEntity(launchId = it.launch.id, type = tagType) }
+                        }.flatten()
                     val photoEntities = response.photos.orEmpty().map { it.toPhotoEntity() }
                     val photoLaunchEntities = launchesResponse.map { remoteLaunch ->
                         remoteLaunch.photos.orEmpty().map { photoId -> PhotoLaunchEntity(photoId, remoteLaunch.id) }
