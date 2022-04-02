@@ -1,5 +1,7 @@
 include ':app'
 include ':domain'
+include ':repository'
+include ':entity'
 include ':ui-common'
 include ':ui-settings'
 include ':ui-timeline'

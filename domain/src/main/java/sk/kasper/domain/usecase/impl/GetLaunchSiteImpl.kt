@@ -7,9 +7,13 @@ import sk.kasper.domain.model.Response
 import sk.kasper.domain.repository.LaunchSiteRepository
 import sk.kasper.domain.usecase.GetLaunchSite
 import sk.kasper.domain.utils.wrapToResponse
+import sk.kasper.repository.RocketRepository2
 import javax.inject.Inject
 
-internal class GetLaunchSiteImpl @Inject constructor(private val launchSiteRepository: LaunchSiteRepository) :
+internal class GetLaunchSiteImpl @Inject constructor(
+    private val launchSiteRepository: LaunchSiteRepository,
+    private val rocketRepository2: RocketRepository2
+) :
     GetLaunchSite {
 
     override suspend operator fun invoke(launchId: String): Response<LaunchSite> =
