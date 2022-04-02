@@ -1,11 +1,12 @@
-package sk.kasper.domain.model
+package sk.kasper.entity
 
 data class FalconCore(
-        val reused: Boolean,
-        val block: Int,
-        val flights: Int,
-        val landingType: LandingType,
-        val landingVehicle: LandingVehicle) {
+    val reused: Boolean,
+    val block: Int,
+    val flights: Int,
+    val landingType: LandingType,
+    val landingVehicle: LandingVehicle
+) {
 
     enum class LandingType {
         ASDS,

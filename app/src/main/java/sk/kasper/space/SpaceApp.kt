@@ -10,7 +10,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.hilt.android.HiltAndroidApp
 import sk.kasper.space.api.RemoteApi
-import sk.kasper.space.database.Database
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.sync.SyncWorker
 import sk.kasper.ui_common.analytics.Analytics
@@ -30,17 +29,12 @@ open class SpaceApp : Application() {
     lateinit var remoteApi: RemoteApi
 
     @Inject
-    lateinit var database: Database
-
-    @Inject
-    lateinit var carDatabase: sk.kasper.database.SpaceRoomDatabase
-
-    @Inject
     lateinit var settingsManager: SettingsManager
 
     @Inject
     lateinit var workManagerConfiguration: Configuration
 
+    // TODO I: think about initialization library
     override fun onCreate() {
         AndroidThreeTen.init(this)
 
@@ -70,6 +64,7 @@ open class SpaceApp : Application() {
     }
 }
 
+// TODO D: move somewhere else
 class CrashReportingTree : Timber.Tree() {
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {

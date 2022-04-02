@@ -1,6 +1,6 @@
 package sk.kasper.space.api.entity
 
-import sk.kasper.space.database.entity.PhotoEntity
+import sk.kasper.database.entity.PhotoEntity
 
 data class RemotePhoto(val id: Long,
                        val thumbnailUrl: String,

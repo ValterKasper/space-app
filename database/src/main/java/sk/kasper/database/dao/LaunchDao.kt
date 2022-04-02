@@ -1,9 +1,9 @@
-package sk.kasper.space.database
+package sk.kasper.database.dao
 
 import androidx.room.*
-import sk.kasper.space.database.entity.FalconCoreEntity
-import sk.kasper.space.database.entity.LaunchDetailEntity
-import sk.kasper.space.database.entity.LaunchEntity
+import sk.kasper.database.entity.FalconCoreEntity
+import sk.kasper.database.entity.LaunchDetailEntity
+import sk.kasper.database.entity.LaunchEntity
 
 @Dao
 abstract class LaunchDao {

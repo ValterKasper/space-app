@@ -13,8 +13,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import sk.kasper.domain.model.ErrorResponse
-import sk.kasper.domain.model.Photo
 import sk.kasper.domain.model.SuccessResponse
+import sk.kasper.entity.Photo
 import sk.kasper.ui_launch.gallery.PhotoItem
 import sk.kasper.ui_launch.gallery.PhotoPagerData
 

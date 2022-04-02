@@ -18,6 +18,7 @@ import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.GetTimelineItems
 import sk.kasper.domain.usecase.RefreshTimelineItems
 import sk.kasper.domain.utils.createLaunch
+import sk.kasper.entity.Launch
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.MapToDomainTag
@@ -168,7 +169,7 @@ class TimelineViewModelTest {
 
         private lateinit var viewModel: TimelineViewModelUnderTest
 
-        private val launches = mutableListOf<sk.kasper.domain.model.Launch>()
+        private val launches = mutableListOf<Launch>()
         private val expectedItems = mutableListOf<ExpectedListItem>()
 
         val accurate = true

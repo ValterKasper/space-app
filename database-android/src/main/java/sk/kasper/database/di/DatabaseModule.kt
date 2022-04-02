@@ -17,12 +17,21 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun providesDatabase(@ApplicationContext context: Context): SpaceRoomDatabase {
-        return Room.databaseBuilder(context, SpaceRoomDatabase::class.java, "car-database")
+        return Room.databaseBuilder(context, SpaceRoomDatabase::class.java, "local-database")
             .fallbackToDestructiveMigration()
             .build()
     }
 
     @Provides
-    fun providesCarDao(database: SpaceRoomDatabase) = database.carDao()
+    fun providesLaunchDao(database: SpaceRoomDatabase) = database.launchDao()
+
+    @Provides
+    fun providesLaunchSiteDao(database: SpaceRoomDatabase) = database.launchSiteDao()
+
+    @Provides
+    fun providesRocketDao(database: SpaceRoomDatabase) = database.rocketDao()
+
+    @Provides
+    fun providesPhotoDao(database: SpaceRoomDatabase) = database.photoDao()
 
 }

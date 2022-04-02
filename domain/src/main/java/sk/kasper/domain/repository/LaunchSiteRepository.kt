@@ -1,6 +1,6 @@
 package sk.kasper.domain.repository
 
-import sk.kasper.domain.model.LaunchSite
+import sk.kasper.entity.LaunchSite
 
 interface LaunchSiteRepository {
 

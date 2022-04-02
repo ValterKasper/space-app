@@ -7,8 +7,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.GetLaunch
+import sk.kasper.entity.utils.toTimeStamp
 import sk.kasper.space.notification.NotificationsHelper
-import sk.kasper.space.utils.toTimeStamp
 import sk.kasper.space.work.ChildWorkerFactory
 import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber

@@ -11,7 +11,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.repository.*
-import sk.kasper.space.database.*
 import sk.kasper.space.mapper.RocketMapperImpl
 import sk.kasper.space.mapper.TagMapperImpl
 import sk.kasper.space.repository.*
@@ -29,31 +28,10 @@ import javax.inject.Singleton
 @Module
 class AppModule {
 
-
     @Singleton
     @Provides
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
-    }
-
-    @Provides
-    fun providesLaunchDao(database: Database): LaunchDao {
-        return database.launchDao()
-    }
-
-    @Provides
-    fun providesLaunchSiteDao(database: Database): LaunchSiteDao {
-        return database.launchSiteDao()
-    }
-
-    @Provides
-    fun providesRocketDao(database: Database): RocketDao {
-        return database.rocketDao()
-    }
-
-    @Provides
-    fun providesPhotoDao(database: Database): PhotoDao {
-        return database.photoDao()
     }
 
     @Provides

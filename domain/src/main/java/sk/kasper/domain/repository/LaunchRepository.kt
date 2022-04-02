@@ -1,7 +1,7 @@
 package sk.kasper.domain.repository
 
-import sk.kasper.domain.model.Launch
-import sk.kasper.domain.model.Orbit
+import sk.kasper.entity.Launch
+import sk.kasper.entity.Orbit
 
 interface LaunchRepository {
     suspend fun getLaunches(): List<Launch>

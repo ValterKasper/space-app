@@ -2,7 +2,7 @@ package sk.kasper.ui_timeline
 
 import androidx.annotation.DrawableRes
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.model.Launch
+import sk.kasper.entity.Launch
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.tag.MapToUiTag

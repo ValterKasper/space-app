@@ -1,10 +1,10 @@
-package sk.kasper.space.database.entity
+package sk.kasper.database.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import sk.kasper.domain.model.Rocket
+import sk.kasper.entity.Rocket
 
 @Entity(
         foreignKeys = [ForeignKey(

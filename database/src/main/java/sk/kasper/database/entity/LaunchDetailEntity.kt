@@ -1,9 +1,9 @@
-package sk.kasper.space.database.entity
+package sk.kasper.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Relation
-import sk.kasper.domain.model.Launch
-import sk.kasper.space.utils.toLocalDateTime
+import sk.kasper.entity.Launch
+import sk.kasper.entity.utils.toLocalDateTime
 
 data class LaunchDetailEntity(
         var id: String = "",

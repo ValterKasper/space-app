@@ -5,10 +5,10 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.FilterSpec
-import sk.kasper.domain.model.Launch
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.GetTimelineItems
 import sk.kasper.domain.usecase.RefreshTimelineItems
+import sk.kasper.entity.Launch
 import sk.kasper.ui_common.rocket.RocketMapper
 import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.*

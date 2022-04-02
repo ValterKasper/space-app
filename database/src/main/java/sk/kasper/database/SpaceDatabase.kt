@@ -1,5 +1,11 @@
 package sk.kasper.database
 
+import sk.kasper.database.dao.*
+
 interface SpaceDatabase {
-    fun carDao(): sk.kasper.database.dao.CarDao
+    fun launchDao(): LaunchDao
+    fun launchSiteDao(): LaunchSiteDao
+    fun rocketDao(): RocketDao
+    fun tagDao(): TagDao
+    fun photoDao(): PhotoDao
 }

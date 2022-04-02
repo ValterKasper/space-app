@@ -1,6 +1,6 @@
 package sk.kasper.space.api.entity
 
-import sk.kasper.space.database.entity.RocketEntity
+import sk.kasper.database.entity.RocketEntity
 
 data class RemoteRocket(val id: Long,
                         val rocketName: String,

@@ -1,8 +1,8 @@
 package sk.kasper.space.repository
 
-import sk.kasper.domain.model.LaunchSite
+import sk.kasper.database.dao.LaunchSiteDao
 import sk.kasper.domain.repository.LaunchSiteRepository
-import sk.kasper.space.database.LaunchSiteDao
+import sk.kasper.entity.LaunchSite
 import javax.inject.Inject
 import javax.inject.Singleton
 

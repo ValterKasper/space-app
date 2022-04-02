@@ -1,4 +1,4 @@
-package sk.kasper.space.database.entity
+package sk.kasper.database.entity
 
 import androidx.room.*
 

@@ -2,11 +2,11 @@ package sk.kasper.space.repository
 
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.model.Launch
-import sk.kasper.domain.model.Orbit
+import sk.kasper.database.dao.LaunchDao
 import sk.kasper.domain.repository.LaunchRepository
+import sk.kasper.entity.Launch
+import sk.kasper.entity.Orbit
 import sk.kasper.space.BuildConfig
-import sk.kasper.space.database.LaunchDao
 import sk.kasper.space.utils.enumValueOrNull
 import javax.inject.Inject
 import javax.inject.Singleton

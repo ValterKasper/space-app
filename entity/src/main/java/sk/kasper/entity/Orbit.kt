@@ -1,4 +1,4 @@
-package sk.kasper.domain.model
+package sk.kasper.entity
 
 enum class Orbit {
     LEO,

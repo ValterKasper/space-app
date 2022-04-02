@@ -1,6 +1,6 @@
 package sk.kasper.domain.repository
 
-import sk.kasper.domain.model.Photo
+import sk.kasper.entity.Photo
 
 interface PhotoRepository {
 

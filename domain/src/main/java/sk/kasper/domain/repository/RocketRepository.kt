@@ -1,6 +1,6 @@
 package sk.kasper.domain.repository
 
-import sk.kasper.domain.model.Rocket
+import sk.kasper.entity.Rocket
 
 interface RocketRepository {
 

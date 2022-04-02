@@ -1,8 +1,8 @@
 package sk.kasper.domain.utils
 
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.model.Launch
-import sk.kasper.domain.model.Tag
+import sk.kasper.entity.Launch
+import sk.kasper.entity.Tag
 
 fun createLaunch(
         id: String = "",

@@ -6,9 +6,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.model.Launch
 import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.repository.LaunchRepository
+import sk.kasper.entity.Launch
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,6 +1,6 @@
 package sk.kasper.space.api.entity
 
-import sk.kasper.space.database.entity.FalconCoreEntity
+import sk.kasper.database.entity.FalconCoreEntity
 
 data class RemoteFalconCore(
         val reused: Boolean,

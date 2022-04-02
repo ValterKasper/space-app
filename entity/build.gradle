@@ -7,3 +7,10 @@ java {
     sourceCompatibility buildConfig.javaVersion
     targetCompatibility buildConfig.javaVersion
 }
+
+dependencies {
+
+    api libs.threetenabp.threetenabp
+    implementation libs.timber
+
+}

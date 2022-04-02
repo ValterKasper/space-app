@@ -1,6 +1,6 @@
 package sk.kasper.space.mapper
 
-import sk.kasper.domain.model.Tag
+import sk.kasper.entity.Tag
 import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.tag.MapToDomainTag
 import sk.kasper.ui_common.tag.MapToUiTag

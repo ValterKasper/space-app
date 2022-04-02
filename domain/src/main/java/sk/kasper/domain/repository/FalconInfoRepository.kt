@@ -1,6 +1,6 @@
 package sk.kasper.domain.repository
 
-import sk.kasper.domain.model.FalconCore
+import sk.kasper.entity.FalconCore
 
 interface FalconInfoRepository {
     suspend fun getFalconCore(launchId: String): FalconCore?

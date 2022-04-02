@@ -1,8 +1,8 @@
 package sk.kasper.space.repository
 
-import sk.kasper.domain.model.Rocket
+import sk.kasper.database.dao.RocketDao
 import sk.kasper.domain.repository.RocketRepository
-import sk.kasper.space.database.RocketDao
+import sk.kasper.entity.Rocket
 import javax.inject.Inject
 
 class RocketRepositoryImpl @Inject constructor(private val rocketDao: RocketDao): RocketRepository {

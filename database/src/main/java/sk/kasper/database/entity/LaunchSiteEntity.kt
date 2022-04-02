@@ -1,9 +1,9 @@
-package sk.kasper.space.database.entity
+package sk.kasper.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import sk.kasper.domain.model.LaunchSite
-import sk.kasper.domain.model.Position
+import sk.kasper.entity.LaunchSite
+import sk.kasper.entity.Position
 
 @Entity(tableName = "launchSite")
 data class LaunchSiteEntity(

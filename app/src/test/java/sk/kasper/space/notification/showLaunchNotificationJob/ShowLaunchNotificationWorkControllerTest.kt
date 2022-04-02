@@ -12,8 +12,8 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
-import sk.kasper.domain.model.Launch
 import sk.kasper.domain.utils.createLaunch
+import sk.kasper.entity.Launch
 import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.ui_common.settings.SettingsManager
 

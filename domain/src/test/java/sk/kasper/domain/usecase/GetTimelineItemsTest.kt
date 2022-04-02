@@ -10,10 +10,16 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import sk.kasper.domain.model.*
+import sk.kasper.domain.model.FilterSpec
+import sk.kasper.domain.model.Response
+import sk.kasper.domain.model.SuccessResponse
+import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.repository.LaunchRepository
 import sk.kasper.domain.usecase.impl.GetTimelineItemsImpl
 import sk.kasper.domain.utils.createLaunch
+import sk.kasper.entity.Launch
+import sk.kasper.entity.Rocket
+import sk.kasper.entity.Tag
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)

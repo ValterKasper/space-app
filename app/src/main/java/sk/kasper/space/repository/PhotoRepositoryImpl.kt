@@ -1,8 +1,8 @@
 package sk.kasper.space.repository
 
-import sk.kasper.domain.model.Photo
+import sk.kasper.database.dao.PhotoDao
 import sk.kasper.domain.repository.PhotoRepository
-import sk.kasper.space.database.PhotoDao
+import sk.kasper.entity.Photo
 import javax.inject.Inject
 
 class PhotoRepositoryImpl @Inject constructor(private val photoDao: PhotoDao): PhotoRepository {

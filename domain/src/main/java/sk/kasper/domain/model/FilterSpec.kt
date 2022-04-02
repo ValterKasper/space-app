@@ -1,5 +1,8 @@
 package sk.kasper.domain.model
 
+import sk.kasper.entity.Rocket
+import sk.kasper.entity.Tag
+
 data class FilterSpec(val tagTypes: Set<Long> = emptySet(), val rockets: Set<Long> = emptySet()) {
 
     fun filterNotEmpty() = tagTypes.isNotEmpty() || rockets.isNotEmpty()

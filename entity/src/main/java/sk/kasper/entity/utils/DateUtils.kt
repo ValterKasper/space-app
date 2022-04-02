@@ -1,9 +1,8 @@
-package sk.kasper.space.utils
+package sk.kasper.entity.utils
 
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
-import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,7 +12,8 @@ fun String.toTimeStamp(): Long = try {
     val format = SimpleDateFormat("MMM dd, yyyy HH:mm:ss z", Locale.US)
     format.parse(this)!!.time
 } catch (e: ParseException) {
-    Timber.e(e, "String.toTimeStamp")
+    // TODO D: add logging
+//    Timber.e(e, "String.toTimeStamp")
     0
 }
 

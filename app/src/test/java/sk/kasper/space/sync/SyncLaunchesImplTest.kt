@@ -16,13 +16,14 @@ import org.mockito.Mock
 import org.mockito.Mockito.eq
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
-import sk.kasper.domain.model.Tag
+import sk.kasper.database.SpaceRoomDatabase
+import sk.kasper.database.dao.*
+import sk.kasper.database.entity.PhotoEntity
+import sk.kasper.database.entity.PhotoLaunchEntity
+import sk.kasper.database.entity.TagEntity
+import sk.kasper.entity.Tag
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.api.entity.*
-import sk.kasper.space.database.*
-import sk.kasper.space.database.entity.PhotoEntity
-import sk.kasper.space.database.entity.PhotoLaunchEntity
-import sk.kasper.space.database.entity.TagEntity
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.sync.SyncLaunchesImpl.Companion.KEY_LAUNCHES_FETCHED_ALREADY
 
@@ -56,7 +57,7 @@ class SyncLaunchesImplTest {
     private lateinit var editor: SharedPreferences.Editor
 
     @Mock
-    private lateinit var database: Database
+    private lateinit var database: SpaceRoomDatabase
 
     @Mock
     private lateinit var launchNotificationChecker: LaunchNotificationChecker
@@ -103,7 +104,8 @@ class SyncLaunchesImplTest {
         )
         whenever(remoteApi.timeline()).thenReturn(RemoteLaunchesResponse(
                 0,
-                listOf(RemoteLaunch(launchId, 321, "Launch", null, null, null, null, null, null, null, true, true, LAUNCH_SITE_ID, listOf(photoId), listOf(RemoteTag(Tag.ISS)), remoteFalconInfo)),
+                listOf(RemoteLaunch(launchId, 321, "Launch", null, null, null, null, null, null, null, true, true, LAUNCH_SITE_ID, listOf(photoId), listOf(RemoteTag(
+                    Tag.ISS)), remoteFalconInfo)),
                 listOf(RemoteLaunchSite(LAUNCH_SITE_ID, "Site", "Pad", "URL", 10.0, 12.0)),
                 listOf(RemoteRocket(1L, "", 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1, null)),
                 listOf(RemotePhoto(photoId, "ThumbnailSizeUrl", "FullSizeUrl"))))

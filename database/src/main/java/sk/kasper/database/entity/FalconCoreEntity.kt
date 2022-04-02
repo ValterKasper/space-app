@@ -1,6 +1,6 @@
-package sk.kasper.space.database.entity
+package sk.kasper.database.entity
 
-import sk.kasper.domain.model.FalconCore
+import sk.kasper.entity.FalconCore
 import sk.kasper.space.utils.safeEnumValue
 
 data class FalconCoreEntity(val reused: Boolean?,

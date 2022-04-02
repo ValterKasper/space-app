@@ -3,8 +3,8 @@ package sk.kasper.ui_launch.section
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import sk.kasper.domain.model.Response
-import sk.kasper.domain.model.Rocket
 import sk.kasper.domain.usecase.GetRocketForLaunch
+import sk.kasper.entity.Rocket
 import sk.kasper.ui_launch.R
 import javax.inject.Inject
 

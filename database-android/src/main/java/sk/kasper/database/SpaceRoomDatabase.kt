@@ -2,12 +2,20 @@ package sk.kasper.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import sk.kasper.database.entity.Car
+import sk.kasper.database.entity.*
 
 @Database(
-    entities = [
-        Car::class
+    entities =
+    [
+        LaunchEntity::class,
+        RocketEntity::class,
+        LaunchSiteEntity::class,
+        ManufacturerEntity::class,
+        TagEntity::class,
+        PhotoEntity::class,
+        PhotoLaunchEntity::class
     ],
-    version = 1
+    version = 6,
+    exportSchema = false
 )
 abstract class SpaceRoomDatabase : RoomDatabase(), SpaceDatabase

@@ -1,10 +1,10 @@
-package sk.kasper.space.database
+package sk.kasper.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import sk.kasper.space.database.entity.RocketEntity
+import sk.kasper.database.entity.RocketEntity
 
 @Dao
 interface RocketDao {

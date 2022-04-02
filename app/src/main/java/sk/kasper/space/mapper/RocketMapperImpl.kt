@@ -1,6 +1,6 @@
 package sk.kasper.space.mapper
 
-import sk.kasper.domain.model.Rocket
+import sk.kasper.entity.Rocket
 import sk.kasper.ui_common.R
 import sk.kasper.ui_common.rocket.MapFilterRocketToDomainRocket
 import sk.kasper.ui_common.rocket.MapRocketToDrawableRes

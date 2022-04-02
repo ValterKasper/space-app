@@ -3,6 +3,7 @@ package sk.kasper.domain.usecase.impl
 import sk.kasper.domain.model.*
 import sk.kasper.domain.repository.LaunchRepository
 import sk.kasper.domain.usecase.GetTimelineItems
+import sk.kasper.entity.Launch
 import javax.inject.Inject
 
 internal class GetTimelineItemsImpl @Inject constructor(

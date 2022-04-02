@@ -6,12 +6,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.ChronoUnit
+import sk.kasper.entity.utils.toLocalDateTime
+import sk.kasper.entity.utils.toTimeStamp
 import sk.kasper.space.BuildConfig
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.api.entity.RemoteLaunchesResponse
 import sk.kasper.space.utils.readFileFromAssets
-import sk.kasper.space.utils.toLocalDateTime
-import sk.kasper.space.utils.toTimeStamp
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -2,11 +2,11 @@ package sk.kasper.domain.usecase.impl
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import sk.kasper.domain.model.LaunchSite
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.repository.LaunchSiteRepository
 import sk.kasper.domain.usecase.GetLaunchSite
 import sk.kasper.domain.utils.wrapToResponse
+import sk.kasper.entity.LaunchSite
 import sk.kasper.repository.RocketRepository2
 import javax.inject.Inject
 

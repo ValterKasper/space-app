@@ -1,6 +1,6 @@
 package sk.kasper.space.api.entity
 
-import sk.kasper.space.database.entity.LaunchEntity
+import sk.kasper.database.entity.LaunchEntity
 
 data class RemoteLaunch(
         val id: String,

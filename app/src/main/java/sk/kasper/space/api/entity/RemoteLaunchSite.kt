@@ -1,6 +1,6 @@
 package sk.kasper.space.api.entity
 
-import sk.kasper.space.database.entity.LaunchSiteEntity
+import sk.kasper.database.entity.LaunchSiteEntity
 
 data class RemoteLaunchSite(val id: Long,
                             val siteName: String,

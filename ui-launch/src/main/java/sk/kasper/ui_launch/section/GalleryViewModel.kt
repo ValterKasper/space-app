@@ -2,9 +2,9 @@ package sk.kasper.ui_launch.section
 
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import sk.kasper.domain.model.Photo
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.GetPhotos
+import sk.kasper.entity.Photo
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import sk.kasper.ui_launch.R
 import sk.kasper.ui_launch.gallery.PhotoItem
