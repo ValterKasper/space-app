@@ -1,29 +1,25 @@
-package sk.kasper.space.repository
+package sk.kasper.repository.impl
 
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import sk.kasper.database.dao.LaunchDao
-import sk.kasper.domain.repository.LaunchRepository
 import sk.kasper.entity.Launch
 import sk.kasper.entity.Orbit
-import sk.kasper.space.BuildConfig
+import sk.kasper.repository.LaunchRepository
 import sk.kasper.space.utils.enumValueOrNull
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-open class LaunchRepositoryImpl @Inject constructor(private val launchDao: LaunchDao) : LaunchRepository {
+internal open class LaunchRepositoryImpl @Inject constructor(private val launchDao: LaunchDao) : LaunchRepository {
 
-    // TODO D: should be in domain
     companion object {
-        val TOO_OLD_DURATION: Duration = Duration.ofHours(BuildConfig.TOO_OLD_LAUNCH_TO_BE_SHOWN_HOURS)
+        val TOO_OLD_DURATION: Duration = Duration.ofHours(24)
     }
 
     override suspend fun getLaunches(): List<Launch> {
         return launchDao
-                .getLaunches()
-                .map { it.toLaunch() }
-                .filter { it.launchDateTime.isAfter(getCurrentDateTime().minus(TOO_OLD_DURATION)) }
+            .getLaunches()
+            .map { it.toLaunch() }
+            .filter { it.launchDateTime.isAfter(getCurrentDateTime().minus(TOO_OLD_DURATION)) }
     }
 
     override fun getLaunch(id: String): Launch {

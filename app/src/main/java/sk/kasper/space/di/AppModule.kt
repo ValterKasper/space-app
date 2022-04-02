@@ -10,10 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import sk.kasper.domain.model.SyncLaunches
-import sk.kasper.domain.repository.*
 import sk.kasper.space.mapper.RocketMapperImpl
 import sk.kasper.space.mapper.TagMapperImpl
-import sk.kasper.space.repository.*
 import sk.kasper.space.sync.SyncLaunchesImpl
 import sk.kasper.space.utils.GoogleApiHelperImpl
 import sk.kasper.space.work.AppWorkerFactory
@@ -33,23 +31,6 @@ class AppModule {
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
-
-    @Provides
-    fun providesRocketRepository(rocketRepositoryImpl: RocketRepositoryImpl): RocketRepository = rocketRepositoryImpl
-
-    @Provides
-    fun providesPhotoRepository(photoRepositoryImpl: PhotoRepositoryImpl): PhotoRepository = photoRepositoryImpl
-
-    @Provides
-    fun providesLaunchRepository(launchRepositoryImpl: LaunchRepositoryImpl): LaunchRepository = launchRepositoryImpl
-
-    @Provides
-    fun providesFalconInfoRepository(falconInfoRepositoryImpl: FalconInfoRepositoryImpl): FalconInfoRepository =
-        falconInfoRepositoryImpl
-
-    @Provides
-    fun providesLaunchSiteRepository(launchSiteRepositoryImpl: LaunchSiteRepositoryImpl): LaunchSiteRepository =
-        launchSiteRepositoryImpl
 
     @Provides
     @Singleton

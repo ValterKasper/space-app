@@ -1,4 +1,4 @@
-package sk.kasper.domain.repository
+package sk.kasper.repository
 
 import sk.kasper.entity.Rocket
 

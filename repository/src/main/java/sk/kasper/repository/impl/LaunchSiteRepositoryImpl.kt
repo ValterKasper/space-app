@@ -1,13 +1,12 @@
-package sk.kasper.space.repository
+package sk.kasper.repository.impl
 
 import sk.kasper.database.dao.LaunchSiteDao
-import sk.kasper.domain.repository.LaunchSiteRepository
 import sk.kasper.entity.LaunchSite
+import sk.kasper.repository.LaunchSiteRepository
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class LaunchSiteRepositoryImpl @Inject constructor(private val launchSiteDao: LaunchSiteDao) : LaunchSiteRepository {
+internal class LaunchSiteRepositoryImpl @Inject constructor(private val launchSiteDao: LaunchSiteDao) :
+    LaunchSiteRepository {
 
     override suspend fun getLaunchSite(launchId: String): LaunchSite {
         return launchSiteDao.getLaunchSiteByLaunchId(launchId).toLaunchSite()

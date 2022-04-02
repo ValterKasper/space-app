@@ -38,7 +38,6 @@ android {
         testInstrumentationRunner "sk.kasper.space.MockAndroidJUnitRunner"
 
         buildConfigField 'long', 'SYNC_INTERVAL_HOURS', '4'
-        buildConfigField 'long', 'TOO_OLD_LAUNCH_TO_BE_SHOWN_HOURS', '24'
         buildConfigField 'String', 'API_KEY', "\"${System.getenv("SPACE_APP_API_KEY")}\""
 
         manifestPlaceholders += [
@@ -102,6 +101,8 @@ kapt {
 
 dependencies {
     implementation project(':domain')
+    // TODO D: get rid of
+    implementation project(':repository')
     implementation project(':ui-common')
     implementation project(':ui-settings')
     implementation project(':ui-timeline')

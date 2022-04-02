@@ -15,7 +15,6 @@ import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.SyncLaunches
-import sk.kasper.domain.repository.LaunchRepository
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.notification.showLaunchNotificationJob.ShowLaunchNotificationWorkerScheduler
@@ -35,7 +34,7 @@ class LaunchNotificationCheckerTest {
     private lateinit var workScheduler: ShowLaunchNotificationWorkerScheduler
 
     @Mock
-    private lateinit var repository: LaunchRepository
+    private lateinit var repository: sk.kasper.repository.LaunchRepository
 
     @Mock
     private lateinit var syncLaunches: SyncLaunches

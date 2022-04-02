@@ -19,7 +19,7 @@ private val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JA
 @RunWith(MockitoJUnitRunner::class)
 class LaunchRepositoryTest {
 
-    private lateinit var repo: LaunchRepositoryImpl
+    private lateinit var repo: sk.kasper.repository.impl.LaunchRepositoryImpl
 
     @Mock
     private lateinit var launchDao: LaunchDao
@@ -51,7 +51,7 @@ class LaunchRepositoryTest {
     }
 
     inner class LaunchRepositoryUnderTest
-        : LaunchRepositoryImpl(launchDao) {
+        : sk.kasper.repository.impl.LaunchRepositoryImpl(launchDao) {
 
         override fun getCurrentDateTime(): LocalDateTime {
             return LOCAL_DATE_TIME_NOW

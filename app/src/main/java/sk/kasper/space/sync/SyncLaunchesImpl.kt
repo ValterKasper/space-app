@@ -1,7 +1,6 @@
 package sk.kasper.space.sync
 
 import android.content.SharedPreferences
-import androidx.annotation.WorkerThread
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import sk.kasper.database.SpaceRoomDatabase
@@ -14,7 +13,6 @@ import sk.kasper.space.api.entity.RESPONSE_CODE_BAD_API_KEY
 import timber.log.Timber
 import javax.inject.Inject
 
-// TODO D: change to repository and move to repository module
 class SyncLaunchesImpl @Inject constructor(
     private val service: RemoteApi,
     private val database: SpaceRoomDatabase,
@@ -28,7 +26,6 @@ class SyncLaunchesImpl @Inject constructor(
 
     private val syncListeners: MutableList<SyncLaunches.SyncListener> = mutableListOf()
 
-    @WorkerThread
     override suspend fun doSync(force: Boolean): Boolean {
         mutex.withLock {
             if (areLaunchesFetchedAlready() && !force) {

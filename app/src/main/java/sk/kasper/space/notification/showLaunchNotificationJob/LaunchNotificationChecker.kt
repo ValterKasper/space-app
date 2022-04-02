@@ -7,8 +7,8 @@ import kotlinx.coroutines.launch
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.model.SyncLaunches
-import sk.kasper.domain.repository.LaunchRepository
 import sk.kasper.entity.Launch
+import sk.kasper.repository.LaunchRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
