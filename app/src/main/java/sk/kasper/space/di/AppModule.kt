@@ -9,10 +9,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import sk.kasper.domain.model.SyncLaunches
+import sk.kasper.repository.SyncLaunchesRepository
 import sk.kasper.space.mapper.RocketMapperImpl
 import sk.kasper.space.mapper.TagMapperImpl
-import sk.kasper.space.sync.SyncLaunchesImpl
+import sk.kasper.space.sync.SyncLaunchesRepositoryImpl
 import sk.kasper.space.utils.GoogleApiHelperImpl
 import sk.kasper.space.work.AppWorkerFactory
 import sk.kasper.ui_common.rocket.RocketMapper
@@ -34,7 +34,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesSyncLaunches(syncLaunchesImpl: SyncLaunchesImpl): SyncLaunches = syncLaunchesImpl
+    fun providesSyncLaunches(syncLaunchesImpl: SyncLaunchesRepositoryImpl): SyncLaunchesRepository = syncLaunchesImpl
 
     @Provides
     @Singleton

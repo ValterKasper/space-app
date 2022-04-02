@@ -1,6 +1,6 @@
-package sk.kasper.domain.model
+package sk.kasper.repository
 
-interface SyncLaunches {
+interface SyncLaunchesRepository {
 
     suspend fun doSync(force: Boolean = true): Boolean
     fun addSyncListener(syncListener: SyncListener)

@@ -7,16 +7,18 @@ import sk.kasper.database.SpaceRoomDatabase
 import sk.kasper.database.entity.LaunchAndTagsEntity
 import sk.kasper.database.entity.PhotoLaunchEntity
 import sk.kasper.database.entity.TagEntity
-import sk.kasper.domain.model.SyncLaunches
+import sk.kasper.repository.SyncLaunchesRepository
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.api.entity.RESPONSE_CODE_BAD_API_KEY
 import timber.log.Timber
 import javax.inject.Inject
 
-class SyncLaunchesImpl @Inject constructor(
+// TODO D: move to repository module
+class SyncLaunchesRepositoryImpl @Inject constructor(
     private val service: RemoteApi,
     private val database: SpaceRoomDatabase,
-    private val preferences: SharedPreferences) : SyncLaunches {
+    private val preferences: SharedPreferences
+) : SyncLaunchesRepository {
 
     companion object {
         const val KEY_LAUNCHES_FETCHED_ALREADY = "launches-fetched-already"
@@ -24,7 +26,7 @@ class SyncLaunchesImpl @Inject constructor(
 
     private val mutex = Mutex()
 
-    private val syncListeners: MutableList<SyncLaunches.SyncListener> = mutableListOf()
+    private val syncListeners: MutableList<SyncLaunchesRepository.SyncListener> = mutableListOf()
 
     override suspend fun doSync(force: Boolean): Boolean {
         mutex.withLock {
@@ -80,11 +82,11 @@ class SyncLaunchesImpl @Inject constructor(
         }
     }
 
-    override fun addSyncListener(syncListener: SyncLaunches.SyncListener) {
+    override fun addSyncListener(syncListener: SyncLaunchesRepository.SyncListener) {
         syncListeners.add(syncListener)
     }
 
-    override fun removeSyncListener(syncListener: SyncLaunches.SyncListener) {
+    override fun removeSyncListener(syncListener: SyncLaunchesRepository.SyncListener) {
         syncListeners.remove(syncListener)
     }
 

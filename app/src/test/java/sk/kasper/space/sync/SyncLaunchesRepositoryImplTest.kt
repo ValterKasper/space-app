@@ -25,12 +25,12 @@ import sk.kasper.entity.Tag
 import sk.kasper.space.api.RemoteApi
 import sk.kasper.space.api.entity.*
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
-import sk.kasper.space.sync.SyncLaunchesImpl.Companion.KEY_LAUNCHES_FETCHED_ALREADY
+import sk.kasper.space.sync.SyncLaunchesRepositoryImpl.Companion.KEY_LAUNCHES_FETCHED_ALREADY
 
 private const val LAUNCH_SITE_ID = 1L
 
 @RunWith(MockitoJUnitRunner::class)
-class SyncLaunchesImplTest {
+class SyncLaunchesRepositoryImplTest {
 
     @Mock
     private lateinit var launchDao: LaunchDao
@@ -62,7 +62,7 @@ class SyncLaunchesImplTest {
     @Mock
     private lateinit var launchNotificationChecker: LaunchNotificationChecker
 
-    private lateinit var syncLaunches: SyncLaunchesImpl
+    private lateinit var syncLaunches: SyncLaunchesRepositoryImpl
 
     @Before
     fun setUp() {
@@ -72,7 +72,7 @@ class SyncLaunchesImplTest {
         whenever(database.tagDao()).thenReturn(tagDao)
         whenever(database.rocketDao()).thenReturn(rocketDao)
 
-        syncLaunches = SyncLaunchesImpl(remoteApi, database, sharedPreferences)
+        syncLaunches = SyncLaunchesRepositoryImpl(remoteApi, database, sharedPreferences)
 
         whenever(sharedPreferences.edit()).thenReturn(editor)
         whenever(editor.putBoolean(ArgumentMatchers.eq(KEY_LAUNCHES_FETCHED_ALREADY), eq(true))).thenReturn(editor)

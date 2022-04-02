@@ -5,16 +5,17 @@ import androidx.work.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import sk.kasper.domain.model.SyncLaunches
+import sk.kasper.repository.SyncLaunchesRepository
 import sk.kasper.space.BuildConfig
 import sk.kasper.space.work.ChildWorkerFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class SyncWorker @AssistedInject constructor(
-        @Assisted appContext: Context,
-        @Assisted workerParams: WorkerParameters,
-        private val syncLaunches: SyncLaunches)
+    @Assisted appContext: Context,
+    @Assisted workerParams: WorkerParameters,
+    private val syncLaunchesRepository: SyncLaunchesRepository
+)
     : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -41,7 +42,7 @@ class SyncWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         Timber.d("doWork")
-        return if (syncLaunches.doSync(force = true)) {
+        return if (syncLaunchesRepository.doSync(force = true)) {
             Timber.d("doWork - success")
             Result.success()
         } else {

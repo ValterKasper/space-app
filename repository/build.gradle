@@ -21,7 +21,9 @@ dependencies {
     testImplementation libs.kotlin.coroutines.test
     implementation libs.kotlin.stdlib.jdk7
 
+    // TODO D: replace with standard java time
     implementation libs.threetenabp.threetenabp
+    testImplementation libs.threetenabp.test
 
     testImplementation libs.junit
     testImplementation libs.mockito.kotlin

@@ -1,4 +1,4 @@
-package sk.kasper.space.repository
+package sk.kasper.repository
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -13,13 +13,14 @@ import org.threeten.bp.Month
 import sk.kasper.database.dao.LaunchDao
 import sk.kasper.database.entity.LaunchDetailEntity
 import sk.kasper.entity.utils.toTimeStamp
+import sk.kasper.repository.impl.LaunchRepositoryImpl
 
 private val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
 
 @RunWith(MockitoJUnitRunner::class)
 class LaunchRepositoryTest {
 
-    private lateinit var repo: sk.kasper.repository.impl.LaunchRepositoryImpl
+    private lateinit var repo: LaunchRepositoryImpl
 
     @Mock
     private lateinit var launchDao: LaunchDao
@@ -50,8 +51,8 @@ class LaunchRepositoryTest {
         `when`(launchDao.getLaunches()).thenReturn(list)
     }
 
-    inner class LaunchRepositoryUnderTest
-        : sk.kasper.repository.impl.LaunchRepositoryImpl(launchDao) {
+    internal inner class LaunchRepositoryUnderTest
+        : LaunchRepositoryImpl(launchDao) {
 
         override fun getCurrentDateTime(): LocalDateTime {
             return LOCAL_DATE_TIME_NOW

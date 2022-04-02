@@ -14,8 +14,8 @@ import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.utils.createLaunch
+import sk.kasper.repository.SyncLaunchesRepository
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.notification.showLaunchNotificationJob.ShowLaunchNotificationWorkerScheduler
 
@@ -37,7 +37,7 @@ class LaunchNotificationCheckerTest {
     private lateinit var repository: sk.kasper.repository.LaunchRepository
 
     @Mock
-    private lateinit var syncLaunches: SyncLaunches
+    private lateinit var syncLaunches: SyncLaunchesRepository
 
     @Test
     fun launchesChanged_launchInNearFutureInaccurateDate_shouldNotBeScheduled() = runTest {
@@ -117,7 +117,7 @@ class LaunchNotificationCheckerTest {
     }
 
     private fun callOnSync() {
-        val argumentCaptor = argumentCaptor<SyncLaunches.SyncListener> { }
+        val argumentCaptor = argumentCaptor<SyncLaunchesRepository.SyncListener> { }
         verify(syncLaunches).addSyncListener(argumentCaptor.capture())
         argumentCaptor.firstValue.onSync()
     }

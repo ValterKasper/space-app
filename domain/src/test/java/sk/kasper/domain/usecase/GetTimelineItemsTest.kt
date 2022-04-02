@@ -13,13 +13,13 @@ import org.mockito.junit.MockitoJUnitRunner
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.model.SuccessResponse
-import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.domain.usecase.impl.GetTimelineItemsImpl
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.entity.Launch
 import sk.kasper.entity.Rocket
 import sk.kasper.entity.Tag
 import sk.kasper.repository.LaunchRepository
+import sk.kasper.repository.SyncLaunchesRepository
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -31,7 +31,7 @@ class GetTimelineItemsTest {
     private lateinit var repo: LaunchRepository
 
     @Mock
-    private lateinit var sync: SyncLaunches
+    private lateinit var sync: SyncLaunchesRepository
 
     private companion object {
         private const val LAUNCH_ID_1 = "ID 1"

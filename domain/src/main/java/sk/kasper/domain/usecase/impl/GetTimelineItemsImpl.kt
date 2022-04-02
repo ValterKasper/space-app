@@ -1,18 +1,22 @@
 package sk.kasper.domain.usecase.impl
 
-import sk.kasper.domain.model.*
+import sk.kasper.domain.model.ErrorResponse
+import sk.kasper.domain.model.FilterSpec
+import sk.kasper.domain.model.Response
+import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.GetTimelineItems
 import sk.kasper.entity.Launch
 import sk.kasper.repository.LaunchRepository
+import sk.kasper.repository.SyncLaunchesRepository
 import javax.inject.Inject
 
 internal class GetTimelineItemsImpl @Inject constructor(
     private val launchRepository: LaunchRepository,
-    private val syncLaunches: SyncLaunches,
+    private val syncLaunchesRepository: SyncLaunchesRepository,
 ) : GetTimelineItems {
 
     override suspend operator fun invoke(filterSpec: FilterSpec): Response<List<Launch>> {
-        return if (syncLaunches.doSync(force = false)) {
+        return if (syncLaunchesRepository.doSync(force = false)) {
             SuccessResponse(
                 filterLaunches(
                     launchRepository.getLaunches(),

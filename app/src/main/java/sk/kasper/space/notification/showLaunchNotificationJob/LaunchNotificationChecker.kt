@@ -6,9 +6,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
-import sk.kasper.domain.model.SyncLaunches
 import sk.kasper.entity.Launch
 import sk.kasper.repository.LaunchRepository
+import sk.kasper.repository.SyncLaunchesRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,9 +20,9 @@ import javax.inject.Singleton
 @Singleton
 open class LaunchNotificationChecker @Inject constructor(
     private val repository: LaunchRepository,
-    private val syncLaunches: SyncLaunches,
+    private val syncLaunchesRepository: SyncLaunchesRepository,
     private val showLaunchNotificationWorkerScheduler: ShowLaunchNotificationWorkerScheduler
-) : DefaultLifecycleObserver, SyncLaunches.SyncListener {
+) : DefaultLifecycleObserver, SyncLaunchesRepository.SyncListener {
 
     companion object {
         private val MIN_DURATION_AFTER_NOW_FOR_SCHEDULING: Duration = Duration.ofHours(2)
@@ -39,11 +39,11 @@ open class LaunchNotificationChecker @Inject constructor(
     }
 
     override fun onStart(owner: LifecycleOwner) {
-        syncLaunches.addSyncListener(this)
+        syncLaunchesRepository.addSyncListener(this)
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        syncLaunches.removeSyncListener(this)
+        syncLaunchesRepository.removeSyncListener(this)
     }
 
     private fun checkLaunches(launches: List<Launch>) {
