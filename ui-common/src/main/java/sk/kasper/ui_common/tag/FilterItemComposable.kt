@@ -45,7 +45,7 @@ fun <T : FilterItem> FilterItemComposable(
             indication = null
         )
     Text(
-        stringResource(filterItem.label).capitalize(Locale.getDefault()),
+        stringResource(filterItem.label).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
         style = MaterialTheme.typography.body2.copy(
             fontFamily = SourceSansPro
         ),

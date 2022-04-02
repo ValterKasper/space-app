@@ -107,6 +107,7 @@ dependencies {
     implementation project(':ui-timeline')
     implementation project(':ui-playground')
     implementation project(':ui-launch')
+    implementation project(':database-android')
 
     implementation libs.android.material
 

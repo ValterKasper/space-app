@@ -197,7 +197,7 @@ class ComposePlaygroundFragment : BaseFragment() {
                     .fillMaxWidth()
                     .background(Color.Green)
             ) {
-                BoxWithConstraints() {
+                BoxWithConstraints {
                     Text("My minWidth is $minWidth while my maxWidth is $maxWidth")
                 }
             }
@@ -236,7 +236,7 @@ class ComposePlaygroundFragment : BaseFragment() {
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                                 style = MaterialTheme.typography.button,
-                                text = screen.text.toUpperCase(Locale.getDefault())
+                                text = screen.text.uppercase(Locale.getDefault())
                             )
                         }
                     }
@@ -306,7 +306,7 @@ class ComposePlaygroundFragment : BaseFragment() {
             "overline" to MaterialTheme.typography.overline,
         ).forEach { (name, textStyle) ->
             Text(
-                text = name.capitalize(Locale.getDefault()),
+                text = name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
                 style = textStyle,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -346,12 +346,12 @@ class ComposePlaygroundFragment : BaseFragment() {
                             modifier = Modifier
                                 .weight(1f)
                                 .align(Top),
-                            text = name.capitalize(Locale.getDefault()),
+                            text = name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
                             style = MaterialTheme.typography.body1
                         )
                         Text(
                             modifier = Modifier.align(Bottom),
-                            text = "0x" + color.toArgb().toUInt().toString(16).toUpperCase(
+                            text = "0x" + color.toArgb().toUInt().toString(16).uppercase(
                                 Locale.getDefault()
                             ),
                             style = MaterialTheme.typography.body2
@@ -377,13 +377,13 @@ class ComposePlaygroundFragment : BaseFragment() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TextButton(onClick = { }) {
-                    Text(text = "text".toUpperCase(Locale.getDefault()))
+                    Text(text = "text".uppercase(Locale.getDefault()))
                 }
                 OutlinedButton(onClick = { }) {
-                    Text(text = "outlined".toUpperCase(Locale.getDefault()))
+                    Text(text = "outlined".uppercase(Locale.getDefault()))
                 }
                 Button(onClick = { }) {
-                    Text(text = "button".toUpperCase(Locale.getDefault()))
+                    Text(text = "button".uppercase(Locale.getDefault()))
                 }
             }
 

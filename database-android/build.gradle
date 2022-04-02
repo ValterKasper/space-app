@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk buildConfig.compileSdk
+
+    defaultConfig {
+        minSdk buildConfig.minSdk
+        targetSdk buildConfig.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        staging {
+            initWith debug
+        }
+    }
+    compileOptions {
+        sourceCompatibility buildConfig.javaVersion
+        targetCompatibility buildConfig.javaVersion
+    }
+    kotlinOptions {
+        jvmTarget = buildConfig.jvmTarget
+    }
+}
+
+dependencies {
+    api project(":database")
+
+    implementation libs.dagger.hilt.android
+    kapt libs.dagger.hilt.compiler
+
+    implementation libs.androidx.room.ktx
+    implementation libs.androidx.room.runtime
+    kapt libs.androidx.room.compiler
+}

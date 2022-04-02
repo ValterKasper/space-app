@@ -23,7 +23,7 @@ fun Section(text: String) {
         contentAlignment = Alignment.CenterStart
     ) {
         Text(
-            text = text.capitalize(Locale.getDefault()),
+            text = text.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
             style = MaterialTheme.typography.section,
         )
     }

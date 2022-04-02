@@ -11,6 +11,8 @@ java {
 
 dependencies {
     implementation project(':entity')
+    implementation project(":database")
+
     implementation libs.dagger.hilt.core
     kapt libs.dagger.hilt.compiler
 

@@ -33,6 +33,9 @@ open class SpaceApp : Application() {
     lateinit var database: Database
 
     @Inject
+    lateinit var carDatabase: sk.kasper.database.SpaceRoomDatabase
+
+    @Inject
     lateinit var settingsManager: SettingsManager
 
     @Inject

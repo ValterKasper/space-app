@@ -1,6 +1,8 @@
 include ':app'
 include ':domain'
 include ':repository'
+include ':database'
+include ':database-android'
 include ':entity'
 include ':ui-common'
 include ':ui-settings'

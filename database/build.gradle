@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+java {
+    sourceCompatibility buildConfig.javaVersion
+    targetCompatibility buildConfig.javaVersion
+}
+
+dependencies {
+
+    implementation libs.androidx.room.ktx
+//    implementation libs.androidx.room.runtime
+
+}
