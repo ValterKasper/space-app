@@ -29,6 +29,6 @@ abstract class LaunchSiteDao {
     abstract fun getLaunchSiteByLaunchId(launchId: String): LaunchSiteEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertAll(vararg launchSiteEntity: LaunchSiteEntity): List<Long>
+    abstract suspend fun insertAll(vararg launchSiteEntity: LaunchSiteEntity): List<Long>
 
 }

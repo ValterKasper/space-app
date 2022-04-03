@@ -1,28 +1,24 @@
-package sk.kasper.space.sync
+package sk.kasper.repository.impl
 
-import android.content.SharedPreferences
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import sk.kasper.database.SpaceRoomDatabase
+import sk.kasper.base.SettingKey
+import sk.kasper.base.SettingsManager
+import sk.kasper.base.logger.Logger
+import sk.kasper.database.SpaceDatabase
 import sk.kasper.database.entity.LaunchAndTagsEntity
 import sk.kasper.database.entity.PhotoLaunchEntity
 import sk.kasper.database.entity.TagEntity
 import sk.kasper.remote.RemoteApi
 import sk.kasper.remote.entity.RESPONSE_CODE_BAD_API_KEY
 import sk.kasper.repository.SyncLaunchesRepository
-import timber.log.Timber
 import javax.inject.Inject
 
-// TODO D: move to repository module
-class SyncLaunchesRepositoryImpl @Inject constructor(
+internal class SyncLaunchesRepositoryImpl @Inject constructor(
     private val service: RemoteApi,
-    private val database: SpaceRoomDatabase,
-    private val preferences: SharedPreferences
+    private val database: SpaceDatabase,
+    private val settingsManager: SettingsManager
 ) : SyncLaunchesRepository {
-
-    companion object {
-        const val KEY_LAUNCHES_FETCHED_ALREADY = "launches-fetched-already"
-    }
 
     private val mutex = Mutex()
 
@@ -38,10 +34,10 @@ class SyncLaunchesRepositoryImpl @Inject constructor(
                 val response = service.timeline()
                 if (response.responseCode == RESPONSE_CODE_BAD_API_KEY) {
                     val errorMessage = "bad api key response"
-                    Timber.e(errorMessage)
+                    Logger.loge("SYNC", errorMessage, null)
                     throw IllegalStateException(errorMessage)
                 } else {
-                    preferences.edit().putBoolean(KEY_LAUNCHES_FETCHED_ALREADY, true).apply()
+                    settingsManager.setBoolean(SettingKey.LAUNCHES_FETCHED_ALREADY, true)
 
                     val launchSites = response.launchSites.orEmpty().map { it.toLaunchSiteEntity() }
                     val rockets = response.rockets.orEmpty().map { it.toRocketEntity() }
@@ -60,22 +56,23 @@ class SyncLaunchesRepositoryImpl @Inject constructor(
                         remoteLaunch.photos.orEmpty().map { photoId -> PhotoLaunchEntity(photoId, remoteLaunch.id) }
                     }.flatten()
 
-                    database.runInTransaction {
-                        database.launchDao().clear()
-                        database.launchSiteDao().insertAll(*launchSites.toTypedArray())
-                        database.rocketDao().insertAll(*rockets.toTypedArray())
-                        database.launchDao().insertAll(*launchAndTagEntities.map { it.launch }.toTypedArray())
-                        database.tagDao().insertAll(*tagEntities.toTypedArray())
-                        database.photoDao().insertAll(*photoEntities.toTypedArray())
-                        database.photoDao().insertAll(*photoLaunchEntities.toTypedArray())
-                    }
+                    // TODO D: revert
+                    // database.runInTransaction {
+                    database.launchDao().clear()
+                    database.launchSiteDao().insertAll(*launchSites.toTypedArray())
+                    database.rocketDao().insertAll(*rockets.toTypedArray())
+                    database.launchDao().insertAll(*launchAndTagEntities.map { it.launch }.toTypedArray())
+                    database.tagDao().insertAll(*tagEntities.toTypedArray())
+                    database.photoDao().insertAll(*photoEntities.toTypedArray())
+                    database.photoDao().insertAll(*photoLaunchEntities.toTypedArray())
+//                    }
 
                     syncListeners.forEach {
                         it.onSync()
                     }
                 }
             } catch (e: Exception) {
-                Timber.e(e)
+                Logger.loge("SYNC", "", e)
                 return false
             }
             return true
@@ -90,6 +87,6 @@ class SyncLaunchesRepositoryImpl @Inject constructor(
         syncListeners.remove(syncListener)
     }
 
-    private fun areLaunchesFetchedAlready() = preferences.getBoolean(KEY_LAUNCHES_FETCHED_ALREADY, false)
+    private fun areLaunchesFetchedAlready() = settingsManager.getBoolean(SettingKey.LAUNCHES_FETCHED_ALREADY)
 
 }

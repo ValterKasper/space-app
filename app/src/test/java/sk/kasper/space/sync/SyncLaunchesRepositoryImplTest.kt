@@ -16,7 +16,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.eq
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
-import sk.kasper.database.SpaceRoomDatabase
+import sk.kasper.database.SpaceDatabase
 import sk.kasper.database.dao.*
 import sk.kasper.database.entity.PhotoEntity
 import sk.kasper.database.entity.PhotoLaunchEntity
@@ -24,11 +24,13 @@ import sk.kasper.database.entity.TagEntity
 import sk.kasper.entity.Tag
 import sk.kasper.remote.RemoteApi
 import sk.kasper.remote.entity.*
+import sk.kasper.repository.impl.SyncLaunchesRepositoryImpl
+import sk.kasper.repository.impl.SyncLaunchesRepositoryImpl.Companion.KEY_LAUNCHES_FETCHED_ALREADY
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
-import sk.kasper.space.sync.SyncLaunchesRepositoryImpl.Companion.KEY_LAUNCHES_FETCHED_ALREADY
 
 private const val LAUNCH_SITE_ID = 1L
 
+// TODO D: fix
 @RunWith(MockitoJUnitRunner::class)
 class SyncLaunchesRepositoryImplTest {
 
@@ -57,7 +59,7 @@ class SyncLaunchesRepositoryImplTest {
     private lateinit var editor: SharedPreferences.Editor
 
     @Mock
-    private lateinit var database: SpaceRoomDatabase
+    private lateinit var database: SpaceDatabase
 
     @Mock
     private lateinit var launchNotificationChecker: LaunchNotificationChecker
@@ -103,12 +105,12 @@ class SyncLaunchesRepositoryImplTest {
             )
         )
         whenever(remoteApi.timeline()).thenReturn(RemoteLaunchesResponse(
-                0,
-                listOf(RemoteLaunch(launchId, 321, "Launch", null, null, null, null, null, null, null, true, true, LAUNCH_SITE_ID, listOf(photoId), listOf(RemoteTag(
-                    Tag.ISS)), remoteFalconInfo)),
-                listOf(RemoteLaunchSite(LAUNCH_SITE_ID, "Site", "Pad", "URL", 10.0, 12.0)),
-                listOf(RemoteRocket(1L, "", 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1, null)),
-                listOf(RemotePhoto(photoId, "ThumbnailSizeUrl", "FullSizeUrl"))))
+            0,
+            listOf(RemoteLaunch(launchId, 321, "Launch", null, null, null, null, null, null, null, true, true, LAUNCH_SITE_ID, listOf(photoId), listOf(RemoteTag(
+                Tag.ISS)), remoteFalconInfo)),
+            listOf(RemoteLaunchSite(LAUNCH_SITE_ID, "Site", "Pad", "URL", 10.0, 12.0)),
+            listOf(RemoteRocket(1L, "", 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1, null)),
+            listOf(RemotePhoto(photoId, "ThumbnailSizeUrl", "FullSizeUrl"))))
 
         assertTrue(syncLaunches.doSync(true))
 

@@ -6,7 +6,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import sk.kasper.base.Flags
-import sk.kasper.repository.SyncLaunchesRepository
+import sk.kasper.domain.model.ErrorResponse
+import sk.kasper.domain.model.SuccessResponse
+import sk.kasper.domain.usecase.RefreshTimelineItems
 import sk.kasper.space.work.ChildWorkerFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -14,7 +16,7 @@ import java.util.concurrent.TimeUnit
 class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val syncLaunchesRepository: SyncLaunchesRepository
+    private val refreshTimelineItems: RefreshTimelineItems
 )
     : CoroutineWorker(appContext, workerParams) {
 
@@ -42,12 +44,15 @@ class SyncWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         Timber.d("doWork")
-        return if (syncLaunchesRepository.doSync(force = true)) {
-            Timber.d("doWork - success")
-            Result.success()
-        } else {
-            Timber.d("doWork - failure")
-            Result.failure()
+        return when (refreshTimelineItems()) {
+            is SuccessResponse -> {
+                Timber.d("doWork - success")
+                Result.success()
+            }
+            is ErrorResponse -> {
+                Timber.d("doWork - failure")
+                Result.failure()
+            }
         }
     }
 

@@ -13,7 +13,7 @@ interface RocketDao {
     fun insert(rocket: RocketEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg rocketEntity: RocketEntity): List<Long>
+    suspend fun insertAll(vararg rocketEntity: RocketEntity): List<Long>
 
     @Query("SELECT * FROM rocket")
     fun loadRockets(): List<RocketEntity>

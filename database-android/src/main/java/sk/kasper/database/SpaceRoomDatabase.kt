@@ -18,4 +18,4 @@ import sk.kasper.database.entity.*
     version = 6,
     exportSchema = false
 )
-abstract class SpaceRoomDatabase : RoomDatabase(), SpaceDatabase
+internal abstract class SpaceRoomDatabase : RoomDatabase(), SpaceDatabase

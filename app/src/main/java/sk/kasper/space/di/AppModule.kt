@@ -9,10 +9,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import sk.kasper.repository.SyncLaunchesRepository
 import sk.kasper.space.mapper.RocketMapperImpl
 import sk.kasper.space.mapper.TagMapperImpl
-import sk.kasper.space.sync.SyncLaunchesRepositoryImpl
 import sk.kasper.space.utils.GoogleApiHelperImpl
 import sk.kasper.space.work.AppWorkerFactory
 import sk.kasper.ui_common.rocket.RocketMapper
@@ -31,10 +29,6 @@ class AppModule {
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
-
-    @Provides
-    @Singleton
-    fun providesSyncLaunches(syncLaunchesImpl: SyncLaunchesRepositoryImpl): SyncLaunchesRepository = syncLaunchesImpl
 
     @Provides
     @Singleton

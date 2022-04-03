@@ -24,9 +24,9 @@ class RemoteApiModule {
         flags: Flags
     ): RemoteApi {
         return if (flags.bootstrapResponseApi) {
-            createRemoteApi(settingsManager, flags)
-        } else {
             fakeRemoteApi.get()
+        } else {
+            createRemoteApi(settingsManager, flags)
         }
     }
 

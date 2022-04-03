@@ -11,10 +11,10 @@ import sk.kasper.database.entity.PhotoLaunchEntity
 interface PhotoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg photoEntity: PhotoEntity): List<Long>
+    suspend fun insertAll(vararg photoEntity: PhotoEntity): List<Long>
 
     @Insert
-    fun insertAll(vararg photoLaunchEntity: PhotoLaunchEntity)
+    suspend fun insertAll(vararg photoLaunchEntity: PhotoLaunchEntity)
 
     @Query(
             """

@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import sk.kasper.database.SpaceDatabase
 import sk.kasper.database.SpaceRoomDatabase
 import javax.inject.Singleton
 
@@ -16,22 +17,22 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun providesDatabase(@ApplicationContext context: Context): SpaceRoomDatabase {
+    internal fun providesDatabase(@ApplicationContext context: Context): SpaceDatabase {
         return Room.databaseBuilder(context, SpaceRoomDatabase::class.java, "local-database")
             .fallbackToDestructiveMigration()
             .build()
     }
 
     @Provides
-    fun providesLaunchDao(database: SpaceRoomDatabase) = database.launchDao()
+    internal fun providesLaunchDao(database: SpaceDatabase) = database.launchDao()
 
     @Provides
-    fun providesLaunchSiteDao(database: SpaceRoomDatabase) = database.launchSiteDao()
+    internal fun providesLaunchSiteDao(database: SpaceDatabase) = database.launchSiteDao()
 
     @Provides
-    fun providesRocketDao(database: SpaceRoomDatabase) = database.rocketDao()
+    internal fun providesRocketDao(database: SpaceDatabase) = database.rocketDao()
 
     @Provides
-    fun providesPhotoDao(database: SpaceRoomDatabase) = database.photoDao()
+    internal fun providesPhotoDao(database: SpaceDatabase) = database.photoDao()
 
 }

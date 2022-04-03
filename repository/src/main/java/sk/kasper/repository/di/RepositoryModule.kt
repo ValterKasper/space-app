@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import sk.kasper.repository.*
 import sk.kasper.repository.impl.*
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -30,5 +31,10 @@ class RepositoryModule {
     @Provides
     internal fun providesLaunchSiteRepository(launchSiteRepositoryImpl: LaunchSiteRepositoryImpl): LaunchSiteRepository =
         launchSiteRepositoryImpl
+
+    @Provides
+    @Singleton
+    internal fun providesSyncLaunches(syncLaunchesImpl: SyncLaunchesRepositoryImpl): SyncLaunchesRepository =
+        syncLaunchesImpl
 
 }

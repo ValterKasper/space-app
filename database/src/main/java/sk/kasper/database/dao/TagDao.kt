@@ -19,6 +19,6 @@ interface TagDao {
     suspend fun getTagsByType(type: Int): List<TagEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg tags: TagEntity)
+    suspend fun insertAll(vararg tags: TagEntity)
 
 }

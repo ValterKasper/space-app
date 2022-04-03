@@ -12,6 +12,7 @@ import dagger.hilt.android.HiltAndroidApp
 import sk.kasper.base.Flags
 import sk.kasper.base.SettingKey
 import sk.kasper.base.SettingsManager
+import sk.kasper.base.logger.Logger
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.sync.SyncWorker
 import sk.kasper.ui_common.analytics.Analytics
@@ -41,6 +42,18 @@ open class SpaceApp : Application() {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            // TODO D: refactor
+            Logger.loge = { tag, msg, e ->
+                if (msg.isEmpty()) {
+                    Timber.tag(tag).e(e)
+                } else {
+                    if (e == null) {
+                        Timber.tag(tag).e(msg)
+                    } else {
+                        Timber.tag(tag).e(e, msg)
+                    }
+                }
+            }
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
         } else {
             Timber.plant(CrashReportingTree())

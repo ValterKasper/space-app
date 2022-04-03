@@ -155,6 +155,7 @@ internal class SettingsManagerImpl @Inject constructor(@ApplicationContext priva
         SettingKey.SHOW_LAUNCH_NOTIFICATION to true,
         SettingKey.DURATION_BEFORE_NOTIFICATION_IS_SHOWN to 60,
         SettingKey.API_ENDPOINT to PRODUCTION,
+        SettingKey.LAUNCHES_FETCHED_ALREADY to false,
     )
 
     private fun getSettingKeyFromSharedPreferenceKey(key: String): SettingKey {
