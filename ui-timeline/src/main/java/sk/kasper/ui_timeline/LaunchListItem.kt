@@ -3,9 +3,9 @@ package sk.kasper.ui_timeline
 import androidx.annotation.DrawableRes
 import org.threeten.bp.LocalDateTime
 import sk.kasper.entity.Launch
-import sk.kasper.ui_common.rocket.RocketMapper
+import sk.kasper.ui_common.mapper.MapToUiTag
+import sk.kasper.ui_common.mapper.RocketMapper
 import sk.kasper.ui_common.tag.FilterTag
-import sk.kasper.ui_common.tag.MapToUiTag
 
 data class LaunchListItem(
     val id: String,

@@ -19,7 +19,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import org.threeten.bp.Duration
 import sk.kasper.entity.utils.toTimeStamp
 import sk.kasper.space.R
-import sk.kasper.ui_common.rocket.RocketMapper
+import sk.kasper.ui_common.mapper.RocketMapper
 import sk.kasper.ui_common.utils.RoundedSquareLetterProvider
 import sk.kasper.ui_common.utils.RoundedSquareTransformation
 import sk.kasper.ui_common.utils.toPixels

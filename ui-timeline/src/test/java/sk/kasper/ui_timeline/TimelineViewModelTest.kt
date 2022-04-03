@@ -20,9 +20,9 @@ import sk.kasper.domain.usecase.GetTimelineItems
 import sk.kasper.domain.usecase.RefreshTimelineItems
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.entity.Launch
-import sk.kasper.ui_common.rocket.RocketMapper
-import sk.kasper.ui_common.tag.MapToDomainTag
-import sk.kasper.ui_common.tag.MapToUiTag
+import sk.kasper.ui_common.mapper.MapToDomainTag
+import sk.kasper.ui_common.mapper.MapToUiTag
+import sk.kasper.ui_common.mapper.RocketMapper
 
 @ExperimentalCoroutinesApi
 class TimelineViewModelTest {
