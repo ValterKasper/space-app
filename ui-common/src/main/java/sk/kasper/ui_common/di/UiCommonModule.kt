@@ -5,8 +5,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import sk.kasper.base.SettingsManager
-import sk.kasper.ui_common.rocket.RocketMapper
-import sk.kasper.ui_common.rocket.RocketMapperImpl
 import sk.kasper.ui_common.settings.SettingsManagerImpl
 import sk.kasper.ui_common.tag.MapToDomainTag
 import sk.kasper.ui_common.tag.MapToUiTag
@@ -27,9 +25,5 @@ internal class UiCommonModule {
     @Provides
     @Singleton
     internal fun providesMapToDomainTag(mapper: TagMapperImpl): MapToDomainTag = mapper
-
-    @Provides
-    @Singleton
-    internal fun providesRocketMapper(mapper: RocketMapperImpl): RocketMapper = mapper
 
 }
