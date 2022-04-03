@@ -9,7 +9,7 @@ import sk.kasper.domain.usecase.impl.*
 
 @InstallIn(SingletonComponent::class)
 @Module
-class DomainModule {
+internal class DomainModule {
 
     @Provides
     internal fun providesGetPhotos(getPhotosImpl: GetPhotosImpl): GetPhotos = getPhotosImpl

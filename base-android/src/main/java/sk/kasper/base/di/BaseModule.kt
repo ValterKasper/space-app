@@ -11,7 +11,7 @@ import sk.kasper.base.FlagsImpl
 
 @InstallIn(SingletonComponent::class)
 @Module
-class BaseModule {
+internal class BaseModule {
 
     @Provides
     internal fun providesFlags(): Flags = FlagsImpl

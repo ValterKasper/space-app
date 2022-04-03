@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class RepositoryModule {
+internal class RepositoryModule {
 
     @Provides
     internal fun providesRocketRepository(rocketRepositoryImpl: RocketRepositoryImpl): RocketRepository =

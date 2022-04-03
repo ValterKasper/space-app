@@ -9,7 +9,7 @@ import sk.kasper.ui_common.settings.SettingsManagerImpl
 
 @InstallIn(SingletonComponent::class)
 @Module
-class UiCommonModule {
+internal class UiCommonModule {
 
     @Provides
     internal fun bindsSettingsManager(impl: SettingsManagerImpl): SettingsManager = impl
