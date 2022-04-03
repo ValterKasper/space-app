@@ -46,4 +46,6 @@ dependencies {
     implementation libs.androidx.core
 
     implementation libs.androidx.preference
+
+    implementation libs.google.android.play.services.maps
 }

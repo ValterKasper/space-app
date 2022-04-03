@@ -126,8 +126,6 @@ dependencies {
 
     implementation libs.kotlin.stdlib.jdk7
 
-    implementation libs.google.android.play.services.maps
-
     androidTestImplementation libs.dagger.hilt.android
     kaptAndroidTest libs.dagger.hilt.android
     implementation libs.dagger.hilt.android

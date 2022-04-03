@@ -2,12 +2,12 @@ package sk.kasper.ui_launch.section
 
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import sk.kasper.base.GoogleApiHelper
 import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.usecase.GetLaunchSite
 import sk.kasper.entity.LaunchSite
 import sk.kasper.ui_launch.R
-import sk.kasper.ui_launch.usecase.GoogleApiHelper
 import javax.inject.Inject
 
 data class LaunchSizeState(

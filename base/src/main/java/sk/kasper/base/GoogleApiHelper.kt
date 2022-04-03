@@ -1,4 +1,4 @@
-package sk.kasper.ui_launch.usecase
+package sk.kasper.base
 
 interface GoogleApiHelper {
 
