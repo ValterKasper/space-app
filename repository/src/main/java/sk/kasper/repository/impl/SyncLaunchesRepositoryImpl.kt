@@ -34,7 +34,7 @@ internal class SyncLaunchesRepositoryImpl @Inject constructor(
                 val response = service.timeline()
                 if (response.responseCode == RESPONSE_CODE_BAD_API_KEY) {
                     val errorMessage = "bad api key response"
-                    Logger.loge("SYNC", errorMessage, null)
+                    Logger.e(errorMessage, null)
                     throw IllegalStateException(errorMessage)
                 } else {
                     settingsManager.setBoolean(SettingKey.LAUNCHES_FETCHED_ALREADY, true)
@@ -72,7 +72,7 @@ internal class SyncLaunchesRepositoryImpl @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Logger.loge("SYNC", "", e)
+                Logger.e("", e)
                 return false
             }
             return true

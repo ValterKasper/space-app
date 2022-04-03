@@ -13,12 +13,13 @@ import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
 import sk.kasper.base.SettingsManager
+import sk.kasper.domain.usecase.impl.ShowLaunchNotificationImpl
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.entity.Launch
-import sk.kasper.space.notification.NotificationsHelper
+import sk.kasper.space.notification.NotificationsHelperImpl
 
 @RunWith(MockitoJUnitRunner::class)
-class ShowLaunchNotificationWorkControllerTest {
+class ShowLaunchNotificationTest {
 
     companion object {
         val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
@@ -26,12 +27,12 @@ class ShowLaunchNotificationWorkControllerTest {
     }
 
     @Mock
-    private lateinit var notificationsHelper: NotificationsHelper
+    private lateinit var notificationsHelper: NotificationsHelperImpl
 
     @Mock
     private lateinit var settingsManager: SettingsManager
 
-    private lateinit var controller: ShowLaunchNotificationWorkController
+    private lateinit var controller: ShowLaunchNotificationImpl
 
     @Before
     fun setUp() {
@@ -106,7 +107,7 @@ class ShowLaunchNotificationWorkControllerTest {
     }
 
     private fun prepareController() {
-        controller = ShowLaunchNotificationWorkController(
+        controller = ShowLaunchNotificationImpl(
             { launchResponse!! },
             notificationsHelper,
             LOCAL_DATE_TIME_NOW,

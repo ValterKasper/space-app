@@ -43,16 +43,19 @@ open class SpaceApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
             // TODO D: refactor
-            Logger.loge = { tag, msg, e ->
+            Logger.e = { msg, e ->
                 if (msg.isEmpty()) {
-                    Timber.tag(tag).e(e)
+                    Timber.e(e)
                 } else {
                     if (e == null) {
-                        Timber.tag(tag).e(msg)
+                        Timber.e(msg)
                     } else {
-                        Timber.tag(tag).e(e, msg)
+                        Timber.e(e, msg)
                     }
                 }
+            }
+            Logger.d = { msg ->
+                Timber.d(msg)
             }
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
         } else {

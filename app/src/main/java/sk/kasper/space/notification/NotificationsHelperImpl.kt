@@ -17,6 +17,8 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.threeten.bp.Duration
+import sk.kasper.base.notification.LaunchNotificationInfo
+import sk.kasper.base.notification.NotificationsHelper
 import sk.kasper.entity.utils.toTimeStamp
 import sk.kasper.space.R
 import sk.kasper.ui_common.mapper.RocketMapper
@@ -26,10 +28,10 @@ import sk.kasper.ui_common.utils.toPixels
 import sk.kasper.ui_launch.LaunchFragmentArgs
 import javax.inject.Inject
 
-class NotificationsHelper @Inject constructor(
+class NotificationsHelperImpl @Inject constructor(
     private val rocketMapper: RocketMapper,
     @ApplicationContext context: Context
-) : ContextWrapper(context) {
+) : ContextWrapper(context), NotificationsHelper {
 
     companion object {
         private const val LAUNCHES_CHANNEL = "launches"
@@ -61,17 +63,21 @@ class NotificationsHelper @Inject constructor(
         notificationManager.createNotificationChannel(launchesChannel)
     }
 
-    fun showLaunchNotification(launchNotificationInfo: LaunchNotificationInfo) {
+    override fun showLaunchNotification(launchNotificationInfo: LaunchNotificationInfo) {
         if (launchNotificationInfo.missionName == null || launchNotificationInfo.rocketName == null) {
             return
         }
 
-        val formattedTime = DateUtils.formatDateTime(this, launchNotificationInfo.launchDateTime.toTimeStamp(), DateUtils.FORMAT_SHOW_TIME)
+        val formattedTime = DateUtils.formatDateTime(
+            this,
+            launchNotificationInfo.launchDateTime.toTimeStamp(),
+            DateUtils.FORMAT_SHOW_TIME
+        )
         val title = resources.getString(R.string.launch_x, launchNotificationInfo.rocketName)
         val text = resources.getString(R.string.mission_x_at_x, launchNotificationInfo.missionName, formattedTime)
         val notificationDuration = Duration.ofHours(2).toMillis()
         val timeoutAfter = launchNotificationInfo.timeoutAfter.toMillis()
-        val largeIconBitmap = getRocketLargeIcon(launchNotificationInfo.rocketId, launchNotificationInfo.rocketName)
+        val largeIconBitmap = getRocketLargeIcon(launchNotificationInfo.rocketId, launchNotificationInfo.rocketName!!)
 
         val whenMs = System.currentTimeMillis() + notificationDuration
 
@@ -89,21 +95,17 @@ class NotificationsHelper @Inject constructor(
 
         if (launchNotificationInfo.videoUrl != null) {
             builder.addAction(
-                    R.drawable.ic_live_tv,
-                    getString(R.string.video_stream),
-                    createPendingIntentForWebcast(launchNotificationInfo.videoUrl))
+                R.drawable.ic_live_tv,
+                getString(R.string.video_stream),
+                createPendingIntentForWebcast(launchNotificationInfo.videoUrl!!)
+            )
         }
 
         notify(launchNotificationInfo.id.toInt(), builder)
     }
 
-    fun notify(id: Int, notification: NotificationCompat.Builder) {
+    private fun notify(id: Int, notification: NotificationCompat.Builder) {
         notificationManager.notify(id, notification.build())
-    }
-
-    fun dismiss(id: Int) {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(id)
     }
 
     private fun getRocketLargeIcon(rocketId: Long?, rocketName: String): Bitmap {

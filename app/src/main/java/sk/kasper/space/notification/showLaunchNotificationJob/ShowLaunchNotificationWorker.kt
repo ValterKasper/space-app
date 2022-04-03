@@ -6,10 +6,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import org.threeten.bp.LocalDateTime
-import sk.kasper.base.SettingsManager
-import sk.kasper.domain.usecase.GetLaunch
+import sk.kasper.domain.usecase.ShowLaunchNotification
 import sk.kasper.entity.utils.toTimeStamp
-import sk.kasper.space.notification.NotificationsHelper
 import sk.kasper.space.work.ChildWorkerFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -17,10 +15,7 @@ import java.util.concurrent.TimeUnit
 class ShowLaunchNotificationWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val notificationsHelper: NotificationsHelper,
-    private val settingsManager: SettingsManager,
-    private val getLaunch: GetLaunch
-
+    private val showLaunchNotification: ShowLaunchNotification,
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -44,12 +39,7 @@ class ShowLaunchNotificationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val launchId = inputData.getString(LAUNCH_ID_KEY) ?: ""
-        ShowLaunchNotificationWorkController(
-            getLaunch,
-            notificationsHelper,
-            LocalDateTime.now(),
-            settingsManager
-        ).doWork(launchId)
+        showLaunchNotification(launchId)
         return Result.success()
     }
 

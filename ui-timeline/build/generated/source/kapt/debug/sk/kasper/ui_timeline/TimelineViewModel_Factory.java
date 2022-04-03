@@ -7,9 +7,9 @@ import javax.inject.Provider;
 import sk.kasper.base.SettingsManager;
 import sk.kasper.domain.usecase.GetTimelineItems;
 import sk.kasper.domain.usecase.RefreshTimelineItems;
-import sk.kasper.ui_common.mapper.RocketMapper;
 import sk.kasper.ui_common.mapper.MapToDomainTag;
 import sk.kasper.ui_common.mapper.MapToUiTag;
+import sk.kasper.ui_common.mapper.RocketMapper;
 
 @DaggerGenerated
 @Generated(

@@ -17,6 +17,9 @@ import javax.inject.Singleton
  */
 // TODO I: overenginered
 // TODO I: ako su pomenovane dlhozijuce komponent v inyvh android aplikaciach
+// TODO D: sprav UC GetLaunchChanges
+//  - zavoj tu metodu v app
+//  - prerob tuto metody na UC, vyhod vsetok stav
 @Singleton
 open class LaunchNotificationChecker @Inject constructor(
     private val repository: LaunchRepository,

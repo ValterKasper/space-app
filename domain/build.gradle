@@ -12,6 +12,7 @@ java {
 dependencies {
     implementation project(":repository")
     api project(':entity')
+    api project(':base')
 
     implementation libs.dagger.hilt.core
     kapt libs.dagger.hilt.compiler

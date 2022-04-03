@@ -1,4 +1,4 @@
-package sk.kasper.space.notification
+package sk.kasper.base.notification
 
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime

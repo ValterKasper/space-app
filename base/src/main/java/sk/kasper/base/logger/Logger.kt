@@ -2,6 +2,8 @@ package sk.kasper.base.logger
 
 object Logger {
 
-    var loge: (tag: String, msg: String, e: Exception?) -> Unit = { tag, msg, e -> Unit }
+    var e: (msg: String, e: Exception?) -> Unit = { msg, e -> }
+
+    var d: (msg: String) -> Unit = { msg -> }
 
 }
