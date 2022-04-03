@@ -20,7 +20,7 @@
         <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
 
         <activity
-            android:name=".mainactivity.MainActivity"
+            android:name=".MainActivity"
             android:theme="@style/SpaceAppTheme"
             android:exported="true">
 

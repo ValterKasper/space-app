@@ -12,7 +12,6 @@ import org.junit.Rule
 import sk.kasper.space.api.entity.RemoteLaunch
 import sk.kasper.space.api.entity.RemoteTag
 import sk.kasper.space.di.MockRemoteApi
-import sk.kasper.space.mainactivity.MainActivity
 import sk.kasper.space.robot.droid.LaunchDroid
 import timber.log.Timber
 import java.util.concurrent.TimeUnit

@@ -29,10 +29,3 @@ fun interface MapRocketToStringRes {
     operator fun invoke(rocketId: Long?): Int
 
 }
-
-fun interface MapFilterRocketToDomainRocket {
-
-    @StringRes
-    operator fun invoke(rocket: FilterRocket): Long
-
-}

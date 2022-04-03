@@ -1,13 +1,10 @@
-package sk.kasper.space.mapper
+package sk.kasper.ui_common.tag
 
 import sk.kasper.entity.Tag
-import sk.kasper.ui_common.tag.FilterTag
-import sk.kasper.ui_common.tag.MapToDomainTag
-import sk.kasper.ui_common.tag.MapToUiTag
 import javax.inject.Inject
 
 
-class TagMapperImpl @Inject constructor() : MapToUiTag, MapToDomainTag {
+internal class TagMapperImpl @Inject constructor() : MapToUiTag, MapToDomainTag {
 
     override fun invoke(tagId: Long): FilterTag {
         return when (tagId) {
@@ -35,7 +32,6 @@ class TagMapperImpl @Inject constructor() : MapToUiTag, MapToDomainTag {
             FilterTag.ROVER -> Tag.ROVER
             FilterTag.MARS -> Tag.MARS
             FilterTag.PROBE -> Tag.PROBE
-            else -> throw IllegalStateException("Unknown tag $tag")
         }
     }
 

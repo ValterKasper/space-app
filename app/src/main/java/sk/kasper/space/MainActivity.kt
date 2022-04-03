@@ -1,11 +1,10 @@
-package sk.kasper.space.mainactivity
+package sk.kasper.space
 
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
-import sk.kasper.space.R
 import sk.kasper.ui_common.utils.backpress.BackPressManager
 import javax.inject.Inject
 
