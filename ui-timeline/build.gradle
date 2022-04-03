@@ -19,9 +19,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        staging {
-            initWith debug
-        }
     }
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.get()

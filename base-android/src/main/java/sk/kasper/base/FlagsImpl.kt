@@ -10,4 +10,11 @@ internal object FlagsImpl : Flags {
 
     override val synIntervalHours: Long
         get() = BuildConfig.SYNC_INTERVAL_HOURS
+
+    override val bootstrapResponseApi: Boolean
+        get() = BuildConfig.BOOTSTRAP_RESPONSE_API
+
+    override val bootstrapResponseApiFileName: String
+        get() = BuildConfig.BOOTSTRAP_RESPONSE_API_FILE_NAME
+
 }

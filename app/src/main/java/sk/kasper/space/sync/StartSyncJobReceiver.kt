@@ -20,6 +20,10 @@ class StartSyncJobReceiver : BroadcastReceiver() {
                     get() = TODO("Not yet implemented")
                 override val synIntervalHours: Long
                     get() = 4
+                override val bootstrapResponseApi: Boolean
+                    get() = TODO("Not yet implemented")
+                override val bootstrapResponseApiFileName: String
+                    get() = TODO("Not yet implemented")
             })
         }
     }

@@ -52,12 +52,6 @@ android {
         debug {
             manifestPlaceholders += [usesCleartextTraffic: "true"]
         }
-        staging {
-            initWith debug
-            getIsDefault().set(true)
-            buildConfigField 'boolean', 'USE_FAKE_API', "true"
-            buildConfigField 'String', 'BOOTSTRAP_RESPONSE_API_FILE_NAME', "\"bootstrap_api_response.json\""
-        }
     }
     compileOptions {
         sourceCompatibility buildConfig.javaVersion
@@ -98,7 +92,7 @@ kapt {
 
 dependencies {
     implementation project(':domain')
-    // TODO D: get rid of
+    // TODO D: get rid of (because of sync that is in app module)
     implementation project(':repository')
 
     // TODO D: get rid of

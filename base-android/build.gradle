@@ -16,6 +16,8 @@ android {
 
         buildConfigField 'long', 'SYNC_INTERVAL_HOURS', '4'
         buildConfigField 'String', 'API_KEY', "\"${System.getenv("SPACE_APP_API_KEY")}\""
+        buildConfigField 'boolean', 'BOOTSTRAP_RESPONSE_API', "true"
+        buildConfigField 'String', 'BOOTSTRAP_RESPONSE_API_FILE_NAME', "\"bootstrap_api_response.json\""
     }
 
     buildTypes {
@@ -23,9 +25,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        staging {
-            initWith debug
-        }
+
     }
     compileOptions {
         sourceCompatibility buildConfig.javaVersion
