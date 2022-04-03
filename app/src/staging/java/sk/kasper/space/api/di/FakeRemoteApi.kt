@@ -8,9 +8,9 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import sk.kasper.entity.utils.toLocalDateTime
 import sk.kasper.entity.utils.toTimeStamp
+import sk.kasper.remote.RemoteApi
+import sk.kasper.remote.entity.RemoteLaunchesResponse
 import sk.kasper.space.BuildConfig
-import sk.kasper.space.api.RemoteApi
-import sk.kasper.space.api.entity.RemoteLaunchesResponse
 import sk.kasper.space.utils.readFileFromAssets
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,8 +18,7 @@ import javax.inject.Singleton
 private val BACK_TO_THE_FUTURE_OFFSET = Duration.of(4, ChronoUnit.HOURS)
 
 @Singleton
-class FakeRemoteApi @Inject constructor(@ApplicationContext private val context: Context) :
-    RemoteApi {
+class FakeRemoteApi @Inject constructor(@ApplicationContext private val context: Context) : RemoteApi {
 
     private val now = LocalDateTime.now()
 
@@ -30,12 +29,17 @@ class FakeRemoteApi @Inject constructor(@ApplicationContext private val context:
         )
 
         // Back to the future ©
-        val firstLaunchDateTime = originalResponse.launches!!.first().launchTs.toLocalDateTime()
+        val launches = originalResponse.launches!!
+        val firstLaunchDateTime = launches.first().launchTs.toLocalDateTime()
         val firstLaunchDurationOffset = Duration.between(firstLaunchDateTime, now)
         val launchDurationOffset = firstLaunchDurationOffset.plus(BACK_TO_THE_FUTURE_OFFSET)
 
         return originalResponse
-                .copy(launches = originalResponse.launches.map { it.copy(launchTs = it.launchTs.toLocalDateTime().plus(launchDurationOffset).toTimeStamp()) })
+            .copy(launches = launches.map {
+                it.copy(
+                    launchTs = it.launchTs.toLocalDateTime().plus(launchDurationOffset).toTimeStamp()
+                )
+            })
     }
 
 }

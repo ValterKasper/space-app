@@ -12,6 +12,7 @@ java {
 dependencies {
     implementation project(':entity')
     implementation project(":database")
+    implementation project(":remote")
 
     implementation libs.dagger.hilt.core
     kapt libs.dagger.hilt.compiler

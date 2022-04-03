@@ -7,9 +7,9 @@ import sk.kasper.database.SpaceRoomDatabase
 import sk.kasper.database.entity.LaunchAndTagsEntity
 import sk.kasper.database.entity.PhotoLaunchEntity
 import sk.kasper.database.entity.TagEntity
+import sk.kasper.remote.RemoteApi
+import sk.kasper.remote.entity.RESPONSE_CODE_BAD_API_KEY
 import sk.kasper.repository.SyncLaunchesRepository
-import sk.kasper.space.api.RemoteApi
-import sk.kasper.space.api.entity.RESPONSE_CODE_BAD_API_KEY
 import timber.log.Timber
 import javax.inject.Inject
 

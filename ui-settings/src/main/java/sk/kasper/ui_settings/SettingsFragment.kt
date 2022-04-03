@@ -20,10 +20,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import sk.kasper.base.SettingKey
+import sk.kasper.base.SettingsManager
 import sk.kasper.ui_common.BaseFragment
-import sk.kasper.ui_common.settings.SettingKey
-import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_common.ui.InsetAwareTopAppBar
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions

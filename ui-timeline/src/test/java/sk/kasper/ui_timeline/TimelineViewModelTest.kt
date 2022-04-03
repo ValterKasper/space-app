@@ -13,6 +13,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
+import sk.kasper.base.SettingsManager
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.GetTimelineItems
@@ -20,7 +21,6 @@ import sk.kasper.domain.usecase.RefreshTimelineItems
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.entity.Launch
 import sk.kasper.ui_common.rocket.RocketMapper
-import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.MapToDomainTag
 import sk.kasper.ui_common.tag.MapToUiTag
 

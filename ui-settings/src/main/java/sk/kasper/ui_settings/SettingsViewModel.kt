@@ -4,10 +4,9 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import sk.kasper.ui_common.settings.SettingKey
-import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.base.SettingKey
+import sk.kasper.base.SettingsManager
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import javax.inject.Inject
 

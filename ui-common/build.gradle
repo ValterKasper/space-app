@@ -45,6 +45,7 @@ android {
 }
 
 dependencies {
+    api project(":base")
     implementation libs.accompanist.insets
     implementation libs.accompanist.systemuicontroller
 

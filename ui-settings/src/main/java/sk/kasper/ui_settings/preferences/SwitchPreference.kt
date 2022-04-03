@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import sk.kasper.ui_common.settings.SettingKey
+import sk.kasper.base.SettingKey
 
 @ExperimentalMaterialApi
 @Composable

@@ -1,0 +1,30 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'kotlin-kapt'
+}
+
+java {
+    sourceCompatibility buildConfig.javaVersion
+    targetCompatibility buildConfig.javaVersion
+}
+
+dependencies {
+
+    // TODO D: remove this dependency
+    implementation project(":database")
+
+    implementation project(":base")
+
+    implementation libs.dagger.hilt.core
+    kapt libs.dagger.hilt.compiler
+
+    implementation libs.kotlin.coroutines.android
+    implementation libs.kotlin.coroutines.core
+
+    implementation libs.retrofit.retrofit
+    implementation libs.retrofit.converter.gson
+    implementation libs.okhttp.logging
+    implementation libs.okhttp.okhttp
+
+}

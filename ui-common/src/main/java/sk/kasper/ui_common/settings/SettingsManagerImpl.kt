@@ -10,25 +10,17 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import sk.kasper.ui_common.settings.SettingsManager.Companion.LOCALHOST
-import sk.kasper.ui_common.settings.SettingsManager.Companion.PRODUCTION
-import sk.kasper.ui_common.settings.SettingsManager.Companion.RASPBERRY
+import sk.kasper.base.SettingChangeListener
+import sk.kasper.base.SettingKey
+import sk.kasper.base.SettingsManager
+import sk.kasper.base.SettingsManager.Companion.LOCALHOST
+import sk.kasper.base.SettingsManager.Companion.PRODUCTION
+import sk.kasper.base.SettingsManager.Companion.RASPBERRY
 import javax.inject.Inject
 import javax.inject.Singleton
 
-enum class SettingKey(val key: String) {
-    NIGHT_MODE(if (isLowerSdkVersionThan(Build.VERSION_CODES.Q)) "pref_night_pre_q_mode" else "pref_night_mode"),
-    SHOW_UNCONFIRMED_LAUNCHES("pref_show_unconfirmed_launches"),
-    DURATION_BEFORE_NOTIFICATION_IS_SHOWN("pref_duration_before_notification_is_shown"),
-    SHOW_LAUNCH_NOTIFICATION("pref_show_launch_notifications"),
-    API_ENDPOINT("pref_api_endpoint"),
-    INVALID("pref_invalid")
-}
-
 private fun isLowerSdkVersionThan(sdkVersion: Int) =
     Build.VERSION.SDK_INT < sdkVersion
-
-typealias SettingChangeListener = (SettingKey) -> Unit
 
 @Singleton
 internal class SettingsManagerImpl @Inject constructor(@ApplicationContext private val context: Context) :

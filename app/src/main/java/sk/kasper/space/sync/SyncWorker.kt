@@ -5,8 +5,8 @@ import androidx.work.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import sk.kasper.base.Flags
 import sk.kasper.repository.SyncLaunchesRepository
-import sk.kasper.space.BuildConfig
 import sk.kasper.space.work.ChildWorkerFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -21,15 +21,15 @@ class SyncWorker @AssistedInject constructor(
     companion object {
         private const val UNIQUE_PERIODIC_WORK_NAME = "Sync launches work"
 
-        fun startPeriodicWork(context: Context) {
+        fun startPeriodicWork(context: Context, flags: Flags) {
             val constrains = Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .setRequiresCharging(false)
-                    .build()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(false)
+                .build()
 
-            val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(BuildConfig.SYNC_INTERVAL_HOURS, TimeUnit.HOURS)
-                    .setConstraints(constrains)
-                    .build()
+            val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(flags.synIntervalHours, TimeUnit.HOURS)
+                .setConstraints(constrains)
+                .build()
 
             WorkManager
                     .getInstance(context)

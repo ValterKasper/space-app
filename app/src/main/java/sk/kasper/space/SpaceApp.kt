@@ -9,13 +9,14 @@ import androidx.work.WorkManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.hilt.android.HiltAndroidApp
-import sk.kasper.space.api.RemoteApi
+import sk.kasper.base.Flags
+import sk.kasper.base.SettingKey
+import sk.kasper.base.SettingsManager
+import sk.kasper.remote.RemoteApi
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.sync.SyncWorker
 import sk.kasper.ui_common.analytics.Analytics
 import sk.kasper.ui_common.analytics.FirebaseAnalyticsLogger
-import sk.kasper.ui_common.settings.SettingKey
-import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,7 +33,11 @@ open class SpaceApp : Application() {
     lateinit var settingsManager: SettingsManager
 
     @Inject
+    lateinit var flags: Flags
+
+    @Inject
     lateinit var workManagerConfiguration: Configuration
+
 
     // TODO I: think about initialization library
     override fun onCreate() {
@@ -52,7 +57,7 @@ open class SpaceApp : Application() {
 
         WorkManager.initialize(this, workManagerConfiguration)
 
-        SyncWorker.startPeriodicWork(this)
+        SyncWorker.startPeriodicWork(this, flags)
 
         AppCompatDelegate.setDefaultNightMode(settingsManager.nightMode)
 

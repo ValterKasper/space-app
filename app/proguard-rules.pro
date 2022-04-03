@@ -42,7 +42,7 @@
 -keep class org.ocpsoft.prettytime.i18n.**
 
 # Data classes
--keep class sk.kasper.space.api.entity.** { *; }
+-keep class sk.kasper.remote.entity.** { *; }
 -keep class sk.kasper.space.database.entity.** { *; }
 
 # Crashlytics

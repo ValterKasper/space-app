@@ -41,8 +41,8 @@ import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
+import sk.kasper.base.SettingsManager
 import sk.kasper.ui_common.BaseFragment
-import sk.kasper.ui_common.settings.SettingsManager
 import sk.kasper.ui_common.tag.Filter
 import sk.kasper.ui_common.tag.FilterDefinition
 import sk.kasper.ui_common.theme.SpaceTheme

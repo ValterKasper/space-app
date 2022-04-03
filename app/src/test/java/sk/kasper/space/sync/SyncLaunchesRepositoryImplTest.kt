@@ -22,8 +22,8 @@ import sk.kasper.database.entity.PhotoEntity
 import sk.kasper.database.entity.PhotoLaunchEntity
 import sk.kasper.database.entity.TagEntity
 import sk.kasper.entity.Tag
-import sk.kasper.space.api.RemoteApi
-import sk.kasper.space.api.entity.*
+import sk.kasper.remote.RemoteApi
+import sk.kasper.remote.entity.*
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.sync.SyncLaunchesRepositoryImpl.Companion.KEY_LAUNCHES_FETCHED_ALREADY
 

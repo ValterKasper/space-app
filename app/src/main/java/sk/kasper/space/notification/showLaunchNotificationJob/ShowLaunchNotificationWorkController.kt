@@ -2,12 +2,13 @@ package sk.kasper.space.notification.showLaunchNotificationJob
 
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
+import sk.kasper.base.SettingsManager
 import sk.kasper.domain.usecase.GetLaunch
 import sk.kasper.space.notification.LaunchNotificationInfo
 import sk.kasper.space.notification.NotificationsHelper
-import sk.kasper.ui_common.settings.SettingsManager
 import timber.log.Timber
 
+// TODO D: should be refactored - renamed, moved
 class ShowLaunchNotificationWorkController(
     private val getLaunch: GetLaunch,
     private val notificationsHelper: NotificationsHelper,
@@ -28,12 +29,12 @@ class ShowLaunchNotificationWorkController(
             if (launch.launchDateTime.isAfter(currentDateTime) && launch.launchDateTime.isBefore(currentDateTime.plus(duration))) {
                 val (rocketName, missionName) = launch.launchNameParts
                 val launchNotificationInfo = LaunchNotificationInfo(
-                        launchId,
-                        launch.rocketId,
-                        rocketName,
-                        launch.videoUrl,
-                        missionName,
-                        launch.launchDateTime)
+                    launchId,
+                    launch.rocketId,
+                    rocketName,
+                    launch.videoUrl,
+                    missionName,
+                    launch.launchDateTime)
                 notificationsHelper.showLaunchNotification(launchNotificationInfo)
             }
         } catch (e: Exception) {

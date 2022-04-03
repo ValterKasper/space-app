@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import sk.kasper.ui_common.settings.SettingKey
+import sk.kasper.base.SettingKey
 import java.util.*
 
 @ExperimentalMaterialApi
@@ -76,7 +76,7 @@ fun ListPreference(
                     }
                     TextButton(onClick = { showDialog = false }, modifier = Modifier.align(End)) {
                         Text(
-                            text = stringResource(id = android.R.string.cancel).toUpperCase(
+                            text = stringResource(id = android.R.string.cancel).uppercase(
                                 Locale.getDefault()
                             )
                         )

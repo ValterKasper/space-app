@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import sk.kasper.ui_common.settings.SettingsManager
+import sk.kasper.base.SettingsManager
 import sk.kasper.ui_common.settings.SettingsManagerImpl
 
 @InstallIn(SingletonComponent::class)
