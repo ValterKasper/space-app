@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
-import sk.kasper.space.notification.showLaunchNotificationJob.ShowLaunchNotificationWorker
+import sk.kasper.space.notification.ShowLaunchNotificationWorker
 import sk.kasper.space.sync.SyncWorker
 
 @InstallIn(SingletonComponent::class)

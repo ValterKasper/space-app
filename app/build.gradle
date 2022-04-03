@@ -92,9 +92,6 @@ kapt {
 
 dependencies {
     implementation project(':domain')
-    // TODO D: get rid of (because of sync that is in app module)
-    implementation project(':repository')
-
     implementation project(':ui-common')
     implementation project(':ui-settings')
     implementation project(':ui-timeline')

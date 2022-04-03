@@ -47,5 +47,10 @@ dependencies {
 
     implementation libs.androidx.preference
 
+    implementation libs.androidx.work.runtime
+
+    implementation libs.threetenabp.threetenabp
+    testImplementation libs.threetenabp.test
+
     implementation libs.google.android.play.services.maps
 }

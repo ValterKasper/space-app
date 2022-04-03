@@ -27,6 +27,14 @@ internal class DomainModule {
     internal fun providesGetOrbit(getOrbitImpl: GetOrbitImpl): GetOrbit = getOrbitImpl
 
     @Provides
+    internal fun providesScheduleLaunchNotifications(scheduleLaunchNotificationsImpl: ScheduleLaunchNotificationsImpl): ScheduleLaunchNotifications =
+        scheduleLaunchNotificationsImpl
+
+    @Provides
+    internal fun providesObserveLaunches(observeLaunchesImpl: ObserveLaunchesImpl): ObserveLaunches =
+        observeLaunchesImpl
+
+    @Provides
     internal fun providesShowLaunchNotification(showLaunchNotificationImpl: ShowLaunchNotificationImpl): ShowLaunchNotification =
         showLaunchNotificationImpl
 

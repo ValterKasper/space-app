@@ -14,24 +14,23 @@ import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.LocalDateTime
+import sk.kasper.domain.usecase.impl.ScheduleLaunchNotificationsImpl
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.repository.SyncLaunchesRepository
-import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
-import sk.kasper.space.notification.showLaunchNotificationJob.ShowLaunchNotificationWorkerScheduler
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class LaunchNotificationCheckerTest {
+class ScheduleLaunchNotificationsTest {
 
     companion object {
         val CURRENT_DATE_TIME: LocalDateTime = LocalDateTime.of(2001, 4, 30, 10, 0)
         const val LAUNCH_ID = "id"
     }
 
-    private lateinit var checkerUnderTest: LaunchNotificationCheckerUnderTest
+    private lateinit var checkerUnderTest: ScheduleLaunchNotificationsUnderTest
 
     @Mock
-    private lateinit var workScheduler: ShowLaunchNotificationWorkerScheduler
+    private lateinit var workScheduler: EnqueueLaunchNotificationImpl
 
     @Mock
     private lateinit var repository: sk.kasper.repository.LaunchRepository
@@ -47,7 +46,7 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(
+        verify(workScheduler, never()).enqueue(
             ArgumentMatchers.anyString(),
             any()
         )
@@ -61,7 +60,7 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(
+        verify(workScheduler, never()).enqueue(
             ArgumentMatchers.anyString(),
             any()
         )
@@ -75,7 +74,7 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(
+        verify(workScheduler, never()).enqueue(
             ArgumentMatchers.anyString(),
             any()
         )
@@ -89,7 +88,7 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(
+        verify(workScheduler, never()).enqueue(
             ArgumentMatchers.anyString(),
             any()
         )
@@ -103,7 +102,7 @@ class LaunchNotificationCheckerTest {
         createChecker()
         callOnSync()
 
-        verify(workScheduler, never()).scheduleLaunchNotification(
+        verify(workScheduler, never()).enqueue(
             ArgumentMatchers.anyString(),
             any()
         )
@@ -112,7 +111,7 @@ class LaunchNotificationCheckerTest {
     private fun createLaunchAtTime(launchDateTime: LocalDateTime, accurateDate: Boolean = true, accurateTime: Boolean = true) = createLaunch(id = LAUNCH_ID, launchDateTime = launchDateTime, accurateDate = accurateDate, accurateTime = accurateTime)
 
     private fun createChecker() {
-        checkerUnderTest = LaunchNotificationCheckerUnderTest()
+        checkerUnderTest = ScheduleLaunchNotificationsUnderTest()
         checkerUnderTest.onStart(mock())
     }
 
@@ -122,7 +121,8 @@ class LaunchNotificationCheckerTest {
         argumentCaptor.firstValue.onSync()
     }
 
-    inner class LaunchNotificationCheckerUnderTest : LaunchNotificationChecker(repository, syncLaunches, workScheduler) {
+    inner class ScheduleLaunchNotificationsUnderTest :
+        ScheduleLaunchNotificationsImpl(repository, syncLaunches, workScheduler) {
 
         override fun getCurrentDateTime(): LocalDateTime {
             return CURRENT_DATE_TIME

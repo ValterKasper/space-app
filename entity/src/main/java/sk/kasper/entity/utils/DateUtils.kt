@@ -17,8 +17,9 @@ fun String.toTimeStamp(): Long = try {
     0
 }
 
+// TODO D: should in DB converter
 fun Long.toLocalDateTime(): LocalDateTime =
-        LocalDateTime.ofInstant(Instant.ofEpochMilli(this), ZoneId.systemDefault())
+    LocalDateTime.ofInstant(Instant.ofEpochMilli(this), ZoneId.systemDefault())
 
 fun LocalDateTime.toTimeStamp(): Long =
         this.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()

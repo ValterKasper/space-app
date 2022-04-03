@@ -1,4 +1,4 @@
-package sk.kasper.space.notification.showLaunchNotificationJob
+package sk.kasper.space.notification
 
 import android.content.Context
 import androidx.work.*
@@ -6,10 +6,10 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import org.threeten.bp.LocalDateTime
+import sk.kasper.base.logger.Logger
 import sk.kasper.domain.usecase.ShowLaunchNotification
 import sk.kasper.entity.utils.toTimeStamp
 import sk.kasper.space.work.ChildWorkerFactory
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ShowLaunchNotificationWorker @AssistedInject constructor(
@@ -22,7 +22,7 @@ class ShowLaunchNotificationWorker @AssistedInject constructor(
         const val LAUNCH_ID_KEY = "extra-launch-key"
 
         fun createWorkRequest(launchId: String, dateTimeNotification: LocalDateTime): OneTimeWorkRequest {
-            Timber.d("createWorkRequest $launchId at $dateTimeNotification")
+            Logger.d("createWorkRequest $launchId at $dateTimeNotification")
 
             val constrains = Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)

@@ -1,6 +1,7 @@
 package sk.kasper.database.dao
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import sk.kasper.database.entity.FalconCoreEntity
 import sk.kasper.database.entity.LaunchDetailEntity
 import sk.kasper.database.entity.LaunchEntity
@@ -32,8 +33,9 @@ abstract class LaunchDao {
             manufacturer ON rocket.manufacturerId = manufacturer.id
         ORDER BY
             launch.launchTs
-        """)
-    abstract suspend fun getLaunches(): List<LaunchDetailEntity>
+        """
+    )
+    abstract fun observeLaunches(): Flow<List<LaunchDetailEntity>>
 
     @Transaction
     @Query("""

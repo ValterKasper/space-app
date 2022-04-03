@@ -21,12 +21,12 @@ import sk.kasper.database.dao.*
 import sk.kasper.database.entity.PhotoEntity
 import sk.kasper.database.entity.PhotoLaunchEntity
 import sk.kasper.database.entity.TagEntity
+import sk.kasper.domain.usecase.impl.ScheduleLaunchNotificationsImpl
 import sk.kasper.entity.Tag
 import sk.kasper.remote.RemoteApi
 import sk.kasper.remote.entity.*
 import sk.kasper.repository.impl.SyncLaunchesRepositoryImpl
 import sk.kasper.repository.impl.SyncLaunchesRepositoryImpl.Companion.KEY_LAUNCHES_FETCHED_ALREADY
-import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 
 private const val LAUNCH_SITE_ID = 1L
 
@@ -62,7 +62,7 @@ class SyncLaunchesRepositoryImplTest {
     private lateinit var database: SpaceDatabase
 
     @Mock
-    private lateinit var launchNotificationChecker: LaunchNotificationChecker
+    private lateinit var scheduleLaunchNotifications: ScheduleLaunchNotificationsImpl
 
     private lateinit var syncLaunches: SyncLaunchesRepositoryImpl
 
@@ -86,7 +86,7 @@ class SyncLaunchesRepositoryImplTest {
 
         assertTrue(syncLaunches.doSync(false))
 
-        verifyNoMoreInteractions(remoteApi, launchDao, launchSiteDao, launchNotificationChecker)
+        verifyNoMoreInteractions(remoteApi, launchDao, launchSiteDao, scheduleLaunchNotifications)
     }
 
     @Test

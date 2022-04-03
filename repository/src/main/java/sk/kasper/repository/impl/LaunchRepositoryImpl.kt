@@ -1,5 +1,8 @@
 package sk.kasper.repository.impl
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import sk.kasper.database.dao.LaunchDao
@@ -16,17 +19,22 @@ internal open class LaunchRepositoryImpl @Inject constructor(private val launchD
     }
 
     override suspend fun getLaunches(): List<Launch> {
-        return launchDao
-            .getLaunches()
-            .map { it.toLaunch() }
-            .filter { it.launchDateTime.isAfter(getCurrentDateTime().minus(TOO_OLD_DURATION)) }
+        return observeLaunches()
+            .first()
     }
 
-    override fun getLaunch(id: String): Launch {
+    override fun observeLaunches(): Flow<List<Launch>> {
+        return launchDao.observeLaunches().map { list ->
+            list.map { it.toLaunch() }
+                .filter { it.launchDateTime.isAfter(getCurrentDateTime().minus(TOO_OLD_DURATION)) }
+        }
+    }
+
+    override suspend fun getLaunch(id: String): Launch {
         return launchDao.getLaunch(id).toLaunch()
     }
 
-    override fun getOrbit(id: String): Orbit? {
+    override suspend fun getOrbit(id: String): Orbit? {
         return launchDao.getOrbit(id)?.let {
             enumValueOrNull<Orbit>(it)
         }

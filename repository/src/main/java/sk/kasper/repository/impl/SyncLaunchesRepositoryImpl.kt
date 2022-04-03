@@ -22,8 +22,6 @@ internal class SyncLaunchesRepositoryImpl @Inject constructor(
 
     private val mutex = Mutex()
 
-    private val syncListeners: MutableList<SyncLaunchesRepository.SyncListener> = mutableListOf()
-
     override suspend fun doSync(force: Boolean): Boolean {
         mutex.withLock {
             if (areLaunchesFetchedAlready() && !force) {
@@ -66,10 +64,6 @@ internal class SyncLaunchesRepositoryImpl @Inject constructor(
                     database.photoDao().insertAll(*photoEntities.toTypedArray())
                     database.photoDao().insertAll(*photoLaunchEntities.toTypedArray())
 //                    }
-
-                    syncListeners.forEach {
-                        it.onSync()
-                    }
                 }
             } catch (e: Exception) {
                 Logger.e("", e)
@@ -77,14 +71,6 @@ internal class SyncLaunchesRepositoryImpl @Inject constructor(
             }
             return true
         }
-    }
-
-    override fun addSyncListener(syncListener: SyncLaunchesRepository.SyncListener) {
-        syncListeners.add(syncListener)
-    }
-
-    override fun removeSyncListener(syncListener: SyncLaunchesRepository.SyncListener) {
-        syncListeners.remove(syncListener)
     }
 
     private fun areLaunchesFetchedAlready() = settingsManager.getBoolean(SettingKey.LAUNCHES_FETCHED_ALREADY)
