@@ -113,10 +113,6 @@ dependencies {
     implementation libs.androidx.lifecycle.common.java8
     implementation libs.androidx.lifecycle.process
 
-    implementation libs.androidx.room.ktx
-    implementation libs.androidx.room.runtime
-    kapt libs.androidx.room.compiler
-
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
@@ -131,13 +127,6 @@ dependencies {
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler
 
-    // TODO D: remove deps
-    implementation libs.retrofit.retrofit
-    implementation libs.retrofit.converter.gson
-    implementation libs.okhttp.logging
-    implementation libs.okhttp.okhttp
-
-    // TODO D: remove dep
     implementation libs.timber
 
     implementation libs.threetenabp.threetenabp
