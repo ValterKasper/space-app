@@ -95,7 +95,7 @@ dependencies {
     // TODO D: get rid of (because of sync that is in app module)
     implementation project(':repository')
 
-    // TODO D: get rid of
+    // TODO D: get rid of (because of sync that is in app module)
     implementation project(":remote")
 
     implementation project(':ui-common')

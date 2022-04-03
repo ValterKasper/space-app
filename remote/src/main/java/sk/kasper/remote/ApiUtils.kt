@@ -19,7 +19,7 @@ object ApiUtils {
         level = HttpLoggingInterceptor.Level.BASIC
     }
 
-    fun createRemoteApi(settingsManager: SettingsManager, flags: Flags): RemoteApi {
+    internal fun createRemoteApi(settingsManager: SettingsManager, flags: Flags): RemoteApi {
         val authInterceptor = Interceptor { chain ->
             val newUrl = chain.request().url
                 .newBuilder()

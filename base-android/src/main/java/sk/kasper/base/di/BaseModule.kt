@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import sk.kasper.base.FileReader
+import sk.kasper.base.FileReaderImpl
 import sk.kasper.base.Flags
 import sk.kasper.base.FlagsImpl
 
@@ -12,6 +14,9 @@ import sk.kasper.base.FlagsImpl
 class BaseModule {
 
     @Provides
-    fun providesFlags(): Flags = FlagsImpl
+    internal fun providesFlags(): Flags = FlagsImpl
+
+    @Provides
+    internal fun providesFileReader(fileReaderImpl: FileReaderImpl): FileReader = fileReaderImpl
 
 }

@@ -12,7 +12,6 @@ import dagger.hilt.android.HiltAndroidApp
 import sk.kasper.base.Flags
 import sk.kasper.base.SettingKey
 import sk.kasper.base.SettingsManager
-import sk.kasper.remote.RemoteApi
 import sk.kasper.space.notification.showLaunchNotificationJob.LaunchNotificationChecker
 import sk.kasper.space.sync.SyncWorker
 import sk.kasper.ui_common.analytics.Analytics
@@ -25,9 +24,6 @@ open class SpaceApp : Application() {
 
     @Inject
     lateinit var checker: LaunchNotificationChecker
-
-    @Inject
-    lateinit var remoteApi: RemoteApi
 
     @Inject
     lateinit var settingsManager: SettingsManager
