@@ -1,4 +1,4 @@
-package sk.kasper.space.work
+package sk.kasper.base.work
 
 import androidx.work.ListenableWorker
 import dagger.MapKey

@@ -61,8 +61,9 @@ abstract class LaunchDao {
             manufacturer ON rocket.manufacturerId = manufacturer.id
         WHERE
             :launchId = launch.id
-            """)
-    abstract fun getLaunch(launchId: String): LaunchDetailEntity
+            """
+    )
+    abstract suspend fun getLaunch(launchId: String): LaunchDetailEntity
 
     @Query(
        """

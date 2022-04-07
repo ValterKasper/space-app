@@ -105,8 +105,6 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
 
-    implementation libs.androidx.drawerlayout
-
     implementation libs.androidx.lifecycle.common.java8
     implementation libs.androidx.lifecycle.process
 
@@ -115,8 +113,6 @@ dependencies {
 
     implementation libs.androidx.work.runtime
 
-    implementation libs.androidx.preference
-
     implementation libs.kotlin.stdlib.jdk7
 
     androidTestImplementation libs.dagger.hilt.android
@@ -124,14 +120,11 @@ dependencies {
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler
 
+    // TODO D: remove
     implementation libs.timber
 
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test
-
-    implementation libs.google.firebase.analytics
-    implementation libs.google.firebase.crashlytics
-    implementation platform(libs.google.firebase.bom)
 
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.coroutines.android

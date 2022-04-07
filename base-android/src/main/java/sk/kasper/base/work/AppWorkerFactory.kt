@@ -1,4 +1,4 @@
-package sk.kasper.space.work
+package sk.kasper.base.work
 
 import android.content.Context
 import androidx.work.ListenableWorker

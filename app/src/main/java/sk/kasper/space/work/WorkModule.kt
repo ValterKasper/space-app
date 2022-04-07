@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
+import sk.kasper.base.work.ChildWorkerFactory
+import sk.kasper.base.work.WorkerKey
 import sk.kasper.space.notification.ShowLaunchNotificationWorker
 import sk.kasper.space.sync.SyncWorker
 

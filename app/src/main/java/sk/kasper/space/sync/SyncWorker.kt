@@ -6,10 +6,10 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import sk.kasper.base.Flags
+import sk.kasper.base.work.ChildWorkerFactory
 import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.RefreshTimelineItems
-import sk.kasper.space.work.ChildWorkerFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 

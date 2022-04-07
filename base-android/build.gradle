@@ -44,13 +44,16 @@ dependencies {
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
-
     implementation libs.androidx.preference
-
     implementation libs.androidx.work.runtime
 
-    implementation libs.threetenabp.threetenabp
-    testImplementation libs.threetenabp.test
+    implementation libs.timber
 
+    implementation libs.google.firebase.analytics
+    implementation libs.google.firebase.crashlytics
+    implementation platform(libs.google.firebase.bom)
+    
     implementation libs.google.android.play.services.maps
+
+    testImplementation libs.threetenabp.test
 }
