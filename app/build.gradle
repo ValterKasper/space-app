@@ -111,17 +111,12 @@ dependencies {
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
-    implementation libs.androidx.work.runtime
-
     implementation libs.kotlin.stdlib.jdk7
 
     androidTestImplementation libs.dagger.hilt.android
     kaptAndroidTest libs.dagger.hilt.android
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler
-
-    // TODO D: remove
-    implementation libs.timber
 
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test

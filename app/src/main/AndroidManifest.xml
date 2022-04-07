@@ -4,7 +4,6 @@
     package="sk.kasper.space">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".SpaceApp"
@@ -32,24 +31,6 @@
             </intent-filter>
 
         </activity>
-
-        <receiver
-            android:name=".sync.StartSyncJobReceiver"
-            android:exported="true">
-
-            <intent-filter>
-
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-            </intent-filter>
-
-        </receiver>
-
-        <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="${applicationId}.workmanager-init"
-            android:exported="false"
-            tools:node="remove"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

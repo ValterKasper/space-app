@@ -7,7 +7,9 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import sk.kasper.base.SettingsManager
 import sk.kasper.base.init.AppInitializer
+import sk.kasper.base.notification.NotificationsHelper
 import sk.kasper.ui_common.analytics.AnalyticsInitializer
+import sk.kasper.ui_common.notification.NotificationsHelperImpl
 import sk.kasper.ui_common.settings.SettingsManagerImpl
 
 @InstallIn(SingletonComponent::class)
@@ -15,7 +17,10 @@ import sk.kasper.ui_common.settings.SettingsManagerImpl
 internal class UiCommonModule {
 
     @Provides
-    internal fun bindsSettingsManager(impl: SettingsManagerImpl): SettingsManager = impl
+    fun bindsSettingsManager(impl: SettingsManagerImpl): SettingsManager = impl
+
+    @Provides
+    fun providesNotificationsHelper(impl: NotificationsHelperImpl): NotificationsHelper = impl
 
     @Provides
     @IntoSet

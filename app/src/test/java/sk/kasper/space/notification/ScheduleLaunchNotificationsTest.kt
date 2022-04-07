@@ -17,6 +17,7 @@ import org.threeten.bp.LocalDateTime
 import sk.kasper.domain.usecase.impl.ScheduleLaunchNotificationsImpl
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.repository.SyncLaunchesRepository
+import sk.kasper.work.notification.EnqueueLaunchNotificationImpl
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)

@@ -16,7 +16,7 @@ import sk.kasper.base.SettingsManager
 import sk.kasper.domain.usecase.impl.ShowLaunchNotificationImpl
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.entity.Launch
-import sk.kasper.space.notification.NotificationsHelperImpl
+import sk.kasper.ui_common.notification.NotificationsHelperImpl
 
 @RunWith(MockitoJUnitRunner::class)
 class ShowLaunchNotificationTest {

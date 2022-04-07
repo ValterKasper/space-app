@@ -13,7 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import sk.kasper.base.*
 import sk.kasper.base.init.*
-import sk.kasper.base.work.WorkManagerInitializer
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -40,9 +39,6 @@ internal class BaseModule {
     @AppCoroutineScope
     fun providesAppCoroutineScope(): CoroutineScope = MainScope()
 
-    @Provides
-    @IntoSet
-    fun providesWorkManagerInitializer(initializer: WorkManagerInitializer): AppInitializer = initializer
 
     @Provides
     @IntoSet

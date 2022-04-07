@@ -1,0 +1,53 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 32
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility buildConfig.javaVersion
+        targetCompatibility buildConfig.javaVersion
+    }
+    kotlinOptions {
+        jvmTarget = buildConfig.jvmTarget
+    }
+}
+
+dependencies {
+
+    implementation project(':base-android')
+    implementation project(':domain')
+
+    implementation libs.androidx.navigation.ui
+    implementation libs.androidx.navigation.fragment
+
+    implementation libs.androidx.work.runtime
+
+    implementation libs.dagger.hilt.android
+    kapt libs.dagger.hilt.compiler
+
+    implementation libs.kotlin.coroutines.android
+    implementation libs.kotlin.coroutines.core
+
+    implementation libs.timber
+
+}
