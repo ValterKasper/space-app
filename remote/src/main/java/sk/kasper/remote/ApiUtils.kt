@@ -7,15 +7,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sk.kasper.base.Flags
 import sk.kasper.base.SettingsManager
+import sk.kasper.base.logger.Logger
 
 object ApiUtils {
 
-    private val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-        override fun log(message: String) {
-            // TODO D: logging (timber cant be used in this module)
-            // Timber.tag("OkHttp").d(message)
-        }
-    }).apply {
+    private val loggingInterceptor = HttpLoggingInterceptor {
+        Logger.tag("OkHttp").d(it)
+    }.apply {
         level = HttpLoggingInterceptor.Level.BASIC
     }
 

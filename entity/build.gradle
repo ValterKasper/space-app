@@ -10,7 +10,8 @@ java {
 
 dependencies {
 
+    implementation project(":base")
+
     api libs.threetenabp.threetenabp
-    implementation libs.timber
 
 }

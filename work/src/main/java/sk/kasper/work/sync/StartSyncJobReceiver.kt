@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.AndroidEntryPoint
 import sk.kasper.base.Flags
-import timber.log.Timber
+import sk.kasper.base.logger.Logger
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -15,7 +15,7 @@ class StartSyncJobReceiver : BroadcastReceiver() {
     lateinit var flags: Flags
 
     override fun onReceive(context: Context, intent: Intent?) {
-        Timber.d("onReceive: intent = $intent")
+        Logger.d("onReceive: intent = $intent")
 
         if (intent != null && intent.action == "android.intent.action.BOOT_COMPLETED") {
             SyncWorker.startPeriodicWork(context, flags)

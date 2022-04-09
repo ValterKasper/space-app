@@ -81,8 +81,6 @@ dependencies {
 
     implementation libs.prettytime
 
-    implementation libs.timber
-
     implementation libs.threetenabp.threetenabp
 
     testImplementation libs.junit

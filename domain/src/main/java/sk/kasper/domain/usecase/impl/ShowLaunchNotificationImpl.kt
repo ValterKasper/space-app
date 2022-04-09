@@ -39,7 +39,7 @@ class ShowLaunchNotificationImpl @Inject constructor(
                 notificationsHelper.showLaunchNotification(launchNotificationInfo)
             }
         } catch (e: Exception) {
-            Logger.e("onStartJob - failure", e)
+            Logger.e(e)
         }
 
         return

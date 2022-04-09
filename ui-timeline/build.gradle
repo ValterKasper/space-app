@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+
+    implementation project(":base")
     implementation project(":domain")
     implementation project(":ui-common")
 
@@ -70,8 +72,6 @@ dependencies {
     kaptAndroidTest libs.dagger.hilt.android
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler
-
-    implementation libs.timber
 
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test

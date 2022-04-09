@@ -12,7 +12,7 @@ fun String.toTimeStamp(): Long = try {
     val format = SimpleDateFormat("MMM dd, yyyy HH:mm:ss z", Locale.US)
     format.parse(this)!!.time
 } catch (e: ParseException) {
-    Logger.e("", e)
+    Logger.e(e)
     0
 }
 

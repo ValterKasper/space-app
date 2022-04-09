@@ -10,11 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import sk.kasper.base.logger.Logger
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.utils.createSlideAnimNavOptions
 import sk.kasper.ui_timeline.ui.Timeline
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TimelineFragment : BaseFragment() {
@@ -40,7 +39,7 @@ class TimelineFragment : BaseFragment() {
     private fun observeViewModels() {
         lifecycleScope.launchWhenStarted {
             timelineViewModel.sideEffects.collect {
-                Timber.d("$it")
+                Logger.d("$it")
                 when (it) {
                     SideEffect.ConnectionError -> {
                         // todo show snack bar

@@ -25,12 +25,12 @@ import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.LocalDateTime
+import sk.kasper.base.logger.Logger
 import sk.kasper.ui_common.BaseFragment
 import sk.kasper.ui_common.tag.Filter
 import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_timeline.ui.LaunchListItemLayout
 import sk.kasper.ui_timeline.ui.filterDefinition
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TagsFragment : BaseFragment() {
@@ -374,10 +374,10 @@ class TagsFragment : BaseFragment() {
             }
 
             Filter(onItemSelected = { tag, selected ->
-                Timber.d("onTagSelected($tag, $selected)")
+                Logger.d("onTagSelected($tag, $selected)")
                 function()
             }, {
-                Timber.d("onClearAll")
+                Logger.d("onClearAll")
             }, filterDefinition)
         }
     }

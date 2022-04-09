@@ -21,9 +21,9 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import sk.kasper.base.logger.Logger
 import sk.kasper.ui_common.theme.section
 import sk.kasper.ui_launch.R
-import timber.log.Timber
 
 @Composable
 fun LaunchSiteSection(launchSiteViewModel: LaunchSiteViewModel) {
@@ -79,7 +79,7 @@ fun LaunchSiteSection(launchSiteViewModel: LaunchSiteViewModel) {
                             )
 
                             if (!success) {
-                                Timber.e("Style parsing failed.")
+                                Logger.e("Style parsing failed.")
                             }
                         }
                     }

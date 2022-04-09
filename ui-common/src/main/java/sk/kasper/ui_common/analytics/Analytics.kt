@@ -1,7 +1,7 @@
 package sk.kasper.ui_common.analytics
 
 import com.google.firebase.analytics.FirebaseAnalytics
-import timber.log.Timber
+import sk.kasper.base.logger.Logger
 
 class Analytics {
 
@@ -11,7 +11,7 @@ class Analytics {
 
         fun log(event: String, attributes: Map<String, String>) {
             attributes.forEach {
-                Timber.d("$event: (${it.key}: ${it.value})")
+                Logger.d("$event: (${it.key}: ${it.value})")
             }
             analyticsLogger.log(event, attributes)
         }

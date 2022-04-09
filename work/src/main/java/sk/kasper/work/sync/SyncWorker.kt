@@ -6,11 +6,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import sk.kasper.base.Flags
+import sk.kasper.base.logger.Logger
 import sk.kasper.domain.model.ErrorResponse
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.domain.usecase.RefreshTimelineItems
 import sk.kasper.work.work.ChildWorkerFactory
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class SyncWorker @AssistedInject constructor(
@@ -37,20 +37,20 @@ class SyncWorker @AssistedInject constructor(
                     .getInstance(context)
                     .enqueueUniquePeriodicWork(UNIQUE_PERIODIC_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, syncRequest)
 
-            Timber.d("periodic launches sync work request started")
+            Logger.d("periodic launches sync work request started")
         }
 
     }
 
     override suspend fun doWork(): Result {
-        Timber.d("doWork")
+        Logger.d("doWork")
         return when (refreshTimelineItems()) {
             is SuccessResponse -> {
-                Timber.d("doWork - success")
+                Logger.d("doWork - success")
                 Result.success()
             }
             is ErrorResponse -> {
-                Timber.d("doWork - failure")
+                Logger.d("doWork - failure")
                 Result.failure()
             }
         }
