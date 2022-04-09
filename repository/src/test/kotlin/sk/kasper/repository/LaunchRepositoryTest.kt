@@ -10,9 +10,9 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
+import sk.kasper.base.utils.toTimeStamp
 import sk.kasper.database.dao.LaunchDao
 import sk.kasper.database.entity.LaunchDetailEntity
-import sk.kasper.entity.utils.toTimeStamp
 import sk.kasper.repository.impl.LaunchRepositoryImpl
 
 private val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)

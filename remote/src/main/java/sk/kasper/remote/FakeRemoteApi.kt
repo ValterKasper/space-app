@@ -6,8 +6,8 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import sk.kasper.base.FileReader
 import sk.kasper.base.Flags
-import sk.kasper.entity.utils.toLocalDateTime
-import sk.kasper.entity.utils.toTimeStamp
+import sk.kasper.base.utils.toLocalDateTime
+import sk.kasper.base.utils.toTimeStamp
 import sk.kasper.remote.entity.RemoteLaunchesResponse
 import javax.inject.Inject
 

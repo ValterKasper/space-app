@@ -17,15 +17,6 @@ open class BaseFragment : Fragment(), OnBackPressListener {
         backPressManager.addListener(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        // track current fragment as shown screen. It works until there is at most one visible fragment a time.
-        // otherwise implementation should be changed
-
-        // todo do without referencing firebase in ui-common
-        //FirebaseAnalytics.getInstance(requireContext()).setCurrentScreen(requireActivity(), javaClass.simpleName, javaClass.simpleName)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         backPressManager.removeListener(this)

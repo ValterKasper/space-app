@@ -1,4 +1,4 @@
-package sk.kasper.entity.utils
+package sk.kasper.base.utils
 
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime

@@ -21,6 +21,7 @@ import sk.kasper.work.work.WorkerKey
 @Module
 internal interface WorkerBindingModule {
 
+    // TODO D: use Hilt Extension Annotations
     @Binds
     @IntoMap
     @WorkerKey(SyncWorker::class)
@@ -35,6 +36,7 @@ internal interface WorkerBindingModule {
     fun providesLaunchNotificationScheduler(launchNotificationScheduler: EnqueueLaunchNotificationImpl):
             EnqueueLaunchNotification
 
+    // TODO D: use Hilt Extension Annotations
     @Binds
     @IntoSet
     fun providesLaunchNotificationsInitializer(initializer: LaunchNotificationsInitializer): AppInitializer

@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import sk.kasper.entity.Rocket
 
 @Entity(
         foreignKeys = [ForeignKey(
@@ -25,9 +24,5 @@ data class RocketEntity(
         val payloadGto: Float,
         val thrust: Float,
         val stages: Int,
-        val manufacturerId: Int?) {
-
-    fun toRocket(): Rocket {
-        return Rocket(id, rocketName, height, diameter, mass, payloadLeo, payloadGto, thrust, stages)
-    }
-}
+        val manufacturerId: Int?
+)

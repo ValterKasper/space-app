@@ -5,7 +5,6 @@ import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import sk.kasper.entity.Tag
 
 @Entity(foreignKeys = arrayOf(
         ForeignKey(
@@ -18,9 +17,5 @@ import sk.kasper.entity.Tag
 data class TagEntity(
         @PrimaryKey(autoGenerate = true) val id: Long? = null,
         val launchId: String,
-        val type: Long) {
-    
-    fun toTag(): Tag {
-        return Tag(launchId, type)
-    }
-}
+        val type: Long
+)

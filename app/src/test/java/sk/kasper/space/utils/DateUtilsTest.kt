@@ -3,7 +3,7 @@ package sk.kasper.space.utils
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
-import sk.kasper.entity.utils.toTimeStamp
+import sk.kasper.base.utils.toTimeStamp
 
 
 class DateUtilsTest {

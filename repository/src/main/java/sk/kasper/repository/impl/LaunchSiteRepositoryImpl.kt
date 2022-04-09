@@ -3,6 +3,7 @@ package sk.kasper.repository.impl
 import sk.kasper.database.dao.LaunchSiteDao
 import sk.kasper.entity.LaunchSite
 import sk.kasper.repository.LaunchSiteRepository
+import sk.kasper.repository.mapping.toLaunchSite
 import javax.inject.Inject
 
 internal class LaunchSiteRepositoryImpl @Inject constructor(private val launchSiteDao: LaunchSiteDao) :

@@ -3,6 +3,7 @@ package sk.kasper.repository.impl
 import sk.kasper.database.dao.PhotoDao
 import sk.kasper.entity.Photo
 import sk.kasper.repository.PhotoRepository
+import sk.kasper.repository.mapping.toPhoto
 import javax.inject.Inject
 
 internal class PhotoRepositoryImpl @Inject constructor(private val photoDao: PhotoDao) : PhotoRepository {

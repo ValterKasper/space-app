@@ -7,8 +7,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import org.threeten.bp.LocalDateTime
 import sk.kasper.base.logger.Logger
+import sk.kasper.base.utils.toTimeStamp
 import sk.kasper.domain.usecase.ShowLaunchNotification
-import sk.kasper.entity.utils.toTimeStamp
 import sk.kasper.work.work.ChildWorkerFactory
 import java.util.concurrent.TimeUnit
 

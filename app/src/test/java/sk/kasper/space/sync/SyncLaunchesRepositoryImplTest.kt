@@ -21,12 +21,7 @@ import sk.kasper.database.dao.*
 import sk.kasper.database.entity.PhotoEntity
 import sk.kasper.database.entity.PhotoLaunchEntity
 import sk.kasper.database.entity.TagEntity
-import sk.kasper.domain.usecase.impl.ScheduleLaunchNotificationsImpl
 import sk.kasper.entity.Tag
-import sk.kasper.remote.RemoteApi
-import sk.kasper.remote.entity.*
-import sk.kasper.repository.impl.SyncLaunchesRepositoryImpl
-import sk.kasper.repository.impl.SyncLaunchesRepositoryImpl.Companion.KEY_LAUNCHES_FETCHED_ALREADY
 
 private const val LAUNCH_SITE_ID = 1L
 

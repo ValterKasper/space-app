@@ -19,7 +19,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import org.threeten.bp.Duration
 import sk.kasper.base.notification.LaunchNotificationInfo
 import sk.kasper.base.notification.NotificationsHelper
-import sk.kasper.entity.utils.toTimeStamp
+import sk.kasper.base.utils.toTimeStamp
 import sk.kasper.ui_common.R
 import sk.kasper.ui_common.mapper.RocketMapper
 import sk.kasper.ui_common.utils.RoundedSquareLetterProvider

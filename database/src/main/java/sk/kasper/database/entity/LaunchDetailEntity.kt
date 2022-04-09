@@ -2,8 +2,6 @@ package sk.kasper.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Relation
-import sk.kasper.entity.Launch
-import sk.kasper.entity.utils.toLocalDateTime
 
 data class LaunchDetailEntity(
         var id: String = "",
@@ -23,22 +21,5 @@ data class LaunchDetailEntity(
         @ColumnInfo(name = "manufacturerName")
         var manufacturerName: String? = null,
         @Relation(parentColumn = "id", entityColumn = "launchId")
-        var tags: MutableList<TagEntity> = mutableListOf()) {
-        
-        fun toLaunch(): Launch =
-                Launch(
-                        id,
-                        launchName,
-                        description,
-                        launchTs.toLocalDateTime(),
-                        mainPhotoUrl,
-                        hashTag,
-                        payloadMass,
-                        rocketId,
-                        rocketName,
-                        videoUrl,
-                        accurateDate,
-                        accurateTime,
-                        manufacturerName,
-                        tags.map { it.toTag() })
-}
+        var tags: MutableList<TagEntity> = mutableListOf()
+)

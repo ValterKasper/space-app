@@ -5,11 +5,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
+import sk.kasper.base.utils.enumValueOrNull
 import sk.kasper.database.dao.LaunchDao
 import sk.kasper.entity.Launch
 import sk.kasper.entity.Orbit
 import sk.kasper.repository.LaunchRepository
-import sk.kasper.space.utils.enumValueOrNull
+import sk.kasper.repository.mapping.toLaunch
 import javax.inject.Inject
 
 internal open class LaunchRepositoryImpl @Inject constructor(private val launchDao: LaunchDao) : LaunchRepository {

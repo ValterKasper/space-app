@@ -10,7 +10,8 @@ java {
 
 dependencies {
 
-    api project(":entity")
+    api project(":base")
+
     implementation libs.androidx.room.ktx
 
 }

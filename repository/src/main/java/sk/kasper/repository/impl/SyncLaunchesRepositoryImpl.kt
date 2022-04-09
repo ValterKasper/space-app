@@ -12,6 +12,10 @@ import sk.kasper.database.entity.TagEntity
 import sk.kasper.remote.RemoteApi
 import sk.kasper.remote.entity.RESPONSE_CODE_BAD_API_KEY
 import sk.kasper.repository.SyncLaunchesRepository
+import sk.kasper.repository.mapping.toLaunchEntity
+import sk.kasper.repository.mapping.toLaunchSiteEntity
+import sk.kasper.repository.mapping.toPhotoEntity
+import sk.kasper.repository.mapping.toRocketEntity
 import javax.inject.Inject
 
 internal class SyncLaunchesRepositoryImpl @Inject constructor(

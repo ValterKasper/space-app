@@ -1,4 +1,4 @@
-package sk.kasper.space.utils
+package sk.kasper.base.utils
 
 inline fun <reified T : Enum<T>> safeEnumValue(value: String, default: T): T = try {
     enumValueOf(value)

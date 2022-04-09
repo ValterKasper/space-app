@@ -11,9 +11,6 @@ java {
 
 dependencies {
 
-    // TODO D: remove this dependency (now depends on db entities)
-    implementation project(":database")
-
     implementation project(":base")
 
     implementation libs.dagger.hilt.core
