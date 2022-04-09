@@ -2,10 +2,11 @@ package sk.kasper.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Relation
+import org.threeten.bp.LocalDateTime
 
 data class LaunchDetailEntity(
         var id: String = "",
-        var launchTs: Long = 0,
+        var launchTs: LocalDateTime = LocalDateTime.MIN,
         var launchName: String = "",
         var description: String? = null,
         var mainPhotoUrl: String? = null,

@@ -1,7 +1,6 @@
 package sk.kasper.repository.mapping
 
 import sk.kasper.base.utils.safeEnumValue
-import sk.kasper.base.utils.toLocalDateTime
 import sk.kasper.database.entity.*
 import sk.kasper.entity.*
 import sk.kasper.remote.entity.*
@@ -56,7 +55,7 @@ fun LaunchDetailEntity.toLaunch(): Launch =
         id,
         launchName,
         description,
-        launchTs.toLocalDateTime(),
+        launchTs,
         mainPhotoUrl,
         hashTag,
         payloadMass,

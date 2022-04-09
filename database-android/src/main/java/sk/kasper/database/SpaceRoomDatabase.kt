@@ -2,6 +2,8 @@ package sk.kasper.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import sk.kasper.database.converters.Converters
 import sk.kasper.database.entity.*
 
 @Database(
@@ -18,4 +20,5 @@ import sk.kasper.database.entity.*
     version = 6,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 internal abstract class SpaceRoomDatabase : RoomDatabase(), SpaceDatabase
