@@ -1,4 +1,4 @@
-package sk.kasper.domain.usecase
+package sk.kasper.domain.usecase.impl
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
@@ -13,7 +13,6 @@ import org.mockito.junit.MockitoJUnitRunner
 import sk.kasper.domain.model.FilterSpec
 import sk.kasper.domain.model.Response
 import sk.kasper.domain.model.SuccessResponse
-import sk.kasper.domain.usecase.impl.GetTimelineItemsImpl
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.entity.Launch
 import sk.kasper.entity.Rocket
@@ -23,7 +22,7 @@ import sk.kasper.repository.SyncLaunchesRepository
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class GetTimelineItemsTest {
+class GetTimelineItemsImplTest {
 
     private lateinit var getTimelineItems: GetTimelineItemsImpl
 

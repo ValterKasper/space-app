@@ -1,9 +1,8 @@
-package sk.kasper.space.notification.showLaunchNotificationJob
+package sk.kasper.domain.usecase.impl
 
-import com.nhaarman.mockitokotlin2.*
+import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -13,87 +12,83 @@ import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
 import sk.kasper.base.SettingsManager
-import sk.kasper.domain.usecase.impl.ShowLaunchNotificationImpl
+import sk.kasper.domain.usecase.impl.fakes.FakeNotificationsHelper
 import sk.kasper.domain.utils.createLaunch
 import sk.kasper.entity.Launch
-import sk.kasper.ui_common.notification.NotificationsHelperImpl
 
 @RunWith(MockitoJUnitRunner::class)
-class ShowLaunchNotificationTest {
+class ShowLaunchNotificationImplTest {
 
     companion object {
-        val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
-        const val DURATION_BEFORE_NOTIFICATION_IS_SHOWN_MINUTES = 60
+        private val LOCAL_DATE_TIME_NOW: LocalDateTime = LocalDateTime.of(2000, Month.JANUARY, 1, 12, 0)
+        private const val DURATION_BEFORE_NOTIFICATION_IS_SHOWN_MINUTES = 60
+        private const val LAUNCH_ID = "10"
     }
-
-    @Mock
-    private lateinit var notificationsHelper: NotificationsHelperImpl
 
     @Mock
     private lateinit var settingsManager: SettingsManager
 
-    private lateinit var controller: ShowLaunchNotificationImpl
+    private val notificationsHelper = FakeNotificationsHelper()
+
+    private lateinit var showLaunchNotification: ShowLaunchNotificationImpl
 
     @Before
     fun setUp() {
-        prepareController()
-        whenever(settingsManager.durationBeforeNotificationIsShown).thenReturn(DURATION_BEFORE_NOTIFICATION_IS_SHOWN_MINUTES)
+        prepareUseCase()
+        whenever(settingsManager.durationBeforeNotificationIsShown).thenReturn(
+            DURATION_BEFORE_NOTIFICATION_IS_SHOWN_MINUTES
+        )
         whenever(settingsManager.showLaunchNotifications).thenReturn(true)
     }
 
     @Test
-    fun onStartJob_launchNotCompleted_showNotification() = runBlocking {
+    fun `when launch has not completed yet then show notification`() = runBlocking {
         val launchDateTime = LOCAL_DATE_TIME_NOW.plusMinutes(30)
         setLaunchResponse(launchDateTime)
 
-        onStartJob()
+        showLaunchNotification(LAUNCH_ID)
 
         verifyShowNotification(launchDateTime)
     }
 
     @Test
-    fun onStartJob_launchNotificationsAreTurnedOff_doNothing() = runBlocking {
+    fun `when launch notifications are turned off then do nothing`() = runBlocking {
         whenever(settingsManager.showLaunchNotifications).thenReturn(false)
         val launchDateTime = LOCAL_DATE_TIME_NOW.plusMinutes(30)
         setLaunchResponse(launchDateTime)
 
-        onStartJob()
+        showLaunchNotification(LAUNCH_ID)
 
         verifyNeverShowNotification()
     }
 
     @Test
-    fun onStartJob_launchCompleted_doNothing() = runBlocking {
+    fun `when launch has finished then do nothing`() = runBlocking {
         setLaunchResponse(LOCAL_DATE_TIME_NOW.minusMinutes(30))
 
-        onStartJob()
+        showLaunchNotification(LAUNCH_ID)
 
         verifyNeverShowNotification()
     }
 
     @Test
-    fun onStartJob_launchFarInFuture_doNothing() = runBlocking {
+    fun `when launch is far in the future then do nothing`() = runBlocking {
         val longDuration = Duration.ofMinutes(DURATION_BEFORE_NOTIFICATION_IS_SHOWN_MINUTES.toLong()).plusMinutes(20)
         setLaunchResponse(LOCAL_DATE_TIME_NOW.plus(longDuration))
 
-        onStartJob()
+        showLaunchNotification(LAUNCH_ID)
 
         verifyNeverShowNotification()
     }
 
-    private suspend fun onStartJob() {
-        controller.doWork("10L")
-    }
-
     private fun verifyShowNotification(launchDateTime: LocalDateTime) {
-        verify(notificationsHelper).showLaunchNotification(check {
-            assertThat(it.id, `is`("10L"))
-            assertThat(it.launchDateTime, `is`(launchDateTime))
-        })
+        val launchNotificationInfo = notificationsHelper.shownNotifications.first()
+        assertThat(launchNotificationInfo.id).isEqualTo(LAUNCH_ID)
+        assertThat(launchNotificationInfo.launchDateTime).isEqualTo(launchDateTime)
     }
 
     private fun verifyNeverShowNotification() {
-        verify(notificationsHelper, never()).showLaunchNotification(any())
+        assertThat(notificationsHelper.shownNotifications.size).isEqualTo(0)
     }
 
     private var launchResponse: Launch? = null
@@ -106,12 +101,12 @@ class ShowLaunchNotificationTest {
         )
     }
 
-    private fun prepareController() {
-        controller = ShowLaunchNotificationImpl(
+    private fun prepareUseCase() {
+        showLaunchNotification = ShowLaunchNotificationImpl(
             { launchResponse!! },
             notificationsHelper,
-            LOCAL_DATE_TIME_NOW,
-            settingsManager
+            settingsManager,
+            { LOCAL_DATE_TIME_NOW }
         )
     }
 

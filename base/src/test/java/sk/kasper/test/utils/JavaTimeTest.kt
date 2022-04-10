@@ -1,4 +1,4 @@
-package sk.kasper.space
+package sk.kasper.test.utils
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

@@ -21,6 +21,10 @@ internal class DomainModule {
     internal fun providesGetLaunch(getLaunchImpl: GetLaunchImpl): GetLaunch = getLaunchImpl
 
     @Provides
+    internal fun providesGetCurrentLocalDateTime(GetCurrentLocalDateTimeImpl: GetCurrentLocalDateTimeImpl): GetCurrentLocalDateTime =
+        GetCurrentLocalDateTimeImpl
+
+    @Provides
     internal fun providesGetLaunchSite(getLaunchSiteImpl: GetLaunchSiteImpl): GetLaunchSite = getLaunchSiteImpl
 
     @Provides

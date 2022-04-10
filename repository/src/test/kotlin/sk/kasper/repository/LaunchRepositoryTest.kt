@@ -1,5 +1,6 @@
 package sk.kasper.repository
 
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -10,7 +11,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
-import sk.kasper.base.utils.toTimeStamp
 import sk.kasper.database.dao.LaunchDao
 import sk.kasper.database.entity.LaunchDetailEntity
 import sk.kasper.repository.impl.LaunchRepositoryImpl
@@ -35,7 +35,7 @@ class LaunchRepositoryTest {
         val launches = listOf(
             LaunchDetailEntity(
                 "id",
-                LOCAL_DATE_TIME_NOW.plusDays(7).toTimeStamp(),
+                LOCAL_DATE_TIME_NOW.plusDays(7),
                 "R1",
                 mainPhotoUrl = null
             )
@@ -47,8 +47,8 @@ class LaunchRepositoryTest {
         assertEquals(launches[0].id, repoLaunches[0].id)
     }
 
-    private suspend fun returnLaunchesFromDao(list: List<LaunchDetailEntity>) {
-        `when`(launchDao.getLaunches()).thenReturn(list)
+    private fun returnLaunchesFromDao(list: List<LaunchDetailEntity>) {
+        `when`(launchDao.observeLaunches()).thenReturn(flowOf(list))
     }
 
     internal inner class LaunchRepositoryUnderTest

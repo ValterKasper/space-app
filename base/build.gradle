@@ -1,6 +1,6 @@
 plugins {
     id 'java-library'
-    id 'org.jetbrains.kotlin.jvm'
+    id 'kotlin'
 }
 
 java {
@@ -14,4 +14,8 @@ dependencies {
     api libs.dagger.hilt.core
 
     api libs.threetenabp.threetenabp
+    testImplementation libs.threetenabp.test
+
+    testImplementation libs.junit
+    testImplementation libs.google.truth
 }

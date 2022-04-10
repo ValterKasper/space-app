@@ -6,14 +6,18 @@ import sk.kasper.base.SettingsManager
 import sk.kasper.base.logger.Logger
 import sk.kasper.base.notification.LaunchNotificationInfo
 import sk.kasper.base.notification.NotificationsHelper
+import sk.kasper.domain.usecase.GetCurrentLocalDateTime
 import sk.kasper.domain.usecase.GetLaunch
 import sk.kasper.domain.usecase.ShowLaunchNotification
 import javax.inject.Inject
 
-class ShowLaunchNotificationImpl @Inject constructor(
+interface T
+
+internal class ShowLaunchNotificationImpl @Inject constructor(
     private val getLaunch: GetLaunch,
     private val notificationsHelper: NotificationsHelper,
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
+    private val getCurrentLocalDateTime: GetCurrentLocalDateTime,
 ) : ShowLaunchNotification {
 
     override suspend fun invoke(launchId: String) {
@@ -23,7 +27,7 @@ class ShowLaunchNotificationImpl @Inject constructor(
         }
 
         try {
-            val currentDateTime: LocalDateTime = LocalDateTime.now()
+            val currentDateTime: LocalDateTime = getCurrentLocalDateTime()
             val launch = getLaunch(launchId)
             Logger.d("onStartJob - success - notification shown")
             val duration = Duration.ofMinutes(settingsManager.durationBeforeNotificationIsShown.toLong())
