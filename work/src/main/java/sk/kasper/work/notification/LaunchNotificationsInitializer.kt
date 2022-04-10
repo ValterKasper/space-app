@@ -16,7 +16,6 @@ internal class LaunchNotificationsInitializer @Inject constructor(
     override fun init() {
         appCoroutineScope.launch {
             observeLaunches().collect {
-                // TODO D: ensure that this is called just once after sync
                 scheduleLaunchNotifications(it)
             }
         }

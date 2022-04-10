@@ -91,7 +91,6 @@ kapt {
 }
 
 dependencies {
-    implementation project(':domain')
     implementation project(':ui-common')
     implementation project(':ui-settings')
     implementation project(':ui-timeline')
@@ -99,19 +98,13 @@ dependencies {
     implementation project(':ui-launch')
     implementation project(':database-android')
     implementation project(':base-android')
-
-    implementation libs.android.material
+    implementation project(':work')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
 
-    implementation libs.androidx.lifecycle.common.java8
-    implementation libs.androidx.lifecycle.process
-
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
-
-    implementation libs.kotlin.stdlib.jdk7
 
     androidTestImplementation libs.dagger.hilt.android
     kaptAndroidTest libs.dagger.hilt.android
@@ -120,10 +113,6 @@ dependencies {
 
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test
-
-    implementation libs.kotlin.coroutines.core
-    implementation libs.kotlin.coroutines.android
-    implementation libs.kotlin.coroutines.test
 
     androidTestImplementation libs.androidx.test.espresso.contrib
     androidTestImplementation libs.androidx.test.espresso.core
