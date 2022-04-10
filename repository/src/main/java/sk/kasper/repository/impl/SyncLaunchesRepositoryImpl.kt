@@ -5,6 +5,7 @@ import kotlinx.coroutines.sync.withLock
 import sk.kasper.base.SettingKey
 import sk.kasper.base.SettingsManager
 import sk.kasper.base.logger.Logger
+import sk.kasper.database.RunInTransaction
 import sk.kasper.database.SpaceDatabase
 import sk.kasper.database.entity.LaunchAndTagsEntity
 import sk.kasper.database.entity.PhotoLaunchEntity
@@ -21,7 +22,8 @@ import javax.inject.Inject
 internal class SyncLaunchesRepositoryImpl @Inject constructor(
     private val service: RemoteApi,
     private val database: SpaceDatabase,
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
+    private val runInTransaction: RunInTransaction
 ) : SyncLaunchesRepository {
 
     private val mutex = Mutex()
@@ -58,16 +60,15 @@ internal class SyncLaunchesRepositoryImpl @Inject constructor(
                         remoteLaunch.photos.orEmpty().map { photoId -> PhotoLaunchEntity(photoId, remoteLaunch.id) }
                     }.flatten()
 
-                    // TODO D: revert
-                    // database.runInTransaction {
-                    database.launchDao().clear()
-                    database.launchSiteDao().insertAll(*launchSites.toTypedArray())
-                    database.rocketDao().insertAll(*rockets.toTypedArray())
-                    database.launchDao().insertAll(*launchAndTagEntities.map { it.launch }.toTypedArray())
-                    database.tagDao().insertAll(*tagEntities.toTypedArray())
-                    database.photoDao().insertAll(*photoEntities.toTypedArray())
-                    database.photoDao().insertAll(*photoLaunchEntities.toTypedArray())
-//                    }
+                    runInTransaction {
+                        database.launchDao().clear()
+                        database.launchSiteDao().insertAll(*launchSites.toTypedArray())
+                        database.rocketDao().insertAll(*rockets.toTypedArray())
+                        database.launchDao().insertAll(*launchAndTagEntities.map { it.launch }.toTypedArray())
+                        database.tagDao().insertAll(*tagEntities.toTypedArray())
+                        database.photoDao().insertAll(*photoEntities.toTypedArray())
+                        database.photoDao().insertAll(*photoLaunchEntities.toTypedArray())
+                    }
                 }
             } catch (e: Exception) {
                 Logger.e(e)
