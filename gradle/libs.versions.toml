@@ -52,6 +52,9 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 
+androidx-hilt-work = "androidx.hilt:hilt-work:1.0.0"
+androidx-hilt-compiler = "androidx.hilt:hilt-compiler:1.0.0"
+
 androidx-test-espresso-contrib = "androidx.test.espresso:espresso-contrib:3.1.1-alpha01"
 androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.1.1-alpha01"
 androidx-test-junit = "androidx.test.ext:junit:1.1.2"

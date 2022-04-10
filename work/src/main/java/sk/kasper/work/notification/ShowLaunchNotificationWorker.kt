@@ -1,17 +1,17 @@
 package sk.kasper.work.notification
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import org.threeten.bp.LocalDateTime
 import sk.kasper.base.logger.Logger
 import sk.kasper.base.utils.toTimeStamp
 import sk.kasper.domain.usecase.ShowLaunchNotification
-import sk.kasper.work.work.ChildWorkerFactory
 import java.util.concurrent.TimeUnit
 
+@HiltWorker
 class ShowLaunchNotificationWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
@@ -25,14 +25,14 @@ class ShowLaunchNotificationWorker @AssistedInject constructor(
             Logger.d("createWorkRequest $launchId at $dateTimeNotification")
 
             val constrains = Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .setRequiresCharging(false)
-                    .build()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(false)
+                .build()
 
             return OneTimeWorkRequestBuilder<ShowLaunchNotificationWorker>()
-                    .setConstraints(constrains)
-                    .setInputData(workDataOf(LAUNCH_ID_KEY to launchId))
-                    .setInitialDelay(dateTimeNotification.toTimeStamp() - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .setConstraints(constrains)
+                .setInputData(workDataOf(LAUNCH_ID_KEY to launchId))
+                .setInitialDelay(dateTimeNotification.toTimeStamp() - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .build()
         }
     }
@@ -41,14 +41,6 @@ class ShowLaunchNotificationWorker @AssistedInject constructor(
         val launchId = inputData.getString(LAUNCH_ID_KEY) ?: ""
         showLaunchNotification(launchId)
         return Result.success()
-    }
-
-    @AssistedFactory
-    interface Factory : ChildWorkerFactory {
-        override fun create(
-            appContext: Context,
-            workerParams: WorkerParameters
-        ): ShowLaunchNotificationWorker
     }
 
 }
