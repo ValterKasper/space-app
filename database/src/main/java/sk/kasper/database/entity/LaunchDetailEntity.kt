@@ -6,7 +6,7 @@ import org.threeten.bp.LocalDateTime
 
 data class LaunchDetailEntity(
         var id: String = "",
-        var launchTs: LocalDateTime = LocalDateTime.MIN,
+        var launchDateTime: LocalDateTime = LocalDateTime.MIN,
         var launchName: String = "",
         var description: String? = null,
         var mainPhotoUrl: String? = null,

@@ -39,4 +39,13 @@ dependencies {
     implementation libs.androidx.room.ktx
     implementation libs.androidx.room.runtime
     kapt libs.androidx.room.compiler
+
+    implementation libs.threetenabp.threetenabp
+
+    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.google.truth
+
+    implementation libs.kotlin.coroutines.core
+    androidTestImplementation libs.kotlin.coroutines.test
 }

@@ -158,19 +158,14 @@ class TimelineViewModelTest {
         @Mock
         private lateinit var settingsManager: SettingsManager
 
-        @Mock
-        private lateinit var mapToDomainTag: MapToDomainTag
-
-        @Mock
-        private lateinit var mapToUiTag: MapToUiTag
-
-        @Mock
-        private lateinit var rocketMapper: RocketMapper
-
         private lateinit var viewModel: TimelineViewModelUnderTest
 
         private val launches = mutableListOf<Launch>()
+
         private val expectedItems = mutableListOf<ExpectedListItem>()
+        private val mapToDomainTag = MapToDomainTag()
+        private val mapToUiTag = MapToUiTag()
+        private val rocketMapper = RocketMapper()
 
         val accurate = true
         val launch = true

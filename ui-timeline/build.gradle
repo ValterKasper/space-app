@@ -78,8 +78,7 @@ dependencies {
 
     implementation libs.kotlin.coroutines.android
     implementation libs.kotlin.coroutines.core
-    implementation libs.kotlin.coroutines.test
-    implementation libs.kotlin.stdlib.jdk7
+    testImplementation libs.kotlin.coroutines.test
 
     testImplementation libs.androidx.coretesting
     testImplementation libs.mockito.kotlin

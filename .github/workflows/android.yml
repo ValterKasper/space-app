@@ -32,7 +32,7 @@ jobs:
     - name: Build with Gradle
       env:
         SPACE_APP_KEYSTORE_PATH: ${{ steps.release_cert.outputs.filePath }}
-      run: ./gradlew testStagingUnitTest assembleStaging
+      run: ./gradlew testDebugUnitTest assembleDebug
     - name: Publish apk artefact
       uses: actions/upload-artifact@v1
       with:

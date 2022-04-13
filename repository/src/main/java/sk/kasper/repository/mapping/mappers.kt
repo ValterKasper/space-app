@@ -1,6 +1,7 @@
 package sk.kasper.repository.mapping
 
 import sk.kasper.base.utils.safeEnumValue
+import sk.kasper.base.utils.toLocalDateTime
 import sk.kasper.database.entity.*
 import sk.kasper.entity.*
 import sk.kasper.remote.entity.*
@@ -19,7 +20,7 @@ internal fun RemoteFalconCore.toFalconCoreEntity() = FalconCoreEntity(
 
 internal fun RemoteLaunch.toLaunchEntity() = LaunchEntity(
     id,
-    launchTs,
+    launchTs.toLocalDateTime(),
     name,
     missionInfo?.description,
     mainPhotoUrl,
@@ -55,7 +56,7 @@ fun LaunchDetailEntity.toLaunch(): Launch =
         id,
         launchName,
         description,
-        launchTs,
+        launchDateTime,
         mainPhotoUrl,
         hashTag,
         payloadMass,

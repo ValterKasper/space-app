@@ -10,11 +10,12 @@ import sk.kasper.database.entity.LaunchEntity
 abstract class LaunchDao {
 
     @Transaction
-    @Query("""
+    @Query(
+        """
         SELECT
             launch.id,
             launch.launchName,
-            launch.launchTs,
+            launch.launchDateTime,
             launch.rocketId,
             launch.accurateDate,
             launch.accurateTime,
@@ -32,17 +33,18 @@ abstract class LaunchDao {
         LEFT JOIN
             manufacturer ON rocket.manufacturerId = manufacturer.id
         ORDER BY
-            launch.launchTs
+            launch.launchDateTime
         """
     )
     abstract fun observeLaunches(): Flow<List<LaunchDetailEntity>>
 
     @Transaction
-    @Query("""
+    @Query(
+        """
         SELECT
             launch.id,
             launch.launchName,
-            launch.launchTs,
+            launch.launchDateTime,
             launch.rocketId,
             launch.accurateDate,
             launch.accurateTime,

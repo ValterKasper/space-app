@@ -1,6 +1,7 @@
 package sk.kasper.database.entity
 
 import androidx.room.*
+import org.threeten.bp.LocalDateTime
 
 @Entity(foreignKeys = arrayOf(
             ForeignKey(
@@ -15,17 +16,18 @@ import androidx.room.*
                 Index("rocketId"),
                 Index("launchSiteId")),
         tableName = "launch")
-data class LaunchEntity(@PrimaryKey val id: String,
-                        val launchTs: Long,
-                        val launchName: String,
-                        val description: String?,
-                        val mainPhotoUrl: String?,
-                        val rocketId: Long?,
-                        val orbit: String?,
-                        val hashTag: String?,
-                        val payloadMass: Int?,
-                        val videoUrl: String?,
-                        val accurateDate: Boolean,
-                        val accurateTime: Boolean,
-                        val launchSiteId: Long?,
-                        @Embedded(prefix = FalconCoreEntity.EMBEDDED_PREFIX) val falconCore: FalconCoreEntity?)
+data class LaunchEntity(
+    @PrimaryKey val id: String,
+    val launchDateTime: LocalDateTime,
+    val launchName: String,
+    val description: String?,
+    val mainPhotoUrl: String?,
+    val rocketId: Long?,
+    val orbit: String?,
+    val hashTag: String?,
+    val payloadMass: Int?,
+    val videoUrl: String?,
+    val accurateDate: Boolean,
+    val accurateTime: Boolean,
+    val launchSiteId: Long?,
+    @Embedded(prefix = FalconCoreEntity.EMBEDDED_PREFIX) val falconCore: FalconCoreEntity?)

@@ -114,8 +114,6 @@ dependencies {
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test
 
-    androidTestImplementation libs.androidx.test.espresso.contrib
-    androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.junit
     androidTestImplementation libs.androidx.test.rules
     androidTestImplementation libs.androidx.test.runner

@@ -55,12 +55,11 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-hilt-work = "androidx.hilt:hilt-work:1.0.0"
 androidx-hilt-compiler = "androidx.hilt:hilt-compiler:1.0.0"
 
-androidx-test-espresso-contrib = "androidx.test.espresso:espresso-contrib:3.1.1-alpha01"
-androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.1.1-alpha01"
-androidx-test-junit = "androidx.test.ext:junit:1.1.2"
-androidx-test-orchestrator = "androidx.test:orchestrator:1.3.0"
-androidx-test-rules = "androidx.test:rules:1.3.0"
-androidx-test-runner = "androidx.test:runner:1.3.0"
+androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.4.0"
+androidx-test-junit = "androidx.test.ext:junit:1.1.3"
+androidx-test-orchestrator = "androidx.test:orchestrator:1.4.1"
+androidx-test-rules = "androidx.test:rules:1.4.0"
+androidx-test-runner = "androidx.test:runner:1.4.0"
 
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
