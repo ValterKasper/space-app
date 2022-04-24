@@ -35,7 +35,8 @@ internal class SettingsManagerImpl @Inject constructor(@ApplicationContext priva
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key == null) return
         val settingKey = getSettingKeyFromSharedPreferenceKey(key)
         if (settingKey != SettingKey.INVALID) {
             listeners.forEach {

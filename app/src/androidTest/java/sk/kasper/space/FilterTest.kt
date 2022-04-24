@@ -1,8 +1,8 @@
 package sk.kasper.space
-
+/*
 class FilterTest : BaseMainActivityTest() {
 
-/*    @Test
+    @Test
     fun filter() {
         timeline {
             fromServerReturnLaunches(listOf(
@@ -23,5 +23,5 @@ class FilterTest : BaseMainActivityTest() {
             assertHasLaunch("Electron")
             assertHasLaunch("Ariane")
         }
-    }*/
-}
+    }
+}*/

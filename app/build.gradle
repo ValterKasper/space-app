@@ -35,7 +35,7 @@ android {
         targetSdkVersion buildConfig.targetSdk
         versionCode 18
         versionName "1.2.5"
-        testInstrumentationRunner "sk.kasper.space.MockAndroidJUnitRunner"
+        testInstrumentationRunner "sk.kasper.space.CustomAndroidJUnitRunner"
 
         manifestPlaceholders += [
                 google_maps_key: "${System.getenv("SPACE_APP_GOOGLE_MAPS_KEY")}",
@@ -99,6 +99,7 @@ dependencies {
     implementation project(':database-android')
     implementation project(':base-android')
     implementation project(':work')
+    androidTestImplementation project(':remote')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
@@ -106,17 +107,19 @@ dependencies {
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
-    androidTestImplementation libs.dagger.hilt.android
-    kaptAndroidTest libs.dagger.hilt.android
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler
+    kaptAndroidTest libs.dagger.hilt.compiler
+    androidTestImplementation libs.dagger.hilt.testing
 
     implementation libs.threetenabp.threetenabp
     testImplementation libs.threetenabp.test
 
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
     androidTestImplementation libs.androidx.test.junit
     androidTestImplementation libs.androidx.test.rules
     androidTestImplementation libs.androidx.test.runner
+
     androidTestUtil libs.androidx.test.orchestrator
     testImplementation libs.androidx.coretesting
     testImplementation libs.junit

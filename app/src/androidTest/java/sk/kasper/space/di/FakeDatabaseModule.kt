@@ -1,25 +1,28 @@
-package sk.kasper.database.di
+package sk.kasper.space.di
 
 import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import sk.kasper.database.SpaceDatabase
 import sk.kasper.database.SpaceRoomDatabase
+import sk.kasper.database.di.DatabaseModule
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
-class DatabaseModule {
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [DatabaseModule::class]
+)
+class FakeDatabaseModule {
 
     @Singleton
     @Provides
     internal fun providesSpaceRoomDatabase(@ApplicationContext context: Context): SpaceRoomDatabase {
-        return Room.databaseBuilder(context, SpaceRoomDatabase::class.java, "local-database")
-            .fallbackToDestructiveMigration()
+        return Room.inMemoryDatabaseBuilder(context, SpaceRoomDatabase::class.java)
             .build()
     }
 

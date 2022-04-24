@@ -4,7 +4,7 @@ agp = '7.1.2'
 compose = '1.1.1'
 coroutines = '1.6.0'
 dagger = '2.40.5'
-junit = '4.12'
+junit = '4.13'
 kotlin = '1.6.10'
 mockitokotlin = '2.2.0'
 navigation = '2.4.1'
@@ -62,6 +62,7 @@ androidx-test-rules = "androidx.test:rules:1.4.0"
 androidx-test-runner = "androidx.test:runner:1.4.0"
 
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+dagger-hilt-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "dagger" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
 dagger-hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "dagger" }

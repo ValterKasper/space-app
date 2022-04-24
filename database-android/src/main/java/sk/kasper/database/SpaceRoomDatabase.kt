@@ -21,4 +21,4 @@ import sk.kasper.database.entity.*
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-internal abstract class SpaceRoomDatabase : RoomDatabase(), SpaceDatabase
+abstract class SpaceRoomDatabase : RoomDatabase(), SpaceDatabase

@@ -11,10 +11,12 @@ import sk.kasper.base.utils.toTimeStamp
 import sk.kasper.remote.entity.RemoteLaunchesResponse
 import javax.inject.Inject
 
-private val BACK_TO_THE_FUTURE_OFFSET = Duration.of(4, ChronoUnit.HOURS)
-
-internal class FakeRemoteApi @Inject constructor(private val fileReader: FileReader, private val flags: Flags) :
+internal class DemoRemoteApi @Inject constructor(private val fileReader: FileReader, private val flags: Flags) :
     RemoteApi {
+
+    companion object {
+        private val BACK_TO_THE_FUTURE_OFFSET = Duration.of(4, ChronoUnit.HOURS)
+    }
 
     private val now = LocalDateTime.now()
 

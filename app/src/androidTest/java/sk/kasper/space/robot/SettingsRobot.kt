@@ -1,17 +1,5 @@
 package sk.kasper.space.robot
 
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.Espresso.onData
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.platform.app.InstrumentationRegistry
-import junit.framework.Assert.assertEquals
-import org.hamcrest.CoreMatchers.containsString
-import org.hamcrest.Matchers
-import sk.kasper.space.R
 /*
 
 fun settings(func: SettingsRobot.() -> Unit) = SettingsRobot().apply { func() }

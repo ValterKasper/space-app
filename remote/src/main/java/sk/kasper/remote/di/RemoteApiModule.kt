@@ -7,24 +7,24 @@ import dagger.hilt.components.SingletonComponent
 import sk.kasper.base.Flags
 import sk.kasper.base.SettingsManager
 import sk.kasper.remote.ApiUtils.createRemoteApi
-import sk.kasper.remote.FakeRemoteApi
+import sk.kasper.remote.DemoRemoteApi
 import sk.kasper.remote.RemoteApi
 import javax.inject.Provider
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal class RemoteApiModule {
+class RemoteApiModule {
 
     @Singleton
     @Provides
     internal fun providesRemoteApi(
         settingsManager: SettingsManager,
-        fakeRemoteApi: Provider<FakeRemoteApi>,
+        demoRemoteApi: Provider<DemoRemoteApi>,
         flags: Flags
     ): RemoteApi {
         return if (flags.bootstrapResponseApi) {
-            fakeRemoteApi.get()
+            demoRemoteApi.get()
         } else {
             createRemoteApi(settingsManager, flags)
         }
