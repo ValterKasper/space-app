@@ -21,7 +21,7 @@ internal fun RemoteFalconCore.toFalconCoreEntity() = FalconCoreEntity(
 internal fun RemoteLaunch.toLaunchEntity() = LaunchEntity(
     id,
     launchTs.toLocalDateTime(),
-    name,
+    mission_name ?: "",
     missionInfo?.description,
     mainPhotoUrl,
     rocketId,

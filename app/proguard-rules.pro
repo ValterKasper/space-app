@@ -72,5 +72,9 @@
 -dontnote sk.kasper.space.view.OrbitView
 -dontwarn okhttp3.internal.platform.*
 
+-dontwarn org.bouncycastle.jsse.BCSSLParameters
+-dontwarn org.bouncycastle.jsse.BCSSLSocket
+-dontwarn org.conscrypt.Conscrypt
+
 
 

@@ -3,7 +3,7 @@ package sk.kasper.remote.entity
 data class RemoteLaunch(
     val id: String,
     val launchTs: Long,
-    val name: String,
+    val mission_name: String?,
     val missionInfo: RemoteMissionInfo?,
     val mainPhotoUrl: String?,
     val rocketId: Long?,

@@ -8,7 +8,7 @@ internal object FlagsImpl : Flags {
     override val apiKey: String
         get() = BuildConfig.API_KEY
 
-    override val synIntervalHours: Long
+    override val syncIntervalHours: Long
         get() = BuildConfig.SYNC_INTERVAL_HOURS
 
     override val bootstrapResponseApi: Boolean

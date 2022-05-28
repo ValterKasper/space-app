@@ -15,8 +15,7 @@ android {
         consumerProguardFiles "consumer-rules.pro"
 
         buildConfigField 'long', 'SYNC_INTERVAL_HOURS', '4'
-        buildConfigField 'String', 'API_KEY', "\"${System.getenv("SPACE_APP_API_KEY")}\""
-        buildConfigField 'boolean', 'BOOTSTRAP_RESPONSE_API', "true"
+        buildConfigField 'boolean', 'BOOTSTRAP_RESPONSE_API', "false"
         buildConfigField 'String', 'BOOTSTRAP_RESPONSE_API_FILE_NAME', "\"bootstrap_api_response.json\""
     }
 
@@ -24,6 +23,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'API_KEY', "\"${System.getenv("SPACE_APP_API_KEY")}\""
+        }
+        debug {
+            buildConfigField 'String', 'API_KEY', "\"\""
         }
 
     }

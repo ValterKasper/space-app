@@ -6,7 +6,7 @@ import sk.kasper.remote.entity.RemoteLaunchesResponse
 
 interface RemoteApi {
 
-    @GET("timeline")
+    @GET("api/launches")
     suspend fun timeline(): RemoteLaunchesResponse
 
 }

@@ -33,13 +33,9 @@ android {
         applicationId "sk.kasper.space"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 18
-        versionName "1.2.5"
+        versionCode 21
+        versionName "2.0.0"
         testInstrumentationRunner "sk.kasper.space.CustomAndroidJUnitRunner"
-
-        manifestPlaceholders += [
-                google_maps_key: "${System.getenv("SPACE_APP_GOOGLE_MAPS_KEY")}",
-        ]
     }
     buildTypes {
         release {

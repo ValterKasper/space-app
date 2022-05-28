@@ -28,7 +28,7 @@ class SyncWorker @AssistedInject constructor(
                 .setRequiresCharging(false)
                 .build()
 
-            val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(flags.synIntervalHours, TimeUnit.HOURS)
+            val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(flags.syncIntervalHours, TimeUnit.HOURS)
                 .setConstraints(constrains)
                 .build()
 

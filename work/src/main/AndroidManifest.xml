@@ -7,23 +7,12 @@
 
     <application>
 
-        <receiver
-            android:name="sk.kasper.work.sync.StartSyncJobReceiver"
-            android:exported="true">
-
-            <intent-filter>
-
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-            </intent-filter>
-
-        </receiver>
-
+        <!-- Disables android.startup completely to disable auto WorkManager initialization -->
         <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="${applicationId}.workmanager-init"
-            android:exported="false"
-            tools:node="remove" />
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove">
+        </provider>
 
     </application>
 

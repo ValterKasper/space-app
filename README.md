@@ -1,6 +1,4 @@
-# Rocktly: Rocket launches schedule (Work in progress 🚧👷🏗️‍️)
-
-🚨 App is currently being rewritten to compose 🚨
+# Planet escape: Rocket launches schedule (Work in progress 🚧👷🏗️‍️)
 
 An android app that shows timeline of upcoming rocket launches. Showcases architecture of a real android application and usage of some libraries. Application loads data about rocket launches from the server and stores them to the database for off-line usage.
 
@@ -33,7 +31,8 @@ An android app that shows timeline of upcoming rocket launches. Showcases archit
 
 ### Getting started
 
-- Server for app isn't currently running publicly. App should work even without server, when is build with parameter `use_fake_reponse_api=true` in the `gradle.properiets`. In this case the response is generated from static JSON from the assets.
+- App can work without the server. When app is build with parameter `use_fake_reponse_api=true` in the `gradle.properiets`, a response is generated from static JSON file in the assets.
+- Otherwise, if server is used, number of requests per minute is limited.
 
 #### Gradle tasks
 
@@ -54,15 +53,13 @@ An android app that shows timeline of upcoming rocket launches. Showcases archit
 
 - `SPACE_APP_KEYSTORE_PATH`
 
-- `SPACE_APP_API_KEY` - key will be used for communication with server, but is recommended for now to use `use_fake_reponse_api=true ` parameter in the `gradle.properiets`.
-
-- `SPACE_APP_GOOGLE_MAPS_KEY` - use a google maps api key and replace google-services.json file, if you want to show the map in the Launch detail.
+- `SPACE_APP_API_KEY` - key will be used for communication with server
 
 
 ### License
 
 ```
-Copyright 2014 Valter Kasper
+Copyright 2022 Valter Kasper
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

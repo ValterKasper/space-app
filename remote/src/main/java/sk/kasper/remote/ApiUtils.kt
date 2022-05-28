@@ -11,25 +11,28 @@ import sk.kasper.base.logger.Logger
 
 object ApiUtils {
 
-    private val loggingInterceptor = HttpLoggingInterceptor {
-        Logger.tag("OkHttp").d(it)
-    }.apply {
-        level = HttpLoggingInterceptor.Level.BASIC
-    }
-
     internal fun createRemoteApi(settingsManager: SettingsManager, flags: Flags): RemoteApi {
         val authInterceptor = Interceptor { chain ->
-            val newUrl = chain.request().url
-                .newBuilder()
-                .addQueryParameter("apiKey", flags.apiKey)
-                .build()
+            val urlBuilder = chain.request().url.newBuilder()
+            if (flags.apiKey.isNotEmpty()) {
+                urlBuilder.addQueryParameter("apiKey", flags.apiKey)
+            }
 
             val newRequest = chain.request()
                 .newBuilder()
-                .url(newUrl)
+                .url(urlBuilder.build())
                 .build()
 
             chain.proceed(newRequest)
+        }
+
+        val loggingInterceptor = HttpLoggingInterceptor {
+            Logger.tag("OkHttp").d(it)
+        }.apply {
+            level = if (flags.isDebug)
+                HttpLoggingInterceptor.Level.HEADERS
+            else
+                HttpLoggingInterceptor.Level.NONE
         }
 
         val client = OkHttpClient.Builder()
@@ -46,8 +49,8 @@ object ApiUtils {
             .client(client)
             .baseUrl(
                 when (apiEndpoint) {
-                    SettingsManager.PRODUCTION -> "https://li807-27.members.linode.com:8443/"
-                    SettingsManager.LOCALHOST -> "http://10.0.2.2:8080/"
+                    SettingsManager.PRODUCTION -> "https://planetescape.app/"
+                    SettingsManager.LOCALHOST -> "http://10.0.2.2:5000/"
                     SettingsManager.RASPBERRY -> "http://10.0.0.2:8080/"
                     else -> throw IllegalStateException()
                 }
