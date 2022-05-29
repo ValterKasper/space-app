@@ -9,12 +9,10 @@ android {
 
     defaultConfig {
         minSdk buildConfig.minSdk
-        targetSdk buildConfig.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
-
     buildTypes {
         release {
             minifyEnabled false

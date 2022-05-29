@@ -37,6 +37,7 @@ jobs:
       with:
         name: app-debug
         path: app/build/outputs/apk
+#    TODO I: how merge unit test results. Note: "apply plugin: 'android-reporting'" works just for instrumented tests
 #    - name: Publish test results artefact
 #      uses: actions/upload-artifact@v1
 #      with:

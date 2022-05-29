@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -36,6 +38,7 @@ android {
         versionCode 21
         versionName "2.0.0"
         testInstrumentationRunner "sk.kasper.space.CustomAndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     buildTypes {
         release {
@@ -64,16 +67,15 @@ android {
         useIR = true
     }
     testOptions {
-        unitTests.returnDefaultValues = true
-
-        // Always show the result of every unit test, even if it passes.
-        unitTests.all {
-            testLogging {
-                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        devices {
+            pixel2 (ManagedVirtualDevice) {
+                device = "Pixel 2"
+                apiLevel = 30
+                systemImageSource = "aosp-atd"
+                abi = "x86"
             }
         }
-
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
     packagingOptions {
         resources {
