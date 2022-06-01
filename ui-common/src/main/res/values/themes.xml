@@ -1,34 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
-        <item name="android:dividerHeight">@dimen/divider_height</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="toolbarStyle">@style/MyToolbarStyle</item>
-        <item name="textAppearanceBody2">@style/MyTextAppearanceBody2</item>
-        <item name="textAppearanceHeadline6">@style/MyTextAppearanceHeadline6</item>
-        <item name="android:divider">@color/off_white</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:textViewStyle">@style/MyTextViewStyle</item>
-        <item name="android:fontFamily">@font/source_sans_pro_regular</item>
-        <item name="android:textAppearanceListItem">@style/MyListItemTextAppearance</item>
-        <item name="android:textAppearanceListItemSecondary">@style/MyListItemSecondaryTextAppearance</item>
-    </style>
-
-    <style name="AppTheme.DayNight">
-        <item name="colorPrimary">@color/cyan_500</item>
-        <item name="colorPrimaryDark">@color/cyan_500</item>
-        <item name="colorSecondary">@color/blue_500</item>
-        <item name="android:colorBackground">@color/white</item>
-        <item name="colorSurface">@color/white</item>
-    </style>
-
-    <style name="Base.AppTheme.DayNight.Immersive" parent="AppTheme.DayNight">
+    <style name="SpaceAppTheme" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
     </style>
-
-    <style name="AppTheme.DayNight.Immersive" parent="Base.AppTheme.DayNight.Immersive"/>
 
 </resources>

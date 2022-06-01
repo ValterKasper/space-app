@@ -8,7 +8,7 @@ internal class CrashlyticsInitializer @Inject constructor() : AppInitializer {
 
     override fun init() {
         if (BuildConfig.DEBUG) {
-            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
+            // FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
         }
     }
 

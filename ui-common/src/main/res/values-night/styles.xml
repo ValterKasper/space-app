@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="MyToolbarStyle" parent="@style/BaseToolbarStyle">
-        <item name="android:background">?attr/colorSurface</item>
-    </style>
-
-</resources>

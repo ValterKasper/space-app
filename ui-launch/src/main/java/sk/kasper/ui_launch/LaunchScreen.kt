@@ -19,13 +19,6 @@ import sk.kasper.ui_common.theme.SpaceTheme
 import sk.kasper.ui_launch.gallery.GallerySection
 import sk.kasper.ui_launch.section.*
 
-// TODO D::
-//       enter:
-//         requireActivity().window.statusBarColor =
-//            ContextCompat.getColor(requireContext(), R.color.systemUiOverlayColor)
-//       exit:
-//        requireActivity().window.statusBarColor =
-//            android.R.attr.statusBarColor.getThemeColor(requireContext())
 @Composable
 fun LaunchScreen(
     showToast: (String) -> Unit,
