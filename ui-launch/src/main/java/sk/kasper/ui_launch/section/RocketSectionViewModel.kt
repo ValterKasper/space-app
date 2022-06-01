@@ -8,7 +8,7 @@ import sk.kasper.entity.Rocket
 import sk.kasper.ui_launch.R
 import javax.inject.Inject
 
-data class RocketSectionState(
+internal data class RocketSectionState(
     val rocketName: String = "",
     val height: String = "",
     val diameter: String = "",
@@ -22,7 +22,7 @@ data class RocketSectionState(
 )
 
 @HiltViewModel
-class RocketSectionViewModel @Inject constructor(
+internal class RocketSectionViewModel @Inject constructor(
     private val handle: SavedStateHandle,
     private val getRocketForLaunch: GetRocketForLaunch
 ) : LoaderViewModel<RocketSectionState, Rocket>(RocketSectionState()) {

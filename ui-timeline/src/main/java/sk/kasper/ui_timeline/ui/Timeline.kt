@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
@@ -30,6 +31,7 @@ import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.threeten.bp.LocalDateTime
+import sk.kasper.base.logger.Logger
 import sk.kasper.ui_common.tag.Filter
 import sk.kasper.ui_common.tag.FilterTag
 import sk.kasper.ui_common.theme.SpaceTheme
@@ -43,8 +45,29 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun Timeline(viewModel: TimelineViewModel) {
+fun TimelineScreen(navigate: (String) -> Unit) {
+    TimelineScreen(viewModel = hiltViewModel(), navigate)
+}
+
+@Composable
+internal fun TimelineScreen(viewModel: TimelineViewModel, navigate: (String) -> Unit) {
     val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(true) {
+        viewModel.sideEffects.collect {
+            Logger.d("$it")
+            when (it) {
+                SideEffect.ConnectionError -> {
+                    // todo show snack bar
+                }
+                is SideEffect.NavigateTo -> {
+                    Logger.d("navigate to ${it.uriString}")
+                    navigate(it.uriString)
+                }
+            }
+        }
+
+    }
 
     SpaceTheme {
         ProvideWindowInsets {

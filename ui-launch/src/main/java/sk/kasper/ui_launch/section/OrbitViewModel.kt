@@ -18,7 +18,7 @@ data class OrbitState(
 )
 
 @HiltViewModel
-class OrbitViewModel @Inject constructor(
+internal class OrbitViewModel @Inject constructor(
     private val getOrbit: GetOrbit,
     private val handle: SavedStateHandle,
 ) : LoaderViewModel<OrbitState, Orbit>(OrbitState()) {

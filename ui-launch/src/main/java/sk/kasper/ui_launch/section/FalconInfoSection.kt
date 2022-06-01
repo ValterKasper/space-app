@@ -16,7 +16,7 @@ import sk.kasper.ui_common.theme.section
 import sk.kasper.ui_launch.R
 
 @Composable
-fun FalconSection(falconInfoViewModel: FalconInfoViewModel) {
+internal fun FalconSection(falconInfoViewModel: FalconInfoViewModel) {
     val state by falconInfoViewModel.state.collectAsState()
 
     if (state.visible) {

@@ -12,7 +12,6 @@ buildscript {
     }
     dependencies {
         classpath libs.android.gradle
-        classpath libs.androidx.navigation.args
         classpath libs.google.firebase.crashlyticsGradle
         classpath libs.google.gms.google.services
         classpath libs.kotlin.gradle

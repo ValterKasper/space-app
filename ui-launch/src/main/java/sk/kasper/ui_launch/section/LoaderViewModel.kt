@@ -5,7 +5,7 @@ import sk.kasper.domain.model.Response
 import sk.kasper.domain.model.SuccessResponse
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 
-abstract class LoaderViewModel<STATE, LOAD>(defaultState: STATE) :
+internal abstract class LoaderViewModel<STATE, LOAD>(defaultState: STATE) :
     ReducerViewModel<STATE, LoaderViewModel.SideEffect>(defaultState) {
 
     enum class SideEffect

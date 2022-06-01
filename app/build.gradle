@@ -4,7 +4,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.firebase.crashlytics'
     id 'com.google.gms.google-services'
     id 'dagger.hilt.android.plugin'
@@ -77,6 +76,12 @@ android {
             }
         }
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.get()
+    }
     packagingOptions {
         resources {
             excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
@@ -102,8 +107,14 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
 
-    implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
+    implementation libs.androidx.navigation.compose
+
+    implementation libs.androidx.compose.foundation
+    implementation libs.androidx.compose.ui.tooling
+    implementation libs.androidx.compose.ui.ui
+    implementation libs.androidx.compose.material.material
+    implementation libs.androidx.activity.compose
 
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler

@@ -15,7 +15,7 @@ import java.util.*
 
 @ExperimentalMaterialApi
 @Composable
-fun ListPreference(
+internal fun ListPreference(
     modifier: Modifier = Modifier,
     settingKey: SettingKey,
     title: Int,

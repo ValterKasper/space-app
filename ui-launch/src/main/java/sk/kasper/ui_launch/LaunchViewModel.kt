@@ -11,7 +11,7 @@ import sk.kasper.ui_common.utils.FormattedTimeType
 import sk.kasper.ui_common.viewmodel.ReducerViewModel
 import javax.inject.Inject
 
-data class LaunchState(
+internal data class LaunchState(
     val missionName: String = "",
     val rocketName: String = "",
     val description: String = "",
@@ -26,11 +26,11 @@ data class LaunchState(
     val showVideoUrl: Boolean = false
 )
 
-sealed class LaunchSideEffect
-data class ShowVideo(val url: String) : LaunchSideEffect()
+internal sealed class LaunchSideEffect
+internal data class ShowVideo(val url: String) : LaunchSideEffect()
 
 @HiltViewModel
-class LaunchViewModel @Inject constructor(
+internal class LaunchViewModel @Inject constructor(
     private val getLaunch: GetLaunch,
     private val toUiTag: MapToUiTag,
     private val handle: SavedStateHandle,

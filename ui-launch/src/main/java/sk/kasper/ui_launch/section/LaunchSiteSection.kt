@@ -26,7 +26,7 @@ import sk.kasper.ui_common.theme.section
 import sk.kasper.ui_launch.R
 
 @Composable
-fun LaunchSiteSection(launchSiteViewModel: LaunchSiteViewModel) {
+internal fun LaunchSiteSection(launchSiteViewModel: LaunchSiteViewModel) {
     val state by launchSiteViewModel.state.collectAsState()
 
     if (state.visible) {

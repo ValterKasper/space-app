@@ -11,17 +11,17 @@ import sk.kasper.ui_launch.gallery.PhotoItem
 import sk.kasper.ui_launch.gallery.PhotoPagerData
 import javax.inject.Inject
 
-data class GalleryState(
+internal data class GalleryState(
     val title: Int = R.string.gallery,
     var visible: Boolean = true,
     val galleryItems: List<Photo> = emptyList()
 )
 
-sealed class GallerySideEffect
-data class ShowPhotoPager(val photoPagerData: PhotoPagerData) : GallerySideEffect()
+internal sealed class GallerySideEffect
+internal data class ShowPhotoPager(val photoPagerData: PhotoPagerData) : GallerySideEffect()
 
 @HiltViewModel
-class GalleryViewModel @Inject constructor(
+internal class GalleryViewModel @Inject constructor(
     private val handle: SavedStateHandle,
     private val getPhotos: GetPhotos,
 ) : ReducerViewModel<GalleryState, GallerySideEffect>(GalleryState()) {

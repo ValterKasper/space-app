@@ -61,14 +61,14 @@ dependencies {
     implementation libs.androidx.compose.material.material
     implementation libs.androidx.compose.ui.tooling
     implementation libs.androidx.compose.ui.ui
+    implementation libs.androidx.navigation.compose
 
     implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.lifecycle.viewmodel.compose
 
-    implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
-    implementation libs.androidx.drawerlayout
-
+    implementation libs.androidx.hilt.navigation.compose
     kaptAndroidTest libs.dagger.hilt.android
     implementation libs.dagger.hilt.android
     kapt libs.dagger.hilt.compiler

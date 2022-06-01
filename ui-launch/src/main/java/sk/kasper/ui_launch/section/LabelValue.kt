@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LabelValue(label: Int, value: String) {
+internal fun LabelValue(label: Int, value: String) {
     Row(modifier = Modifier.padding(vertical = 1.dp)) {
         Text(
             text = stringResource(id = label),

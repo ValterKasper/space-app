@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PreferenceCategory(
+internal fun PreferenceCategory(
     modifier: Modifier = Modifier,
     title: Int,
     content: @Composable ColumnScope.() -> Unit

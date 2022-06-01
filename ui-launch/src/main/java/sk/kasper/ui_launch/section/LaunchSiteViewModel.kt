@@ -17,7 +17,7 @@ data class LaunchSizeState(
 )
 
 @HiltViewModel
-class LaunchSiteViewModel @Inject constructor(
+internal class LaunchSiteViewModel @Inject constructor(
     private val handle: SavedStateHandle,
     private val getLaunchSite: GetLaunchSite,
     private val googleApiHelper: GoogleApiHelper,

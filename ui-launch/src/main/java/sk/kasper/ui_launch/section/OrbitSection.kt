@@ -21,7 +21,7 @@ import sk.kasper.ui_common.view.OrbitView
 import sk.kasper.ui_launch.R
 
 @Composable
-fun OrbitSection(viewModel: OrbitViewModel) {
+internal fun OrbitSection(viewModel: OrbitViewModel) {
     val state by viewModel.state.collectAsState()
     if (state.visible) {
         Column {

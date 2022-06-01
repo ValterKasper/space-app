@@ -15,7 +15,7 @@ import sk.kasper.ui_common.theme.section
 import sk.kasper.ui_launch.R
 
 @Composable
-fun RocketSection(rocketSectionViewModel: RocketSectionViewModel) {
+internal fun RocketSection(rocketSectionViewModel: RocketSectionViewModel) {
     val state by rocketSectionViewModel.state.collectAsState()
 
     if (state.visible) {

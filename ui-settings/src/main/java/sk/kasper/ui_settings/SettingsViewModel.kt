@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalStdlibApi::class)
 @HiltViewModel
-class SettingsViewModel @Inject constructor(private val settingsManager: SettingsManager) :
+internal class SettingsViewModel @Inject constructor(private val settingsManager: SettingsManager) :
     ReducerViewModel<SettingsState, SettingsSideEffect>(SettingsState(emptyList())) {
 
     private fun createSettings() = Settings {
@@ -112,7 +112,8 @@ class SettingsViewModel @Inject constructor(private val settingsManager: Setting
             copy(settings = createSettings())
         }
 
-        emitSideEffect(SettingsSideEffect.SHOW_RESTART_APP_TOAST)
+        if (settingKey == SettingKey.API_ENDPOINT)
+            emitSideEffect(SettingsSideEffect.SHOW_RESTART_APP_TOAST)
     }
 
     private fun Settings(buildingBlock: SettingsBuilder.() -> Unit): List<SettingItem> {
@@ -155,9 +156,9 @@ class SettingsViewModel @Inject constructor(private val settingsManager: Setting
     }
 }
 
-data class SettingsState(val settings: List<SettingItem>)
+internal data class SettingsState(val settings: List<SettingItem>)
 
-sealed class SettingItem {
+internal sealed class SettingItem {
     data class Category(@StringRes val title: Int, val items: List<SettingItem>) :
         SettingItem()
 
@@ -176,6 +177,6 @@ sealed class SettingItem {
     ) : SettingItem()
 }
 
-enum class SettingsSideEffect {
+internal enum class SettingsSideEffect {
     SHOW_RESTART_APP_TOAST
 }

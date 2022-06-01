@@ -14,7 +14,7 @@ import sk.kasper.base.SettingKey
 
 @ExperimentalMaterialApi
 @Composable
-fun SwitchPreference(
+internal fun SwitchPreference(
     modifier: Modifier = Modifier,
     settingKey: SettingKey,
     title: Int,

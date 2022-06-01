@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -37,7 +36,6 @@ dependencies {
     implementation project(':domain')
 
     implementation libs.androidx.navigation.ui
-    implementation libs.androidx.navigation.fragment
 
     implementation libs.androidx.work.runtime
 

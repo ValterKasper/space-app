@@ -80,7 +80,7 @@ open class TimelineViewModel @Inject constructor(
     }
 
     fun onItemClick(item: LaunchListItem) = action {
-        emitSideEffect(SideEffect.NavigateTo("spaceapp://launch/${item.id}"))
+        emitSideEffect(SideEffect.NavigateTo("launch/${item.id}"))
     }
 
     fun onClearAllClick() = action {
@@ -98,7 +98,7 @@ open class TimelineViewModel @Inject constructor(
             Destination.COMPOSE_PLAYGROUND -> "compose_playground"
             Destination.SETTINGS -> "settings"
         }
-        emitSideEffect(SideEffect.NavigateTo("spaceapp://$path"))
+        emitSideEffect(SideEffect.NavigateTo(path))
     }
 
     fun onFilterItemChanged(filterItem: LaunchFilterItem, selected: Boolean) = action {

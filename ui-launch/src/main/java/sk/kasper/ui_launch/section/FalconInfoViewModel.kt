@@ -10,7 +10,7 @@ import sk.kasper.ui_common.utils.FormattedString
 import sk.kasper.ui_launch.R
 import javax.inject.Inject
 
-data class FalconInfoState(
+internal data class FalconInfoState(
     val visible: Boolean = false,
     val blockVersionVisible: Boolean = false,
     val blockStatusVisible: Boolean = false,
@@ -28,7 +28,7 @@ data class FalconInfoState(
 )
 
 @HiltViewModel
-class FalconInfoViewModel @Inject constructor(
+internal class FalconInfoViewModel @Inject constructor(
     private val handle: SavedStateHandle,
     private val getFalconCore: GetFalconCore
 ) : LoaderViewModel<FalconInfoState, FalconCore>(

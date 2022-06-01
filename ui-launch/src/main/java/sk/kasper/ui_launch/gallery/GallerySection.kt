@@ -27,7 +27,7 @@ import sk.kasper.ui_launch.R
 import sk.kasper.ui_launch.section.GalleryViewModel
 
 @Composable
-fun GallerySection(viewModel: GalleryViewModel) {
+internal fun GallerySection(viewModel: GalleryViewModel) {
     Column {
         val state by viewModel.state.collectAsState()
         Text(

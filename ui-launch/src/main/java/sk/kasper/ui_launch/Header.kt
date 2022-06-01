@@ -31,7 +31,7 @@ import sk.kasper.ui_common.ui.TagsRow
 import java.util.*
 
 @Composable
-fun HeaderSection(viewModel: LaunchViewModel, upClick: () -> Unit) {
+internal fun HeaderSection(viewModel: LaunchViewModel, upClick: () -> Unit) {
     val state by viewModel.state.collectAsState()
     LaunchHeader(
         state = state,
@@ -115,7 +115,7 @@ private fun LaunchHeader(
                         onClick = { onShowVideoClick() }
                     ) {
                         Text(
-                            text = stringResource(id = R.string.watch_launch_live).toUpperCase(
+                            text = stringResource(id = R.string.watch_launch_live).uppercase(
                                 Locale.getDefault()
                             ),
                             color = colorResource(id = R.color.youtube_red)

@@ -122,8 +122,6 @@ internal class NotificationsHelperImpl @Inject constructor(
     private fun createPendingIntentForMainScreen(launchId: String): PendingIntent {
         // todo D: use deep link as url
         return NavDeepLinkBuilder(this)
-//                .setArguments(LaunchFragmentArgs(launchId).toBundle())
-//                .setDestination(R.id.launchFragment)
 //                .setGraph(R.navigation.nav_graph)
             .createPendingIntent()
     }
