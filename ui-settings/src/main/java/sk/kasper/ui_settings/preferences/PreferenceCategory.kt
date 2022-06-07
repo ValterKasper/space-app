@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -23,7 +25,10 @@ internal fun PreferenceCategory(
         Divider(modifier = Modifier.fillMaxWidth())
         Text(
             stringResource(title),
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics { heading() }
+                .padding(16.dp),
             style = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.secondary)
         )
         content()

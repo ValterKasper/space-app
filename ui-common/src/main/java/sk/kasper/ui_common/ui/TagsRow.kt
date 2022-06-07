@@ -13,7 +13,7 @@ import sk.kasper.ui_common.tag.FilterTag
 fun TagsRow(modifier: Modifier, list: List<FilterTag>) {
     Row(modifier = modifier) {
         list.forEach {
-            FilterItemComposable(filterItem = it)
+            FilterItemComposable(filterItem = it, isToggable = false)
             Spacer(modifier = Modifier.requiredWidth(4.dp))
         }
     }

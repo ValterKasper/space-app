@@ -11,8 +11,11 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import sk.kasper.ui_common.R
 
@@ -114,7 +118,6 @@ fun <T : FilterItem> Filter(
     })
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun <TAG : FilterItem> FilterRow(
     state: FilterState<TAG>,
@@ -165,7 +168,7 @@ private fun <TAG : FilterItem> FilterRow(
                             .alpha(exitAlpha)
                             .padding(top = exitPaddingTop),
                     ) {
-                        FilterItemComposable(name,
+                        FilterItemComposable(filterItem = name,
                             selected = false,
                             onItemSelected = { item, _ -> onItemSelected(item) })
                     }
@@ -175,7 +178,7 @@ private fun <TAG : FilterItem> FilterRow(
             if (state.selectedFilterItemsVisible) {
                 state.selectedFilterItems.forEach { name ->
                     FilterItemComposable(
-                        name,
+                        filterItem = name,
                         selected = state.clearVisible,
                         onItemSelected = { item, _ -> onItemSelected(item) })
                 }
@@ -188,7 +191,7 @@ private fun <TAG : FilterItem> FilterRow(
                             .alpha(exitAlpha)
                             .padding(top = exitPaddingTop)
                     ) {
-                        FilterItemComposable(name,
+                        FilterItemComposable(filterItem = name,
                             selected = false,
                             onItemSelected = { item, _ -> onItemSelected(item) })
                     }
@@ -198,7 +201,7 @@ private fun <TAG : FilterItem> FilterRow(
             if (state.extensionFilterItemsVisible) {
                 state.extensionFilterItems.forEach { name ->
                     FilterItemComposable(
-                        name,
+                        filterItem = name,
                         selected = false,
                         onItemSelected = { item, _ -> onItemSelected(item) })
                 }
@@ -209,8 +212,7 @@ private fun <TAG : FilterItem> FilterRow(
 
 @Composable
 private fun FilterClearButton(onClearAllClick: () -> Unit) {
-    Box(modifier = Modifier
-        .semantics { contentDescription = "clear button" }
+    IconButton(onClick = onClearAllClick, modifier = Modifier
         .size(32.dp)
         .padding(2.dp)
         .border(
@@ -219,12 +221,16 @@ private fun FilterClearButton(onClearAllClick: () -> Unit) {
             shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))
         )
         .clip(shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50)))
-        .clickable { onClearAllClick() }
         .padding(4.dp)) {
         Icon(
-            modifier = Modifier.align(Alignment.Center),
-            painter = painterResource(id = R.drawable.ic_baseline_close_24),
+            Icons.Default.Close,
             contentDescription = "Clear filter"
         )
     }
+}
+
+@Preview
+@Composable
+private fun FilterClearButtonPreview() {
+    FilterClearButton {}
 }

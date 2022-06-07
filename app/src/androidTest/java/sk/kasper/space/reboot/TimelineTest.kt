@@ -1,8 +1,10 @@
 package sk.kasper.space.reboot
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -11,7 +13,9 @@ import org.junit.Test
 import sk.kasper.base.SettingsManager
 import sk.kasper.database.dao.LaunchSiteDao
 import sk.kasper.space.MainActivity
+import sk.kasper.space.SpaceAppUi
 import sk.kasper.space.fake.FakeRemoteApi
+import sk.kasper.ui_timeline.ui.TimelineScreen
 import javax.inject.Inject
 
 @HiltAndroidTest

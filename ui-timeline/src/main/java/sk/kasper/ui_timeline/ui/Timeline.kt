@@ -20,6 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -168,7 +170,7 @@ private fun TimelineAppBar(viewModel: TimelineViewModel) {
             IconButton(onClick = { expanded = true }) {
                 Icon(
                     painterResource(id = R.drawable.ic_baseline_more_vert_24),
-                    contentDescription = null
+                    contentDescription = "Show more"
                 )
             }
 
@@ -213,7 +215,7 @@ private fun FilterBar(onFilterBarClick: () -> Unit = {}, onClearAllClick: () -> 
                     .padding(dimensionResource(id = R.dimen.padding_normal))
                     .requiredSize(24.dp),
                 painter = painterResource(id = R.drawable.ic_clear_all),
-                contentDescription = stringResource(id = R.string.filter),
+                contentDescription = stringResource(id = R.string.clear_all),
                 tint = MaterialTheme.colors.secondary,
             )
         }
@@ -229,7 +231,8 @@ fun LaunchListItemLayout(
         Row(Modifier
             .fillMaxWidth()
             .clickable { onItemClick(viewModel.item) }
-            .padding(vertical = 12.dp),
+            .padding(vertical = 12.dp)
+            .semantics(mergeDescendants = true) {  },
             verticalAlignment = Alignment.CenterVertically
         ) {
             RocketIcon(
@@ -308,7 +311,7 @@ private fun RocketIcon(
             modifier = modifier
                 .clip(RoundedCornerShape(dimensionResource(id = R.dimen.rounded_corners_radius)))
                 .requiredSize(dimensionResource(id = R.dimen.rocket_icon_size)),
-            contentDescription = "null"
+            contentDescription = null
         )
     }
 }

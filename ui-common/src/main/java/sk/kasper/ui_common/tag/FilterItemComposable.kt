@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import sk.kasper.ui_common.theme.SourceSansPro
@@ -28,6 +30,8 @@ import java.util.*
 
 @Composable
 fun <T : FilterItem> FilterItemComposable(
+    modifier: Modifier = Modifier,
+    isToggable: Boolean = true,
     filterItem: T,
     selected: Boolean = true,
     onItemSelected: (T, Boolean) -> Unit = { _, _ -> },
@@ -36,7 +40,7 @@ fun <T : FilterItem> FilterItemComposable(
     val shape = MaterialTheme.shapes.small.copy(all = CornerSize(percent = 50))
     val alpha = if (selected) 0.2f else 0.0f
     val color = colorResource(id = filterItem.color)
-    val toggleableModifier =
+    val toggleableModifier = if (isToggable) {
         Modifier.toggleable(
             value = selected,
             onValueChange = { newValue -> onItemSelected(filterItem, newValue) },
@@ -44,13 +48,17 @@ fun <T : FilterItem> FilterItemComposable(
             interactionSource = interactionSource,
             indication = null
         )
+    } else {
+        Modifier
+    }
+
     Text(
         stringResource(filterItem.label).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
         style = MaterialTheme.typography.body2.copy(
             fontFamily = SourceSansPro
         ),
         color = lerp(color, MaterialTheme.colors.onSurface, 0.55f),
-        modifier = Modifier
+        modifier = modifier
             .then(toggleableModifier)
             .height(32.dp)
             .padding(3.dp)

@@ -2,12 +2,16 @@ package sk.kasper.ui_settings.preferences
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import sk.kasper.base.SettingKey
@@ -49,17 +53,22 @@ internal fun ListPreference(
                         stringResource(title),
                         modifier = Modifier
                             .padding(bottom = 16.dp)
-                            .padding(top = 8.dp),
+                            .padding(top = 8.dp)
+                            .semantics { heading() },
                         style = MaterialTheme.typography.h6
                     )
                     values.forEach { (value, name) ->
                         Row(
                             verticalAlignment = CenterVertically,
                             modifier = Modifier
-                                .clickable {
-                                    onValueChange(settingKey, value)
-                                    showDialog = false
-                                }
+                                .toggleable(
+                                    onValueChange = {
+                                        onValueChange(settingKey, value)
+                                        showDialog = false
+                                    },
+                                    value = value == selectedValue,
+                                    role = Role.RadioButton
+                                )
                                 .height(48.dp)
                                 .fillMaxWidth(),
                         ) {

@@ -1,5 +1,7 @@
 package sk.kasper.ui_common.tag
 
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Rule
@@ -16,8 +18,7 @@ class FilterKtTest {
         override val label: Int,
         val title: String,
         override val color: Int = R.color.cyan_700
-    ) :
-        FilterItem {
+    ) : FilterItem {
         TAG_A(R.string.tag_iss, "ISS"),
         TAG_B(R.string.tag_mars, "Mars"),
         TAG_WITH_EXT(R.string.tag_manned, "Manned"),
@@ -37,21 +38,21 @@ class FilterKtTest {
         showFilter()
 
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .performClick()
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .assertIsOn()
         composeTestRule
-            .onNodeWithText(TAG_B.title)
+            .onNode(isTag(TAG_B.title))
             .assertDoesNotExist()
 
         composeTestRule
-            .onNodeWithContentDescription("clear button")
+            .onClearButton()
             .performClick()
 
         composeTestRule
-            .onNodeWithText(TAG_B.title)
+            .onNode(isTag(TAG_B.title))
             .assertExists()
     }
 
@@ -60,38 +61,38 @@ class FilterKtTest {
         showFilter()
 
         composeTestRule
-            .onNodeWithText(TAG_WITH_EXT.title)
+            .onNode(isTag(TAG_WITH_EXT.title))
             .performClick()
         composeTestRule
-            .onNodeWithText(TAG_WITH_EXT.title)
+            .onNode(isTag(TAG_WITH_EXT.title))
             .assertIsOn()
         composeTestRule
-            .onNodeWithText(EXT_TAG_X.title)
+            .onNode(isTag(EXT_TAG_X.title))
             .assertExists()
             .assertIsOff()
         composeTestRule
-            .onNodeWithText(EXT_TAG_Y.title)
+            .onNode(isTag(EXT_TAG_Y.title))
             .assertExists()
             .assertIsOff()
 
         composeTestRule
-            .onNodeWithText(EXT_TAG_X.title)
+            .onNode(isTag(EXT_TAG_X.title))
             .performClick()
         composeTestRule
-            .onNodeWithText(EXT_TAG_X.title)
+            .onNode(isTag(EXT_TAG_X.title))
             .assertIsOn()
         composeTestRule
-            .onNodeWithText(EXT_TAG_Y.title)
+            .onNode(isTag(EXT_TAG_Y.title))
             .assertDoesNotExist()
 
         composeTestRule
-            .onNodeWithText(EXT_TAG_X.title)
+            .onNode(isTag(EXT_TAG_X.title))
             .performClick()
         composeTestRule
-            .onNodeWithText(EXT_TAG_X.title)
+            .onNode(isTag(EXT_TAG_X.title))
             .assertIsOff()
         composeTestRule
-            .onNodeWithText(EXT_TAG_Y.title)
+            .onNode(isTag(EXT_TAG_Y.title))
             .assertExists()
             .assertIsOff()
     }
@@ -101,24 +102,24 @@ class FilterKtTest {
         showFilter()
 
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .performClick()
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .assertIsOn()
 
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .performClick()
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .assertIsOff()
 
         composeTestRule
             .onClearButton()
             .assertDoesNotExist()
         composeTestRule
-            .onNodeWithText(TAG_B.title)
+            .onNode(isTag(TAG_B.title))
             .assertExists()
     }
 
@@ -127,10 +128,10 @@ class FilterKtTest {
         showFilter()
 
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .performClick()
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .assertIsOn()
 
         composeTestRule
@@ -140,19 +141,25 @@ class FilterKtTest {
             .onClearButton()
             .assertDoesNotExist()
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .assertIsOff()
 
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .performClick()
         composeTestRule
-            .onNodeWithText(TAG_A.title)
+            .onNode(isTag(TAG_A.title))
             .assertIsOn()
     }
 
-    fun SemanticsNodeInteractionsProvider.onClearButton(): SemanticsNodeInteraction {
-        return onNodeWithContentDescription("clear button")
+    private fun SemanticsNodeInteractionsProvider.onClearButton(): SemanticsNodeInteraction {
+        return onNodeWithContentDescription("Clear filter")
+    }
+
+    private fun isTag(title: String): SemanticsMatcher {
+        return hasText(title) and SemanticsMatcher.expectValue(
+            SemanticsProperties.Role, Role.Checkbox
+        )
     }
 
     private fun showFilter() {
