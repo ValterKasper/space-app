@@ -37,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = buildConfig.jvmTarget
     }
+    lint {
+        disable "LogNotTimber","StringFormatInTimber","ThrowableNotAtBeginning","BinaryOperationInTimber","TimberArgCount","TimberArgTypes","TimberTagLength","TimberExceptionLogging"
+    }
 }
 
 dependencies {

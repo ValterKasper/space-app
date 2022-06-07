@@ -13,7 +13,7 @@ class FirebaseAnalyticsLogger(@ApplicationContext private val context: Context) 
             bundle.putString(key, value)
         }
 
-        FirebaseAnalytics.getInstance(context).logEvent(event, bundle)
+//        FirebaseAnalytics.getInstance(context).logEvent(event, bundle)
     }
 
 }

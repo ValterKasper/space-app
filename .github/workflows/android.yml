@@ -28,6 +28,8 @@ jobs:
       with:
         fileName: 'space_release.jks'
         encodedString: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+    - name: Lint
+      run: ./gradlew lint
     - name: Build with Gradle
       env:
         SPACE_APP_KEYSTORE_PATH: ${{ steps.release_cert.outputs.filePath }}
