@@ -66,6 +66,9 @@ internal fun TimelineScreen(viewModel: TimelineViewModel, navigate: (String) -> 
                     Logger.d("navigate to ${it.uriString}")
                     navigate(it.uriString)
                 }
+                else -> {
+                    
+                }
             }
         }
 
@@ -73,83 +76,85 @@ internal fun TimelineScreen(viewModel: TimelineViewModel, navigate: (String) -> 
 
     SpaceTheme {
         ProvideWindowInsets {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                TimelineAppBar(viewModel)
+            Surface(color = MaterialTheme.colors.background) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    TimelineAppBar(viewModel)
 
-                if (state.clearButtonVisible) {
-                    FilterBar(viewModel::onFilterBarClick, viewModel::onClearAllClick)
-                }
+                    if (state.clearButtonVisible) {
+                        FilterBar(viewModel::onFilterBarClick, viewModel::onClearAllClick)
+                    }
 
-                Box {
-                    SwipeRefresh(
-                        state = rememberSwipeRefreshState(state.progressVisible),
-                        onRefresh = viewModel::onRefresh
-                    ) {
-                        if (state.showNoMatchingLaunches) {
-                            Box(Modifier.fillMaxSize()) {
-                                Text(
-                                    text = stringResource(id = R.string.no_matching_launches),
-                                    style = MaterialTheme.typography.h6,
-                                    modifier = Modifier
-                                        .alpha(0.62f)
-                                        .align(Alignment.Center)
-                                )
+                    Box {
+                        SwipeRefresh(
+                            state = rememberSwipeRefreshState(state.progressVisible),
+                            onRefresh = viewModel::onRefresh
+                        ) {
+                            if (state.showNoMatchingLaunches) {
+                                Box(Modifier.fillMaxSize()) {
+                                    Text(
+                                        text = stringResource(id = R.string.no_matching_launches),
+                                        style = MaterialTheme.typography.h6,
+                                        modifier = Modifier
+                                            .alpha(0.62f)
+                                            .align(Alignment.Center)
+                                    )
+                                }
                             }
-                        }
 
-                        if (state.showRetryToLoadLaunches) {
-                            Box(Modifier.fillMaxSize()) {
-                                Surface(elevation = 8.dp) {
-                                    Column(modifier = Modifier.align(Alignment.Center)) {
-                                        Text(
-                                            text = stringResource(id = R.string.your_connections_is_off),
-                                            style = MaterialTheme.typography.h6,
-                                            modifier = Modifier
-                                                .alpha(0.62f)
+                            if (state.showRetryToLoadLaunches) {
+                                Box(Modifier.fillMaxSize()) {
+                                    Surface(elevation = 8.dp) {
+                                        Column(modifier = Modifier.align(Alignment.Center)) {
+                                            Text(
+                                                text = stringResource(id = R.string.your_connections_is_off),
+                                                style = MaterialTheme.typography.h6,
+                                                modifier = Modifier
+                                                    .alpha(0.62f)
+                                            )
+                                            Text(
+                                                text = stringResource(id = R.string.pull_to_refresh_to_try_again),
+                                                style = MaterialTheme.typography.body1,
+                                                modifier = Modifier
+                                                    .alpha(0.62f)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                contentPadding = rememberInsetsPaddingValues(
+                                    insets = LocalWindowInsets.current.systemBars,
+                                    applyTop = false,
+                                    additionalTop = 56.dp
+                                )
+                            ) {
+                                items(state.timelineItems) { item ->
+                                    when (item) {
+                                        is LaunchListItem -> LaunchListItemLayout(
+                                            LaunchListItemViewModel(
+                                                item
+                                            ), viewModel::onItemClick
                                         )
-                                        Text(
-                                            text = stringResource(id = R.string.pull_to_refresh_to_try_again),
-                                            style = MaterialTheme.typography.body1,
-                                            modifier = Modifier
-                                                .alpha(0.62f)
-                                        )
+                                        is LabelListItem -> LabelListItem(item)
                                     }
                                 }
                             }
                         }
 
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            contentPadding = rememberInsetsPaddingValues(
-                                insets = LocalWindowInsets.current.systemBars,
-                                applyTop = false,
-                                additionalTop = 56.dp
-                            )
-                        ) {
-                            items(state.timelineItems) { item ->
-                                when (item) {
-                                    is LaunchListItem -> LaunchListItemLayout(
-                                        LaunchListItemViewModel(
-                                            item
-                                        ), viewModel::onItemClick
-                                    )
-                                    is LabelListItem -> LabelListItem(item)
-                                }
-                            }
-                        }
+                        Filter(
+                            filterDefinition = filterDefinition,
+                            onItemSelected = { filterItem, selected ->
+                                viewModel.onFilterItemChanged(filterItem, selected)
+                            },
+                            onClearAll = {
+                                viewModel.onClearAllClick()
+                            })
                     }
-
-                    Filter(
-                        filterDefinition = filterDefinition,
-                        onItemSelected = { filterItem, selected ->
-                            viewModel.onFilterItemChanged(filterItem, selected)
-                        },
-                        onClearAll = {
-                            viewModel.onClearAllClick()
-                        })
                 }
             }
         }
@@ -300,7 +305,7 @@ private fun RocketIcon(
                 drawIntoCanvas {
                     roundedSquareLetterProvider.drawLetterOnCanvas(
                         it.nativeCanvas,
-                        rocketName.first()
+                        rocketName.firstOrNull() ?: 'x'
                     )
                 }
             }

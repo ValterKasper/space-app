@@ -29,7 +29,7 @@ data class TimelineState(
     val progressVisible: Boolean = false
 ) {
     override fun toString(): String {
-        return "TIs = ${timelineItems.size}, filterSpec = ${filterSpec}, clearButtonVisibility = ${clearButtonVisible}, progress = ${progressVisible}"
+        return "TIs = ${timelineItems.size}, filterSpec = ${filterSpec}, clearButtonVisibility = ${clearButtonVisible}, progress = $progressVisible"
     }
 }
 

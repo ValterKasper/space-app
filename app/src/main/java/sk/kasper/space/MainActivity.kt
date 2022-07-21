@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.Composable
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,44 +30,19 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val showToast: (String) -> Unit = {
+            Toast.makeText(
+                this@MainActivity,
+                it,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        val viewData = { uri: Uri ->
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
         setContent {
-            SpaceTheme {
-                val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "timeline") {
-                    val navigate = { uri: String ->
-                        navController.navigate(uri, createSlideAnimNavOptions())
-                    }
-                    val showToast: (String) -> Unit = {
-                        Toast.makeText(
-                            this@MainActivity,
-                            it,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    val navigateUp: () -> Unit = {
-                        navController.navigateUp()
-                    }
-                    val viewData = { uri: Uri ->
-                        val intent = Intent(Intent.ACTION_VIEW, uri)
-                        startActivity(intent)
-                    }
-                    composable("timeline") {
-                        TimelineScreen(navigate)
-                    }
-                    composable("launch/{launchId}") {
-                        LaunchScreen(showToast = showToast, navigateUp = navigateUp, viewData = viewData)
-                    }
-                    composable("settings") {
-                        SettingsScreen(showToast = showToast, navigate, navigateUp)
-                    }
-                    composable("libraries") {
-                        LibrariesScreen(navigateUp, viewData)
-                    }
-                    composable("compose_playground") {
-                        ComposePlaygroundScreen(navigateUp)
-                    }
-                }
-            }
+            SpaceAppUi(viewData, showToast)
         }
 
         // request to be laid out fullscreen
