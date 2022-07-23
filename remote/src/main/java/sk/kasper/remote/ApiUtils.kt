@@ -30,7 +30,7 @@ object ApiUtils {
             Logger.tag("OkHttp").d(it)
         }.apply {
             level = if (flags.isDebug)
-                HttpLoggingInterceptor.Level.HEADERS
+                HttpLoggingInterceptor.Level.BODY
             else
                 HttpLoggingInterceptor.Level.NONE
         }

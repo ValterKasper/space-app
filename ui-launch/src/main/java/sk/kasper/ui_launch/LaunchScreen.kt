@@ -1,8 +1,6 @@
 package sk.kasper.ui_launch
 
-import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -56,6 +54,7 @@ fun LaunchScreen(
                             HeaderSection(
                                 viewModel = launchViewModel
                             ) { navigateUp() }
+                            MissionSection(viewModel = launchViewModel)
                             GallerySection(viewModel = galleryViewModel)
                             OrbitSection(viewModel = hiltViewModel())
                             RocketSection(rocketSectionViewModel = hiltViewModel())
